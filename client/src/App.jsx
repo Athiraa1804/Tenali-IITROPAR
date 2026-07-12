@@ -40368,8 +40368,7 @@ const BankingApp = makeQuizApp({
 // power of 10 (e.g., -0.8 × 90, 0.002 × -0.7). Multiple-choice with
 // distractors that test sign and decimal-place precision.
 const GymDecimalsApp = makeMCQuizApp({
-  title: 'Gym Decimals', subtitle: 'Signed decimal multiplication — 1-digit × 1-digit', apiPath: 'gymdecimals-api',
-  adaptiveOnly: true,
+  title: 'Gym Decimals', subtitle: 'Signed decimal multiplication — 1-digit × 1-digit', apiPath: 'gymdecimals-api',
   diffLabels: {
     easy: 'Easy — shift ≤ 1 place',
     medium: 'Medium — ≤ 2 places',
@@ -40384,8 +40383,7 @@ const GymDecimalsApp = makeMCQuizApp({
 // times-tables.
 const FuncGymApp = makeMCQuizApp({
   title: 'Functions Gym', subtitle: 'Evaluate small polynomials & rationals',
-  apiPath: 'funcgym-api',
-  adaptiveOnly: true,
+  apiPath: 'funcgym-api',
   diffLabels: {
     easy: 'Easy — degree 1 (ax + b)',
     medium: 'Medium — degree 2 (ax² + bx + c)',
@@ -40398,8 +40396,7 @@ const FuncGymApp = makeMCQuizApp({
 // DotProducts Gym — 2D and 3D dot products with single-digit signed integers.
 const DotProdGymApp = makeMCQuizApp({
   title: 'DotProducts Gym', subtitle: 'a · b for 2- and 3-tuples (signed digits)',
-  apiPath: 'dotprodgym-api',
-  adaptiveOnly: true,
+  apiPath: 'dotprodgym-api',
   diffLabels: {
     easy: 'Easy — 2D vectors',
     medium: 'Medium — mixed 2D / 3D',
@@ -40412,8 +40409,7 @@ const DotProdGymApp = makeMCQuizApp({
 // Fractions-add-gym — add two single-digit fractions, multiple choice.
 const FracAddGymApp = makeMCQuizApp({
   title: 'Fractions-add-gym', subtitle: 'Add single-digit fractions',
-  apiPath: 'fracaddgym-api',
-  adaptiveOnly: true,
+  apiPath: 'fracaddgym-api',
   diffLabels: {
     easy: 'Easy — same denominator',
     medium: 'Medium — different denominators',
@@ -40427,8 +40423,7 @@ const FracAddGymApp = makeMCQuizApp({
 // stays inside single-digit times-tables.
 const LinEqGymApp = makeMCQuizApp({
   title: 'LinearEquations-Gym', subtitle: 'Solve linear equations with integer answers',
-  apiPath: 'lineqgym-api',
-  adaptiveOnly: true,
+  apiPath: 'lineqgym-api',
   diffLabels: {
     easy: 'Easy — ax + b = 0, |a| ≤ 5',
     medium: 'Medium — ax + b = 0, |a| ≤ 9',
@@ -40441,8 +40436,7 @@ const LinEqGymApp = makeMCQuizApp({
 // Indices-Gym — index laws (a^k · a^l = a^(k+l), a^k ÷ a^l = a^(k-l), etc.)
 const IndicesGymApp = makeMCQuizApp({
   title: 'Indices-Gym', subtitle: 'Apply index laws — multiply, divide, power',
-  apiPath: 'indicesgym-api',
-  adaptiveOnly: true,
+  apiPath: 'indicesgym-api',
   diffLabels: {
     easy: 'Easy — multiply / divide on one base',
     medium: 'Medium — adds (a^k)^l',
@@ -40457,8 +40451,7 @@ const IndicesGymApp = makeMCQuizApp({
 // 9-times-tables (single-digit factors); additions can use larger numbers.
 const PolyGymApp = makeMCQuizApp({
   title: 'Polynomials Gym', subtitle: 'Arithmetic → monomial algebra (single-digit ×)',
-  apiPath: 'polygym-api',
-  adaptiveOnly: true,
+  apiPath: 'polygym-api',
   diffLabels: {
     easy: 'Easy — signed int × int / two-digit add',
     medium: 'Medium — int × monomial / like-term add',

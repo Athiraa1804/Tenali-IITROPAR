@@ -24,6 +24,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import './App.css'
 import InteractiveLcmHcfApp from './LcmHcfApp'
+import ContrastChallengeApp, { QuizLayoutExtension } from './ContrastChallengeApp'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -35846,6 +35847,22 @@ function App() {
   // Tracks if the active practice session should show the Goal Selector UI
   const [isGoalMode, setIsGoalMode] = useState(false)
 
+  // Sync current mode to window global for QuizLayoutExtension
+  useEffect(() => {
+    window.currentTenaliMode = mode;
+  }, [mode])
+
+  // Custom event listener to change modes
+  useEffect(() => {
+    const handleModeChange = (e) => {
+      if (e.detail) {
+        setMode(e.detail);
+      }
+    };
+    window.addEventListener('tenali-change-mode', handleModeChange);
+    return () => window.removeEventListener('tenali-change-mode', handleModeChange);
+  }, []);
+
   // Current theme: 'dark' or 'light'
   // Initialized from localStorage with fallback to 'dark'
   const [theme, setTheme] = useState(() => {
@@ -36390,7 +36407,8 @@ function App() {
     integ: IntegApp,               // Integration
     stdform: StdFormApp,           // Standard Form
     bounds: BoundsApp,             // Bounds
-    sdt: SDTApp,                   // Speed, Distance, Time
+    sdt: SDTApp,
+    contrastlist: ContrastChallengeApp,   // Contrast Challenge
     variation: VariationApp,       // Variation
     hcflcm: InteractiveLcmHcfApp,  // HCF & LCM
     profitloss: ProfitLossApp,     // Profit & Loss
@@ -36441,7 +36459,7 @@ function App() {
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      <div className="card">
+      <div className={`card ${mode === 'contrastlist' ? 'is-wide' : ''}`}>
         {!mode ? (
           <Home onSelect={(key) => {
             if (key === 'goalpractice') {
@@ -36503,6 +36521,7 @@ function Home({ onSelect, isGoalSelection = false, onBack }) {
     { key: 'randommix', name: 'Random Mix', subtitle: 'Adaptive cross-topic quiz', color: 'featured' },
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
     { key: 'gym', name: 'Gym', subtitle: 'Adaptive workout across all 7 gym puzzles', color: 'featured' },
+    { key: 'contrastlist', name: 'Contrast Challenge', subtitle: 'Distinguish similar concepts', color: 'var(--clr-accent)' },
   ]
 
   // All regular quiz apps sorted alphabetically by name
@@ -52335,6 +52354,7 @@ function QuizLayout({ title, subtitle, onBack, children, timer, sessionGoal }) {
       <h1>{title}</h1>
       <p className="subtitle">{subtitle}</p>
       {processedChildren}
+      <QuizLayoutExtension children={children} />
     </>
   )
 }

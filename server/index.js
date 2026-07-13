@@ -48,6 +48,7 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 
+
 // Initialize Express app and configure middleware
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -68,6 +69,8 @@ app.use(express.static(clientDistPath));
 const auth = require('./auth');
 app.use('/api/auth', auth.router);
 auth.seedUsers().catch(() => {});  // always populate in-memory fallback
+
+
 auth.connectMongo()
   .then(() => auth.seedUsers())
   .catch(err => console.error('[auth] Mongo connect failed — using in-memory auth:', err.message));

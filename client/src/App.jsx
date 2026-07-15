@@ -38631,6 +38631,63 @@ function ch4RenderMath(text) {
 const CH4_AUTO_ADVANCE_MS = 5000
 
 
+const TENTH_UNITS = [
+  {
+    unit: 'Unit 1',
+    chapters: [
+      { n: 1, title: 'Reviewing Number Concepts', blurb: 'Types of numbers, factors and multiples, primes, HCF & LCM, powers & roots, directed numbers, BIDMAS, rounding and estimation.' },
+      { n: 2, title: 'Making Sense of Algebra', blurb: 'Letters for numbers, substitution, simplifying like terms, expanding brackets, index notation and laws of indices.' },
+      { n: 3, title: 'Lines, Angles and Shapes', blurb: 'Naming and measuring angles, parallel-line angle pairs, triangles, quadrilaterals, polygons and the parts of a circle.' },
+      { n: 4, title: 'Collecting, Organising & Displaying Data', blurb: 'Types of data, tally charts, bar charts, pictograms, pie charts, line graphs, stem-and-leaf and misleading graphs.' },
+    ],
+  },
+  {
+    unit: 'Unit 2',
+    chapters: [
+      { n: 5, title: 'Fractions, Percentages & Standard Form', blurb: 'Equivalent fractions, four operations on fractions, percentages and percentage change, standard form for very big or very small numbers.' },
+      { n: 6, title: 'Equations, Factors and Formulae', blurb: 'Solving linear equations, expanding double brackets, factorising quadratics, rearranging formulae for a different subject.' },
+      { n: 7, title: 'Perimeter, Area and Volume', blurb: 'Perimeter and area of 2-D shapes, surface area and volume of prisms, cylinders, pyramids, cones and spheres.' },
+      { n: 8, title: 'Introduction to Probability', blurb: 'Sample spaces, theoretical and experimental probability, mutually exclusive vs independent events.' },
+    ],
+  },
+  {
+    unit: 'Unit 3',
+    chapters: [
+      { n: 9, title: 'Sequences, Surds and Sets', blurb: 'nth term of linear and quadratic sequences, surd manipulation, set notation, Venn diagrams.' },
+      { n: 10, title: 'Straight Lines & Quadratic Equations', blurb: 'Gradient and y-intercept, y = mx + c, parallel and perpendicular lines, solving quadratics by factorising.' },
+      { n: 11, title: "Pythagoras' Theorem & Similar Shapes", blurb: "Pythagoras in right triangles, similar shapes, length / area / volume scale factors." },
+      { n: 12, title: 'Averages and Measures of Spread', blurb: 'Mean, median, mode and range; estimating from grouped frequency tables; modal and median classes.' },
+    ],
+  },
+  {
+    unit: 'Unit 4',
+    chapters: [
+      { n: 13, title: 'Understanding Measurement', blurb: 'Units of length / mass / capacity / area / volume, the 24-hour clock, bounds, conversion graphs and currency.' },
+      { n: 14, title: 'Further Equations & Inequalities', blurb: 'Quadratic formula, simultaneous linear equations, linear inequalities and showing solutions on a number line.' },
+      { n: 15, title: 'Scale Drawings, Bearings & Trigonometry', blurb: 'Scale drawings, three-figure bearings, sin/cos/tan in right triangles, sine and cosine rules in any triangle.' },
+      { n: 16, title: 'Scatter Diagrams & Correlation', blurb: 'Plotting scatter graphs, identifying correlation, drawing the line of best fit and using it to predict.' },
+    ],
+  },
+  {
+    unit: 'Unit 5',
+    chapters: [
+      { n: 17, title: 'Managing Money', blurb: 'Earnings, simple and compound interest, currency conversion, profit/loss and discount as percentages.' },
+      { n: 18, title: 'Curved Graphs', blurb: 'Drawing parabolas, hyperbolas and cubics; using a graph to solve equations; gradients of curves.' },
+      { n: 19, title: 'Symmetry', blurb: 'Line and rotational symmetry in 2-D and 3-D, symmetry properties of circles, angle relationships in circles.' },
+      { n: 20, title: 'Histograms & Cumulative Frequency', blurb: 'Histograms with unequal classes (frequency density), cumulative frequency curves, quartiles, IQR and percentiles.' },
+    ],
+  },
+  {
+    unit: 'Unit 6',
+    chapters: [
+      { n: 21, title: 'Ratio, Rate and Proportion', blurb: 'Simplifying ratios, sharing in a given ratio, kinematic graphs, direct and inverse proportion.' },
+      { n: 22, title: 'More Equations, Formulae and Functions', blurb: 'Word-problem equations (linear and quadratic), changing the subject of harder formulae, function notation, composite and inverse functions.' },
+      { n: 23, title: 'Transformations and Vectors', blurb: 'Reflection, rotation, translation and enlargement (incl. negative scale factor); column vectors, magnitude, position vectors.' },
+      { n: 24, title: 'Probability with Tree & Venn Diagrams', blurb: 'Tree diagrams (with and without replacement), Venn diagrams for two and three sets, conditional probability and two-way tables.' },
+    ],
+  },
+]
+
 function Chapter4App({ onBack }) { return null; }
 function TenthApp({ onBack }) {
   const { user } = useAuth()

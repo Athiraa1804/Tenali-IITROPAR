@@ -103,47 +103,31 @@ export async function syncContrastProgress(token) {
     const data = await res.json();
     const serverProgress = data.progress || {};
 
-    // 3. Check for any guest progress to merge in (one-time migration on login)
-    const guestCompletedModules = JSON.parse(localStorage.getItem('tenali-completed-modules-guest') || '[]');
-    const guestUnlocked = JSON.parse(localStorage.getItem('tenali-contrast-unlocked-guest') || '[]');
-    const guestSeen = JSON.parse(localStorage.getItem('tenali-contrast-seen-guest') || '{"seenPairs":[],"completedPairs":[]}');
-
-    // 4. Merge states: Local User + Guest + Server
+    // 3. Merge states: Local User + Server Progress
     const mergedCompletedModules = Array.from(new Set([
       ...localCompletedModules,
-      ...guestCompletedModules,
       ...(serverProgress.completedModules || [])
     ]));
     const mergedUnlocked = Array.from(new Set([
       ...localUnlocked,
-      ...guestUnlocked,
       ...(serverProgress.unlockedPairs || [])
     ]));
     const mergedSeenPairs = Array.from(new Set([
       ...(localSeen.seenPairs || []),
-      ...(guestSeen.seenPairs || []),
       ...(serverProgress.seenPairs || [])
     ]));
     const mergedCompletedPairs = Array.from(new Set([
       ...(localSeen.completedPairs || []),
-      ...(guestSeen.completedPairs || []),
       ...(serverProgress.completedPairs || [])
     ]));
 
-    // 5. Save merged states back to user localStorage
+    // 4. Save merged states back to user localStorage
     localStorage.setItem(userKeys.completedModules, JSON.stringify(mergedCompletedModules));
     localStorage.setItem(userKeys.unlocked, JSON.stringify(mergedUnlocked));
     localStorage.setItem(userKeys.seen, JSON.stringify({
       seenPairs: mergedSeenPairs,
       completedPairs: mergedCompletedPairs
     }));
-    
-    // 6. Clear guest progress since it has now been merged into the account
-    if (guestCompletedModules.length > 0 || guestUnlocked.length > 0 || (guestSeen.seenPairs && guestSeen.seenPairs.length > 0)) {
-      localStorage.removeItem('tenali-completed-modules-guest');
-      localStorage.removeItem('tenali-contrast-unlocked-guest');
-      localStorage.removeItem('tenali-contrast-seen-guest');
-    }
 
     // 7. Send merged states back to server
     await fetch(`${API}/contrast-api/progress`, {

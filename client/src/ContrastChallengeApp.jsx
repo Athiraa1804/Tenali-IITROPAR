@@ -26,13 +26,33 @@ const CONTRAST_PAIRS = [
   { id: 'trig-inverse-trig', title: 'Trigonometry vs Inverse Trig' },
 ];
 
-// localStorage keys
-const STORAGE_KEY = 'tenali-contrast-seen';
+export function getUsernameNamespace() {
+  try {
+    const authUserStr = localStorage.getItem('tenali-auth-user');
+    if (authUserStr) {
+      const authUser = JSON.parse(authUserStr);
+      if (authUser && authUser.username) {
+        return authUser.username;
+      }
+    }
+  } catch (e) {}
+  return 'guest';
+}
+
+export function getStorageKeys() {
+  const ns = getUsernameNamespace();
+  return {
+    seen: `tenali-contrast-seen-${ns}`,
+    unlocked: `tenali-contrast-unlocked-${ns}`,
+    completedModules: `tenali-completed-modules-${ns}`
+  };
+}
 
 // Load progress from localStorage
 function loadProgress() {
   try {
-    const data = localStorage.getItem(STORAGE_KEY);
+    const keys = getStorageKeys();
+    const data = localStorage.getItem(keys.seen);
     return data ? JSON.parse(data) : { seenPairs: [], completedPairs: [] };
   } catch {
     return { seenPairs: [], completedPairs: [] };
@@ -42,8 +62,106 @@ function loadProgress() {
 // Save progress to localStorage
 function saveProgress(progress) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+    const keys = getStorageKeys();
+    localStorage.setItem(keys.seen, JSON.stringify(progress));
   } catch { }
+}
+
+// Bidirectional progress sync with the server database
+export async function syncContrastProgress(token) {
+  if (!token) return;
+  try {
+    const API = import.meta.env.VITE_API_BASE_URL || '';
+    
+    // Get current logged in username to identify user switches
+    const authUserStr = localStorage.getItem('tenali-auth-user');
+    let currentUsername = null;
+    if (authUserStr) {
+      try {
+        const authUser = JSON.parse(authUserStr);
+        currentUsername = authUser ? authUser.username : null;
+      } catch {}
+    }
+    if (!currentUsername) return;
+
+    const userKeys = {
+      completedModules: `tenali-completed-modules-${currentUsername}`,
+      unlocked: `tenali-contrast-unlocked-${currentUsername}`,
+      seen: `tenali-contrast-seen-${currentUsername}`
+    };
+
+    // 1. Get current namespaced localStorage values
+    const localCompletedModules = JSON.parse(localStorage.getItem(userKeys.completedModules) || '[]');
+    const localUnlocked = JSON.parse(localStorage.getItem(userKeys.unlocked) || '[]');
+    const localSeen = JSON.parse(localStorage.getItem(userKeys.seen) || '{"seenPairs":[],"completedPairs":[]}');
+
+    // 2. Fetch server values
+    const res = await fetch(`${API}/contrast-api/progress`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Failed to fetch server progress');
+    const data = await res.json();
+    const serverProgress = data.progress || {};
+
+    // 3. Check for any guest progress to merge in (one-time migration on login)
+    const guestCompletedModules = JSON.parse(localStorage.getItem('tenali-completed-modules-guest') || '[]');
+    const guestUnlocked = JSON.parse(localStorage.getItem('tenali-contrast-unlocked-guest') || '[]');
+    const guestSeen = JSON.parse(localStorage.getItem('tenali-contrast-seen-guest') || '{"seenPairs":[],"completedPairs":[]}');
+
+    // 4. Merge states: Local User + Guest + Server
+    const mergedCompletedModules = Array.from(new Set([
+      ...localCompletedModules,
+      ...guestCompletedModules,
+      ...(serverProgress.completedModules || [])
+    ]));
+    const mergedUnlocked = Array.from(new Set([
+      ...localUnlocked,
+      ...guestUnlocked,
+      ...(serverProgress.unlockedPairs || [])
+    ]));
+    const mergedSeenPairs = Array.from(new Set([
+      ...(localSeen.seenPairs || []),
+      ...(guestSeen.seenPairs || []),
+      ...(serverProgress.seenPairs || [])
+    ]));
+    const mergedCompletedPairs = Array.from(new Set([
+      ...(localSeen.completedPairs || []),
+      ...(guestSeen.completedPairs || []),
+      ...(serverProgress.completedPairs || [])
+    ]));
+
+    // 5. Save merged states back to user localStorage
+    localStorage.setItem(userKeys.completedModules, JSON.stringify(mergedCompletedModules));
+    localStorage.setItem(userKeys.unlocked, JSON.stringify(mergedUnlocked));
+    localStorage.setItem(userKeys.seen, JSON.stringify({
+      seenPairs: mergedSeenPairs,
+      completedPairs: mergedCompletedPairs
+    }));
+    
+    // 6. Clear guest progress since it has now been merged into the account
+    if (guestCompletedModules.length > 0 || guestUnlocked.length > 0 || (guestSeen.seenPairs && guestSeen.seenPairs.length > 0)) {
+      localStorage.removeItem('tenali-completed-modules-guest');
+      localStorage.removeItem('tenali-contrast-unlocked-guest');
+      localStorage.removeItem('tenali-contrast-seen-guest');
+    }
+
+    // 7. Send merged states back to server
+    await fetch(`${API}/contrast-api/progress`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        completedModules: mergedCompletedModules,
+        unlockedPairs: mergedUnlocked,
+        seenPairs: mergedSeenPairs,
+        completedPairs: mergedCompletedPairs
+      })
+    });
+  } catch (err) {
+    console.error('[contrast] Error syncing progress with server:', err);
+  }
 }
 
 // Shuffle array helper
@@ -134,12 +252,56 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
   const [progress, setProgress] = useState(loadProgress());
   const [unlockedPairs, setUnlockedPairs] = useState(() => {
     try {
-      const data = localStorage.getItem('tenali-contrast-unlocked');
+      const keys = getStorageKeys();
+      const data = localStorage.getItem(keys.unlocked);
       return data ? JSON.parse(data) : [];
     } catch {
       return [];
     }
   });
+
+  // On mount, sync progress with server if authenticated
+  useEffect(() => {
+    const token = localStorage.getItem('tenali-auth-token');
+    if (token) {
+      syncContrastProgress(token).then(() => {
+        setProgress(loadProgress());
+        try {
+          const keys = getStorageKeys();
+          const data = localStorage.getItem(keys.unlocked);
+          setUnlockedPairs(data ? JSON.parse(data) : []);
+        } catch {}
+      });
+    }
+  }, []);
+
+  // Listen for login/logout changes to clean up or reset progress local state
+  useEffect(() => {
+    const handleAuthChange = () => {
+      const token = localStorage.getItem('tenali-auth-token');
+      // Reload states from localStorage immediately for the new namespace (guest or logged-in user)
+      setProgress(loadProgress());
+      try {
+        const keys = getStorageKeys();
+        const data = localStorage.getItem(keys.unlocked);
+        setUnlockedPairs(data ? JSON.parse(data) : []);
+      } catch {}
+
+      if (token) {
+        // User logged in: trigger sync
+        syncContrastProgress(token).then(() => {
+          setProgress(loadProgress());
+          try {
+            const keys = getStorageKeys();
+            const data = localStorage.getItem(keys.unlocked);
+            setUnlockedPairs(data ? JSON.parse(data) : []);
+          } catch {}
+        });
+      }
+    };
+    window.addEventListener('tenali-auth-change', handleAuthChange);
+    return () => window.removeEventListener('tenali-auth-change', handleAuthChange);
+  }, []);
 
   // All pairs are hardcoded — no API needed
   const allPairs = CONTRAST_PAIRS;
@@ -157,7 +319,8 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
   useEffect(() => {
     if (phase === 'list') {
       try {
-        const data = localStorage.getItem('tenali-contrast-unlocked');
+        const keys = getStorageKeys();
+        const data = localStorage.getItem(keys.unlocked);
         setUnlockedPairs(data ? JSON.parse(data) : []);
       } catch { }
     }
@@ -184,6 +347,13 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
     };
     setProgress(newProgress);
     saveProgress(newProgress);
+
+    // Sync to server if authenticated
+    const token = localStorage.getItem('tenali-auth-token');
+    if (token) {
+      syncContrastProgress(token);
+    }
+
     setPhase('list');
   };
 
@@ -413,13 +583,14 @@ export function QuizLayoutExtension({ children }) {
       unlockContrastChallengeForMode(currentMode);
 
       try {
-        const completedStr = localStorage.getItem('tenali-completed-modules') || '[]';
+        const keys = getStorageKeys();
+        const completedStr = localStorage.getItem(keys.completedModules) || '[]';
         setCompletedModulesList(JSON.parse(completedStr));
 
-        const unlockedStr = localStorage.getItem('tenali-contrast-unlocked') || '[]';
+        const unlockedStr = localStorage.getItem(keys.unlocked) || '[]';
         setUnlockedList(JSON.parse(unlockedStr));
 
-        const seenStr = localStorage.getItem('tenali-contrast-seen') || '{"seenPairs":[],"completedPairs":[]}';
+        const seenStr = localStorage.getItem(keys.seen) || '{"seenPairs":[],"completedPairs":[]}';
         setCompletedPairsList(JSON.parse(seenStr).completedPairs || []);
       } catch (e) {
         console.error('Error reading localStorage in effect:', e);
@@ -433,11 +604,12 @@ export function QuizLayoutExtension({ children }) {
   const associatedContrasts = Object.entries(CONTRAST_MAPPING)
     .filter(([_, modes]) => modes.includes(currentMode))
     .map(([id, requiredModules]) => {
+      const keys = getStorageKeys();
       const completed = completedModulesList.length > 0
         ? completedModulesList
         : (() => {
           try {
-            return JSON.parse(localStorage.getItem('tenali-completed-modules') || '[]');
+            return JSON.parse(localStorage.getItem(keys.completedModules) || '[]');
           } catch { return []; }
         })();
 
@@ -445,7 +617,7 @@ export function QuizLayoutExtension({ children }) {
         ? unlockedList
         : (() => {
           try {
-            return JSON.parse(localStorage.getItem('tenali-contrast-unlocked') || '[]');
+            return JSON.parse(localStorage.getItem(keys.unlocked) || '[]');
           } catch { return []; }
         })();
 
@@ -453,7 +625,7 @@ export function QuizLayoutExtension({ children }) {
         ? completedPairsList
         : (() => {
           try {
-            const seenStr = localStorage.getItem('tenali-contrast-seen') || '{"seenPairs":[],"completedPairs":[]}';
+            const seenStr = localStorage.getItem(keys.seen) || '{"seenPairs":[],"completedPairs":[]}';
             return JSON.parse(seenStr).completedPairs || [];
           } catch { return []; }
         })();
@@ -690,20 +862,22 @@ function hasFinishedBox(children) {
 
 export function unlockContrastChallengeForMode(mode) {
   try {
+    const keys = getStorageKeys();
     // 1. Load and update completed modules
-    const completedStr = localStorage.getItem('tenali-completed-modules') || '[]';
+    const completedStr = localStorage.getItem(keys.completedModules) || '[]';
     const completed = JSON.parse(completedStr);
+    let updated = false;
     if (!completed.includes(mode)) {
       completed.push(mode);
-      localStorage.setItem('tenali-completed-modules', JSON.stringify(completed));
+      localStorage.setItem(keys.completedModules, JSON.stringify(completed));
+      updated = true;
     }
 
     // 2. Load current unlocked contrast challenges
-    const unlockedStr = localStorage.getItem('tenali-contrast-unlocked') || '[]';
+    const unlockedStr = localStorage.getItem(keys.unlocked) || '[]';
     const unlocked = JSON.parse(unlockedStr);
 
     // 3. Find which contrast challenges can be unlocked now (all required modules must be completed)
-    let updated = false;
     Object.entries(CONTRAST_MAPPING).forEach(([challengeId, requiredModules]) => {
       const allCompleted = requiredModules.every(m => completed.includes(m));
       if (allCompleted && !unlocked.includes(challengeId)) {
@@ -713,7 +887,13 @@ export function unlockContrastChallengeForMode(mode) {
     });
 
     if (updated) {
-      localStorage.setItem('tenali-contrast-unlocked', JSON.stringify(unlocked));
+      localStorage.setItem(keys.unlocked, JSON.stringify(unlocked));
+    }
+
+    // Sync to server if authenticated
+    const token = localStorage.getItem('tenali-auth-token');
+    if (token) {
+      syncContrastProgress(token);
     }
   } catch (e) {
     console.error('Error unlocking contrast challenge:', e);

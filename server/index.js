@@ -8799,6 +8799,11 @@ app.post('/darts-api/check', express.json(), (req, res) => {
 const wordCreatorRouter = require('./routes/wordCreator');
 app.use('/wordcreator-api', wordCreatorRouter);
 
+// CONTRAST CHALLENGE PUZZLE ROUTER (contrast-api)
+// ═══════════════════════════════════════════════════════════════════════════
+const contrastRouter = require('./routes/contrast');
+app.use('/contrast-api', contrastRouter);
+
 // ═══════════════════════════════════════════════════════════════════════════
 // /graph — Prerequisite DAG visualisation
 // ═══════════════════════════════════════════════════════════════════════════

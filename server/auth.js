@@ -47,8 +47,18 @@ const ProgressSchema = new mongoose.Schema({
 // Ensure a user has only one progress document per topic
 ProgressSchema.index({ userId: 1, topic: 1 }, { unique: true });
 
+const ContrastProgressSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true, index: true },
+  completedModules: { type: [String], default: [] },
+  unlockedPairs: { type: [String], default: [] },
+  seenPairs: { type: [String], default: [] },
+  completedPairs: { type: [String], default: [] },
+  updatedAt: { type: Date, default: Date.now }
+});
+
 const User = mongoose.model('User', UserSchema);
 const Progress = mongoose.model('Progress', ProgressSchema);
+const ContrastProgress = mongoose.model('ContrastProgress', ContrastProgressSchema);
 
 // ─── Connection + seeding ────────────────────────────────────────────────────
 
@@ -137,4 +147,4 @@ router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = { connectMongo, seedUsers, router, requireAuth, User, Progress };
+module.exports = { connectMongo, seedUsers, router, requireAuth, User, Progress, ContrastProgress };

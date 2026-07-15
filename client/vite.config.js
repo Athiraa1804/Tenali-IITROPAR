@@ -57,6 +57,8 @@ export default defineConfig({
       '/vocab-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Concept Matching API
       '/concept-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
+      // Contrast challenge API
+      '/contrast-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Polynomial multiplication quiz API
       '/polymul-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Polynomial factoring quiz API

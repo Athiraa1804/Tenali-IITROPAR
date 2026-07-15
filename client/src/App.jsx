@@ -56,6 +56,7 @@ function useProgressSubmit(revealed, isCorrect, topic, questionId) {
     }).catch(err => console.error('Failed to update progress', err));
   }, [revealed, isCorrect, topic, questionId]);
 }
+import Vachana from './vachana'
 import './App.css'
 import InteractiveLcmHcfApp from './LcmHcfApp';
 import IdliVadaSambharApp from './IdliVadaSambharApp';
@@ -71,6 +72,7 @@ import VisualMathLabRedux, {
 import CoordinateGrid from './components/CoordinateGrid';
 import LanguageDashboard from './language/LanguageDashboard'
 import ContrastChallengeApp, { QuizLayoutExtension } from './ContrastChallengeApp'
+import { VOCAB_CORPUS } from './vocabCorpus'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -40417,6 +40419,20 @@ function App() {
     )
   }
 
+  // Route: /vachana → Vachana Mathematical Literacy Lab
+  if (pathname === '/vachana' || pathname.startsWith('/vachana/')) {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <div className="app-shell">
+          <Vachana onBack={() => { window.location.href = '/' }} />
+        </div>
+      </>
+    )
+  }
+
   // Route: /supertables → 10-level progressive multiplication mastery
   if (pathname === '/supertables') {
     return (
@@ -41109,6 +41125,7 @@ function App() {
   // ========== ROUTING: MODE-BASED (HOME MENU + QUIZZES) ==========
   // Map quiz mode keys to their component classes
   const modeMap = {
+    vachana: Vachana,          // Vachana Mathematical Literacy Lab
     linearalgebra: LinearAlgebraApp, // Linear Algebra Module 1
     missionquiz: MissionQuizApp, // Mission-specific Linear Algebra Quiz
     'math-lab': MathLabHubApp,
@@ -41319,9 +41336,13 @@ function App() {
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      <div className={`card ${mode === 'contrastlist' ? 'is-wide' : ''}`}>
-        {renderContent()}
-      </div>
+      {mode === 'vachana' ? (
+        <Vachana onBack={() => setMode(null)} />
+      ) : (
+        <div className={`card ${mode === 'contrastlist' ? 'is-wide' : ''}`}>
+          {renderContent()}
+        </div>
+      )}
     </div>
   )
 }
@@ -41345,6 +41366,7 @@ function Home({ onSelect, isGoalSelection = false, onBack }) {
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
     { key: 'gym', name: 'Gym', subtitle: 'Adaptive workout across all 7 gym puzzles', color: 'featured' },
     { key: 'contrastlist', name: 'Contrast Challenge', subtitle: 'Distinguish similar concepts', color: 'featured' },
+    { key: 'vachana', name: 'Vachana', subtitle: 'Mathematical Literacy Lab', color: 'featured' },
   ]
   // Visual Learning Universe lives only in the hamburger menu
   const mathLabEntry = { key: 'math-lab', name: '🔬 Visual Learning Universe', subtitle: 'Visual, Mensuration & Addition labs', color: 'orange' }
@@ -59984,6 +60006,8 @@ function TatsavitLineApp({ onBack }) {
   )
 }
 
+// The Vachana Literary Lab is now imported from its own directory to avoid bloating App.jsx.
+
 /**
  * QuizLayout Component
  * Wrapper layout for quiz apps (PolyFactorApp, PrimeFactorApp, QFormulaApp, etc.)
@@ -60057,6 +60081,7 @@ export function QuizLayout({ title, subtitle, onBack, children, timer, sessionGo
     }
     return child;
   });
+
   return (
     <>
       <div className="header-row">

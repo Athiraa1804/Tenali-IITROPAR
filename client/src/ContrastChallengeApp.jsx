@@ -1444,21 +1444,14 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
                 AREA (Inside Space)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> Space *inside* a shape (e.g., laying tiles, painting).
+                <strong>Measures:</strong> Space inside a shape (e.g., laying tiles, painting).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Formula:</strong> Length × Width (rectangles).
               </p>
-              <p style={{ margin: '0 0 14px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Units:</strong> Square units (e.g., m², cm²).
               </p>
-
-              <div style={{ borderTop: '1px solid var(--clr-border)', paddingTop: '12px', marginTop: '14px' }}>
-                <span style={{ display: 'block', fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--clr-text-soft)', marginBottom: '4px' }}>Common Mistake</span>
-                <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--clr-wrong)', lineHeight: '1.4' }}>
-                  Adding sides instead of multiplying length × width.
-                </p>
-              </div>
             </div>
 
             {/* Perimeter Card */}
@@ -1477,21 +1470,14 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
                 PERIMETER (Boundary Line)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> Distance *around* a shape (e.g., fencing, borders).
+                <strong>Measures:</strong> Distance around a shape (e.g., fencing, borders).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Formula:</strong> Add all side lengths together.
               </p>
-              <p style={{ margin: '0 0 14px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Units:</strong> Linear units (e.g., m, cm).
               </p>
-
-              <div style={{ borderTop: '1px solid var(--clr-border)', paddingTop: '12px', marginTop: '14px' }}>
-                <span style={{ display: 'block', fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--clr-text-soft)', marginBottom: '4px' }}>Common Mistake</span>
-                <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--clr-wrong)', lineHeight: '1.4' }}>
-                  Multiplying sides instead of adding them up.
-                </p>
-              </div>
             </div>
           </div>
 
@@ -2312,10 +2298,10 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
                 RADIUS
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Span:</strong> Starts at center, ends on boundary ($r$).
+                <strong>Span:</strong> Starts at center, ends on boundary (r).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Relation:</strong> Half of diameter ($r = d / 2$).
+                <strong>Relation:</strong> Half of diameter (r = d / 2).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Visuals:</strong> Spokes of a wheel, hands on a clock.
@@ -2335,31 +2321,15 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
                 DIAMETER
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Span:</strong> Corner to corner, passing through center ($d$).
+                <strong>Span:</strong> Corner to corner, passing through center (d).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Relation:</strong> Twice the radius ($d = 2r$).
+                <strong>Relation:</strong> Twice the radius (d = 2 × r).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Visuals:</strong> Slicing a pizza in half.
               </p>
             </div>
-          </div>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Mistake
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Thinking any line crossing a circle is a diameter. **It must pass through the center.** Otherwise, it's just a chord.
-            </p>
           </div>
 
           <div style={{
@@ -3082,16 +3052,10 @@ function HcfLcmChallenge({ onBack, onComplete }) {
                 HCF (Highest Common Factor)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What it is:</strong> The largest number that divides into both values without remainder.
+                <strong>Concept:</strong> The largest number that divides into both values.
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Best used for:</strong> <strong>Dividing</strong> or splitting things into equal groups.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Clue Words:</strong> Largest, greatest, maximum, split evenly, identical kits.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong> Cutting lengths of rope into equal pieces, organizing fruit into boxes.
+                <strong>Use Case:</strong> Dividing or splitting things into equal groups.
               </p>
             </div>
 
@@ -3109,35 +3073,12 @@ function HcfLcmChallenge({ onBack, onComplete }) {
                 LCM (Least Common Multiple)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What it is:</strong> The smallest number that is a common multiple of both values.
+                <strong>Concept:</strong> The smallest number that both values divide into.
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Best used for:</strong> <strong>Synchronizing</strong> repeating events that happen over time.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Clue Words:</strong> Smallest, least, minimum, repeat, together next time, synchronize.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong> Traffic lights flashing together, alarms ringing, runners meeting at a start line.
+                <strong>Use Case:</strong> Synchronizing repeating events.
               </p>
             </div>
-          </div>
-
-          {/* Common Mistake Alert */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Mistake
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often rush to calculate the LCM whenever they see two numbers in a word problem. Remember: stop and ask <strong>"Am I dividing something into groups, or waiting for repeating events to meet together?"</strong>
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -3840,16 +3781,10 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
                 FACTORS
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What they do:</strong> Divide the number exactly with no leftovers or remainders.
+                <strong>Concept:</strong> Numbers that divide a target number exactly (smaller or equal).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Quantity:</strong> Limited in number (finite).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Size:</strong> Smaller than or equal to the number (usually smaller, max is the number itself).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Direction:</strong> Go <strong>INTO</strong> the target number.
+                <strong>Example:</strong> Factors of 6 are 1, 2, 3, and 6.
               </p>
             </div>
 
@@ -3867,41 +3802,12 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
                 MULTIPLES
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What they are:</strong> Obtained by multiplying the target number by a whole number.
+                <strong>Concept:</strong> Numbers obtained by multiplying a target number (equal or larger).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Quantity:</strong> Unlimited (continue forever).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Size:</strong> Equal to or greater than the number (starts at the number itself).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Direction:</strong> Come <strong>OUT</strong> of the target number.
+                <strong>Example:</strong> Multiples of 6 are 6, 12, 18, 24...
               </p>
             </div>
-          </div>
-
-          {/* Common Mistake Card */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Mistake
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often reverse the factor vs multiple relationships.
-              <br /><br />
-              ⬢ <strong>12 is a multiple of 3</strong> (because 3 × 4 = 12) ✓
-              <br />
-              ⬢ <strong>3 is a factor of 12</strong> (because 12 ÷ 3 = 4 exactly) ✓
-              <br /><br />
-              But <strong>12 is NOT a factor of 3</strong> (because 3 ÷ 12 does not divide into a whole number) ✓
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -4707,34 +4613,17 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  CONGRUENT
-                </h3>
-                <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Constraint:</strong> Same shape AND same size.
-                </p>
-                <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Verification:</strong> Overlap perfectly without resizing.
-                </p>
-              </div>
-
-              <div style={{
-                background: 'rgba(92, 184, 122, 0.1)',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                borderLeft: '4px solid var(--clr-correct)',
-                marginTop: '16px',
-                fontSize: '0.95rem',
-                lineHeight: '1.4'
-              }}>
-                <strong>Key Rule:</strong> Congruent figures are always similar.
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                CONGRUENT
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Identical shape AND identical size.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Test:</strong> Fits perfectly on top of each other.
+              </p>
             </div>
 
             <div style={{
@@ -4744,52 +4633,18 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
-                  SIMILAR
-                </h3>
-                <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Constraint:</strong> Same shape, but size can differ.
-                </p>
-                <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Verification:</strong> Proportional sides, equal angles.
-                </p>
-              </div>
-
-              <div style={{
-                background: 'rgba(235, 94, 85, 0.08)',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                borderLeft: '4px solid var(--clr-wrong)',
-                marginTop: '16px',
-                fontSize: '0.95rem',
-                lineHeight: '1.4'
-              }}>
-                <strong>Key Rule:</strong> Similar figures are not always congruent.
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
+                SIMILAR
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Identical shape, but size can differ.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Test:</strong> Proportional side ratios and equal angles.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Congruent shapes are **always** similar (scale factor = 1). Similarity doesn't mean the sizes *must* be different.
-            </p>
           </div>
 
           {/* Decision Rule - Flowchart Cards */}
@@ -5558,40 +5413,24 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  MATRIX
-                </h3>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                MATRIX
+              </h3>
 
-                <div style={{ display: 'flex', justifyContent: 'center', margin: '14px 0' }}>
-                  <div className="matrix-bracket">
-                    2 &nbsp; 3<br />1 &nbsp; 4
-                  </div>
+              <div style={{ display: 'flex', justifyContent: 'center', margin: '14px 0' }}>
+                <div className="matrix-bracket">
+                  2 &nbsp; 3<br />1 &nbsp; 4
                 </div>
-
-                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.98rem', lineHeight: '1.6' }}>
-                  <li>Arrangement of numbers in rows and columns.</li>
-                  <li>Can be square ($2 \times 2$) or rectangular ($3 \times 2$).</li>
-                  <li>Written inside square brackets $[ ]$ or parentheses $( )$.</li>
-                </ul>
               </div>
 
-              <div style={{
-                background: 'rgba(232, 134, 74, 0.08)',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                borderLeft: '4px solid var(--clr-accent)',
-                marginTop: '16px',
-                fontSize: '0.95rem',
-                lineHeight: '1.4'
-              }}>
-                <strong>Key Rule:</strong> A matrix is a grid; it has no single value.
-              </div>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Grid of numbers arranged in rows and columns.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Format:</strong> Written inside brackets [ ] or parentheses ( ).
+              </p>
             </div>
 
             {/* Determinant Card */}
@@ -5602,60 +5441,27 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  DETERMINANT
-                </h3>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                DETERMINANT
+              </h3>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', margin: '14px 0' }}>
-                  <div className="determinant-bars">
-                    2 &nbsp; 3<br />1 &nbsp; 4
-                  </div>
-                  <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>→</span>
-                  <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--clr-correct)' }}>5</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', margin: '14px 0' }}>
+                <div className="determinant-bars">
+                  2 &nbsp; 3<br />1 &nbsp; 4
                 </div>
-
-                <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.98rem', lineHeight: '1.6' }}>
-                  <li>A single scalar value calculated from a matrix.</li>
-                  <li>Exists only for square matrices.</li>
-                  <li>Written inside straight vertical bars $| |$.</li>
-                </ul>
+                <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>→</span>
+                <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--clr-correct)' }}>5</span>
               </div>
 
-              <div style={{
-                background: 'rgba(92, 184, 122, 0.1)',
-                padding: '8px 12px',
-                borderRadius: '6px',
-                borderLeft: '4px solid var(--clr-correct)',
-                marginTop: '16px',
-                fontSize: '0.95rem',
-                lineHeight: '1.4'
-              }}>
-                <strong>Key Rule:</strong> Only square matrices have determinants.
-              </div>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> A single value calculated from a square matrix.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Format:</strong> Written inside straight vertical bars | |.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              A determinant is not a matrix. It is a single calculated number.
-            </p>
           </div>
 
           {/* Decision Rule Flowchart Cards */}
@@ -6382,21 +6188,17 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 260px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  MEAN
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>Mathematical average (Sum / Count).</li>
-                  <li>Uses every data point.</li>
-                  <li>Easily skewed by extreme values (outliers).</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                MEAN
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Mathematical average (Sum / Count).
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Properties:</strong> Uses every value; easily skewed by outliers.
+              </p>
             </div>
 
             {/* Median Card */}
@@ -6407,21 +6209,17 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 260px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  MEDIAN
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>Exact middle value when sorted.</li>
-                  <li>Based on order/position only.</li>
-                  <li>Highly stable against outliers.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                MEDIAN
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Exact middle value of a sorted list.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Properties:</strong> Based on position; highly stable against outliers.
+              </p>
             </div>
 
             {/* Mode Card */}
@@ -6432,39 +6230,18 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 260px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
-                  MODE
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>Most frequent value(s).</li>
-                  <li>Depends entirely on occurrences.</li>
-                  <li>Works for non-numerical categories.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
+                MODE
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> The most frequent value(s) in a dataset.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Properties:</strong> Depends entirely on occurrences; can be non-numerical.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              The Mean is not always the best average. Outliers skew it easily, where the Median remains far more stable and representative.
-            </p>
           </div>
 
           {/* Decision Rule Flowchart Cards */}
@@ -7248,21 +7025,17 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  🔍 LIMITS
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Value a function approaches near a target input.</li>
-                  <li>Ignores the value exactly at the point.</li>
-                  <li>Inquiry: "Where is this curve heading?"</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                🔍 LIMITS
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> The height value a function approaches near a target input.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Question:</strong> Where is this curve heading?
+              </p>
             </div>
 
             {/* Differentiation Card */}
@@ -7273,39 +7046,18 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  📐 DIFFERENTIATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Rate of change / tangent slope of a curve.</li>
-                  <li>Focuses exactly at a specific point.</li>
-                  <li>Inquiry: "How fast is this curve changing?"</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                📐 DIFFERENTIATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> The exact rate of change or tangent slope at a specific point.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Question:</strong> How fast is this curve changing?
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              A Limit finds the curve's target height destination. A Derivative calculates the slope (steepness) at that height.
-            </p>
           </div>
 
           {/* Decision Rule Flowchart Cards */}
@@ -7985,21 +7737,17 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  📐 DIFFERENTIATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Rate of change / tangent slope of a curve.</li>
-                  <li>Focuses exactly at a specific point.</li>
-                  <li>Tells us "how fast" a quantity is changing.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                📐 DIFFERENTIATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Rate of change / tangent slope of a curve.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Measures:</strong> How fast a quantity is changing at a specific instant.
+              </p>
             </div>
 
             {/* Integration Card */}
@@ -8010,39 +7758,18 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  ∫ INTEGRATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Accumulated quantity / area under curve.</li>
-                  <li>Focuses on behavior accumulated over an interval.</li>
-                  <li>Tells us "how much" total sum has accumulated.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                ∫ INTEGRATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Accumulated quantity / area under a curve.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Measures:</strong> How much total quantity has accumulated over an interval.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              They are opposite properties: Differentiation is local (rate at one instant); Integration is cumulative (total sum over a period).
-            </p>
           </div>
 
           {/* Decision Rule Flowchart Cards */}
@@ -8838,21 +8565,17 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  FRACTIONS
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Numerator / denominator notation (e.g., $3/4$).</li>
-                  <li>Focuses on parts-of-a-whole segmentations.</li>
-                  <li>Exact for division (e.g. $1/3$ doesn't repeat infinitely).</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                FRACTIONS
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Numerator/denominator format (e.g., 3/4).
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Best for:</strong> Parts-of-a-whole segmentations and exact dividing values.
+              </p>
             </div>
 
             {/* Decimals Card */}
@@ -8863,21 +8586,17 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  DECIMALS
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Place value notation (e.g., $0.75$).</li>
-                  <li>Focuses on base-10 metrics (money, measurements).</li>
-                  <li>Easier to compute, compare, and code.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                DECIMALS
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Place value base-10 notation (e.g., 0.75).
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Best for:</strong> Money, measurements, comparing values quickly, and coding.
+              </p>
             </div>
           </div>
 
@@ -8909,23 +8628,6 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               <strong style={{ display: 'block', marginBottom: '8px' }}>Decimal Representation</strong>
               <div style={{ fontSize: '1.8rem', fontWeight: 'bold', color: 'var(--clr-correct)' }}>0.75</div>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Fractions and decimals are not different numbers; they are just different representations of the same quantity.
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -9568,21 +9270,17 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  PERMUTATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Order matters</strong>—swapping elements creates a new outcome.</li>
-                  <li>Focuses on arrangements, sequences, or rankings.</li>
-                  <li>Example: Gold, Silver, and Bronze medal positions.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                PERMUTATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Order matters. Changing the order of items creates a new outcome.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Gold, Silver, and Bronze medal positions.
+              </p>
             </div>
 
             {/* Combination Card */}
@@ -9593,39 +9291,18 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  COMBINATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Order does NOT matter</strong>—swapping yields the same outcome.</li>
-                  <li>Focuses on selections, groups, or ingredient mixes.</li>
-                  <li>Example: Selecting pizza toppings.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                COMBINATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Order does NOT matter. Changing the order of items yields the same outcome.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Selecting a group of joint members or pizza toppings.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Swapping order matters if roles are ranked (Permutation, e.g. Captain and Vice-Captain), but not if they are joint members of a group (Combination).
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -10374,21 +10051,17 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  🔑 PRIME
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>Exactly **two factors** (1 and itself).</li>
-                  <li>Cannot be grouped into smaller equal sizes.</li>
-                  <li>Examples: 2, 3, 5, 7, 11, 13.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                🔑 PRIME
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Exactly two distinct factors (1 and itself).
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Examples:</strong> 2, 3, 5, 7, 11, 13.
+              </p>
             </div>
 
             {/* Composite Card */}
@@ -10399,21 +10072,17 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  🔢 COMPOSITE
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>More than **two factors**.</li>
-                  <li>Can be split into multiple equal grid layouts.</li>
-                  <li>Examples: 4, 6, 8, 9, 10, 12.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                🔢 COMPOSITE
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> More than two factors.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Examples:</strong> 4, 6, 8, 9, 10, 12.
+              </p>
             </div>
 
             {/* Neither Card */}
@@ -10424,39 +10093,18 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-text-soft)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-text-soft)' }}>
-                  ⭐ NEITHER
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>Exactly **one factor** (1).</li>
-                  <li>Does not meet Prime (needs 2) or Composite (needs &gt;2) requirements.</li>
-                  <li>Example: 1.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-text-soft)' }}>
+                ⭐ NEITHER
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Exactly one factor (1).
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> 1 (not prime and not composite).
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              1 is not prime. Prime numbers must have **exactly two distinct factors**. 1 only has itself.
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -10999,21 +10647,17 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  📐 TRIGONOMETRY
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Angle is known; side length or ratio is missing.</li>
-                  <li>Input: angle (e.g., $30^\circ$). Output: ratio (e.g., $1/2$).</li>
-                  <li>Example: $\sin(30^\circ) = 1/2$.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                📐 TRIGONOMETRY
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Finding a missing side length when the angle is known.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Formula:</strong> Input is an angle, output is a ratio (e.g., sin(30°) = 1/2).
+              </p>
             </div>
 
             {/* Inverse Trigonometry Card */}
@@ -11024,39 +10668,18 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  📐 INVERSE TRIGONOMETRY
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Ratio is known; angle is missing.</li>
-                  <li>Input: ratio (e.g., $1/2$). Output: angle (e.g., $30^\circ$).</li>
-                  <li>Example: $\sin^{-1}(1/2) = 30^\circ$.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                📐 INVERSE TRIGONOMETRY
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Finding a missing angle when side lengths or ratios are known.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Formula:</strong> Input is a ratio, output is an angle (e.g., sin⁻¹(1/2) = 30°).
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              $\sin^{-1}(x)$ is the inverse function ("the angle whose sine is $x$"), NOT the reciprocal $1 / \sin(x)$ (which is $\csc(x)$).
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -11584,21 +11207,17 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  = LINEAR EQUATION
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>One equation representing a single straight line.</li>
-                  <li>Has infinite solutions (every point on the line).</li>
-                  <li>Example: $2x + y = 6$.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                LINEAR EQUATION
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> A single equation representing one straight line.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Solutions:</strong> Infinite solutions (every point on the line is a solution, e.g., 2x + y = 6).
+              </p>
             </div>
 
             {/* Simultaneous Card */}
@@ -11609,39 +11228,18 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  = SIMULTANEOUS EQUATIONS
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Two or more equations solved together.</li>
-                  <li>Finds the single common solution where lines intersect.</li>
-                  <li>Example: $2x + y = 6$ and $x - y = 3$.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                SIMULTANEOUS EQUATIONS
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> Two or more equations solved together to find a common point.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Solutions:</strong> A single solution where the lines intersect (e.g., 2x + y = 6 and x - y = 3).
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Multiple linear equations solved simultaneously represent a coordinated system, yielding a single common coordinate point rather than infinite lines.
-            </p>
           </div>
 
           {/* Decision Rule */}
@@ -12127,21 +11725,17 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  INTERIOR ANGLE
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Formed inside the boundaries of the polygon.</li>
-                  <li>Sits between two adjacent sides.</li>
-                  <li>Example: Inner corners of a square ($90^\circ$).</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+                INTERIOR ANGLE
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> An angle formed inside the boundaries of a polygon between two adjacent sides.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Inner corners of a square (90°).
+              </p>
             </div>
 
             {/* Exterior Card */}
@@ -12152,39 +11746,18 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between'
+              boxShadow: 'var(--shadow-btn)'
             }}>
-              <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                  EXTERIOR ANGLE
-                </h3>
-                <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Formed outside the polygon boundaries.</li>
-                  <li>Sits between one side and the extension of the adjacent side.</li>
-                  <li>Forms a straight $180^\circ$ line with the interior angle.</li>
-                </ul>
-              </div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+                EXTERIOR ANGLE
+              </h3>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Concept:</strong> An angle formed outside the polygon boundaries between one side and the extension of the adjacent side.
+              </p>
+              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Relation:</strong> Forms a straight 180° line with the adjacent interior angle.
+              </p>
             </div>
-          </div>
-
-          {/* Common Misconception */}
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            borderLeft: '6px solid var(--clr-wrong)',
-            boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
-          }}>
-            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-wrong)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
-              Common Misconception
-            </h4>
-            <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Not any angle outside a polygon is an exterior angle. It must specifically form a straight $180^\circ$ line with the interior angle.
-            </p>
           </div>
 
           {/* Decision Rule */}

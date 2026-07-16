@@ -41322,10 +41322,12 @@ function App() {
 
   return (
     <div className="app-shell">
-      {showTour && <OnboardingTour onFinish={() => { localStorage.setItem('tenali_tour_seen', 'true'); setShowTour(false) }} mode={mode} />}
-      <button className="guide-toggle" onClick={() => setShowTour(true)} title="Take a Tour">
-        🧭 Guide
-      </button>
+      {mode === null && showTour && <OnboardingTour onFinish={() => { localStorage.setItem('tenali_tour_seen', 'true'); setShowTour(false) }} mode={mode} />}
+      {mode === null && (
+        <button className="guide-toggle" onClick={() => setShowTour(true)} title="Take a Tour">
+          🧭 Guide
+        </button>
+      )}
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>

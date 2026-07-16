@@ -374,7 +374,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
                     </span>
                   ) : (
                     <span style={{ color: 'var(--clr-accent)', fontWeight: '500' }}>
-                      Available
+                      Start
                     </span>
                   )}
                 </span>
@@ -668,7 +668,7 @@ export function QuizLayoutExtension({ children }) {
                     alignItems: 'center',
                     gap: '4px'
                   }}>
-                    {isCompleted ? <><CheckIcon /> Completed</> : 'Available'}
+                    {isCompleted ? <><CheckIcon /> Done</> : 'Start'}
                   </span>
                 </div>
                 <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--clr-text)', fontWeight: '600' }}>

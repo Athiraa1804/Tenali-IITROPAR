@@ -353,21 +353,17 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
 
         <div className="menu-grid">
           {allPairs.filter(pair => CONTRAST_MAPPING[pair.id]).map(pair => {
-            const isUnlocked = unlockedPairs.includes(pair.id);
             const isCompleted = progress.completedPairs.includes(pair.id);
-            const reqModules = CONTRAST_MAPPING[pair.id] || [];
-            const reqNames = reqModules.map(m => MODULE_NAMES[m] || m).join(' & ');
 
             return (
               <button
                 key={pair.id}
-                className={`menu-card ${isUnlocked ? 'featured' : 'placeholder'}`}
-                onClick={() => isUnlocked && fetchPairById(pair.id)}
-                disabled={!isUnlocked}
+                className="menu-card featured"
+                onClick={() => fetchPairById(pair.id)}
                 style={{
                   position: 'relative',
-                  cursor: isUnlocked ? 'pointer' : 'not-allowed',
-                  opacity: isUnlocked ? 1 : 0.6
+                  cursor: 'pointer',
+                  opacity: 1
                 }}
               >
                 <span className="menu-title" style={{ width: '100%' }}>{pair.title}</span>
@@ -375,10 +371,6 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
                   {isCompleted ? (
                     <span style={{ color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                       <CheckIcon /> Done
-                    </span>
-                  ) : !isUnlocked ? (
-                    <span style={{ color: 'var(--clr-text-soft)' }}>
-                      <LockIcon /> Requires: {reqNames}
                     </span>
                   ) : (
                     <span style={{ color: 'var(--clr-accent)', fontWeight: '500' }}>
@@ -587,24 +579,8 @@ export function QuizLayoutExtension({ children }) {
   // Get all associated contrast challenges for the current mode
   const associatedContrasts = Object.entries(CONTRAST_MAPPING)
     .filter(([_, modes]) => modes.includes(currentMode))
-    .map(([id, requiredModules]) => {
+    .map(([id]) => {
       const keys = getStorageKeys();
-      const completed = completedModulesList.length > 0
-        ? completedModulesList
-        : (() => {
-          try {
-            return JSON.parse(localStorage.getItem(keys.completedModules) || '[]');
-          } catch { return []; }
-        })();
-
-      const unlocked = unlockedList.length > 0
-        ? unlockedList
-        : (() => {
-          try {
-            return JSON.parse(localStorage.getItem(keys.unlocked) || '[]');
-          } catch { return []; }
-        })();
-
       const completedPairs = completedPairsList.length > 0
         ? completedPairsList
         : (() => {
@@ -614,32 +590,16 @@ export function QuizLayoutExtension({ children }) {
           } catch { return []; }
         })();
 
-      const isUnlocked = requiredModules.every(m => completed.includes(m)) || unlocked.includes(id);
       const isCompleted = completedPairs.includes(id);
-      const pendingModules = isUnlocked ? [] : requiredModules.filter(m => !completed.includes(m));
 
       return {
         id,
         title: CHALLENGE_TITLES[id] || id,
-        isUnlocked,
-        isCompleted,
-        pendingModules,
-        requiredModules
+        isCompleted
       };
     });
 
   if (associatedContrasts.length === 0) return null;
-
-  // Sort challenges: active (unlocked, incomplete) first, then completed, then locked
-  associatedContrasts.sort((a, b) => {
-    if (a.isUnlocked && !b.isUnlocked) return -1;
-    if (!a.isUnlocked && b.isUnlocked) return 1;
-    if (a.isUnlocked && b.isUnlocked) {
-      if (a.isCompleted && !b.isCompleted) return 1;
-      if (!a.isCompleted && b.isCompleted) return -1;
-    }
-    return 0;
-  });
 
   return (
     <div style={{
@@ -665,51 +625,7 @@ export function QuizLayoutExtension({ children }) {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
         {associatedContrasts.map(challenge => {
-          const { id, title, isUnlocked, isCompleted, pendingModules } = challenge;
-
-          if (!isUnlocked) {
-            const pendingNames = pendingModules.map(m => MODULE_NAMES[m] || m).join(' & ');
-            return (
-              <div
-                key={id}
-                style={{
-                  padding: '16px',
-                  borderRadius: '8px',
-                  background: 'rgba(0, 0, 0, 0.02)',
-                  border: '1px dashed var(--clr-border)',
-                  color: 'var(--clr-text-soft)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
-                  opacity: 0.8
-                }}
-              >
-                <div>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                    <span style={{
-                      fontSize: '0.75rem',
-                      fontWeight: '600',
-                      padding: '2px 6px',
-                      borderRadius: '4px',
-                      background: 'rgba(0, 0, 0, 0.05)',
-                      color: 'var(--clr-text-soft)',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px'
-                    }}>
-                      <LockIcon /> Locked
-                    </span>
-                  </div>
-                  <h4 style={{ margin: '0 0 6px 0', fontSize: '1rem', color: 'var(--clr-text-soft)', fontWeight: '600' }}>
-                    {title}
-                  </h4>
-                  <p style={{ margin: 0, fontSize: '0.8rem', lineHeight: '1.4' }}>
-                    Requires: {pendingNames ? `Complete ${pendingNames}` : 'Prerequisites not met'}
-                  </p>
-                </div>
-              </div>
-            );
-          }
+          const { id, title, isCompleted } = challenge;
 
           return (
             <div

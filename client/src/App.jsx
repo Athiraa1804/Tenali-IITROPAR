@@ -79,6 +79,36 @@ import { VOCAB_CORPUS } from './vocabCorpus'
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
 
+// Global fetch interceptor to automatically attach authorization header
+const originalFetch = window.fetch;
+window.fetch = function (url, options) {
+  try {
+    const token = localStorage.getItem('tenali-auth-token');
+    const urlStr = typeof url === 'string' ? url : (url && url.url ? url.url : '');
+    if (token && urlStr && (urlStr.includes('/api/') || urlStr.includes('-api/') || urlStr.includes('/gk-api/'))) {
+      options = options || {};
+      if (!options.headers) {
+        options.headers = {};
+      }
+      if (typeof Headers !== 'undefined' && options.headers instanceof Headers) {
+        if (!options.headers.has('Authorization')) {
+          options.headers.append('Authorization', `Bearer ${token}`);
+        }
+      } else {
+        if (!options.headers['Authorization'] && !options.headers['authorization']) {
+          options.headers['Authorization'] = `Bearer ${token}`;
+        }
+      }
+    }
+  } catch (e) {
+    console.error('Fetch interceptor error:', e);
+  }
+  return originalFetch(url, options);
+};
+
+// App version — increment with each commit
+const TENALI_VERSION = '1.0.86'
+const TENALI_BUILD_DATE = '2026-05-03 18:28 IST'
 // ─── Auth helpers ───────────────────────────────────────────────────────────
 // Tiny pub/sub on top of localStorage so AuthMenu and AuthGate stay in sync.
 const AUTH_TOKEN_KEY = 'tenali-auth-token'
@@ -201,6 +231,27 @@ function AuthMenu() {
                 <div style={{ padding: '8px 12px', fontSize: '0.85rem', opacity: 0.75 }}>
                   Signed in as <strong>{user.username}</strong>
                 </div>
+                <hr style={{ border: 'none', borderTop: '1px solid var(--clr-border, #444)', margin: '4px 0' }} />
+                <button
+                  type="button"
+                  onClick={() => { window.location.href = '/'; setOpen(false) }}
+                  style={{ width: '100%', textAlign: 'left', padding: '8px 12px', borderRadius: 6, background: 'transparent', border: 'none', color: 'var(--clr-text)', cursor: 'pointer', fontSize: '0.95rem' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  Puzzles
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => { window.location.href = '/profile'; setOpen(false) }}
+                  style={{ width: '100%', textAlign: 'left', padding: '8px 12px', borderRadius: 6, background: 'transparent', border: 'none', color: 'var(--clr-text)', cursor: 'pointer', fontSize: '0.95rem' }}
+                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
+                >
+                  Profile
+                </button>
+                <hr style={{ border: 'none', borderTop: '1px solid var(--clr-border, #444)', margin: '4px 0' }} />
                 <button
                   type="button"
                   onClick={() => { logout(); setOpen(false) }}
@@ -289,7 +340,7 @@ function AuthGate({ children }) {
   if (user) return children
   return (
     <div style={{ maxWidth: 520, margin: '4rem auto', padding: '2rem', textAlign: 'center', color: 'var(--clr-text)' }}>
-      <h1 style={{ marginBottom: 8 }}>🔒 Login required</h1>
+      <h1 style={{ marginBottom: 8 }}>Login required</h1>
       <p style={{ opacity: 0.85, lineHeight: 1.6 }}>
         This page is only available to signed-in users. Open the <strong>menu</strong> in the top-right corner and choose <strong>Log in</strong>.
       </p>
@@ -432,6 +483,19 @@ export function useTimer() {
  * @returns {ReactElement|null} Table element or null if no results
  */
 function ResultsTable({ results }) {
+  const processedRef = useRef(false);
+  useEffect(() => {
+    if (processedRef.current) return;
+    if (results && results.length > 0) {
+      processedRef.current = true;
+      const correctCount = results.filter(r => r.correct).length;
+      if (correctCount > 0 && typeof window.tenaliIncrementSolved === 'function') {
+        window.tenaliIncrementSolved(correctCount);
+      }
+    }
+  }, [results]);
+
+  // Hide table if empty or null
   if (!results || results.length === 0) return null
   const totalTime = results.reduce((sum, r) => sum + r.time, 0)
   const avgTime = (totalTime / results.length).toFixed(1)
@@ -9177,7 +9241,514 @@ const Bridge27App = makeBridgeApp({
   nextHref: '/chapter5', nextLabel: 'On to Lesson 17',
 })
 
-function Chapter5App({ onBack }) { return null; }
+function Chapter5App({ onBack }) {
+  const [progress, setProgress] = useState(ch5_loadProgress)
+  const [activeId, setActiveId] = useState(null)
+  const [phase, setPhase] = useState('teach')
+  const [qIdx, setQIdx] = useState(0)
+  // playList is the dynamic sequence of source-question indices the student
+  // is walking through. Initially [0..N-1]; grows when wrong answers re-queue.
+  const [playList, setPlayList] = useState([])
+  // Source idx of the most recent wrong answer (or null) — drives the retry
+  // splice that happens at advance() time.
+  const [lastWrongSrc, setLastWrongSrc] = useState(null)
+  const [selectedIdx, setSelectedIdx] = useState(null)  // chosen MCQ option (display index)
+  const [fillInput, setFillInput] = useState('')
+  const [revealed, setRevealed] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [autoCountdown, setAutoCountdown] = useState(0)  // seconds remaining before auto-advance
+  const inputRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const advanceRef = useRef(() => { })
+
+  const lesson = activeId ? CH5_LESSONS.find(l => l.id === activeId) : null
+  const currentSourceIdx = playList[qIdx]
+  const currentQ = lesson && currentSourceIdx != null ? lesson.questions[currentSourceIdx] : null
+  // True if this question has appeared earlier in the play sequence — i.e.
+  // it's a re-attempt after a previous wrong answer. Drives the retry badge.
+  const isRetry = useMemo(() => {
+    if (currentSourceIdx == null) return false
+    return playList.slice(0, qIdx).includes(currentSourceIdx)
+  }, [playList, qIdx, currentSourceIdx])
+
+  // Compute display order for MCQ options (stable per question; different on
+  // a retry so the student can't memorise positions).
+  const optionOrder = useMemo(() => {
+    if (!currentQ || currentQ.kind !== 'mcq') return []
+    return ch5_seededShuffle(currentQ.options.length, `${activeId}-${qIdx}-${currentSourceIdx}-${currentQ.prompt}`)
+  }, [activeId, qIdx, currentSourceIdx, currentQ])
+  const correctDisplayIdx = useMemo(() => optionOrder.indexOf(currentQ?.correct ?? -1), [optionOrder, currentQ])
+
+  useEffect(() => { ch5_saveProgress(progress) }, [progress])
+
+  useEffect(() => {
+    if (phase !== 'practice' || revealed) return
+    if (currentQ?.kind?.startsWith('fill') && inputRef.current) inputRef.current.focus()
+  }, [phase, qIdx, revealed, currentQ])
+
+  const startLesson = (id) => {
+    setActiveId(id)
+    const lessonRef = CH5_LESSONS.find(l => l.id === id)
+    const initial = Array.from({ length: lessonRef.questions.length }, (_, i) => i)
+    setPlayList(initial)
+    setLastWrongSrc(null)
+    const p = progress[id] || {}
+    if (p.teachSeen) { setPhase('practice'); setQIdx(p.qIdx || 0) }
+    else { setPhase('teach'); setQIdx(0) }
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const acknowledgeTeach = () => {
+    setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: 0 } }))
+    setPhase('practice'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setLastWrongSrc(null)
+  }
+
+  const submitFill = () => {
+    if (!currentQ) return
+    if (revealed) { advance(); return }
+    const ok = ch5_checkFill(currentQ, fillInput)
+    setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const pickMcq = (displayIdx) => {
+    if (!currentQ || revealed || currentQ.kind !== 'mcq') return
+    const optSourceIdx = optionOrder[displayIdx]
+    const ok = optSourceIdx === currentQ.correct
+    setSelectedIdx(displayIdx); setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  // Cancel any pending auto-advance timer (called whenever we leave the
+  // current revealed state for any reason — manual advance, navigation, etc.)
+  const cancelAutoAdvance = () => {
+    if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null }
+    setAutoCountdown(0)
+  }
+
+  const advance = () => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    // If the just-finished question was wrong, append it to the end of
+    // the play list so the student must come back to it before finishing.
+    let workingList = playList
+    if (lastWrongSrc != null) {
+      // Wrong answers go to the END of the lesson — student finishes all
+      // fresh questions first, then meets the retry cluster at the tail.
+      workingList = [...playList, lastWrongSrc]
+      setPlayList(workingList)
+      setLastWrongSrc(null)
+    }
+    const next = qIdx + 1
+    if (next >= workingList.length) {
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: lesson.questions.length, completed: true } }))
+      setPhase('done')
+    } else {
+      setQIdx(next)
+      setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: Math.min(lesson.questions.length, next) } }))
+    }
+  }
+  advanceRef.current = advance
+
+  // Jump straight to position `i` (0-indexed) in the current playList. Used
+  // by the slider so the student can skip ahead or revisit an earlier item.
+  const jumpToQuestion = (i) => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    const clamped = Math.max(0, Math.min(playList.length - 1, i))
+    setQIdx(clamped); setLastWrongSrc(null)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setProgress(p => {
+      const cur = p[activeId] || {}
+      const saved = Math.max(cur.qIdx || 0, Math.min(lesson.questions.length, clamped))
+      return { ...p, [activeId]: { ...cur, teachSeen: true, qIdx: saved } }
+    })
+  }
+
+  const backToOverview = () => {
+    cancelAutoAdvance()
+    setActiveId(null); setPhase('teach'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const resetAll = () => {
+    if (!confirm('Reset all Chapter 5 progress?')) return
+    setProgress({}); ch5_saveProgress({})
+    backToOverview()
+  }
+
+  // Auto-advance: once the answer is revealed, count down from 5s and call
+  // advance() if the user does nothing. Any keystroke or click cancels.
+  useEffect(() => {
+    if (phase !== 'practice' || !revealed) { cancelAutoAdvance(); return }
+    const total = Math.round(CH5_AUTO_ADVANCE_MS / 1000)
+    setAutoCountdown(total)
+    autoTimerRef.current = setInterval(() => {
+      setAutoCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(autoTimerRef.current); autoTimerRef.current = null
+          advanceRef.current()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null } }
+  }, [phase, revealed, qIdx, activeId])
+
+  // Keyboard: 1..9 picks an MCQ option; Enter submits a fill or advances on reveal
+  useEffect(() => {
+    if (phase !== 'practice' || !currentQ) return
+    const onKey = (e) => {
+      if (revealed) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance() }
+        return
+      }
+      if (currentQ.kind === 'mcq') {
+        const k = e.key
+        if (/^[1-9]$/.test(k)) {
+          const i = parseInt(k, 10) - 1
+          if (i < currentQ.options.length) { e.preventDefault(); pickMcq(i) }
+        }
+      } else if (currentQ.kind?.startsWith('fill')) {
+        if (e.key === 'Enter') { e.preventDefault(); submitFill() }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, qIdx, revealed, currentQ, fillInput, optionOrder])
+
+  // ────────── Overview ──────────
+  if (!activeId) {
+    const total = CH5_LESSONS.length
+    const done = CH5_LESSONS.filter(l => progress[l.id]?.completed).length
+    return (
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+          <button className="back-button" onClick={onBack}>← Home</button>
+          <button className="back-button" style={{ marginLeft: 'auto' }} onClick={resetAll}>Reset progress</button>
+        </div>
+        <h1 style={{ marginBottom: 4 }}>Chapter 5 — Fractions, Percentages & Standard Form</h1>
+        <p className="subtitle" style={{ marginTop: 0 }}>
+          Cambridge IGCSE Mathematics · {done}/{total} lessons complete
+        </p>
+        <p style={{ opacity: 0.85, marginTop: 8 }}>
+          Pick the next lesson. Each one starts with a short explanation, then a stream of multiple-choice and fill-in-the-blank
+          questions — easy warm-ups first, then the actual chapter exercise problems.
+        </p>
+        <ol style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
+          {CH5_LESSONS.map((l) => {
+            const p = progress[l.id] || {}
+            const completed = p.completed
+            const inProg = !completed && (p.teachSeen || (p.qIdx || 0) > 0)
+            return (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <button
+                  onClick={() => startLesson(l.id)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '12px 14px',
+                    borderRadius: 10,
+                    borderLeft: completed ? '4px solid #2ea043' : inProg ? '4px solid #388bfd' : '1px solid var(--clr-border, #444)',
+                    borderTop: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderRight: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderBottom: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    background: completed
+                      ? 'linear-gradient(90deg, rgba(46,160,67,0.32) 0%, rgba(46,160,67,0.18) 100%)'
+                      : inProg ? 'rgba(56,139,253,0.10)' : 'var(--clr-surface, #1c1c1f)',
+                    color: 'var(--clr-text)',
+                    fontWeight: completed ? 600 : 400,
+                    cursor: 'pointer', fontSize: '0.95rem',
+                    boxShadow: completed ? '0 0 0 1px rgba(46,160,67,0.35) inset' : 'none',
+                  }}
+                >
+                  <span style={{ marginRight: 8 }}>{completed ? '✅' : inProg ? '▶' : '○'}</span>
+                  {ch5RenderMath(l.title)}
+                  {completed && (
+                    <span style={{
+                      float: 'right', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.5px',
+                      color: '#fff', background: '#2ea043', padding: '2px 8px', borderRadius: 10,
+                    }}>DONE</span>
+                  )}
+                  {p.qIdx > 0 && !completed && (
+                    <span style={{ float: 'right', fontSize: '0.8rem', opacity: 0.7 }}>{p.qIdx}/{l.questions.length}</span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    )
+  }
+
+  // ────────── Teach ──────────
+  if (phase === 'teach') {
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        {activeId === 'L1' && <Lesson1ProgressionStrip current="lesson1" />}
+        {activeId === 'L2' && <Lesson2ProgressionStrip current="lesson2" />}
+        {activeId === 'L3' && <Lesson3ProgressionStrip current="lesson3" />}
+        {activeId === 'L4' && <Lesson4ProgressionStrip current="lesson4" />}
+        {activeId === 'L5' && <Lesson5ProgressionStrip current="lesson5" />}
+        {activeId === 'L6' && <Lesson6ProgressionStrip current="lesson6" />}
+        {activeId === 'L7' && <Lesson7ProgressionStrip current="lesson7" />}
+        {activeId === 'L8' && <Lesson8ProgressionStrip current="lesson8" />}
+        {activeId === 'L9' && <Lesson9ProgressionStrip current="lesson9" />}
+        {activeId === 'L10' && <Lesson10ProgressionStrip current="lesson10" />}
+        {activeId === 'L11' && <Lesson11ProgressionStrip current="lesson11" />}
+        {activeId === 'L12' && <Lesson12ProgressionStrip current="lesson12" />}
+        {activeId === 'L13' && <Lesson13ProgressionStrip current="lesson13" />}
+        {activeId === 'L14' && <Lesson14ProgressionStrip current="lesson14" />}
+        {activeId === 'L15' && <Lesson15ProgressionStrip current="lesson15" />}
+        {activeId === 'L16' && <Lesson16ProgressionStrip current="lesson16" />}
+        {activeId === 'L17' && <Lesson17ProgressionStrip current="lesson17" />}
+        <h2 style={{ marginBottom: 4 }}>{ch5RenderMath(lesson.title)}</h2>
+        <h3 style={{ color: 'var(--clr-accent, #6cf)', marginTop: 16 }}>{lesson.teach.heading}</h3>
+        {lesson.teach.body.map((para, i) => (
+          <p key={i} style={{ lineHeight: 1.7, marginBottom: 10, fontSize: '1rem' }}>{ch5RenderMath(para)}</p>
+        ))}
+        <div style={{
+          marginTop: 14, padding: 14, borderRadius: 8,
+          background: 'rgba(108,206,255,0.08)', border: '1px solid rgba(108,206,255,0.25)',
+          fontSize: '1rem', lineHeight: 1.7,
+        }}>
+          <strong>Worked example: </strong>{ch5RenderMath(lesson.teach.example)}
+        </div>
+        {lesson.qFormat && <p style={{ marginTop: 14, fontSize: '0.9rem', opacity: 0.8 }}><em>Note:</em> {lesson.qFormat}</p>}
+        <button onClick={acknowledgeTeach} style={{
+          marginTop: 18, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+          background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+        }}>I've got it — start questions →</button>
+      </div>
+    )
+  }
+
+  // ────────── Done ──────────
+  if (phase === 'done') {
+    const idx = CH5_LESSONS.findIndex(l => l.id === activeId)
+    const next = CH5_LESSONS[idx + 1]
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        {activeId === 'L1' && <Lesson1ProgressionStrip current="lesson1" />}
+        {activeId === 'L2' && <Lesson2ProgressionStrip current="lesson2" />}
+        {activeId === 'L3' && <Lesson3ProgressionStrip current="lesson3" />}
+        {activeId === 'L4' && <Lesson4ProgressionStrip current="lesson4" />}
+        {activeId === 'L5' && <Lesson5ProgressionStrip current="lesson5" />}
+        {activeId === 'L6' && <Lesson6ProgressionStrip current="lesson6" />}
+        {activeId === 'L7' && <Lesson7ProgressionStrip current="lesson7" />}
+        {activeId === 'L8' && <Lesson8ProgressionStrip current="lesson8" />}
+        {activeId === 'L9' && <Lesson9ProgressionStrip current="lesson9" />}
+        {activeId === 'L10' && <Lesson10ProgressionStrip current="lesson10" />}
+        {activeId === 'L11' && <Lesson11ProgressionStrip current="lesson11" />}
+        {activeId === 'L12' && <Lesson12ProgressionStrip current="lesson12" />}
+        {activeId === 'L13' && <Lesson13ProgressionStrip current="lesson13" />}
+        {activeId === 'L14' && <Lesson14ProgressionStrip current="lesson14" />}
+        {activeId === 'L15' && <Lesson15ProgressionStrip current="lesson15" />}
+        {activeId === 'L16' && <Lesson16ProgressionStrip current="lesson16" />}
+        {activeId === 'L17' && <Lesson17ProgressionStrip current="lesson17" />}
+        <h2>🎉 Lesson complete</h2>
+        <p>You finished <strong>{ch5RenderMath(lesson.title)}</strong>.</p>
+        {next ? (
+          <button onClick={() => startLesson(next.id)} style={{
+            marginTop: 12, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+            background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+          }}>Next: {ch5RenderMath(next.title)} →</button>
+        ) : (
+          <p style={{ marginTop: 16, fontSize: '1.05rem' }}>🎓 You've completed every lesson in Chapter 5.</p>
+        )}
+        <button onClick={backToOverview} style={{
+          marginTop: 12, marginLeft: 8, padding: '10px 18px', borderRadius: 8,
+          background: 'transparent', color: 'var(--clr-text)', border: '1px solid var(--clr-border, #555)', cursor: 'pointer',
+        }}>Back to lessons</button>
+      </div>
+    )
+  }
+
+  // ────────── Practice ──────────
+  const sliderMax = Math.max(1, playList.length)
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+        <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        <button className="back-button" onClick={() => setPhase('teach')}>📖 Re-read teach</button>
+        <span style={{ marginLeft: 'auto', fontSize: '0.85rem', opacity: 0.75 }}>
+          Question {qIdx + 1} / {sliderMax}
+          {sliderMax > lesson.questions.length && (
+            <span style={{ marginLeft: 6, color: '#f0a020' }}>· {sliderMax - lesson.questions.length} retry queued</span>
+          )}
+        </span>
+      </div>
+      {activeId === 'L1' && <Lesson1ProgressionStrip current="lesson1" />}
+      {activeId === 'L2' && <Lesson2ProgressionStrip current="lesson2" />}
+      {activeId === 'L3' && <Lesson3ProgressionStrip current="lesson3" />}
+      {activeId === 'L4' && <Lesson4ProgressionStrip current="lesson4" />}
+      {activeId === 'L5' && <Lesson5ProgressionStrip current="lesson5" />}
+      {activeId === 'L6' && <Lesson6ProgressionStrip current="lesson6" />}
+      {activeId === 'L7' && <Lesson7ProgressionStrip current="lesson7" />}
+      {activeId === 'L8' && <Lesson8ProgressionStrip current="lesson8" />}
+      {activeId === 'L9' && <Lesson9ProgressionStrip current="lesson9" />}
+      {activeId === 'L10' && <Lesson10ProgressionStrip current="lesson10" />}
+      {activeId === 'L11' && <Lesson11ProgressionStrip current="lesson11" />}
+      {activeId === 'L12' && <Lesson12ProgressionStrip current="lesson12" />}
+      {activeId === 'L13' && <Lesson13ProgressionStrip current="lesson13" />}
+      {activeId === 'L14' && <Lesson14ProgressionStrip current="lesson14" />}
+      {activeId === 'L15' && <Lesson15ProgressionStrip current="lesson15" />}
+      {activeId === 'L16' && <Lesson16ProgressionStrip current="lesson16" />}
+      {activeId === 'L17' && <Lesson17ProgressionStrip current="lesson17" />}
+      <h3 style={{ marginBottom: 8 }}>{ch5RenderMath(lesson.title)}</h3>
+      {/* Question slider — drag to jump to any question in the play sequence */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 18, textAlign: 'right' }}>1</span>
+        <input
+          type="range"
+          min={1}
+          max={sliderMax}
+          value={qIdx + 1}
+          onChange={e => jumpToQuestion(parseInt(e.target.value, 10) - 1)}
+          aria-label="Jump to question"
+          style={{
+            flex: 1, accentColor: 'var(--clr-accent, #2ea043)',
+            cursor: 'pointer', height: 22,
+          }}
+        />
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 22 }}>{sliderMax}</span>
+      </div>
+
+      <div style={{
+        padding: '22px 24px', borderRadius: 10, background: 'var(--clr-surface, #1c1c1f)',
+        border: '1px solid var(--clr-border, #333)', marginBottom: 16,
+        fontSize: '1.25rem', lineHeight: 2.1, textAlign: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80,
+        position: 'relative',
+      }}>
+        {isRetry && (
+          <span style={{
+            position: 'absolute', top: 8, right: 12, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.5px', color: '#f0a020', background: 'rgba(240,160,32,0.15)',
+            border: '1px solid rgba(240,160,32,0.45)', padding: '2px 8px', borderRadius: 10,
+          }}>↻ RETRY</span>
+        )}
+        <span>{ch5RenderMath(currentQ.prompt)}</span>
+      </div>
+
+      {currentQ.kind === 'mcq' ? (
+        <div className="options-list">
+          {optionOrder.map((srcIdx, displayIdx) => {
+            const opt = currentQ.options[srcIdx]
+            const isSelected = selectedIdx === displayIdx
+            const isCorrectOpt = revealed && correctDisplayIdx === displayIdx
+            const isWrongPick = revealed && isSelected && !isCorrect
+            return (
+              <button
+                key={displayIdx}
+                className={`option-card ${isSelected ? 'selected' : ''} ${isCorrectOpt ? 'correct-option' : ''} ${isWrongPick ? 'wrong-option' : ''}`}
+                onClick={() => pickMcq(displayIdx)}
+                disabled={revealed}
+                style={{
+                  borderColor: isCorrectOpt ? 'var(--clr-correct, #2ea043)' : isWrongPick ? 'var(--clr-wrong, #f85149)' : undefined,
+                  background: isCorrectOpt ? 'rgba(46,160,67,0.15)' : isWrongPick ? 'rgba(248,81,73,0.15)' : undefined,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative', padding: '18px 24px', minHeight: 64,
+                  fontSize: '1.1rem', lineHeight: 1.9,
+                }}
+              >
+                <span style={{
+                  position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)',
+                  fontWeight: 700, opacity: 0.6, fontSize: '0.95rem',
+                }}>{CH5_OPTION_LABEL[displayIdx]}.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{ch5RenderMath(opt)}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <input
+            ref={inputRef}
+            type="text"
+            value={fillInput}
+            onChange={e => setFillInput(e.target.value)}
+            disabled={revealed}
+            placeholder="Your answer…"
+            autoComplete="off"
+            style={{
+              width: '100%', padding: '14px 16px', fontSize: '1.15rem', borderRadius: 8,
+              border: '1px solid var(--clr-border, #555)', textAlign: 'center',
+              background: revealed ? 'rgba(255,255,255,0.04)' : 'var(--clr-surface, #1c1c1f)',
+              color: 'var(--clr-text)', boxSizing: 'border-box',
+            }}
+          />
+          {!revealed && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
+              <button onClick={submitFill} disabled={!fillInput.trim()} style={{
+                padding: '10px 22px', borderRadius: 6, background: 'var(--clr-accent, #2ea043)',
+                color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.95rem',
+                opacity: fillInput.trim() ? 1 : 0.5,
+              }}>Check</button>
+            </div>
+          )}
+        </>
+      )}
+
+      {revealed && (
+        <>
+          <div style={{
+            marginTop: 16, padding: 16, borderRadius: 8,
+            background: isCorrect ? 'rgba(46,160,67,0.15)' : 'rgba(248,81,73,0.15)',
+            border: `1px solid ${isCorrect ? 'rgba(46,160,67,0.45)' : 'rgba(248,81,73,0.45)'}`,
+            fontSize: '1rem', lineHeight: 1.9,
+          }}>
+            <strong>{isCorrect ? '✅ Correct!' : '❌ Not quite.'}</strong>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+              <strong>Answer:</strong>
+              <span>{currentQ.kind === 'mcq'
+                ? ch5RenderMath(currentQ.options[currentQ.correct])
+                : ch5RenderMath(String(currentQ.answer))}</span>
+            </div>
+            {currentQ.solution && (
+              <div style={{ marginTop: 8, opacity: 0.9, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                <strong>Working:</strong>
+                <span>{ch5RenderMath(currentQ.solution)}</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, justifyContent: 'center' }}>
+            <button onClick={advance} style={{
+              padding: '12px 28px', borderRadius: 8, background: 'var(--clr-accent, #2ea043)',
+              color: 'white', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: 600,
+            }}>
+              {qIdx + 1 === lesson.questions.length ? 'Finish lesson →' : 'Next →'}
+            </button>
+            <span style={{ fontSize: '0.85rem', opacity: 0.65 }}>
+              auto-advance in {autoCountdown}s · or press <kbd style={{ padding: '1px 6px', border: '1px solid var(--clr-border, #555)', borderRadius: 4, fontSize: '0.78rem' }}>Enter</kbd>
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+/* =====================================================================
+ *  Chapter6App — Cambridge IGCSE Chapter 6 (Equations, Factors and Formulae)
+ *
+ *  Mounted at /chapter6. Same UX as Chapter5App: ordered chain of lessons,
+ *  every one unlocked from the start, slider to jump questions, MCQ with
+ *  1-9 keys + fill-in fallbacks, 5s auto-advance, completed lessons go
+ *  green. See Tenali/skills/igcse-chapter/SKILL.md for the full pattern.
+ * ===================================================================== */
+
+const CH6_OPTION_LABEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
 function ch6_seededShuffle(n, key) {
   let h = 2166136261
   for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) }
@@ -37513,7 +38084,443 @@ function ch1RenderMath(text) {
 
 const CH1_AUTO_ADVANCE_MS = 5000
 
-function Chapter1App({ onBack }) { return null; }
+function Chapter1App({ onBack }) {
+  const [progress, setProgress] = useState(ch1_loadProgress)
+  const [activeId, setActiveId] = useState(null)
+  const [phase, setPhase] = useState('teach')
+  const [qIdx, setQIdx] = useState(0)
+  const [playList, setPlayList] = useState([])
+  const [lastWrongSrc, setLastWrongSrc] = useState(null)
+  const [selectedIdx, setSelectedIdx] = useState(null)
+  const [fillInput, setFillInput] = useState('')
+  const [revealed, setRevealed] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [autoCountdown, setAutoCountdown] = useState(0)
+  const inputRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const advanceRef = useRef(() => { })
+
+  const lesson = activeId ? CH1_LESSONS.find(l => l.id === activeId) : null
+  const currentSourceIdx = playList[qIdx]
+  const currentQ = lesson && currentSourceIdx != null ? lesson.questions[currentSourceIdx] : null
+  const isRetry = useMemo(() => {
+    if (currentSourceIdx == null) return false
+    return playList.slice(0, qIdx).includes(currentSourceIdx)
+  }, [playList, qIdx, currentSourceIdx])
+
+  const optionOrder = useMemo(() => {
+    if (!currentQ || currentQ.kind !== 'mcq') return []
+    return ch1_seededShuffle(currentQ.options.length, `${activeId}-${qIdx}-${currentSourceIdx}-${currentQ.prompt}`)
+  }, [activeId, qIdx, currentSourceIdx, currentQ])
+  const correctDisplayIdx = useMemo(() => optionOrder.indexOf(currentQ?.correct ?? -1), [optionOrder, currentQ])
+
+  useEffect(() => { ch1_saveProgress(progress) }, [progress])
+
+  useEffect(() => {
+    if (phase !== 'practice' || revealed) return
+    if (currentQ?.kind?.startsWith('fill') && inputRef.current) inputRef.current.focus()
+  }, [phase, qIdx, revealed, currentQ])
+
+  const startLesson = (id) => {
+    setActiveId(id)
+    const lessonRef = CH1_LESSONS.find(l => l.id === id)
+    const initial = Array.from({ length: lessonRef.questions.length }, (_, i) => i)
+    setPlayList(initial)
+    setLastWrongSrc(null)
+    const p = progress[id] || {}
+    if (p.teachSeen) { setPhase('practice'); setQIdx(p.qIdx || 0) }
+    else { setPhase('teach'); setQIdx(0) }
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const acknowledgeTeach = () => {
+    setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: 0 } }))
+    setPhase('practice'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setLastWrongSrc(null)
+  }
+
+  const submitFill = () => {
+    if (!currentQ) return
+    if (revealed) { advance(); return }
+    const ok = ch1_checkFill(currentQ, fillInput)
+    setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const pickMcq = (displayIdx) => {
+    if (!currentQ || revealed || currentQ.kind !== 'mcq') return
+    const optSourceIdx = optionOrder[displayIdx]
+    const ok = optSourceIdx === currentQ.correct
+    setSelectedIdx(displayIdx); setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const cancelAutoAdvance = () => {
+    if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null }
+    setAutoCountdown(0)
+  }
+
+  const advance = () => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    let workingList = playList
+    if (lastWrongSrc != null) {
+      workingList = [...playList, lastWrongSrc]
+      setPlayList(workingList)
+      setLastWrongSrc(null)
+    }
+    const next = qIdx + 1
+    if (next >= workingList.length) {
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: lesson.questions.length, completed: true } }))
+      setPhase('done')
+    } else {
+      setQIdx(next)
+      setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: Math.min(lesson.questions.length, next) } }))
+    }
+  }
+  advanceRef.current = advance
+
+  const jumpToQuestion = (i) => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    const clamped = Math.max(0, Math.min(playList.length - 1, i))
+    setQIdx(clamped); setLastWrongSrc(null)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setProgress(p => {
+      const cur = p[activeId] || {}
+      const saved = Math.max(cur.qIdx || 0, Math.min(lesson.questions.length, clamped))
+      return { ...p, [activeId]: { ...cur, teachSeen: true, qIdx: saved } }
+    })
+  }
+
+  const backToOverview = () => {
+    cancelAutoAdvance()
+    setActiveId(null); setPhase('teach'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const resetAll = () => {
+    if (!confirm('Reset all Chapter 1 progress?')) return
+    setProgress({}); ch1_saveProgress({})
+    backToOverview()
+  }
+
+  useEffect(() => {
+    if (phase !== 'practice' || !revealed) { cancelAutoAdvance(); return }
+    const total = Math.round(CH1_AUTO_ADVANCE_MS / 1000)
+    setAutoCountdown(total)
+    autoTimerRef.current = setInterval(() => {
+      setAutoCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(autoTimerRef.current); autoTimerRef.current = null
+          advanceRef.current()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null } }
+  }, [phase, revealed, qIdx, activeId])
+
+  useEffect(() => {
+    if (phase !== 'practice' || !currentQ) return
+    const onKey = (e) => {
+      if (revealed) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance() }
+        return
+      }
+      if (currentQ.kind === 'mcq') {
+        const k = e.key
+        if (/^[1-9]$/.test(k)) {
+          const i = parseInt(k, 10) - 1
+          if (i < currentQ.options.length) { e.preventDefault(); pickMcq(i) }
+        }
+      } else if (currentQ.kind?.startsWith('fill')) {
+        if (e.key === 'Enter') { e.preventDefault(); submitFill() }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, qIdx, revealed, currentQ, fillInput, optionOrder])
+
+  if (!activeId) {
+    const total = CH1_LESSONS.length
+    const done = CH1_LESSONS.filter(l => progress[l.id]?.completed).length
+    return (
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+          <button className="back-button" onClick={onBack}>← Home</button>
+          <button className="back-button" style={{ marginLeft: 'auto' }} onClick={resetAll}>Reset progress</button>
+        </div>
+        <h1 style={{ marginBottom: 4 }}>Chapter 1 — Reviewing Number Concepts</h1>
+        <p className="subtitle" style={{ marginTop: 0 }}>
+          Cambridge IGCSE Mathematics · {done}/{total} lessons complete
+        </p>
+        <p style={{ opacity: 0.85, marginTop: 8 }}>
+          Pick the next lesson. Each one starts with a short explanation, then a stream of multiple-choice and fill-in-the-blank
+          questions — easy warm-ups first, then the actual chapter exercise problems.
+        </p>
+        <ol style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
+          {CH1_LESSONS.map((l) => {
+            const p = progress[l.id] || {}
+            const completed = p.completed
+            const inProg = !completed && (p.teachSeen || (p.qIdx || 0) > 0)
+            return (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <button
+                  onClick={() => startLesson(l.id)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '12px 14px',
+                    borderRadius: 10,
+                    borderLeft: completed ? '4px solid #2ea043' : inProg ? '4px solid #388bfd' : '1px solid var(--clr-border, #444)',
+                    borderTop: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderRight: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderBottom: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    background: completed
+                      ? 'linear-gradient(90deg, rgba(46,160,67,0.32) 0%, rgba(46,160,67,0.18) 100%)'
+                      : inProg ? 'rgba(56,139,253,0.10)' : 'var(--clr-surface, #1c1c1f)',
+                    color: 'var(--clr-text)',
+                    fontWeight: completed ? 600 : 400,
+                    cursor: 'pointer', fontSize: '0.95rem',
+                    boxShadow: completed ? '0 0 0 1px rgba(46,160,67,0.35) inset' : 'none',
+                  }}
+                >
+                  <span style={{ marginRight: 8 }}>{completed ? '✅' : inProg ? '▶' : '○'}</span>
+                  {ch1RenderMath(l.title)}
+                  {completed && (
+                    <span style={{
+                      float: 'right', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.5px',
+                      color: '#fff', background: '#2ea043', padding: '2px 8px', borderRadius: 10,
+                    }}>DONE</span>
+                  )}
+                  {p.qIdx > 0 && !completed && (
+                    <span style={{ float: 'right', fontSize: '0.8rem', opacity: 0.7 }}>{p.qIdx}/{l.questions.length}</span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    )
+  }
+
+  if (phase === 'teach') {
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2 style={{ marginBottom: 4 }}>{ch1RenderMath(lesson.title)}</h2>
+        <h3 style={{ color: 'var(--clr-accent, #6cf)', marginTop: 16 }}>{ch1RenderMath(lesson.teach.heading)}</h3>
+        {lesson.teach.body.map((para, i) => (
+          <p key={i} style={{ lineHeight: 1.7, marginBottom: 10, fontSize: '1rem' }}>{ch1RenderMath(para)}</p>
+        ))}
+        <div style={{
+          marginTop: 14, padding: 14, borderRadius: 8,
+          background: 'rgba(108,206,255,0.08)', border: '1px solid rgba(108,206,255,0.25)',
+          fontSize: '1rem', lineHeight: 1.7,
+        }}>
+          <strong>Worked example: </strong>{ch1RenderMath(lesson.teach.example)}
+        </div>
+        {lesson.qFormat && <p style={{ marginTop: 14, fontSize: '0.9rem', opacity: 0.8 }}><em>Note:</em> {lesson.qFormat}</p>}
+        <button onClick={acknowledgeTeach} style={{
+          marginTop: 18, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+          background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+        }}>I've got it — start questions →</button>
+      </div>
+    )
+  }
+
+  if (phase === 'done') {
+    const idx = CH1_LESSONS.findIndex(l => l.id === activeId)
+    const next = CH1_LESSONS[idx + 1]
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2>🎉 Lesson complete</h2>
+        <p>You finished <strong>{ch1RenderMath(lesson.title)}</strong>.</p>
+        {next ? (
+          <button onClick={() => startLesson(next.id)} style={{
+            marginTop: 12, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+            background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+          }}>Next: {ch1RenderMath(next.title)} →</button>
+        ) : (
+          <p style={{ marginTop: 16, fontSize: '1.05rem' }}>🎓 You've completed every lesson in Chapter 1.</p>
+        )}
+        <button onClick={backToOverview} style={{
+          marginTop: 12, marginLeft: 8, padding: '10px 18px', borderRadius: 8,
+          background: 'transparent', color: 'var(--clr-text)', border: '1px solid var(--clr-border, #555)', cursor: 'pointer',
+        }}>Back to lessons</button>
+      </div>
+    )
+  }
+
+  const sliderMax = Math.max(1, playList.length)
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+        <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        <button className="back-button" onClick={() => setPhase('teach')}>📖 Re-read teach</button>
+        <span style={{ marginLeft: 'auto', fontSize: '0.85rem', opacity: 0.75 }}>
+          Question {qIdx + 1} / {sliderMax}
+          {sliderMax > lesson.questions.length && (
+            <span style={{ marginLeft: 6, color: '#f0a020' }}>· {sliderMax - lesson.questions.length} retry queued</span>
+          )}
+        </span>
+      </div>
+      <h3 style={{ marginBottom: 8 }}>{ch1RenderMath(lesson.title)}</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 18, textAlign: 'right' }}>1</span>
+        <input
+          type="range"
+          min={1}
+          max={sliderMax}
+          value={qIdx + 1}
+          onChange={e => jumpToQuestion(parseInt(e.target.value, 10) - 1)}
+          aria-label="Jump to question"
+          style={{
+            flex: 1, accentColor: 'var(--clr-accent, #2ea043)',
+            cursor: 'pointer', height: 22,
+          }}
+        />
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 22 }}>{sliderMax}</span>
+      </div>
+
+      <div style={{
+        padding: '22px 24px', borderRadius: 10, background: 'var(--clr-surface, #1c1c1f)',
+        border: '1px solid var(--clr-border, #333)', marginBottom: 16,
+        fontSize: '1.25rem', lineHeight: 2.1, textAlign: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80,
+        position: 'relative',
+      }}>
+        {isRetry && (
+          <span style={{
+            position: 'absolute', top: 8, right: 12, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.5px', color: '#f0a020', background: 'rgba(240,160,32,0.15)',
+            border: '1px solid rgba(240,160,32,0.45)', padding: '2px 8px', borderRadius: 10,
+          }}>↻ RETRY</span>
+        )}
+        <span>{ch1RenderMath(currentQ.prompt)}</span>
+      </div>
+
+      {currentQ.kind === 'mcq' ? (
+        <div className="options-list">
+          {optionOrder.map((srcIdx, displayIdx) => {
+            const opt = currentQ.options[srcIdx]
+            const isSelected = selectedIdx === displayIdx
+            const isCorrectOpt = revealed && correctDisplayIdx === displayIdx
+            const isWrongPick = revealed && isSelected && !isCorrect
+            return (
+              <button
+                key={displayIdx}
+                className={`option-card ${isSelected ? 'selected' : ''} ${isCorrectOpt ? 'correct-option' : ''} ${isWrongPick ? 'wrong-option' : ''}`}
+                onClick={() => pickMcq(displayIdx)}
+                disabled={revealed}
+                style={{
+                  borderColor: isCorrectOpt ? 'var(--clr-correct, #2ea043)' : isWrongPick ? 'var(--clr-wrong, #f85149)' : undefined,
+                  background: isCorrectOpt ? 'rgba(46,160,67,0.15)' : isWrongPick ? 'rgba(248,81,73,0.15)' : undefined,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative', padding: '18px 24px', minHeight: 64,
+                  fontSize: '1.1rem', lineHeight: 1.9,
+                }}
+              >
+                <span style={{
+                  position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)',
+                  fontWeight: 700, opacity: 0.6, fontSize: '0.95rem',
+                }}>{CH1_OPTION_LABEL[displayIdx]}.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{ch1RenderMath(opt)}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <input
+            ref={inputRef}
+            type="text"
+            value={fillInput}
+            onChange={e => setFillInput(e.target.value)}
+            disabled={revealed}
+            placeholder="Your answer…"
+            autoComplete="off"
+            style={{
+              width: '100%', padding: '14px 16px', fontSize: '1.15rem', borderRadius: 8,
+              border: '1px solid var(--clr-border, #555)', textAlign: 'center',
+              background: revealed ? 'rgba(255,255,255,0.04)' : 'var(--clr-surface, #1c1c1f)',
+              color: 'var(--clr-text)', boxSizing: 'border-box',
+            }}
+          />
+          {!revealed && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
+              <button onClick={submitFill} disabled={!fillInput.trim()} style={{
+                padding: '10px 22px', borderRadius: 6, background: 'var(--clr-accent, #2ea043)',
+                color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.95rem',
+                opacity: fillInput.trim() ? 1 : 0.5,
+              }}>Check</button>
+            </div>
+          )}
+        </>
+      )}
+
+      {revealed && (
+        <>
+          <div style={{
+            marginTop: 16, padding: 16, borderRadius: 8,
+            background: isCorrect ? 'rgba(46,160,67,0.15)' : 'rgba(248,81,73,0.15)',
+            border: `1px solid ${isCorrect ? 'rgba(46,160,67,0.45)' : 'rgba(248,81,73,0.45)'}`,
+            fontSize: '1rem', lineHeight: 1.9,
+          }}>
+            <strong>{isCorrect ? '✅ Correct!' : '❌ Not quite.'}</strong>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+              <strong>Answer:</strong>
+              <span>{currentQ.kind === 'mcq'
+                ? ch1RenderMath(currentQ.options[currentQ.correct])
+                : ch1RenderMath(String(currentQ.answer))}</span>
+            </div>
+            {currentQ.solution && (
+              <div style={{ marginTop: 8, opacity: 0.9, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                <strong>Working:</strong>
+                <span>{ch1RenderMath(currentQ.solution)}</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, justifyContent: 'center' }}>
+            <button onClick={advance} style={{
+              padding: '12px 28px', borderRadius: 8, background: 'var(--clr-accent, #2ea043)',
+              color: 'white', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: 600,
+            }}>
+              {qIdx + 1 === lesson.questions.length ? 'Finish lesson →' : 'Next →'}
+            </button>
+            <span style={{ fontSize: '0.85rem', opacity: 0.65 }}>
+              auto-advance in {autoCountdown}s · or press <kbd style={{ padding: '1px 6px', border: '1px solid var(--clr-border, #555)', borderRadius: 4, fontSize: '0.78rem' }}>Enter</kbd>
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+
+/* =====================================================================
+ *  Chapter2App — Cambridge IGCSE Chapter 2 (Making Sense of Algebra)
+ *
+ *  Mounted at /chapter2. Same UX as Chapter5App+: ordered chain of
+ *  lessons, every one unlocked from the start, slider to jump questions,
+ *  MCQ with 1-9 keys + fill-in fallbacks, 5s auto-advance, completed
+ *  lessons go green, wrong answers appended to END of playList.
+ *  See Tenali/skills/igcse-chapter/SKILL.md for the full pattern.
+ *
+ *  Letters as numbers, substitution, simplifying expressions, multiplying terms, expanding brackets, index notation, laws of indices (multiplication, division, power-of-a-power, zero/negative indices). See uploads PDF p. 48-82 (book ch. 2).
+ * ===================================================================== */
+
+const CH2_OPTION_LABEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
 function ch2_seededShuffle(n, key) {
   let h = 2166136261
   for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) }
@@ -37898,7 +38905,443 @@ function ch2RenderMath(text) {
 
 const CH2_AUTO_ADVANCE_MS = 5000
 
-function Chapter2App({ onBack }) { return null; }
+function Chapter2App({ onBack }) {
+  const [progress, setProgress] = useState(ch2_loadProgress)
+  const [activeId, setActiveId] = useState(null)
+  const [phase, setPhase] = useState('teach')
+  const [qIdx, setQIdx] = useState(0)
+  const [playList, setPlayList] = useState([])
+  const [lastWrongSrc, setLastWrongSrc] = useState(null)
+  const [selectedIdx, setSelectedIdx] = useState(null)
+  const [fillInput, setFillInput] = useState('')
+  const [revealed, setRevealed] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [autoCountdown, setAutoCountdown] = useState(0)
+  const inputRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const advanceRef = useRef(() => { })
+
+  const lesson = activeId ? CH2_LESSONS.find(l => l.id === activeId) : null
+  const currentSourceIdx = playList[qIdx]
+  const currentQ = lesson && currentSourceIdx != null ? lesson.questions[currentSourceIdx] : null
+  const isRetry = useMemo(() => {
+    if (currentSourceIdx == null) return false
+    return playList.slice(0, qIdx).includes(currentSourceIdx)
+  }, [playList, qIdx, currentSourceIdx])
+
+  const optionOrder = useMemo(() => {
+    if (!currentQ || currentQ.kind !== 'mcq') return []
+    return ch2_seededShuffle(currentQ.options.length, `${activeId}-${qIdx}-${currentSourceIdx}-${currentQ.prompt}`)
+  }, [activeId, qIdx, currentSourceIdx, currentQ])
+  const correctDisplayIdx = useMemo(() => optionOrder.indexOf(currentQ?.correct ?? -1), [optionOrder, currentQ])
+
+  useEffect(() => { ch2_saveProgress(progress) }, [progress])
+
+  useEffect(() => {
+    if (phase !== 'practice' || revealed) return
+    if (currentQ?.kind?.startsWith('fill') && inputRef.current) inputRef.current.focus()
+  }, [phase, qIdx, revealed, currentQ])
+
+  const startLesson = (id) => {
+    setActiveId(id)
+    const lessonRef = CH2_LESSONS.find(l => l.id === id)
+    const initial = Array.from({ length: lessonRef.questions.length }, (_, i) => i)
+    setPlayList(initial)
+    setLastWrongSrc(null)
+    const p = progress[id] || {}
+    if (p.teachSeen) { setPhase('practice'); setQIdx(p.qIdx || 0) }
+    else { setPhase('teach'); setQIdx(0) }
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const acknowledgeTeach = () => {
+    setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: 0 } }))
+    setPhase('practice'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setLastWrongSrc(null)
+  }
+
+  const submitFill = () => {
+    if (!currentQ) return
+    if (revealed) { advance(); return }
+    const ok = ch2_checkFill(currentQ, fillInput)
+    setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const pickMcq = (displayIdx) => {
+    if (!currentQ || revealed || currentQ.kind !== 'mcq') return
+    const optSourceIdx = optionOrder[displayIdx]
+    const ok = optSourceIdx === currentQ.correct
+    setSelectedIdx(displayIdx); setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const cancelAutoAdvance = () => {
+    if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null }
+    setAutoCountdown(0)
+  }
+
+  const advance = () => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    let workingList = playList
+    if (lastWrongSrc != null) {
+      workingList = [...playList, lastWrongSrc]
+      setPlayList(workingList)
+      setLastWrongSrc(null)
+    }
+    const next = qIdx + 1
+    if (next >= workingList.length) {
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: lesson.questions.length, completed: true } }))
+      setPhase('done')
+    } else {
+      setQIdx(next)
+      setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: Math.min(lesson.questions.length, next) } }))
+    }
+  }
+  advanceRef.current = advance
+
+  const jumpToQuestion = (i) => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    const clamped = Math.max(0, Math.min(playList.length - 1, i))
+    setQIdx(clamped); setLastWrongSrc(null)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setProgress(p => {
+      const cur = p[activeId] || {}
+      const saved = Math.max(cur.qIdx || 0, Math.min(lesson.questions.length, clamped))
+      return { ...p, [activeId]: { ...cur, teachSeen: true, qIdx: saved } }
+    })
+  }
+
+  const backToOverview = () => {
+    cancelAutoAdvance()
+    setActiveId(null); setPhase('teach'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const resetAll = () => {
+    if (!confirm('Reset all Chapter 2 progress?')) return
+    setProgress({}); ch2_saveProgress({})
+    backToOverview()
+  }
+
+  useEffect(() => {
+    if (phase !== 'practice' || !revealed) { cancelAutoAdvance(); return }
+    const total = Math.round(CH2_AUTO_ADVANCE_MS / 1000)
+    setAutoCountdown(total)
+    autoTimerRef.current = setInterval(() => {
+      setAutoCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(autoTimerRef.current); autoTimerRef.current = null
+          advanceRef.current()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null } }
+  }, [phase, revealed, qIdx, activeId])
+
+  useEffect(() => {
+    if (phase !== 'practice' || !currentQ) return
+    const onKey = (e) => {
+      if (revealed) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance() }
+        return
+      }
+      if (currentQ.kind === 'mcq') {
+        const k = e.key
+        if (/^[1-9]$/.test(k)) {
+          const i = parseInt(k, 10) - 1
+          if (i < currentQ.options.length) { e.preventDefault(); pickMcq(i) }
+        }
+      } else if (currentQ.kind?.startsWith('fill')) {
+        if (e.key === 'Enter') { e.preventDefault(); submitFill() }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, qIdx, revealed, currentQ, fillInput, optionOrder])
+
+  if (!activeId) {
+    const total = CH2_LESSONS.length
+    const done = CH2_LESSONS.filter(l => progress[l.id]?.completed).length
+    return (
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+          <button className="back-button" onClick={onBack}>← Home</button>
+          <button className="back-button" style={{ marginLeft: 'auto' }} onClick={resetAll}>Reset progress</button>
+        </div>
+        <h1 style={{ marginBottom: 4 }}>Chapter 2 — Making Sense of Algebra</h1>
+        <p className="subtitle" style={{ marginTop: 0 }}>
+          Cambridge IGCSE Mathematics · {done}/{total} lessons complete
+        </p>
+        <p style={{ opacity: 0.85, marginTop: 8 }}>
+          Pick the next lesson. Each one starts with a short explanation, then a stream of multiple-choice and fill-in-the-blank
+          questions — easy warm-ups first, then the actual chapter exercise problems.
+        </p>
+        <ol style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
+          {CH2_LESSONS.map((l) => {
+            const p = progress[l.id] || {}
+            const completed = p.completed
+            const inProg = !completed && (p.teachSeen || (p.qIdx || 0) > 0)
+            return (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <button
+                  onClick={() => startLesson(l.id)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '12px 14px',
+                    borderRadius: 10,
+                    borderLeft: completed ? '4px solid #2ea043' : inProg ? '4px solid #388bfd' : '1px solid var(--clr-border, #444)',
+                    borderTop: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderRight: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderBottom: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    background: completed
+                      ? 'linear-gradient(90deg, rgba(46,160,67,0.32) 0%, rgba(46,160,67,0.18) 100%)'
+                      : inProg ? 'rgba(56,139,253,0.10)' : 'var(--clr-surface, #1c1c1f)',
+                    color: 'var(--clr-text)',
+                    fontWeight: completed ? 600 : 400,
+                    cursor: 'pointer', fontSize: '0.95rem',
+                    boxShadow: completed ? '0 0 0 1px rgba(46,160,67,0.35) inset' : 'none',
+                  }}
+                >
+                  <span style={{ marginRight: 8 }}>{completed ? '✅' : inProg ? '▶' : '○'}</span>
+                  {ch2RenderMath(l.title)}
+                  {completed && (
+                    <span style={{
+                      float: 'right', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.5px',
+                      color: '#fff', background: '#2ea043', padding: '2px 8px', borderRadius: 10,
+                    }}>DONE</span>
+                  )}
+                  {p.qIdx > 0 && !completed && (
+                    <span style={{ float: 'right', fontSize: '0.8rem', opacity: 0.7 }}>{p.qIdx}/{l.questions.length}</span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    )
+  }
+
+  if (phase === 'teach') {
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2 style={{ marginBottom: 4 }}>{ch2RenderMath(lesson.title)}</h2>
+        <h3 style={{ color: 'var(--clr-accent, #6cf)', marginTop: 16 }}>{ch2RenderMath(lesson.teach.heading)}</h3>
+        {lesson.teach.body.map((para, i) => (
+          <p key={i} style={{ lineHeight: 1.7, marginBottom: 10, fontSize: '1rem' }}>{ch2RenderMath(para)}</p>
+        ))}
+        <div style={{
+          marginTop: 14, padding: 14, borderRadius: 8,
+          background: 'rgba(108,206,255,0.08)', border: '1px solid rgba(108,206,255,0.25)',
+          fontSize: '1rem', lineHeight: 1.7,
+        }}>
+          <strong>Worked example: </strong>{ch2RenderMath(lesson.teach.example)}
+        </div>
+        {lesson.qFormat && <p style={{ marginTop: 14, fontSize: '0.9rem', opacity: 0.8 }}><em>Note:</em> {lesson.qFormat}</p>}
+        <button onClick={acknowledgeTeach} style={{
+          marginTop: 18, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+          background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+        }}>I've got it — start questions →</button>
+      </div>
+    )
+  }
+
+  if (phase === 'done') {
+    const idx = CH2_LESSONS.findIndex(l => l.id === activeId)
+    const next = CH2_LESSONS[idx + 1]
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2>🎉 Lesson complete</h2>
+        <p>You finished <strong>{ch2RenderMath(lesson.title)}</strong>.</p>
+        {next ? (
+          <button onClick={() => startLesson(next.id)} style={{
+            marginTop: 12, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+            background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+          }}>Next: {ch2RenderMath(next.title)} →</button>
+        ) : (
+          <p style={{ marginTop: 16, fontSize: '1.05rem' }}>🎓 You've completed every lesson in Chapter 2.</p>
+        )}
+        <button onClick={backToOverview} style={{
+          marginTop: 12, marginLeft: 8, padding: '10px 18px', borderRadius: 8,
+          background: 'transparent', color: 'var(--clr-text)', border: '1px solid var(--clr-border, #555)', cursor: 'pointer',
+        }}>Back to lessons</button>
+      </div>
+    )
+  }
+
+  const sliderMax = Math.max(1, playList.length)
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+        <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        <button className="back-button" onClick={() => setPhase('teach')}>📖 Re-read teach</button>
+        <span style={{ marginLeft: 'auto', fontSize: '0.85rem', opacity: 0.75 }}>
+          Question {qIdx + 1} / {sliderMax}
+          {sliderMax > lesson.questions.length && (
+            <span style={{ marginLeft: 6, color: '#f0a020' }}>· {sliderMax - lesson.questions.length} retry queued</span>
+          )}
+        </span>
+      </div>
+      <h3 style={{ marginBottom: 8 }}>{ch2RenderMath(lesson.title)}</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 18, textAlign: 'right' }}>1</span>
+        <input
+          type="range"
+          min={1}
+          max={sliderMax}
+          value={qIdx + 1}
+          onChange={e => jumpToQuestion(parseInt(e.target.value, 10) - 1)}
+          aria-label="Jump to question"
+          style={{
+            flex: 1, accentColor: 'var(--clr-accent, #2ea043)',
+            cursor: 'pointer', height: 22,
+          }}
+        />
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 22 }}>{sliderMax}</span>
+      </div>
+
+      <div style={{
+        padding: '22px 24px', borderRadius: 10, background: 'var(--clr-surface, #1c1c1f)',
+        border: '1px solid var(--clr-border, #333)', marginBottom: 16,
+        fontSize: '1.25rem', lineHeight: 2.1, textAlign: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80,
+        position: 'relative',
+      }}>
+        {isRetry && (
+          <span style={{
+            position: 'absolute', top: 8, right: 12, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.5px', color: '#f0a020', background: 'rgba(240,160,32,0.15)',
+            border: '1px solid rgba(240,160,32,0.45)', padding: '2px 8px', borderRadius: 10,
+          }}>↻ RETRY</span>
+        )}
+        <span>{ch2RenderMath(currentQ.prompt)}</span>
+      </div>
+
+      {currentQ.kind === 'mcq' ? (
+        <div className="options-list">
+          {optionOrder.map((srcIdx, displayIdx) => {
+            const opt = currentQ.options[srcIdx]
+            const isSelected = selectedIdx === displayIdx
+            const isCorrectOpt = revealed && correctDisplayIdx === displayIdx
+            const isWrongPick = revealed && isSelected && !isCorrect
+            return (
+              <button
+                key={displayIdx}
+                className={`option-card ${isSelected ? 'selected' : ''} ${isCorrectOpt ? 'correct-option' : ''} ${isWrongPick ? 'wrong-option' : ''}`}
+                onClick={() => pickMcq(displayIdx)}
+                disabled={revealed}
+                style={{
+                  borderColor: isCorrectOpt ? 'var(--clr-correct, #2ea043)' : isWrongPick ? 'var(--clr-wrong, #f85149)' : undefined,
+                  background: isCorrectOpt ? 'rgba(46,160,67,0.15)' : isWrongPick ? 'rgba(248,81,73,0.15)' : undefined,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative', padding: '18px 24px', minHeight: 64,
+                  fontSize: '1.1rem', lineHeight: 1.9,
+                }}
+              >
+                <span style={{
+                  position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)',
+                  fontWeight: 700, opacity: 0.6, fontSize: '0.95rem',
+                }}>{CH2_OPTION_LABEL[displayIdx]}.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{ch2RenderMath(opt)}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <input
+            ref={inputRef}
+            type="text"
+            value={fillInput}
+            onChange={e => setFillInput(e.target.value)}
+            disabled={revealed}
+            placeholder="Your answer…"
+            autoComplete="off"
+            style={{
+              width: '100%', padding: '14px 16px', fontSize: '1.15rem', borderRadius: 8,
+              border: '1px solid var(--clr-border, #555)', textAlign: 'center',
+              background: revealed ? 'rgba(255,255,255,0.04)' : 'var(--clr-surface, #1c1c1f)',
+              color: 'var(--clr-text)', boxSizing: 'border-box',
+            }}
+          />
+          {!revealed && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
+              <button onClick={submitFill} disabled={!fillInput.trim()} style={{
+                padding: '10px 22px', borderRadius: 6, background: 'var(--clr-accent, #2ea043)',
+                color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.95rem',
+                opacity: fillInput.trim() ? 1 : 0.5,
+              }}>Check</button>
+            </div>
+          )}
+        </>
+      )}
+
+      {revealed && (
+        <>
+          <div style={{
+            marginTop: 16, padding: 16, borderRadius: 8,
+            background: isCorrect ? 'rgba(46,160,67,0.15)' : 'rgba(248,81,73,0.15)',
+            border: `1px solid ${isCorrect ? 'rgba(46,160,67,0.45)' : 'rgba(248,81,73,0.45)'}`,
+            fontSize: '1rem', lineHeight: 1.9,
+          }}>
+            <strong>{isCorrect ? '✅ Correct!' : '❌ Not quite.'}</strong>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+              <strong>Answer:</strong>
+              <span>{currentQ.kind === 'mcq'
+                ? ch2RenderMath(currentQ.options[currentQ.correct])
+                : ch2RenderMath(String(currentQ.answer))}</span>
+            </div>
+            {currentQ.solution && (
+              <div style={{ marginTop: 8, opacity: 0.9, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                <strong>Working:</strong>
+                <span>{ch2RenderMath(currentQ.solution)}</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, justifyContent: 'center' }}>
+            <button onClick={advance} style={{
+              padding: '12px 28px', borderRadius: 8, background: 'var(--clr-accent, #2ea043)',
+              color: 'white', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: 600,
+            }}>
+              {qIdx + 1 === lesson.questions.length ? 'Finish lesson →' : 'Next →'}
+            </button>
+            <span style={{ fontSize: '0.85rem', opacity: 0.65 }}>
+              auto-advance in {autoCountdown}s · or press <kbd style={{ padding: '1px 6px', border: '1px solid var(--clr-border, #555)', borderRadius: 4, fontSize: '0.78rem' }}>Enter</kbd>
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+
+/* =====================================================================
+ *  Chapter3App — Cambridge IGCSE Chapter 3 (Lines, Angles and Shapes)
+ *
+ *  Mounted at /chapter3. Same UX as Chapter5App+: ordered chain of
+ *  lessons, every one unlocked from the start, slider to jump questions,
+ *  MCQ with 1-9 keys + fill-in fallbacks, 5s auto-advance, completed
+ *  lessons go green, wrong answers appended to END of playList.
+ *  See Tenali/skills/igcse-chapter/SKILL.md for the full pattern.
+ *
+ *  Naming and measuring angles; angles on a line, around a point, vertically opposite; parallel lines and transversal angle pairs; triangles (types and angle sum); quadrilaterals; polygon interior/exterior angle sums; circle parts. See uploads PDF p. 83-116 (book ch. 3).
+ * ===================================================================== */
+
+const CH3_OPTION_LABEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
 function ch3_seededShuffle(n, key) {
   let h = 2166136261
   for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) }
@@ -38258,7 +39701,443 @@ function ch3RenderMath(text) {
 
 const CH3_AUTO_ADVANCE_MS = 5000
 
-function Chapter3App({ onBack }) { return null; }
+function Chapter3App({ onBack }) {
+  const [progress, setProgress] = useState(ch3_loadProgress)
+  const [activeId, setActiveId] = useState(null)
+  const [phase, setPhase] = useState('teach')
+  const [qIdx, setQIdx] = useState(0)
+  const [playList, setPlayList] = useState([])
+  const [lastWrongSrc, setLastWrongSrc] = useState(null)
+  const [selectedIdx, setSelectedIdx] = useState(null)
+  const [fillInput, setFillInput] = useState('')
+  const [revealed, setRevealed] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [autoCountdown, setAutoCountdown] = useState(0)
+  const inputRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const advanceRef = useRef(() => { })
+
+  const lesson = activeId ? CH3_LESSONS.find(l => l.id === activeId) : null
+  const currentSourceIdx = playList[qIdx]
+  const currentQ = lesson && currentSourceIdx != null ? lesson.questions[currentSourceIdx] : null
+  const isRetry = useMemo(() => {
+    if (currentSourceIdx == null) return false
+    return playList.slice(0, qIdx).includes(currentSourceIdx)
+  }, [playList, qIdx, currentSourceIdx])
+
+  const optionOrder = useMemo(() => {
+    if (!currentQ || currentQ.kind !== 'mcq') return []
+    return ch3_seededShuffle(currentQ.options.length, `${activeId}-${qIdx}-${currentSourceIdx}-${currentQ.prompt}`)
+  }, [activeId, qIdx, currentSourceIdx, currentQ])
+  const correctDisplayIdx = useMemo(() => optionOrder.indexOf(currentQ?.correct ?? -1), [optionOrder, currentQ])
+
+  useEffect(() => { ch3_saveProgress(progress) }, [progress])
+
+  useEffect(() => {
+    if (phase !== 'practice' || revealed) return
+    if (currentQ?.kind?.startsWith('fill') && inputRef.current) inputRef.current.focus()
+  }, [phase, qIdx, revealed, currentQ])
+
+  const startLesson = (id) => {
+    setActiveId(id)
+    const lessonRef = CH3_LESSONS.find(l => l.id === id)
+    const initial = Array.from({ length: lessonRef.questions.length }, (_, i) => i)
+    setPlayList(initial)
+    setLastWrongSrc(null)
+    const p = progress[id] || {}
+    if (p.teachSeen) { setPhase('practice'); setQIdx(p.qIdx || 0) }
+    else { setPhase('teach'); setQIdx(0) }
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const acknowledgeTeach = () => {
+    setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: 0 } }))
+    setPhase('practice'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setLastWrongSrc(null)
+  }
+
+  const submitFill = () => {
+    if (!currentQ) return
+    if (revealed) { advance(); return }
+    const ok = ch3_checkFill(currentQ, fillInput)
+    setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const pickMcq = (displayIdx) => {
+    if (!currentQ || revealed || currentQ.kind !== 'mcq') return
+    const optSourceIdx = optionOrder[displayIdx]
+    const ok = optSourceIdx === currentQ.correct
+    setSelectedIdx(displayIdx); setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const cancelAutoAdvance = () => {
+    if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null }
+    setAutoCountdown(0)
+  }
+
+  const advance = () => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    let workingList = playList
+    if (lastWrongSrc != null) {
+      workingList = [...playList, lastWrongSrc]
+      setPlayList(workingList)
+      setLastWrongSrc(null)
+    }
+    const next = qIdx + 1
+    if (next >= workingList.length) {
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: lesson.questions.length, completed: true } }))
+      setPhase('done')
+    } else {
+      setQIdx(next)
+      setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: Math.min(lesson.questions.length, next) } }))
+    }
+  }
+  advanceRef.current = advance
+
+  const jumpToQuestion = (i) => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    const clamped = Math.max(0, Math.min(playList.length - 1, i))
+    setQIdx(clamped); setLastWrongSrc(null)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setProgress(p => {
+      const cur = p[activeId] || {}
+      const saved = Math.max(cur.qIdx || 0, Math.min(lesson.questions.length, clamped))
+      return { ...p, [activeId]: { ...cur, teachSeen: true, qIdx: saved } }
+    })
+  }
+
+  const backToOverview = () => {
+    cancelAutoAdvance()
+    setActiveId(null); setPhase('teach'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const resetAll = () => {
+    if (!confirm('Reset all Chapter 3 progress?')) return
+    setProgress({}); ch3_saveProgress({})
+    backToOverview()
+  }
+
+  useEffect(() => {
+    if (phase !== 'practice' || !revealed) { cancelAutoAdvance(); return }
+    const total = Math.round(CH3_AUTO_ADVANCE_MS / 1000)
+    setAutoCountdown(total)
+    autoTimerRef.current = setInterval(() => {
+      setAutoCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(autoTimerRef.current); autoTimerRef.current = null
+          advanceRef.current()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null } }
+  }, [phase, revealed, qIdx, activeId])
+
+  useEffect(() => {
+    if (phase !== 'practice' || !currentQ) return
+    const onKey = (e) => {
+      if (revealed) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance() }
+        return
+      }
+      if (currentQ.kind === 'mcq') {
+        const k = e.key
+        if (/^[1-9]$/.test(k)) {
+          const i = parseInt(k, 10) - 1
+          if (i < currentQ.options.length) { e.preventDefault(); pickMcq(i) }
+        }
+      } else if (currentQ.kind?.startsWith('fill')) {
+        if (e.key === 'Enter') { e.preventDefault(); submitFill() }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, qIdx, revealed, currentQ, fillInput, optionOrder])
+
+  if (!activeId) {
+    const total = CH3_LESSONS.length
+    const done = CH3_LESSONS.filter(l => progress[l.id]?.completed).length
+    return (
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+          <button className="back-button" onClick={onBack}>← Home</button>
+          <button className="back-button" style={{ marginLeft: 'auto' }} onClick={resetAll}>Reset progress</button>
+        </div>
+        <h1 style={{ marginBottom: 4 }}>Chapter 3 — Lines, Angles and Shapes</h1>
+        <p className="subtitle" style={{ marginTop: 0 }}>
+          Cambridge IGCSE Mathematics · {done}/{total} lessons complete
+        </p>
+        <p style={{ opacity: 0.85, marginTop: 8 }}>
+          Pick the next lesson. Each one starts with a short explanation, then a stream of multiple-choice and fill-in-the-blank
+          questions — easy warm-ups first, then the actual chapter exercise problems.
+        </p>
+        <ol style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
+          {CH3_LESSONS.map((l) => {
+            const p = progress[l.id] || {}
+            const completed = p.completed
+            const inProg = !completed && (p.teachSeen || (p.qIdx || 0) > 0)
+            return (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <button
+                  onClick={() => startLesson(l.id)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '12px 14px',
+                    borderRadius: 10,
+                    borderLeft: completed ? '4px solid #2ea043' : inProg ? '4px solid #388bfd' : '1px solid var(--clr-border, #444)',
+                    borderTop: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderRight: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderBottom: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    background: completed
+                      ? 'linear-gradient(90deg, rgba(46,160,67,0.32) 0%, rgba(46,160,67,0.18) 100%)'
+                      : inProg ? 'rgba(56,139,253,0.10)' : 'var(--clr-surface, #1c1c1f)',
+                    color: 'var(--clr-text)',
+                    fontWeight: completed ? 600 : 400,
+                    cursor: 'pointer', fontSize: '0.95rem',
+                    boxShadow: completed ? '0 0 0 1px rgba(46,160,67,0.35) inset' : 'none',
+                  }}
+                >
+                  <span style={{ marginRight: 8 }}>{completed ? '✅' : inProg ? '▶' : '○'}</span>
+                  {ch3RenderMath(l.title)}
+                  {completed && (
+                    <span style={{
+                      float: 'right', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.5px',
+                      color: '#fff', background: '#2ea043', padding: '2px 8px', borderRadius: 10,
+                    }}>DONE</span>
+                  )}
+                  {p.qIdx > 0 && !completed && (
+                    <span style={{ float: 'right', fontSize: '0.8rem', opacity: 0.7 }}>{p.qIdx}/{l.questions.length}</span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    )
+  }
+
+  if (phase === 'teach') {
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2 style={{ marginBottom: 4 }}>{ch3RenderMath(lesson.title)}</h2>
+        <h3 style={{ color: 'var(--clr-accent, #6cf)', marginTop: 16 }}>{ch3RenderMath(lesson.teach.heading)}</h3>
+        {lesson.teach.body.map((para, i) => (
+          <p key={i} style={{ lineHeight: 1.7, marginBottom: 10, fontSize: '1rem' }}>{ch3RenderMath(para)}</p>
+        ))}
+        <div style={{
+          marginTop: 14, padding: 14, borderRadius: 8,
+          background: 'rgba(108,206,255,0.08)', border: '1px solid rgba(108,206,255,0.25)',
+          fontSize: '1rem', lineHeight: 1.7,
+        }}>
+          <strong>Worked example: </strong>{ch3RenderMath(lesson.teach.example)}
+        </div>
+        {lesson.qFormat && <p style={{ marginTop: 14, fontSize: '0.9rem', opacity: 0.8 }}><em>Note:</em> {lesson.qFormat}</p>}
+        <button onClick={acknowledgeTeach} style={{
+          marginTop: 18, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+          background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+        }}>I've got it — start questions →</button>
+      </div>
+    )
+  }
+
+  if (phase === 'done') {
+    const idx = CH3_LESSONS.findIndex(l => l.id === activeId)
+    const next = CH3_LESSONS[idx + 1]
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2>🎉 Lesson complete</h2>
+        <p>You finished <strong>{ch3RenderMath(lesson.title)}</strong>.</p>
+        {next ? (
+          <button onClick={() => startLesson(next.id)} style={{
+            marginTop: 12, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+            background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+          }}>Next: {ch3RenderMath(next.title)} →</button>
+        ) : (
+          <p style={{ marginTop: 16, fontSize: '1.05rem' }}>🎓 You've completed every lesson in Chapter 3.</p>
+        )}
+        <button onClick={backToOverview} style={{
+          marginTop: 12, marginLeft: 8, padding: '10px 18px', borderRadius: 8,
+          background: 'transparent', color: 'var(--clr-text)', border: '1px solid var(--clr-border, #555)', cursor: 'pointer',
+        }}>Back to lessons</button>
+      </div>
+    )
+  }
+
+  const sliderMax = Math.max(1, playList.length)
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+        <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        <button className="back-button" onClick={() => setPhase('teach')}>📖 Re-read teach</button>
+        <span style={{ marginLeft: 'auto', fontSize: '0.85rem', opacity: 0.75 }}>
+          Question {qIdx + 1} / {sliderMax}
+          {sliderMax > lesson.questions.length && (
+            <span style={{ marginLeft: 6, color: '#f0a020' }}>· {sliderMax - lesson.questions.length} retry queued</span>
+          )}
+        </span>
+      </div>
+      <h3 style={{ marginBottom: 8 }}>{ch3RenderMath(lesson.title)}</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 18, textAlign: 'right' }}>1</span>
+        <input
+          type="range"
+          min={1}
+          max={sliderMax}
+          value={qIdx + 1}
+          onChange={e => jumpToQuestion(parseInt(e.target.value, 10) - 1)}
+          aria-label="Jump to question"
+          style={{
+            flex: 1, accentColor: 'var(--clr-accent, #2ea043)',
+            cursor: 'pointer', height: 22,
+          }}
+        />
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 22 }}>{sliderMax}</span>
+      </div>
+
+      <div style={{
+        padding: '22px 24px', borderRadius: 10, background: 'var(--clr-surface, #1c1c1f)',
+        border: '1px solid var(--clr-border, #333)', marginBottom: 16,
+        fontSize: '1.25rem', lineHeight: 2.1, textAlign: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80,
+        position: 'relative',
+      }}>
+        {isRetry && (
+          <span style={{
+            position: 'absolute', top: 8, right: 12, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.5px', color: '#f0a020', background: 'rgba(240,160,32,0.15)',
+            border: '1px solid rgba(240,160,32,0.45)', padding: '2px 8px', borderRadius: 10,
+          }}>↻ RETRY</span>
+        )}
+        <span>{ch3RenderMath(currentQ.prompt)}</span>
+      </div>
+
+      {currentQ.kind === 'mcq' ? (
+        <div className="options-list">
+          {optionOrder.map((srcIdx, displayIdx) => {
+            const opt = currentQ.options[srcIdx]
+            const isSelected = selectedIdx === displayIdx
+            const isCorrectOpt = revealed && correctDisplayIdx === displayIdx
+            const isWrongPick = revealed && isSelected && !isCorrect
+            return (
+              <button
+                key={displayIdx}
+                className={`option-card ${isSelected ? 'selected' : ''} ${isCorrectOpt ? 'correct-option' : ''} ${isWrongPick ? 'wrong-option' : ''}`}
+                onClick={() => pickMcq(displayIdx)}
+                disabled={revealed}
+                style={{
+                  borderColor: isCorrectOpt ? 'var(--clr-correct, #2ea043)' : isWrongPick ? 'var(--clr-wrong, #f85149)' : undefined,
+                  background: isCorrectOpt ? 'rgba(46,160,67,0.15)' : isWrongPick ? 'rgba(248,81,73,0.15)' : undefined,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative', padding: '18px 24px', minHeight: 64,
+                  fontSize: '1.1rem', lineHeight: 1.9,
+                }}
+              >
+                <span style={{
+                  position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)',
+                  fontWeight: 700, opacity: 0.6, fontSize: '0.95rem',
+                }}>{CH3_OPTION_LABEL[displayIdx]}.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{ch3RenderMath(opt)}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <input
+            ref={inputRef}
+            type="text"
+            value={fillInput}
+            onChange={e => setFillInput(e.target.value)}
+            disabled={revealed}
+            placeholder="Your answer…"
+            autoComplete="off"
+            style={{
+              width: '100%', padding: '14px 16px', fontSize: '1.15rem', borderRadius: 8,
+              border: '1px solid var(--clr-border, #555)', textAlign: 'center',
+              background: revealed ? 'rgba(255,255,255,0.04)' : 'var(--clr-surface, #1c1c1f)',
+              color: 'var(--clr-text)', boxSizing: 'border-box',
+            }}
+          />
+          {!revealed && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
+              <button onClick={submitFill} disabled={!fillInput.trim()} style={{
+                padding: '10px 22px', borderRadius: 6, background: 'var(--clr-accent, #2ea043)',
+                color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.95rem',
+                opacity: fillInput.trim() ? 1 : 0.5,
+              }}>Check</button>
+            </div>
+          )}
+        </>
+      )}
+
+      {revealed && (
+        <>
+          <div style={{
+            marginTop: 16, padding: 16, borderRadius: 8,
+            background: isCorrect ? 'rgba(46,160,67,0.15)' : 'rgba(248,81,73,0.15)',
+            border: `1px solid ${isCorrect ? 'rgba(46,160,67,0.45)' : 'rgba(248,81,73,0.45)'}`,
+            fontSize: '1rem', lineHeight: 1.9,
+          }}>
+            <strong>{isCorrect ? '✅ Correct!' : '❌ Not quite.'}</strong>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+              <strong>Answer:</strong>
+              <span>{currentQ.kind === 'mcq'
+                ? ch3RenderMath(currentQ.options[currentQ.correct])
+                : ch3RenderMath(String(currentQ.answer))}</span>
+            </div>
+            {currentQ.solution && (
+              <div style={{ marginTop: 8, opacity: 0.9, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                <strong>Working:</strong>
+                <span>{ch3RenderMath(currentQ.solution)}</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, justifyContent: 'center' }}>
+            <button onClick={advance} style={{
+              padding: '12px 28px', borderRadius: 8, background: 'var(--clr-accent, #2ea043)',
+              color: 'white', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: 600,
+            }}>
+              {qIdx + 1 === lesson.questions.length ? 'Finish lesson →' : 'Next →'}
+            </button>
+            <span style={{ fontSize: '0.85rem', opacity: 0.65 }}>
+              auto-advance in {autoCountdown}s · or press <kbd style={{ padding: '1px 6px', border: '1px solid var(--clr-border, #555)', borderRadius: 4, fontSize: '0.78rem' }}>Enter</kbd>
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+
+/* =====================================================================
+ *  Chapter4App — Cambridge IGCSE Chapter 4 (Collecting, Organising and Displaying Data)
+ *
+ *  Mounted at /chapter4. Same UX as Chapter5App+: ordered chain of
+ *  lessons, every one unlocked from the start, slider to jump questions,
+ *  MCQ with 1-9 keys + fill-in fallbacks, 5s auto-advance, completed
+ *  lessons go green, wrong answers appended to END of playList.
+ *  See Tenali/skills/igcse-chapter/SKILL.md for the full pattern.
+ *
+ *  Types of data (categorical, discrete, continuous); collecting data with tally charts and frequency tables; bar charts; pictograms; pie charts; line graphs; stem-and-leaf diagrams; misleading graphs. See uploads PDF p. 117-154 (book ch. 4).
+ * ===================================================================== */
+
+const CH4_OPTION_LABEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
+
 function ch4_seededShuffle(n, key) {
   let h = 2166136261
   for (let i = 0; i < key.length; i++) { h ^= key.charCodeAt(i); h = Math.imul(h, 16777619) }
@@ -38616,6 +40495,435 @@ function ch4RenderMath(text) {
 
 const CH4_AUTO_ADVANCE_MS = 5000
 
+function Chapter4App({ onBack }) {
+  const [progress, setProgress] = useState(ch4_loadProgress)
+  const [activeId, setActiveId] = useState(null)
+  const [phase, setPhase] = useState('teach')
+  const [qIdx, setQIdx] = useState(0)
+  const [playList, setPlayList] = useState([])
+  const [lastWrongSrc, setLastWrongSrc] = useState(null)
+  const [selectedIdx, setSelectedIdx] = useState(null)
+  const [fillInput, setFillInput] = useState('')
+  const [revealed, setRevealed] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [autoCountdown, setAutoCountdown] = useState(0)
+  const inputRef = useRef(null)
+  const autoTimerRef = useRef(null)
+  const advanceRef = useRef(() => { })
+
+  const lesson = activeId ? CH4_LESSONS.find(l => l.id === activeId) : null
+  const currentSourceIdx = playList[qIdx]
+  const currentQ = lesson && currentSourceIdx != null ? lesson.questions[currentSourceIdx] : null
+  const isRetry = useMemo(() => {
+    if (currentSourceIdx == null) return false
+    return playList.slice(0, qIdx).includes(currentSourceIdx)
+  }, [playList, qIdx, currentSourceIdx])
+
+  const optionOrder = useMemo(() => {
+    if (!currentQ || currentQ.kind !== 'mcq') return []
+    return ch4_seededShuffle(currentQ.options.length, `${activeId}-${qIdx}-${currentSourceIdx}-${currentQ.prompt}`)
+  }, [activeId, qIdx, currentSourceIdx, currentQ])
+  const correctDisplayIdx = useMemo(() => optionOrder.indexOf(currentQ?.correct ?? -1), [optionOrder, currentQ])
+
+  useEffect(() => { ch4_saveProgress(progress) }, [progress])
+
+  useEffect(() => {
+    if (phase !== 'practice' || revealed) return
+    if (currentQ?.kind?.startsWith('fill') && inputRef.current) inputRef.current.focus()
+  }, [phase, qIdx, revealed, currentQ])
+
+  const startLesson = (id) => {
+    setActiveId(id)
+    const lessonRef = CH4_LESSONS.find(l => l.id === id)
+    const initial = Array.from({ length: lessonRef.questions.length }, (_, i) => i)
+    setPlayList(initial)
+    setLastWrongSrc(null)
+    const p = progress[id] || {}
+    if (p.teachSeen) { setPhase('practice'); setQIdx(p.qIdx || 0) }
+    else { setPhase('teach'); setQIdx(0) }
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const acknowledgeTeach = () => {
+    setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: 0 } }))
+    setPhase('practice'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setLastWrongSrc(null)
+  }
+
+  const submitFill = () => {
+    if (!currentQ) return
+    if (revealed) { advance(); return }
+    const ok = ch4_checkFill(currentQ, fillInput)
+    setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const pickMcq = (displayIdx) => {
+    if (!currentQ || revealed || currentQ.kind !== 'mcq') return
+    const optSourceIdx = optionOrder[displayIdx]
+    const ok = optSourceIdx === currentQ.correct
+    setSelectedIdx(displayIdx); setIsCorrect(ok); setRevealed(true)
+    setLastWrongSrc(ok ? null : currentSourceIdx)
+  }
+
+  const cancelAutoAdvance = () => {
+    if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null }
+    setAutoCountdown(0)
+  }
+
+  const advance = () => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    let workingList = playList
+    if (lastWrongSrc != null) {
+      workingList = [...playList, lastWrongSrc]
+      setPlayList(workingList)
+      setLastWrongSrc(null)
+    }
+    const next = qIdx + 1
+    if (next >= workingList.length) {
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: lesson.questions.length, completed: true } }))
+      setPhase('done')
+    } else {
+      setQIdx(next)
+      setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+      setProgress(p => ({ ...p, [activeId]: { ...(p[activeId] || {}), teachSeen: true, qIdx: Math.min(lesson.questions.length, next) } }))
+    }
+  }
+  advanceRef.current = advance
+
+  const jumpToQuestion = (i) => {
+    cancelAutoAdvance()
+    if (!lesson) return
+    const clamped = Math.max(0, Math.min(playList.length - 1, i))
+    setQIdx(clamped); setLastWrongSrc(null)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+    setProgress(p => {
+      const cur = p[activeId] || {}
+      const saved = Math.max(cur.qIdx || 0, Math.min(lesson.questions.length, clamped))
+      return { ...p, [activeId]: { ...cur, teachSeen: true, qIdx: saved } }
+    })
+  }
+
+  const backToOverview = () => {
+    cancelAutoAdvance()
+    setActiveId(null); setPhase('teach'); setQIdx(0)
+    setSelectedIdx(null); setFillInput(''); setRevealed(false); setIsCorrect(false)
+  }
+
+  const resetAll = () => {
+    if (!confirm('Reset all Chapter 4 progress?')) return
+    setProgress({}); ch4_saveProgress({})
+    backToOverview()
+  }
+
+  useEffect(() => {
+    if (phase !== 'practice' || !revealed) { cancelAutoAdvance(); return }
+    const total = Math.round(CH4_AUTO_ADVANCE_MS / 1000)
+    setAutoCountdown(total)
+    autoTimerRef.current = setInterval(() => {
+      setAutoCountdown(prev => {
+        if (prev <= 1) {
+          clearInterval(autoTimerRef.current); autoTimerRef.current = null
+          advanceRef.current()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+    return () => { if (autoTimerRef.current) { clearInterval(autoTimerRef.current); autoTimerRef.current = null } }
+  }, [phase, revealed, qIdx, activeId])
+
+  useEffect(() => {
+    if (phase !== 'practice' || !currentQ) return
+    const onKey = (e) => {
+      if (revealed) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); advance() }
+        return
+      }
+      if (currentQ.kind === 'mcq') {
+        const k = e.key
+        if (/^[1-9]$/.test(k)) {
+          const i = parseInt(k, 10) - 1
+          if (i < currentQ.options.length) { e.preventDefault(); pickMcq(i) }
+        }
+      } else if (currentQ.kind?.startsWith('fill')) {
+        if (e.key === 'Enter') { e.preventDefault(); submitFill() }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [phase, qIdx, revealed, currentQ, fillInput, optionOrder])
+
+  if (!activeId) {
+    const total = CH4_LESSONS.length
+    const done = CH4_LESSONS.filter(l => progress[l.id]?.completed).length
+    return (
+      <div style={{ maxWidth: 760, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 16 }}>
+          <button className="back-button" onClick={onBack}>← Home</button>
+          <button className="back-button" style={{ marginLeft: 'auto' }} onClick={resetAll}>Reset progress</button>
+        </div>
+        <h1 style={{ marginBottom: 4 }}>Chapter 4 — Collecting, Organising and Displaying Data</h1>
+        <p className="subtitle" style={{ marginTop: 0 }}>
+          Cambridge IGCSE Mathematics · {done}/{total} lessons complete
+        </p>
+        <p style={{ opacity: 0.85, marginTop: 8 }}>
+          Pick the next lesson. Each one starts with a short explanation, then a stream of multiple-choice and fill-in-the-blank
+          questions — easy warm-ups first, then the actual chapter exercise problems.
+        </p>
+        <ol style={{ listStyle: 'none', padding: 0, marginTop: 16 }}>
+          {CH4_LESSONS.map((l) => {
+            const p = progress[l.id] || {}
+            const completed = p.completed
+            const inProg = !completed && (p.teachSeen || (p.qIdx || 0) > 0)
+            return (
+              <li key={l.id} style={{ marginBottom: 8 }}>
+                <button
+                  onClick={() => startLesson(l.id)}
+                  style={{
+                    width: '100%', textAlign: 'left', padding: '12px 14px',
+                    borderRadius: 10,
+                    borderLeft: completed ? '4px solid #2ea043' : inProg ? '4px solid #388bfd' : '1px solid var(--clr-border, #444)',
+                    borderTop: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderRight: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    borderBottom: '1px solid ' + (completed ? '#2ea043' : 'var(--clr-border, #444)'),
+                    background: completed
+                      ? 'linear-gradient(90deg, rgba(46,160,67,0.32) 0%, rgba(46,160,67,0.18) 100%)'
+                      : inProg ? 'rgba(56,139,253,0.10)' : 'var(--clr-surface, #1c1c1f)',
+                    color: 'var(--clr-text)',
+                    fontWeight: completed ? 600 : 400,
+                    cursor: 'pointer', fontSize: '0.95rem',
+                    boxShadow: completed ? '0 0 0 1px rgba(46,160,67,0.35) inset' : 'none',
+                  }}
+                >
+                  <span style={{ marginRight: 8 }}>{completed ? '✅' : inProg ? '▶' : '○'}</span>
+                  {ch4RenderMath(l.title)}
+                  {completed && (
+                    <span style={{
+                      float: 'right', fontSize: '0.72rem', fontWeight: 700, letterSpacing: '0.5px',
+                      color: '#fff', background: '#2ea043', padding: '2px 8px', borderRadius: 10,
+                    }}>DONE</span>
+                  )}
+                  {p.qIdx > 0 && !completed && (
+                    <span style={{ float: 'right', fontSize: '0.8rem', opacity: 0.7 }}>{p.qIdx}/{l.questions.length}</span>
+                  )}
+                </button>
+              </li>
+            )
+          })}
+        </ol>
+      </div>
+    )
+  }
+
+  if (phase === 'teach') {
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2 style={{ marginBottom: 4 }}>{ch4RenderMath(lesson.title)}</h2>
+        <h3 style={{ color: 'var(--clr-accent, #6cf)', marginTop: 16 }}>{ch4RenderMath(lesson.teach.heading)}</h3>
+        {lesson.teach.body.map((para, i) => (
+          <p key={i} style={{ lineHeight: 1.7, marginBottom: 10, fontSize: '1rem' }}>{ch4RenderMath(para)}</p>
+        ))}
+        <div style={{
+          marginTop: 14, padding: 14, borderRadius: 8,
+          background: 'rgba(108,206,255,0.08)', border: '1px solid rgba(108,206,255,0.25)',
+          fontSize: '1rem', lineHeight: 1.7,
+        }}>
+          <strong>Worked example: </strong>{ch4RenderMath(lesson.teach.example)}
+        </div>
+        {lesson.qFormat && <p style={{ marginTop: 14, fontSize: '0.9rem', opacity: 0.8 }}><em>Note:</em> {lesson.qFormat}</p>}
+        <button onClick={acknowledgeTeach} style={{
+          marginTop: 18, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+          background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+        }}>I've got it — start questions →</button>
+      </div>
+    )
+  }
+
+  if (phase === 'done') {
+    const idx = CH4_LESSONS.findIndex(l => l.id === activeId)
+    const next = CH4_LESSONS[idx + 1]
+    return (
+      <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+        <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+          <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        </div>
+        <h2>🎉 Lesson complete</h2>
+        <p>You finished <strong>{ch4RenderMath(lesson.title)}</strong>.</p>
+        {next ? (
+          <button onClick={() => startLesson(next.id)} style={{
+            marginTop: 12, padding: '10px 18px', borderRadius: 8, fontSize: '1rem',
+            background: 'var(--clr-accent, #2ea043)', color: 'white', border: 'none', cursor: 'pointer',
+          }}>Next: {ch4RenderMath(next.title)} →</button>
+        ) : (
+          <p style={{ marginTop: 16, fontSize: '1.05rem' }}>🎓 You've completed every lesson in Chapter 4.</p>
+        )}
+        <button onClick={backToOverview} style={{
+          marginTop: 12, marginLeft: 8, padding: '10px 18px', borderRadius: 8,
+          background: 'transparent', color: 'var(--clr-text)', border: '1px solid var(--clr-border, #555)', cursor: 'pointer',
+        }}>Back to lessons</button>
+      </div>
+    )
+  }
+
+  const sliderMax = Math.max(1, playList.length)
+  return (
+    <div style={{ maxWidth: 720, margin: '0 auto', padding: '1.5rem 1rem', color: 'var(--clr-text)' }}>
+      <div style={{ display: 'flex', gap: 8, marginBottom: 12, alignItems: 'center' }}>
+        <button className="back-button" onClick={backToOverview}>← Lessons</button>
+        <button className="back-button" onClick={() => setPhase('teach')}>📖 Re-read teach</button>
+        <span style={{ marginLeft: 'auto', fontSize: '0.85rem', opacity: 0.75 }}>
+          Question {qIdx + 1} / {sliderMax}
+          {sliderMax > lesson.questions.length && (
+            <span style={{ marginLeft: 6, color: '#f0a020' }}>· {sliderMax - lesson.questions.length} retry queued</span>
+          )}
+        </span>
+      </div>
+      <h3 style={{ marginBottom: 8 }}>{ch4RenderMath(lesson.title)}</h3>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 18, textAlign: 'right' }}>1</span>
+        <input
+          type="range"
+          min={1}
+          max={sliderMax}
+          value={qIdx + 1}
+          onChange={e => jumpToQuestion(parseInt(e.target.value, 10) - 1)}
+          aria-label="Jump to question"
+          style={{
+            flex: 1, accentColor: 'var(--clr-accent, #2ea043)',
+            cursor: 'pointer', height: 22,
+          }}
+        />
+        <span style={{ fontSize: '0.78rem', opacity: 0.65, minWidth: 22 }}>{sliderMax}</span>
+      </div>
+
+      <div style={{
+        padding: '22px 24px', borderRadius: 10, background: 'var(--clr-surface, #1c1c1f)',
+        border: '1px solid var(--clr-border, #333)', marginBottom: 16,
+        fontSize: '1.25rem', lineHeight: 2.1, textAlign: 'center',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 80,
+        position: 'relative',
+      }}>
+        {isRetry && (
+          <span style={{
+            position: 'absolute', top: 8, right: 12, fontSize: '0.7rem', fontWeight: 700,
+            letterSpacing: '0.5px', color: '#f0a020', background: 'rgba(240,160,32,0.15)',
+            border: '1px solid rgba(240,160,32,0.45)', padding: '2px 8px', borderRadius: 10,
+          }}>↻ RETRY</span>
+        )}
+        <span>{ch4RenderMath(currentQ.prompt)}</span>
+      </div>
+
+      {currentQ.kind === 'mcq' ? (
+        <div className="options-list">
+          {optionOrder.map((srcIdx, displayIdx) => {
+            const opt = currentQ.options[srcIdx]
+            const isSelected = selectedIdx === displayIdx
+            const isCorrectOpt = revealed && correctDisplayIdx === displayIdx
+            const isWrongPick = revealed && isSelected && !isCorrect
+            return (
+              <button
+                key={displayIdx}
+                className={`option-card ${isSelected ? 'selected' : ''} ${isCorrectOpt ? 'correct-option' : ''} ${isWrongPick ? 'wrong-option' : ''}`}
+                onClick={() => pickMcq(displayIdx)}
+                disabled={revealed}
+                style={{
+                  borderColor: isCorrectOpt ? 'var(--clr-correct, #2ea043)' : isWrongPick ? 'var(--clr-wrong, #f85149)' : undefined,
+                  background: isCorrectOpt ? 'rgba(46,160,67,0.15)' : isWrongPick ? 'rgba(248,81,73,0.15)' : undefined,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  position: 'relative', padding: '18px 24px', minHeight: 64,
+                  fontSize: '1.1rem', lineHeight: 1.9,
+                }}
+              >
+                <span style={{
+                  position: 'absolute', left: 18, top: '50%', transform: 'translateY(-50%)',
+                  fontWeight: 700, opacity: 0.6, fontSize: '0.95rem',
+                }}>{CH4_OPTION_LABEL[displayIdx]}.</span>
+                <span style={{ display: 'inline-flex', alignItems: 'center' }}>{ch4RenderMath(opt)}</span>
+              </button>
+            )
+          })}
+        </div>
+      ) : (
+        <>
+          <input
+            ref={inputRef}
+            type="text"
+            value={fillInput}
+            onChange={e => setFillInput(e.target.value)}
+            disabled={revealed}
+            placeholder="Your answer…"
+            autoComplete="off"
+            style={{
+              width: '100%', padding: '14px 16px', fontSize: '1.15rem', borderRadius: 8,
+              border: '1px solid var(--clr-border, #555)', textAlign: 'center',
+              background: revealed ? 'rgba(255,255,255,0.04)' : 'var(--clr-surface, #1c1c1f)',
+              color: 'var(--clr-text)', boxSizing: 'border-box',
+            }}
+          />
+          {!revealed && (
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center' }}>
+              <button onClick={submitFill} disabled={!fillInput.trim()} style={{
+                padding: '10px 22px', borderRadius: 6, background: 'var(--clr-accent, #2ea043)',
+                color: 'white', border: 'none', cursor: 'pointer', fontSize: '0.95rem',
+                opacity: fillInput.trim() ? 1 : 0.5,
+              }}>Check</button>
+            </div>
+          )}
+        </>
+      )}
+
+      {revealed && (
+        <>
+          <div style={{
+            marginTop: 16, padding: 16, borderRadius: 8,
+            background: isCorrect ? 'rgba(46,160,67,0.15)' : 'rgba(248,81,73,0.15)',
+            border: `1px solid ${isCorrect ? 'rgba(46,160,67,0.45)' : 'rgba(248,81,73,0.45)'}`,
+            fontSize: '1rem', lineHeight: 1.9,
+          }}>
+            <strong>{isCorrect ? '✅ Correct!' : '❌ Not quite.'}</strong>
+            <div style={{ marginTop: 8, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+              <strong>Answer:</strong>
+              <span>{currentQ.kind === 'mcq'
+                ? ch4RenderMath(currentQ.options[currentQ.correct])
+                : ch4RenderMath(String(currentQ.answer))}</span>
+            </div>
+            {currentQ.solution && (
+              <div style={{ marginTop: 8, opacity: 0.9, display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6 }}>
+                <strong>Working:</strong>
+                <span>{ch4RenderMath(currentQ.solution)}</span>
+              </div>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 14, justifyContent: 'center' }}>
+            <button onClick={advance} style={{
+              padding: '12px 28px', borderRadius: 8, background: 'var(--clr-accent, #2ea043)',
+              color: 'white', border: 'none', cursor: 'pointer', fontSize: '1rem', fontWeight: 600,
+            }}>
+              {qIdx + 1 === lesson.questions.length ? 'Finish lesson →' : 'Next →'}
+            </button>
+            <span style={{ fontSize: '0.85rem', opacity: 0.65 }}>
+              auto-advance in {autoCountdown}s · or press <kbd style={{ padding: '1px 6px', border: '1px solid var(--clr-border, #555)', borderRadius: 4, fontSize: '0.78rem' }}>Enter</kbd>
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+/* =====================================================================
+ *  TenthApp — Index of all 24 Cambridge IGCSE Mathematics chapters
+ *
+ *  Mounted at /tenth. A single landing page that links to /chapter1
+ *  through /chapter24 with a one-line description of each chapter,
+ *  grouped by the textbook's six Units.
+ * ===================================================================== */
 
 const TENTH_UNITS = [
   {
@@ -38674,7 +40982,6 @@ const TENTH_UNITS = [
   },
 ]
 
-function Chapter4App({ onBack }) { return null; }
 function TenthApp({ onBack }) {
   const { user } = useAuth()
   return (
@@ -38762,6 +41069,31 @@ function TenthApp({ onBack }) {
     </div>
   )
 }
+
+const isStage3Completed = (topicKey, completedTopics) => {
+  if (!completedTopics || !Array.isArray(completedTopics)) return false;
+  if (completedTopics.includes(topicKey)) return true;
+  return completedTopics.includes(`${topicKey}-easy`) &&
+    completedTopics.includes(`${topicKey}-medium`) &&
+    completedTopics.includes(`${topicKey}-hard`);
+};
+
+const getTopicBadgeType = (topicKey, completedTopicsList) => {
+  if (!completedTopicsList || !Array.isArray(completedTopicsList)) return 'topic_blue';
+  if (completedTopicsList.includes(`${topicKey}-extrahard`) || completedTopicsList.includes(`${topicKey}-hard`) || completedTopicsList.includes(`${topicKey}-adaptive`)) {
+    return 'topic_gold';
+  }
+  if (completedTopicsList.includes(`${topicKey}-medium`)) {
+    return 'topic_silver';
+  }
+  if (completedTopicsList.includes(`${topicKey}-easy`)) {
+    return 'topic_bronze';
+  }
+  if (completedTopicsList.includes(`${topicKey}-started`)) {
+    return 'topic_blue';
+  }
+  return 'topic_blue';
+};
 
 function ComicAdditionApp({ onBack }) {
   const [started, setStarted] = useState(false)
@@ -39877,18 +42209,131 @@ function BalanceScaleApp({ onBack }) {
   )
 }
 
+
 function App() {
   // Currently selected quiz mode (null = home menu, or key like 'gk', 'addition', etc.)
-  const [mode, setMode] = useState(null)
-  // Tracks if the active practice session should show the Goal Selector UI
+  const [mode, setMode] = useState(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('mode') || null;
+    } catch {
+      return null;
+    }
+  })
+
+  // Synchronize browser URL query parameters dynamically with the active mode state
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const currentMode = params.get('mode');
+      if (mode) {
+        if (currentMode !== mode) {
+          window.history.replaceState({}, '', `/?mode=${mode}`);
+        }
+      } else {
+        if (currentMode) {
+          window.history.replaceState({}, '', '/');
+        }
+      }
+    } catch (e) {
+      console.error('Failed to sync URL mode:', e);
+    }
+  }, [mode]);
+
+  const { user } = useAuth()
+  const [completedTopics, setCompletedTopics] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('tenali-completed-topics') || '[]') } catch { return [] }
+  })
+  const [goldMastery, setGoldMastery] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('tenali-gold-mastery') || '[]') } catch { return [] }
+  })
+  const [coins, setCoins] = useState(() => {
+    try { return parseInt(localStorage.getItem('tenali-coins') || '0', 10) } catch { return 0 }
+  })
+  const [totalSolved, setTotalSolved] = useState(() => {
+    try { return parseInt(localStorage.getItem('tenali-total-solved') || '0', 10) } catch { return 0 }
+  })
+  const [streak, setStreak] = useState(() => {
+    try { return parseInt(localStorage.getItem('tenali-streak') || '0', 10) } catch { return 0 }
+  })
+  const [celebrationQueue, setCelebrationQueue] = useState([])
+  const [transferTopic, setTransferTopic] = useState(null)
+  const syncTimeoutRef = useRef(null)
+
+  // Journey & Goal states from upstream
   const [isGoalMode, setIsGoalMode] = useState(false)
   const [journeyContext, setJourneyContext] = useState(null)
   const [activeTopicId, setActiveTopicId] = useState('arithmetic_basics')
   const [progressData, setProgressData] = useState(null)
   const [showTour, setShowTour] = useState(() => localStorage.getItem('tenali_tour_seen') !== 'true')
 
+  // Sync progress with backend on mount & whenever user changes
   useEffect(() => {
     const fetchProgress = async () => {
+      const token = localStorage.getItem('tenali-auth-token')
+      if (!token) return
+      try {
+        const r = await fetch(`${API}/api/progress`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        if (r.ok) {
+          const data = await r.json()
+          if (data) {
+            setCompletedTopics(data.completedTopics || [])
+            setGoldMastery(data.goldMastery || [])
+            setCoins(data.coins || 0)
+            setTotalSolved(data.totalSolved || 0)
+            setStreak(data.streak || 0)
+            localStorage.setItem('tenali-completed-topics', JSON.stringify(data.completedTopics || []))
+            localStorage.setItem('tenali-gold-mastery', JSON.stringify(data.goldMastery || []))
+            localStorage.setItem('tenali-coins', String(data.coins || 0))
+            localStorage.setItem('tenali-total-solved', String(data.totalSolved || 0))
+            localStorage.setItem('tenali-streak', String(data.streak || 0))
+
+            if (data.newlyCompleted && data.newlyCompleted.length > 0) {
+              const serverEnqueues = [];
+              data.newlyCompleted.forEach(colId => {
+                const displayName = colId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+                const defaultBadgeTypes = {
+                  'counting-critters': 'dino',
+                  'arithmetic-basics': 'trophy',
+                  'fraction-explorer': 'feast',
+                  'geometry-master': 'wizard',
+                  'division-detective': 'detective',
+                  'time-traveler': 'rocket',
+                  'data-detective': 'chest',
+                  'algebra-alchemist': 'flask',
+                  'pythagoras-path': 'shield',
+                  'trig-treasure': 'crown'
+                };
+                const bType = defaultBadgeTypes[colId] || 'trophy';
+                serverEnqueues.push({
+                  title: "Album Completed!",
+                  badgeType: bType,
+                  level: "gold",
+                  message: `Congratulations! You have completed the ${displayName} Collection and unlocked the Gold Album Badge!`
+                });
+              });
+              if (serverEnqueues.length > 0) {
+                setCelebrationQueue(prev => [...prev, ...serverEnqueues]);
+              }
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Failed to sync progress with backend:', e)
+      }
+    }
+    fetchProgress()
+
+    const handleAuthChange = () => fetchProgress()
+    window.addEventListener('tenali-auth-change', handleAuthChange)
+    return () => window.removeEventListener('tenali-auth-change', handleAuthChange)
+  }, [user])
+
+  // Upstream journey progress sync
+  useEffect(() => {
+    const fetchJourneyProgress = async () => {
       const API = import.meta.env.VITE_API_BASE_URL || '';
       try {
         const token = localStorage.getItem('tenali-token');
@@ -39903,30 +42348,223 @@ function App() {
         console.error('Failed to fetch progress', err);
       }
     };
-    fetchProgress();
+    fetchJourneyProgress();
   }, []);
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const hashMode = window.location.hash.slice(1)
-      setMode(hashMode || null)
+  const syncProgressToServer = (newCompleted, newGold, newCoins, newSolved, newStreak) => {
+    let localCompleted = [];
+    try { localCompleted = JSON.parse(localStorage.getItem('tenali-completed-topics') || '[]') } catch { }
+    let localGold = [];
+    try { localGold = JSON.parse(localStorage.getItem('tenali-gold-mastery') || '[]') } catch { }
+    let localCoins = 0;
+    try { localCoins = parseInt(localStorage.getItem('tenali-coins') || '0', 10) } catch { }
+    let localSolved = 0;
+    try { localSolved = parseInt(localStorage.getItem('tenali-total-solved') || '0', 10) } catch { }
+    let localStreak = 0;
+    try { localStreak = parseInt(localStorage.getItem('tenali-streak') || '0', 10) } catch { }
+
+    const finalCompleted = newCompleted || localCompleted;
+    const finalGold = newGold || localGold;
+    const finalCoins = newCoins !== undefined ? newCoins : localCoins;
+    const finalSolved = newSolved !== undefined ? newSolved : localSolved;
+    const finalStreak = newStreak !== undefined ? newStreak : localStreak;
+
+    // Check for new unlocks locally
+    const enqueues = [];
+
+    // 1. Topic Badge unlocks/upgrades
+    const newlyUnlockedKeys = finalCompleted.filter(k => !completedTopics.includes(k));
+    newlyUnlockedKeys.forEach(k => {
+      if (k.endsWith('-started')) {
+        const topicKey = k.replace('-started', '');
+        const displayName = topicKey.charAt(0).toUpperCase() + topicKey.slice(1);
+        enqueues.push({
+          title: "Badge Unlocked!",
+          badgeType: "topic",
+          level: "blue",
+          message: `Congratulations! You have unlocked the ${displayName} Blue badge for starting the ${displayName} learning module.`
+        });
+      } else if (k.endsWith('-easy')) {
+        const topicKey = k.replace('-easy', '');
+        const displayName = topicKey.charAt(0).toUpperCase() + topicKey.slice(1);
+        enqueues.push({
+          title: "Badge Upgraded!",
+          badgeType: "topic",
+          level: "bronze",
+          message: `Congratulations! You have unlocked the ${displayName} Bronze badge for completing the Easy difficulty in the ${displayName} quiz.`
+        });
+      } else if (k.endsWith('-medium')) {
+        const topicKey = k.replace('-medium', '');
+        const displayName = topicKey.charAt(0).toUpperCase() + topicKey.slice(1);
+        enqueues.push({
+          title: "Badge Upgraded!",
+          badgeType: "topic",
+          level: "silver",
+          message: `Congratulations! You have unlocked the ${displayName} Silver badge for completing the Medium difficulty in the ${displayName} quiz.`
+        });
+      } else if (k.endsWith('-hard') || k.endsWith('-gold')) {
+        const topicKey = k.replace(/-hard|-gold/, '');
+        const displayName = topicKey.charAt(0).toUpperCase() + topicKey.slice(1);
+        enqueues.push({
+          title: "Badge Upgraded!",
+          badgeType: "topic",
+          level: "gold",
+          message: `Congratulations! You have unlocked the ${displayName} Gold badge for completing the Hard difficulty in the ${displayName} quiz.`
+        });
+      }
+    });
+
+    // 2. Streak milestones
+    if (streak < 3 && finalStreak >= 3) {
+      enqueues.push({
+        title: "Streak Milestone!",
+        badgeType: "streak_3",
+        level: "",
+        message: "Congratulations! You have unlocked the 3-Day Streak badge for maintaining an active learning streak for 3 consecutive days."
+      });
     }
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [])
+    if (streak < 7 && finalStreak >= 7) {
+      enqueues.push({
+        title: "Streak Milestone!",
+        badgeType: "streak_7",
+        level: "",
+        message: "Congratulations! You have unlocked the 7-Day Streak badge for maintaining an active learning streak for 7 consecutive days."
+      });
+    }
+    if (streak < 15 && finalStreak >= 15) {
+      enqueues.push({
+        title: "Streak Milestone!",
+        badgeType: "streak_15",
+        level: "",
+        message: "Congratulations! You have unlocked the 15-Day Streak badge for maintaining an active learning streak for 15 consecutive days."
+      });
+    }
+    if (streak < 30 && finalStreak >= 30) {
+      enqueues.push({
+        title: "Streak Milestone!",
+        badgeType: "streak_30",
+        level: "",
+        message: "Congratulations! You have unlocked the 30-Day Streak badge for maintaining an active learning streak for 30 consecutive days."
+      });
+    }
+
+    if (enqueues.length > 0) {
+      setCelebrationQueue(prev => [...prev, ...enqueues]);
+    }
+
+    if (syncTimeoutRef.current) clearTimeout(syncTimeoutRef.current);
+    syncTimeoutRef.current = setTimeout(async () => {
+      const token = localStorage.getItem('tenali-auth-token');
+      if (!token) return;
+      try {
+        const response = await fetch(`${API}/api/progress`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            completedTopics: finalCompleted,
+            goldMastery: finalGold,
+            coins: finalCoins,
+            totalSolved: finalSolved,
+            streak: finalStreak
+          })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          // Update coins/streak if the server returned updated values
+          if (data.coins !== undefined) {
+            setCoins(data.coins);
+            localStorage.setItem('tenali-coins', String(data.coins));
+          }
+          if (data.streak !== undefined) {
+            setStreak(data.streak);
+            localStorage.setItem('tenali-streak', String(data.streak));
+          }
+          if (data.newlyCompleted && data.newlyCompleted.length > 0) {
+            const serverEnqueues = [];
+            data.newlyCompleted.forEach(colId => {
+              const displayName = colId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+              const defaultBadgeTypes = {
+                'counting-critters': 'dino',
+                'arithmetic-basics': 'trophy',
+                'fraction-explorer': 'feast',
+                'geometry-master': 'wizard',
+                'division-detective': 'detective',
+                'time-traveler': 'rocket',
+                'data-detective': 'chest',
+                'algebra-alchemist': 'flask',
+                'pythagoras-path': 'shield',
+                'trig-treasure': 'crown'
+              };
+              const bType = defaultBadgeTypes[colId] || 'trophy';
+              serverEnqueues.push({
+                title: "Album Completed!",
+                badgeType: bType,
+                level: "gold",
+                message: `Congratulations! You have completed the ${displayName} Collection and unlocked the Gold Album Badge!`
+              });
+            });
+            if (serverEnqueues.length > 0) {
+              setCelebrationQueue(prev => [...prev, ...serverEnqueues]);
+            }
+          }
+        }
+      } catch (e) {
+        console.error('Sync to server failed:', e);
+      }
+    }, 1000);
+  };
+
+  const markTopicCompleted = (topicKey, difficulty = '') => {
+    const targetKey = difficulty ? `${topicKey}-${difficulty}` : topicKey;
+    if (completedTopics.includes(targetKey)) return;
+    let next = [...completedTopics, targetKey];
+    const startedKey = `${topicKey}-started`;
+    if (!next.includes(startedKey)) {
+      next.push(startedKey);
+    }
+    setCompletedTopics(next);
+    syncProgressToServer(next, goldMastery, coins);
+  };
+
+  const markGoldMastery = (topicKey) => {
+    if (goldMastery.includes(topicKey)) return;
+    const next = [...goldMastery, topicKey];
+    setGoldMastery(next);
+    syncProgressToServer(completedTopics, next, coins);
+  };
+
+  const updateCoins = (amount) => {
+    const next = Math.max(0, coins + amount);
+    setCoins(next);
+    syncProgressToServer(completedTopics, goldMastery, next);
+  };
 
   useEffect(() => {
-    const currentHash = window.location.hash.slice(1)
-    if (mode === null) {
-      if (currentHash !== '') {
-        window.history.pushState(null, '', window.location.pathname)
-      }
-    } else {
-      if (currentHash !== mode) {
-        window.history.pushState(null, '', `#${mode}`)
-      }
-    }
-  }, [mode])
+    window.tenaliIncrementSolved = (amount) => {
+      setTotalSolved(prev => {
+        const next = prev + amount;
+        localStorage.setItem('tenali-total-solved', String(next));
+
+        let nextCompleted = completedTopics;
+        if (amount > 0 && mode && mode !== 'gk' && mode !== 'vocab' && mode !== 'randommix' && mode !== 'custom' && mode !== 'gym') {
+          const startedKey = `${mode}-started`;
+          if (!completedTopics.includes(startedKey)) {
+            nextCompleted = [...completedTopics, startedKey];
+            setCompletedTopics(nextCompleted);
+          }
+        }
+
+        syncProgressToServer(nextCompleted, goldMastery, coins, next);
+        return next;
+      });
+    };
+    return () => {
+      delete window.tenaliIncrementSolved;
+    };
+  }, [completedTopics, goldMastery, coins, totalSolved, mode]);
 
 
   // Sync current mode to window global for QuizLayoutExtension
@@ -39964,9 +42602,88 @@ function App() {
    */
   const toggleTheme = () => setTheme(t => t === 'dark' ? 'light' : 'dark')
 
+  // Helper to render celebration modal
+  const renderCelebrationModal = () => {
+    if (!celebrationQueue || celebrationQueue.length === 0) return null;
+    const active = celebrationQueue[0];
+
+    const dismissCelebration = () => {
+      setCelebrationQueue(prev => prev.slice(1));
+    };
+
+    // Confetti particles generator (40 random floating pieces)
+    const renderConfetti = () => {
+      return Array.from({ length: 40 }).map((_, idx) => {
+        const left = Math.random() * 100;
+        const delay = Math.random() * 2;
+        const duration = Math.random() * 2 + 1.5;
+        const size = Math.random() * 10 + 6;
+        const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444'];
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        return (
+          <div
+            key={idx}
+            className="confetti-piece"
+            style={{
+              left: `${left}%`,
+              animationDelay: `${delay}s`,
+              animationDuration: `${duration}s`,
+              backgroundColor: color,
+              width: `${size}px`,
+              height: `${size}px`,
+              transform: `rotate(${Math.random() * 360}deg)`
+            }}
+          />
+        );
+      });
+    };
+
+    return (
+      <div className="celebration-overlay" onClick={dismissCelebration}>
+        {renderConfetti()}
+        <div className="celebration-card" onClick={e => e.stopPropagation()}>
+          <h2 className="celebration-title">{active.title}</h2>
+          <div className="celebration-badge-container">
+            <BadgeIcon type={active.badgeType} size={150} level={active.level} />
+          </div>
+          <p className="celebration-text">
+            {active.message}
+          </p>
+          <p className="celebration-subtext" style={{ fontSize: '0.85rem', opacity: 0.72, marginTop: '8px', color: 'var(--clr-text-soft)', fontWeight: '500', lineHeight: '1.4' }}>
+            Go to profile to see your achievements and keep learning to earn more badges
+          </p>
+          <button className="celebration-btn" onClick={dismissCelebration} style={{ marginTop: '16px' }}>
+            Awesome!
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   // ========== ROUTING: URL-BASED (STUDENT PAGES) ==========
   // Check if current URL matches a specific student page
   const pathname = window.location.pathname.replace(/\/$/, '').toLowerCase()
+
+
+
+  // Route: /profile
+  if (pathname === '/profile') {
+    return (
+      <div className="app-shell">
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <div className="card">
+          <AuthGate>
+            <div style={{ position: 'relative' }}>
+              <ProfileShowcase completedTopics={completedTopics} onSelectTopic={(topicKey) => { window.location.href = `/?mode=${topicKey}` }} />
+            </div>
+          </AuthGate>
+        </div>
+        {renderCelebrationModal()}
+      </div>
+    )
+  }
 
   // Route: /tables → Generic 5-level scaffolded tables app
   if (pathname === '/tables') {
@@ -41271,6 +43988,19 @@ function App() {
   const ActiveApp = mode && mode !== 'goalpractice' ? modeMap[mode] : null
 
   const renderContent = () => {
+    if (mode === 'transfer') {
+      return (
+        <TransferChallengeApp
+          topicKey={transferTopic}
+          onBack={() => { setMode(null); setTransferTopic(null); }}
+          completedTopics={completedTopics}
+          goldMastery={goldMastery}
+          markGoldMastery={markGoldMastery}
+          updateCoins={updateCoins}
+        />
+      );
+    }
+
     if (mode === 'learning_journey') {
       return (
         <AuthGate>
@@ -41333,6 +44063,13 @@ function App() {
     if (ActiveApp) {
       const element = (
         <ActiveApp
+          completedTopics={completedTopics}
+          goldMastery={goldMastery}
+          markTopicCompleted={markTopicCompleted}
+          markGoldMastery={markGoldMastery}
+          updateCoins={updateCoins}
+          setMode={setMode}
+          setTransferTopic={setTransferTopic}
           onBack={journeyContext ? async () => {
             const isCompleted = !!document.querySelector('.final-score');
             if (isCompleted) {
@@ -41393,6 +44130,7 @@ function App() {
           {renderContent()}
         </div>
       )}
+      {renderCelebrationModal()}
     </div>
   )
 }
@@ -41405,12 +44143,10 @@ function App() {
  * @param {Object} props
  * @param {Function} props.onSelect - Callback when user selects a quiz: receives mode key (e.g., 'gk')
  */
-function Home({ onSelect, isGoalSelection = false, onBack }) {
+function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isGoalSelection = false, onBack }) {
   const [showAbout, setShowAbout] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [search, setSearch] = useState('')
-
-  // Special featured apps (shown in hamburger menu)
   const featuredApps = [
     { key: 'randommix', name: 'Random Mix', subtitle: 'Adaptive cross-topic quiz', color: 'featured' },
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
@@ -41642,7 +44378,7 @@ function Home({ onSelect, isGoalSelection = false, onBack }) {
                 background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
                 fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'
               }} onMouseEnter={e => e.target.style.background = 'var(--clr-hover-strong)'}
-                 onMouseLeave={e => e.target.style.background = 'none'}>
+                onMouseLeave={e => e.target.style.background = 'none'}>
                 <strong style={{ color: 'var(--clr-accent)' }}>{app.name}</strong>
                 <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>{app.subtitle}</span>
               </button>
@@ -41707,15 +44443,725 @@ function Home({ onSelect, isGoalSelection = false, onBack }) {
         />
       </div>
       <div id="tour-home-grid" className="menu-grid" ref={gridRef}>
-        {displayGridApps.map((app) => (
-          <button key={app.key} className={`menu-card ${app.color}`} onClick={() => onSelect(app.key)}>
-            <span className="menu-title">{app.name}</span>
-            <span className="menu-subtitle">{app.subtitle}</span>
-          </button>
-        ))}
+        {displayGridApps.map((app) => {
+          const isGold = goldMastery && goldMastery.includes(app.key)
+          const isCompleted = isStage3Completed(app.key, completedTopics)
+          return (
+            <button key={app.key} className={`menu-card ${isGold ? 'gold-card' : app.color}`} onClick={() => onSelect(app.key)}>
+              <span className="menu-title">
+                {app.name}
+                {isGold && <span className="badge-indicator">🥇</span>}
+                {!isGold && isCompleted && <span className="badge-indicator">✅</span>}
+              </span>
+              <span className="menu-subtitle">{app.subtitle}</span>
+            </button>
+          )
+        })}
       </div>
       <div className="grid-dimension">{rows} × {cols}</div>
     </>
+  )
+}
+
+export function getTopicBadgeLevel(topicKey, completedTopics = []) {
+  if (!completedTopics || !Array.isArray(completedTopics)) return 'locked';
+  if (completedTopics.includes(`${topicKey}-hard`) || completedTopics.includes(`${topicKey}-gold`)) {
+    return 'gold';
+  }
+  if (completedTopics.includes(`${topicKey}-medium`)) {
+    return 'silver';
+  }
+  if (completedTopics.includes(`${topicKey}-easy`)) {
+    return 'bronze';
+  }
+  if (completedTopics.includes(`${topicKey}-started`)) {
+    return 'blue';
+  }
+  return 'locked';
+}
+
+function BadgeIcon({ type, size = 64, locked = false, level = '' }) {
+  const colorFilter = locked ? 'grayscale(1) opacity(0.55)' : 'none';
+
+  const badgeMap = {
+    'counting-critters': 'dino',
+    'arithmetic-basics': 'trophy',
+    'fraction-explorer': 'feast',
+    'geometry-master': 'wizard',
+    'division-detective': 'detective',
+    'time-traveler': 'rocket',
+    'data-detective': 'chest',
+    'algebra-alchemist': 'flask',
+    'pythagoras-path': 'shield',
+    'trig-treasure': 'crown'
+  };
+
+  const mappedType = badgeMap[type] || type;
+  const imagePath = mappedType === 'topic'
+    ? `/badges/topic_${(level && level !== 'locked') ? level : 'blue'}.png`
+    : `/badges/${mappedType}.png`;
+  const levelClass = level ? `badge-level-${level}` : '';
+
+  return (
+    <div
+      className={`badge-icon-container ${locked ? 'badge-locked' : 'badge-unlocked'} ${levelClass}`}
+      style={{
+        width: size,
+        height: size,
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        filter: colorFilter,
+        position: 'relative'
+      }}
+    >
+      <img
+        src={imagePath}
+        alt={type}
+        style={{
+          width: '85%',
+          height: '85%',
+          objectFit: 'contain',
+          display: 'block'
+        }}
+        onError={(e) => {
+          e.target.src = '/badges/trophy.png';
+        }}
+      />
+    </div>
+  );
+}
+
+const TOPIC_DISPLAY_NAMES = {
+  'decimals': 'Decimals',
+  'rounding': 'Rounding',
+  'addition': 'Addition',
+  'basicarith': 'Basic Arithmetic',
+  'fractionadd': 'Fraction Addition',
+  'ratio': 'Ratios & Proportions',
+  'angles': 'Angles',
+  'triangles': 'Triangles',
+  'multiply': 'Multiplication',
+  'hcflcm': 'HCF & LCM',
+  'sdt': 'Speed, Distance & Time',
+  'variation': 'Variation & Rates',
+  'stats': 'Statistics',
+  'prob': 'Probability',
+  'lineareq': 'Linear Equations',
+  'lineq': 'Line Equation',
+  'pythag': "Pythagoras' Theorem",
+  'polygons': 'Polygons',
+  'trig': 'Trigonometry',
+  'coordgeom': 'Coordinate Geometry',
+  'percent': 'Percentages'
+};
+
+const getTopicDisplayName = (key) => {
+  if (!key) return '';
+  return TOPIC_DISPLAY_NAMES[key] || (key.charAt(0).toUpperCase() + key.slice(1));
+};
+
+function AchievementCollections({ completedTopics = [], onSelectTopic }) {
+  const [data, setData] = useState(null)
+  const [selectedBook, setSelectedBook] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  const fetchCollections = async () => {
+    const token = localStorage.getItem('tenali-auth-token')
+    if (!token) return
+    try {
+      const r = await fetch(`${API}/api/collections/progress`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (r.ok) {
+        const res = await r.json()
+        setData(res.collections)
+      }
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchCollections()
+  }, [])
+
+  if (loading) {
+    return <div className="loading-screen">Opening the Collector Bookshelf...</div>
+  }
+
+  return (
+    <div className="bookshelf-container">
+      <h2 className="bookshelf-title">My Collector Bookshelf</h2>
+      <p className="bookshelf-subtitle">Complete all topics in a book to earn a shiny Gold Album Badge!</p>
+
+      <div className="bookshelf-grid">
+        {data && data.map(book => {
+          const isDone = book.completed;
+          return (
+            <div key={book.collectionId} className={`book-card ${book.badgeType}-theme ${!isDone ? 'book-locked' : 'book-unlocked'}`} onClick={() => setSelectedBook(book)}>
+              {/* Central Large Badge Hero Section */}
+              <div className="book-badge-hero">
+                <div className="book-badge-aura" />
+                <div className="book-badge-icon">
+                  <BadgeIcon type={book.badgeType} size={180} locked={!isDone} level={isDone ? 'gold' : ''} />
+                </div>
+              </div>
+
+              {/* Card Details Section */}
+              <div className="book-details-body">
+                <h3 className="book-title">{book.name}</h3>
+                <div style={{ display: 'flex', justifyContent: 'center', margin: '6px 0 12px 0' }}>
+                  <span className="book-badge-difficulty">{book.difficulty}</span>
+                </div>
+                <p className="book-desc">
+                  {book.description}
+                  <span className="book-desc-modules">
+                    <br />
+                    <strong>Learning Modules:</strong> {book.topics.map(t => TOPIC_DISPLAY_NAMES[t.topicKey] || t.topicKey).join(', ')}
+                  </span>
+                </p>
+
+                <div className="book-progress-wrapper">
+                  <div className="book-progress-text">
+                    <span>Progress</span>
+                    <strong>{book.completedCount} / {book.totalTopics} ({book.percentage}%)</strong>
+                  </div>
+                  <div className="book-progress-bar-bg">
+                    <div className="book-progress-bar-fill" style={{ width: `${book.percentage}%` }}></div>
+                  </div>
+                </div>
+
+                {!isDone && book.nextTopic && (
+                  <button className="book-next-btn" onClick={(e) => {
+                    e.stopPropagation();
+                    if (typeof onSelectTopic === 'function') {
+                      onSelectTopic(book.nextTopic);
+                    }
+                  }}>
+                    Play Next: {getTopicDisplayName(book.nextTopic)}
+                  </button>
+                )}
+                {isDone && <div className="book-complete-tag">Completed</div>}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {selectedBook && (
+        <div className="book-modal-overlay" onClick={() => setSelectedBook(null)}>
+          <div className="book-modal-content" onClick={e => e.stopPropagation()}>
+            <button className="book-modal-close" onClick={() => setSelectedBook(null)}>✕</button>
+            <h2 className="book-modal-title">{selectedBook.name}</h2>
+            <p className="book-modal-desc">{selectedBook.description}</p>
+
+            <div className="book-pages">
+              <div className="book-page left-page">
+                <h3>Topics Checklist</h3>
+                <div className="topics-list-detailed">
+                  {selectedBook.topics.map(topic => {
+                    const level = getTopicBadgeLevel(topic.topicKey, completedTopics);
+                    const isStartedOrCompleted = level !== 'locked';
+                    return (
+                      <div key={topic.topicKey} className={`topic-row-check ${topic.completed ? 'completed' : isStartedOrCompleted ? 'completed' : 'locked'}`} onClick={() => {
+                        setSelectedBook(null);
+                        onSelectTopic(topic.topicKey);
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', marginRight: '4px' }}>
+                          <BadgeIcon type="trophy" level={level} size={32} locked={level === 'locked'} />
+                        </div>
+                        <div className="topic-text-info">
+                          <span className="topic-check-name">{getTopicDisplayName(topic.topicKey)}</span>
+                          <span className="topic-check-status">
+                            {level === 'gold' ? 'Gold Mastery!' : level === 'silver' ? 'Silver Complete!' : level === 'bronze' ? 'Bronze Complete!' : level === 'blue' ? 'Practice Started!' : 'Click to start practice'}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="book-page right-page">
+                <h3>Collection Badge</h3>
+                <div className="badge-showcase-large">
+                  <BadgeIcon type={selectedBook.badgeType} size={150} locked={!selectedBook.completed} level={selectedBook.completed ? 'gold' : ''} />
+                  <h4>{selectedBook.completed ? 'Unlocked' : 'Locked'}</h4>
+                  <p>{selectedBook.completed ? 'You earned the Gold Album Badge!' : 'Master all topics on the left to unlock!'}</p>
+                  {selectedBook.completed && (
+                    <div className="gold-ribbon-tag">ALBUM COMPLETED</div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ProfileShowcase({ completedTopics = [], onSelectTopic }) {
+  const [profile, setProfile] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [collectionsProgress, setCollectionsProgress] = useState([])
+  const [selectedSection, setSelectedSection] = useState('bookshelf')
+  const [activeBadgeDetail, setActiveBadgeDetail] = useState(null)
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [sectionExpanded, setSectionExpanded] = useState(false)
+  const [showcaseExpanded, setShowcaseExpanded] = useState(true)
+
+  const dropdownRef = useRef(null)
+
+  // Dynamically compute the badges in the inventory based on collections progress and completed topics
+  const inventory = useMemo(() => {
+    const allBadges = [];
+    if (!collectionsProgress || collectionsProgress.length === 0) return [];
+
+    // A. Album Badges
+    collectionsProgress.forEach(col => {
+      allBadges.push({
+        badgeId: col.collectionId,
+        name: col.name,
+        badgeType: col.badgeType,
+        type: 'collection',
+        locked: !col.completed,
+        requirement: `Complete all topics in the "${col.name}" album.`,
+        description: col.description
+      })
+    })
+
+    // B. Topic Badges
+    const addedTopics = new Set()
+    collectionsProgress.forEach(col => {
+      col.topics.forEach(topic => {
+        if (!addedTopics.has(topic.topicKey)) {
+          addedTopics.add(topic.topicKey)
+          const level = getTopicBadgeLevel(topic.topicKey, completedTopics)
+          const topicName = getTopicDisplayName(topic.topicKey)
+          allBadges.push({
+            badgeId: topic.topicKey,
+            name: topicName,
+            badgeType: 'topic',
+            type: 'topic',
+            locked: level === 'locked',
+            requirement: `Complete Easy difficulty or start practice in the "${topicName}" quiz.`,
+            description: `Practice and master the "${topicName}" quiz to upgrade this badge from Blue to Gold!`
+          })
+        }
+      })
+    })
+
+    // C. Dynamically add custom topics not part of collections.json (e.g. Percentages)
+    if (completedTopics && Array.isArray(completedTopics)) {
+      completedTopics.forEach(tKey => {
+        const baseTopicKey = tKey.replace(/-(easy|medium|hard|gold|started|adaptive|extrahard)$/, '');
+        if (baseTopicKey && !addedTopics.has(baseTopicKey)) {
+          addedTopics.add(baseTopicKey);
+          const level = getTopicBadgeLevel(baseTopicKey, completedTopics);
+          if (level !== 'locked') {
+            const topicName = getTopicDisplayName(baseTopicKey);
+            allBadges.push({
+              badgeId: baseTopicKey,
+              name: topicName,
+              badgeType: 'topic',
+              type: 'topic',
+              locked: false,
+              requirement: `Complete Easy difficulty or start practice in the "${topicName}" quiz.`,
+              description: `Practice and master the "${topicName}" quiz to upgrade this badge from Blue to Gold!`
+            });
+          }
+        }
+      });
+    }
+
+    // D. Streak Badges
+    const userStreak = profile ? profile.streak : 0
+    const streaksConfig = [
+      { days: 3, id: 'streak_3', name: '3-Day Streak' },
+      { days: 7, id: 'streak_7', name: '7-Day Streak' },
+      { days: 15, id: 'streak_15', name: '15-Day Streak' },
+      { days: 30, id: 'streak_30', name: '30-Day Streak' }
+    ]
+    streaksConfig.forEach(s => {
+      allBadges.push({
+        badgeId: s.id,
+        name: s.name,
+        badgeType: s.id,
+        type: 'streak',
+        locked: userStreak < s.days,
+        requirement: `Maintain a consecutive active practice streak of at least ${s.days} days.`,
+        description: `Awarded for logging in and solving quizzes for ${s.days} consecutive days!`
+      })
+    })
+
+    return allBadges;
+  }, [collectionsProgress, completedTopics, profile]);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    if (!dropdownOpen) return
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [dropdownOpen])
+
+  const fetchProfileAndBadges = async () => {
+    const token = localStorage.getItem('tenali-auth-token')
+    if (!token) return
+    try {
+      // 1. Fetch Profile Info
+      const profileRes = await fetch(`${API}/api/profile/showcase`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      let profileData = null
+      if (profileRes.ok) {
+        profileData = await profileRes.json()
+        setProfile(profileData)
+      }
+
+      // 2. Fetch Collections Progress to build the full badge inventory
+      const progressRes = await fetch(`${API}/api/collections/progress`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      if (progressRes.ok) {
+        const progressData = await progressRes.json()
+        setCollectionsProgress(progressData.collections || [])
+      }
+    } catch (e) {
+      console.error('Failed to load profile details & badges:', e)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    fetchProfileAndBadges()
+  }, [])
+
+  const unlockedBadges = useMemo(() => {
+    const rawUnlocked = inventory.filter(b => !b.locked);
+    const getSortScore = (badge) => {
+      if (badge.type === 'collection') return 1;
+      if (badge.type === 'topic') {
+        const lvl = getTopicBadgeLevel(badge.badgeId, completedTopics);
+        if (lvl === 'gold')   return 2;
+        if (lvl === 'silver') return 4;
+        if (lvl === 'bronze') return 5;
+        if (lvl === 'blue')   return 6;
+      }
+      if (badge.type === 'streak') return 3;
+      return 7;
+    };
+    return [...rawUnlocked].sort((a, b) => {
+      const diff = getSortScore(a) - getSortScore(b);
+      if (diff !== 0) return diff;
+      return a.name.localeCompare(b.name);
+    });
+  }, [inventory, completedTopics]);
+
+  if (loading) {
+    return <div className="loading-screen">Opening Profile Showcase...</div>
+  }
+
+  const lockedTopics = inventory.filter(b => b.type === 'topic' && (b.locked || getTopicBadgeLevel(b.badgeId, completedTopics) !== 'gold'))
+  const lockedStreaks = inventory.filter(b => b.type === 'streak' && b.locked)
+
+  return (
+    <div className="profile-container">
+      <h2 className="profile-title">{profile ? profile.username.toUpperCase() : 'STUDENT'}'S CORNER</h2>
+
+      {/* Gamified Stats Section */}
+      <div className="gamified-stats-section" style={{ marginBottom: '32px' }}>
+        {/* Streak Pod */}
+        <div className="dashboard-stat-pod streak-pod">
+          <div className="fire-flame-wrapper">🔥</div>
+          <span className="dashboard-stat-val">{profile ? profile.streak : 0}</span>
+          <span className="dashboard-stat-lbl">Day Streak</span>
+        </div>
+
+        {/* Topics Mastered Pod */}
+        <div className="dashboard-stat-pod mastery-pod">
+          <div className="stat-icon-wrapper">👑</div>
+          <span className="dashboard-stat-val">{profile ? profile.masteryCount : 0}</span>
+          <span className="dashboard-stat-lbl">Topics Mastered</span>
+        </div>
+
+        {/* Questions Solved Pod */}
+        <div className="dashboard-stat-pod solved-pod">
+          <div className="stat-icon-wrapper">⭐</div>
+          <span className="dashboard-stat-val">{profile ? profile.totalSolved : 0}</span>
+          <span className="dashboard-stat-lbl">Solved Questions</span>
+        </div>
+      </div>
+
+      {/* My Badges Cabinet Section */}
+      <div className="my-badges-section">
+        <button
+          className={`collapsible-header-btn ${!showcaseExpanded ? 'collapsed' : ''}`}
+          onClick={() => setShowcaseExpanded(!showcaseExpanded)}
+          type="button"
+        >
+          <span style={{ fontSize: '1.3rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>My Badges Showcase</span>
+          <span className="collapsible-chevron" style={{ transform: showcaseExpanded ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}>▼</span>
+        </button>
+
+        {showcaseExpanded && (
+          <div style={{ marginTop: '20px' }}>
+            {unlockedBadges.length === 0 ? (
+              <div className="empty-badges-card">
+                <span style={{ fontSize: '2.5rem' }}>🏆</span>
+                <p>You haven't unlocked any badges yet. Start solving quizzes to earn your first badge!</p>
+              </div>
+            ) : (
+              <div className="unlocked-badges-grid">
+                {unlockedBadges.map(badge => {
+                  const itemLevel = badge.type === 'collection'
+                    ? 'gold'
+                    : badge.type === 'topic'
+                      ? getTopicBadgeLevel(badge.badgeId, completedTopics)
+                      : '';
+                  return (
+                    <div
+                      key={badge.badgeId}
+                      className={`unlocked-badge-card level-${itemLevel}`}
+                      title={`${badge.name}: ${badge.description}`}
+                      onClick={() => setActiveBadgeDetail({ ...badge, level: itemLevel, isLocked: false })}
+                    >
+                      <div className="unlocked-badge-aura" />
+                      <BadgeIcon
+                        type={badge.badgeType}
+                        size={64}
+                        level={itemLevel}
+                      />
+                      <span className="unlocked-badge-name">{badge.name}</span>
+                      <span className="unlocked-badge-type-tag">{badge.type}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Badges Yet to Receive Collapsible Section */}
+      <div className="yet-to-receive-section" style={{ marginTop: '32px' }}>
+        <button
+          className={`collapsible-header-btn ${!sectionExpanded ? 'collapsed' : ''}`}
+          onClick={() => setSectionExpanded(!sectionExpanded)}
+          type="button"
+        >
+          <span style={{ fontSize: '1.3rem', fontWeight: 800, fontFamily: 'var(--font-display)' }}>Badges Yet to Receive</span>
+          <span className="collapsible-chevron" style={{ transform: sectionExpanded ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}>▼</span>
+        </button>
+
+        {sectionExpanded && (
+          <div className="collapsible-content-wrapper" style={{ marginTop: '20px' }}>
+            {/* Custom Interactive Dropdown Menu */}
+            <div className="yet-to-receive-dropdown-container" ref={dropdownRef}>
+              <button
+                className={`yet-to-receive-trigger ${dropdownOpen ? 'open' : ''}`}
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                type="button"
+              >
+                <div className="trigger-content">
+                  <div className="trigger-text-wrapper">
+                    <span className="trigger-lbl">Show Category</span>
+                    <span className="trigger-val">
+                      {selectedSection === 'bookshelf' && '📚 Collector Bookshelf'}
+                      {selectedSection === 'mastery' && '👑 Topic Mastery'}
+                      {selectedSection === 'streaks' && '🔥 Daily Check-in'}
+                    </span>
+                  </div>
+                </div>
+                <span className="trigger-chevron">{dropdownOpen ? '▲' : '▼'}</span>
+              </button>
+
+              {dropdownOpen && (
+                <div className="yet-to-receive-dropdown-menu">
+                  <button
+                    className={`menu-item ${selectedSection === 'bookshelf' ? 'active' : ''}`}
+                    onClick={() => { setSelectedSection('bookshelf'); setDropdownOpen(false); }}
+                    type="button"
+                  >
+                    <span className="item-icon">📚</span>
+                    <div className="item-text">
+                      <strong>Collector Bookshelf</strong>
+                      <span>Progress through albums and unlock custom visual books</span>
+                    </div>
+                  </button>
+                  <button
+                    className={`menu-item ${selectedSection === 'mastery' ? 'active' : ''}`}
+                    onClick={() => { setSelectedSection('mastery'); setDropdownOpen(false); }}
+                    type="button"
+                  >
+                    <span className="item-icon">👑</span>
+                    <div className="item-text">
+                      <strong>Topic Mastery</strong>
+                      <span>Master math topics to upgrade your badges from blue to gold</span>
+                    </div>
+                  </button>
+                  <button
+                    className={`menu-item ${selectedSection === 'streaks' ? 'active' : ''}`}
+                    onClick={() => { setSelectedSection('streaks'); setDropdownOpen(false); }}
+                    type="button"
+                  >
+                    <span className="item-icon">🔥</span>
+                    <div className="item-text">
+                      <strong>Daily Check-in</strong>
+                      <span>Solve quizzes consecutively to earn streak milestones</span>
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Display Active Shelf Section */}
+            {selectedSection === 'bookshelf' ? (
+              <AchievementCollections completedTopics={completedTopics} onSelectTopic={onSelectTopic} />
+            ) : (
+              <div className="unlocked-badges-grid">
+                {selectedSection === 'mastery' && (
+                  <>
+                    {lockedTopics.length === 0 ? (
+                      <div className="empty-section-card" style={{ gridColumn: '1 / -1', width: '100%', textAlign: 'center', padding: '32px' }}>
+                        🎉 Awesome! You have unlocked Gold Mastery on all topics!
+                      </div>
+                    ) : (
+                      lockedTopics.map(item => {
+                        const itemLevel = getTopicBadgeLevel(item.badgeId, completedTopics);
+                        return (
+                          <div
+                            key={item.badgeId}
+                            className={`unlocked-badge-card locked-badge-card level-${itemLevel}`}
+                            title={`${item.name}: ${item.requirement}`}
+                            onClick={() => setActiveBadgeDetail({ ...item, level: itemLevel, isLocked: true })}
+                          >
+                            <div className="badge-lock-overlay-icon">🔒</div>
+                            <BadgeIcon type={item.badgeType} size={64} level={itemLevel} locked={true} />
+                            <span className="unlocked-badge-name">{item.name}</span>
+                            <span className="unlocked-badge-type-tag">{item.type}</span>
+                          </div>
+                        );
+                      })
+                    )}
+                  </>
+                )}
+
+                {selectedSection === 'streaks' && (
+                  <>
+                    {lockedStreaks.length === 0 ? (
+                      <div className="empty-section-card" style={{ gridColumn: '1 / -1', width: '100%', textAlign: 'center', padding: '32px' }}>
+                        🎉 Outstanding! You have unlocked all streak milestone badges!
+                      </div>
+                    ) : (
+                      lockedStreaks.map(item => (
+                        <div
+                          key={item.badgeId}
+                          className="unlocked-badge-card locked-badge-card"
+                          title={`${item.name}: ${item.requirement}`}
+                          onClick={() => setActiveBadgeDetail({ ...item, level: '', isLocked: true })}
+                        >
+                          <div className="badge-lock-overlay-icon">🔒</div>
+                          <BadgeIcon type={item.badgeType} size={64} locked={true} />
+                          <span className="unlocked-badge-name">{item.name}</span>
+                          <span className="unlocked-badge-type-tag">{item.type}</span>
+                        </div>
+                      ))
+                    )}
+                  </>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="profile-timeline-section" style={{ marginTop: '32px' }}>
+        <h3>Journey Milestones</h3>
+        <div className="timeline-trail">
+          {profile && profile.timeline && profile.timeline.map((item, idx) => {
+            const dateStr = new Date(item.date).toLocaleDateString('en-IN', {
+              day: 'numeric',
+              month: 'short',
+              year: 'numeric'
+            });
+            return (
+              <div key={idx} className="timeline-node">
+                <div className="timeline-marker">
+                  {item.type === 'system' ? '●' : '★'}
+                </div>
+                <div className="timeline-info">
+                  <span className="timeline-date">{dateStr}</span>
+                  <strong className="timeline-event">{item.event}</strong>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Interactive Badge Detail Overlay */}
+      {activeBadgeDetail && (
+        <div className="badge-detail-overlay" onClick={() => setActiveBadgeDetail(null)}>
+          <div className="badge-detail-modal" onClick={e => e.stopPropagation()}>
+            <button className="badge-detail-close" onClick={() => setActiveBadgeDetail(null)}>✕</button>
+
+            <div className="badge-detail-hero">
+              <div className={`badge-detail-aura level-${activeBadgeDetail.level}`} style={{ background: activeBadgeDetail.isLocked ? '#e11d48' : '' }} />
+              <BadgeIcon
+                type={activeBadgeDetail.badgeType}
+                size={110}
+                level={activeBadgeDetail.level}
+                locked={activeBadgeDetail.isLocked}
+              />
+              {activeBadgeDetail.isLocked && (
+                <div style={{ position: 'absolute', fontSize: '2.5rem', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textShadow: '0 4px 8px rgba(0,0,0,0.5)' }}>🔒</div>
+              )}
+            </div>
+
+            <h2 className="badge-detail-title">{activeBadgeDetail.name}</h2>
+            <span className="badge-detail-tag" style={{ background: activeBadgeDetail.isLocked ? 'rgba(225, 29, 72, 0.15)' : '', borderColor: activeBadgeDetail.isLocked ? '#e11d48' : '', color: activeBadgeDetail.isLocked ? '#f43f5e' : '' }}>
+              {activeBadgeDetail.isLocked ? 'Locked ' : ''}{activeBadgeDetail.type} Badge
+            </span>
+
+            <p className="badge-detail-desc">{activeBadgeDetail.description}</p>
+
+            {activeBadgeDetail.isLocked ? (
+              <div className="badge-detail-requirement">
+                <strong>How to Unlock:</strong>
+                <p style={{ marginBottom: activeBadgeDetail.type === 'topic' ? '14px' : '0' }}>{activeBadgeDetail.requirement}</p>
+                {activeBadgeDetail.type === 'topic' && (
+                  <button
+                    className="book-next-btn"
+                    style={{ width: '100%', display: 'block' }}
+                    onClick={() => {
+                      setActiveBadgeDetail(null);
+                      onSelectTopic(activeBadgeDetail.badgeId);
+                    }}
+                  >
+                    Go Practice: {activeBadgeDetail.name}
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="badge-detail-requirement">
+                <strong>Achievement Requirement:</strong>
+                <p>{activeBadgeDetail.requirement}</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 
@@ -43078,7 +46524,7 @@ function MixedLabApp({ onBack, selectedActivities, initialDifficulty, initialNum
  * @param {Object} props
  * @param {Function} props.onBack - Callback to return to home menu
  */
-function GKApp({ onBack, isGoalMode = false }) {
+function GKApp({ onBack, markTopicCompleted, isGoalMode = false }) {
   // Current question object: {id, question, options: [A, B, C, D], ...}
   const [question, setQuestion] = useState(null)
   // User's selected option: 'A', 'B', 'C', or 'D'
@@ -43132,6 +46578,12 @@ function GKApp({ onBack, isGoalMode = false }) {
     if (questionNumber >= totalQ) {
       fetchingRef.current = false
       setFinished(true)
+      {
+        const pass = score / totalQ >= 0.8
+        if (pass && typeof markTopicCompleted === 'function') {
+          markTopicCompleted('gk', 'easy')
+        }
+      }
       timer.reset()
       return
     }
@@ -45003,16 +48455,16 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
  * @param {Object} props
  * @param {Function} props.onBack - Callback to return to home menu
  */
-function AdditionApp({ onBack, initialMode, initialDifficulty, initialNumQuestions, initialStarted, isGoalMode = false }) {
+function AdditionApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, setTransferTopic, setMode, initialMode, initialDifficulty, initialNumQuestions, initialStarted, isGoalMode = false }) {
   // Mode selection: 'standard' (default), 'counting' (Visual Counting), 'scale' (Balance Scale)
   const [additionMode, setAdditionMode] = useState(initialMode || 'standard')
-
   // Difficulty level: 'easy' (1-digit), 'medium' (2-digit), 'hard' (3-digit), 'extrahard' (4-digit)
   const [difficulty, setDifficulty] = useState(initialDifficulty || 'easy')
   // Adaptive mode enabled?
   const [isAdaptive, setIsAdaptive] = useState(false)
   // Adaptive score (0-3)
   const [adaptScore, setAdaptScore] = useState(0)
+
   const adaptScoreRef = useRef(0)
   // User-entered number of questions to attempt
   const [numQuestions, setNumQuestions] = useState(initialNumQuestions || String(DEFAULT_TOTAL))
@@ -45049,6 +48501,15 @@ function AdditionApp({ onBack, initialMode, initialDifficulty, initialNumQuestio
   // Timer for response timing
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+
+  useEffect(() => {
+    if (finished) {
+      const pass = score / totalQ >= 0.8
+      if (pass && markTopicCompleted) {
+        markTopicCompleted('addition', isAdaptive ? 'adaptive' : difficulty)
+      }
+    }
+  }, [finished, score, totalQ, markTopicCompleted])
 
   // Drag & Drop Visual Counting state
   const [sourceItems, setSourceItems] = useState([])
@@ -45429,6 +48890,31 @@ const fetchQuestion = async (selectedDifficulty = difficulty) => {
             Start Quiz
           </button>
         </div>
+        {isStage3Completed('addition', completedTopics) && (
+          <div className="transfer-cta-box" style={{ marginTop: '20px', padding: '16px', background: 'var(--clr-hover, rgba(255,255,255,0.03))', borderRadius: '10px', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>
+              {goldMastery.includes('addition') ? (
+                <>🥇 You have achieved Gold Mastery for this topic!</>
+              ) : (
+                <>🎉 You have completed Stage 3 Practice for this topic!</>
+              )}
+            </p>
+            <button
+              className="btn-transfer-cta"
+              onClick={() => {
+                if (setTransferTopic) setTransferTopic('addition')
+                if (setMode) setMode('transfer')
+              }}
+              style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              {goldMastery.includes('addition') ? (
+                <>🔄 Revisit Transfer Challenge (Stage 4) 🥇</>
+              ) : (
+                <>🚀 Start Transfer Challenge (Stage 4) 🥇</>
+              )}
+            </button>
+          </div>
+        )}
       </div>
     )
   }
@@ -46557,7 +50043,7 @@ function GymQuiz({ title, subtitle, typeKeys, welcomeText, algebraInput, onBack 
  * @param {Object} props
  * @param {Function} props.onBack - Callback to return to home menu
  */
-function BasicArithApp({ onBack, isGoalMode = false }) {
+function BasicArithApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, setTransferTopic, setMode, isGoalMode = false }) {
   // Difficulty level: 'easy', 'medium', 'hard', 'extrahard'
   const [difficulty, setDifficulty] = useState('easy')
   // Adaptive mode enabled?
@@ -46600,6 +50086,15 @@ function BasicArithApp({ onBack, isGoalMode = false }) {
   // Timer
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+
+  useEffect(() => {
+    if (finished) {
+      const pass = score / totalQ >= 0.8
+      if (pass && markTopicCompleted) {
+        markTopicCompleted('basicarith', isAdaptive ? 'adaptive' : difficulty)
+      }
+    }
+  }, [finished, score, totalQ, markTopicCompleted, isAdaptive, difficulty])
 
   const effectiveDiff = () => (isAdaptive) ? adaptiveLevel(adaptScoreRef.current) : difficulty
 
@@ -47986,7 +51481,7 @@ function VisualMathApp({ onBack }) {
   )
 }
 
-function MultiplyApp({ onBack }) {
+function MultiplyApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, setTransferTopic, setMode, isGoalMode = false }) {
   // --- Persistent state ---
   const [stats, setStats] = useState(() => loadMultStats())
   // --- Phase: 'picker' (level chooser) | 'level2-setup' (weak-table picker) |
@@ -48027,6 +51522,21 @@ function MultiplyApp({ onBack }) {
   const l3TimerRef = useRef(null)
   const l3DeadlineRef = useRef(0)
   const timer = useTimer()
+
+  useEffect(() => {
+    if (phase === 'finished') {
+      const pass = results.length > 0 && (score / results.length >= 0.8)
+      if (pass && markTopicCompleted) {
+        if (level === 1) {
+          markTopicCompleted('multiply', 'easy')
+        } else if (level === 2) {
+          markTopicCompleted('multiply', 'medium')
+        } else if (level === 3) {
+          markTopicCompleted('multiply', 'hard')
+        }
+      }
+    }
+  }, [phase, score, results.length, level, markTopicCompleted])
 
   // ─── Helpers ──────────────────────────────────────────────────────────
   const nextQuestion = (planArr, index) => {
@@ -49164,10 +52674,355 @@ function makeMCQuizApp({ title, subtitle, apiPath, diffLabels, tip, adaptiveOnly
   }
 }
 
-function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, answerField, topicKey }) {
-  return function GeneratedQuizApp({ onBack, initialDifficulty, initialNumQuestions, initialStarted, isGoalMode = false }) {
+/**
+ * TransferChallengeApp Component (Feature AC: Learning Transfer Challenges)
+ * Presents untimed, contextual word problems to students who have achieved Stage 3 mastery.
+ * Complete 2 challenges to earn Gold Mastery badge and +75 Sun Coins.
+ */
+function TransferChallengeApp({ topicKey, onBack, completedTopics, goldMastery, updateCoins, markGoldMastery }) {
+  const [started, setStarted] = useState(false)
+  const [finished, setFinished] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [question, setQuestion] = useState(null)
+  const [answer, setAnswer] = useState('')
+  const [questionNumber, setQuestionNumber] = useState(0)
+  const [totalQ] = useState(2)
+  const [feedback, setFeedback] = useState('')
+  const [isCorrect, setIsCorrect] = useState(null)
+  const [revealed, setRevealed] = useState(false)
+  const [hintsUsed, setHintsUsed] = useState(0)
+  const [showHintLevel, setShowHintLevel] = useState(0)
+  const [explanation, setExplanation] = useState('')
+  const [transferMapping, setTransferMapping] = useState('')
+  const [results, setResults] = useState([])
+  const [goldMasteryEarned, setGoldMasteryEarned] = useState(false)
+
+  const timer = useTimer()
+  const submittedRef = useRef(false)
+  const advancedRef = useRef(false)
+
+  const topicTitles = {
+    percent: 'Percentages',
+    ratio: 'Ratio & Proportion',
+    fractionadd: 'Fraction Addition'
+  }
+
+  const loadQuestion = async () => {
+    setLoading(true)
+    try {
+      const headers = {}
+      const token = localStorage.getItem('tenali-auth-token')
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const res = await fetch(`${API}/transfer-api/question?topic=${topicKey}`, { headers })
+      const data = await res.json()
+
+      setQuestion(data)
+      setAnswer('')
+      setFeedback('')
+      setIsCorrect(null)
+      setRevealed(false)
+      setShowHintLevel(0)
+      setHintsUsed(0)
+      setExplanation('')
+      setTransferMapping('')
+      submittedRef.current = false
+      advancedRef.current = false
+      timer.start()
+    } catch (e) {
+      console.error('Failed to load transfer challenge question:', e)
+    }
+    setLoading(false)
+  }
+
+  const startChallenge = () => {
+    setQuestionNumber(1)
+    setResults([])
+    setStarted(true)
+    setFinished(false)
+    setGoldMasteryEarned(false)
+    submittedRef.current = false
+    advancedRef.current = false
+  }
+
+  useEffect(() => {
+    if (started && !finished && questionNumber > 0) {
+      loadQuestion()
+    }
+  }, [started, questionNumber])
+
+  const handleSubmit = async () => {
+    if (!question || revealed || !answer.trim()) return
+    if (submittedRef.current) return
+    submittedRef.current = true
+    const timeTaken = timer.stop()
+
+    const payload = {
+      topic: topicKey,
+      scenarioId: question.scenarioId,
+      variables: question.variables,
+      userAnswer: answer.trim(),
+      hintsUsed,
+      timeSpentSeconds: timeTaken
+    }
+
+    try {
+      const headers = { 'Content-Type': 'application/json' }
+      const token = localStorage.getItem('tenali-auth-token')
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`
+      }
+
+      const res = await fetch(`${API}/transfer-api/check`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify(payload)
+      })
+      const data = await res.json()
+
+      setIsCorrect(data.correct)
+      setRevealed(true)
+      setExplanation(data.explanation || '')
+      setTransferMapping(data.transferMapping || '')
+
+      const isAllCorrect = (questionNumber === totalQ) && results.every(r => r.correct) && data.correct
+
+      if (data.correct) {
+        setFeedback(`Correct! Expected: ${data.answer}`)
+      } else {
+        setFeedback(`Incorrect. Expected: ${data.answer}`)
+      }
+
+      setResults(prev => [...prev, {
+        prompt: question.prompt,
+        userAnswer: answer.trim(),
+        correctAnswer: data.answer,
+        correct: data.correct,
+        time: timeTaken
+      }])
+
+      if (isAllCorrect) {
+        markGoldMastery(topicKey)
+        updateCoins(150)
+        setGoldMasteryEarned(true)
+      }
+    } catch (e) {
+      submittedRef.current = false
+      console.error('Failed to submit transfer challenge answer:', e)
+    }
+  }
+
+  const advance = () => {
+    if (advancedRef.current) return
+    advancedRef.current = true
+    if (questionNumber >= totalQ) {
+      setFinished(true)
+    } else {
+      setQuestionNumber(n => n + 1)
+    }
+  }
+
+  const getHint = () => {
+    if (showHintLevel >= 3) return
+    const nextLevel = showHintLevel + 1
+    setShowHintLevel(nextLevel)
+
+    if (nextLevel > 1) {
+      setHintsUsed(prev => prev + 1)
+    }
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      if (!revealed) {
+        handleSubmit()
+      } else {
+        advance()
+      }
+    }
+  }
+
+  const contextIcons = {
+    shopping: '🛒',
+    sports: '🏏',
+    cooking: '🍕',
+    travel: '🚂',
+    pocketmoney: '🪙'
+  }
+
+  const getTopicTitle = () => {
+    if (topicTitles[topicKey]) return topicTitles[topicKey]
+    // Clean and capitalize key (e.g. hcf_lcm -> Hcf lcm, trig -> Trig)
+    return topicKey.charAt(0).toUpperCase() + topicKey.slice(1).replace(/_/g, ' ')
+  }
+
+  return (
+    <QuizLayout
+      title={`Transfer Challenge: ${getTopicTitle()}`}
+      subtitle="Apply your knowledge to real-world problems!"
+      onBack={onBack}
+      timer={started && !finished ? timer : null}
+    >
+      {!started && !finished && (
+        <div className="welcome-box">
+          <p className="welcome-text">
+            Test whether you can apply your math skills to real-world scenarios.
+            Earn your <strong>Gold Mastery Badge 🥇</strong>!
+          </p>
+          <div className="transfer-header" style={{ maxWidth: '400px', margin: '0 auto 20px' }}>
+            <h2>Ready to transfer?</h2>
+            <p>Complete {totalQ} challenges with no time limit.</p>
+          </div>
+          <button className="btn-transfer-cta" onClick={startChallenge}>
+            Start Challenge 🥇
+          </button>
+        </div>
+      )}
+
+      {started && !finished && (
+        <>
+          <div className="transfer-header">
+            <h2>Challenge {questionNumber} of {totalQ}</h2>
+            <div className="transfer-progress-bar-container">
+              <div
+                className="transfer-progress-bar"
+                style={{ width: `${(questionNumber - 1) * 50}%` }}
+              />
+            </div>
+          </div>
+
+          {question && (
+            <div className="transfer-card">
+              <div className="transfer-context-badge">
+                <span>{contextIcons[question.context] || '💡'}</span>
+                <span>{question.context}</span>
+              </div>
+              <div className="transfer-prompt">{question.prompt}</div>
+
+              {!revealed && (
+                <div style={{ margin: '15px 0', display: 'flex', justifyContent: 'center', gap: '8px' }}>
+                  <button
+                    onClick={getHint}
+                    disabled={showHintLevel >= 3}
+                    style={{
+                      background: 'transparent',
+                      border: '1.5px solid var(--clr-accent)',
+                      color: 'var(--clr-accent)',
+                      padding: '6px 14px',
+                      borderRadius: '8px',
+                      cursor: 'pointer',
+                      fontSize: '0.85rem'
+                    }}
+                  >
+                    💡 Hint Level {showHintLevel + 1}
+                  </button>
+                </div>
+              )}
+
+              {showHintLevel > 0 && question.hints && (
+                <div style={{
+                  background: 'var(--clr-hover, rgba(255,255,255,0.03))',
+                  border: '1px solid var(--clr-border)',
+                  padding: '12px 16px',
+                  borderRadius: '8px',
+                  margin: '12px 0',
+                  textAlign: 'left',
+                  fontSize: '0.9rem'
+                }}>
+                  <strong style={{ color: 'var(--clr-accent)' }}>Hint Level {showHintLevel}:</strong>
+                  <p style={{ margin: '6px 0 0' }}>
+                    {showHintLevel === 1 && (question.hints[0] || question.hints.level1)}
+                    {showHintLevel === 2 && (question.hints[1] || question.hints.level2)}
+                    {showHintLevel === 3 && (question.hints[2] || question.hints.level3)}
+                  </p>
+                </div>
+              )}
+
+              <input
+                className="answer-input"
+                type="text"
+                value={answer}
+                onChange={e => { if (!revealed) setAnswer(e.target.value) }}
+                disabled={revealed}
+                placeholder="Type your answer (e.g. 1500, 3/4)"
+                onKeyDown={handleKeyDown}
+                autoFocus
+              />
+            </div>
+          )}
+
+          {!question && loading && (
+            <div style={{ textAlign: 'center', padding: '24px', color: 'var(--clr-text-soft)' }}>
+              Loading scenario…
+            </div>
+          )}
+
+          {revealed && (
+            <div className="transfer-feedback-panel" style={{ borderLeftColor: isCorrect ? 'var(--clr-correct, #4caf50)' : 'var(--clr-wrong, #f44336)' }}>
+              <div style={{ fontWeight: 700, fontSize: '1.1rem', color: isCorrect ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
+                {isCorrect ? '✅ Well done!' : "❌ Let's review this:"}
+              </div>
+              <div className="transfer-feedback-explanation">{explanation}</div>
+              <div className="transfer-mapping-panel">
+                <strong>Conceptual Link:</strong> {transferMapping}
+              </div>
+            </div>
+          )}
+
+          <div className="button-row">
+            {!revealed ? (
+              <button onClick={handleSubmit} disabled={loading || !answer.trim()}>
+                Submit Answer
+              </button>
+            ) : (
+              <button onClick={advance}>
+                {questionNumber >= totalQ ? 'Complete Challenge' : 'Next Challenge'}
+              </button>
+            )}
+          </div>
+        </>
+      )}
+
+      {finished && (
+        <div className="welcome-box">
+          {goldMasteryEarned ? (
+            <div className="gold-badge-container">
+              <div className="gold-badge-shimmer">🥇</div>
+              <h2 style={{ marginTop: '16px', color: '#F5A623' }}>Gold Mastery Achieved!</h2>
+              <p className="welcome-text" style={{ margin: '12px 0 24px' }}>
+                Awesome transfer! You successfully solved the real-world word problems and earned your Gold Mastery Badge!
+              </p>
+            </div>
+          ) : (
+            <>
+              <p className="welcome-text" style={{ fontSize: '1.2rem', fontWeight: 600 }}>
+                You are close, try again!
+              </p>
+              <p className="welcome-text">
+                Keep practicing to unlock your Gold Mastery Badge! Review your results below.
+              </p>
+            </>
+          )}
+
+          <ResultsTable results={results} />
+
+          <button className="btn-transfer-cta" onClick={onBack}>
+            Back to Dashboard
+          </button>
+        </div>
+      )}
+    </QuizLayout>
+  )
+}
+
+function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, answerField, topicKey: customTopicKey }) {
+  return function GeneratedQuizApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, markGoldMastery, updateCoins, setMode, setTransferTopic, initialDifficulty, initialNumQuestions, initialStarted, isGoalMode = false }) {
     const diffs = Object.keys(diffLabels)
     const [difficulty, setDifficulty] = useState(initialDifficulty || diffs[0])
+    const topicKey = customTopicKey || apiPath.replace('-api', '')
     const [isAdaptive, setIsAdaptive] = useState(false)
     const [adaptScore, setAdaptScore] = useState(0) // 0.0 (easy) → 3.0 (extrahard)
     const [reportAck, setReportAck] = useState('')
@@ -49198,6 +53053,15 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
     // Guards against double-submit and double-advance race conditions
     const submittedRef = useRef(false)
     const advancedRef = useRef(false)
+
+    useEffect(() => {
+      if (finished) {
+        const pass = score / totalQ >= 0.8
+        if (pass && markTopicCompleted) {
+          markTopicCompleted(topicKey, isAdaptive ? 'adaptive' : difficulty)
+        }
+      }
+    }, [finished])
 
     const effectiveDifficulty = () => isAdaptive ? adaptiveLevel(adaptScoreRef.current) : difficulty
 
@@ -49428,6 +53292,31 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
               Start Quiz
             </button>
           </div>
+        {isStage3Completed(topicKey, completedTopics) && (
+          <div className="transfer-cta-box" style={{ marginTop: '20px', padding: '16px', background: 'var(--clr-hover, rgba(255,255,255,0.03))', borderRadius: '10px', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>
+              {goldMastery.includes(topicKey) ? (
+                <>🥇 You have achieved Gold Mastery for this topic!</>
+              ) : (
+                <>🎉 You have completed Stage 3 Practice for this topic!</>
+              )}
+            </p>
+            <button
+              className="btn-transfer-cta"
+              onClick={() => {
+                if (setTransferTopic) setTransferTopic(topicKey)
+                if (setMode) setMode('transfer')
+              }}
+              style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              {goldMastery.includes(topicKey) ? (
+                <>🔄 Revisit Transfer Challenge (Stage 4) 🥇</>
+              ) : (
+                <>🚀 Start Transfer Challenge (Stage 4) 🥇</>
+              )}
+            </button>
+          </div>
+        )}
         </div>
       )
     }
@@ -53038,7 +56927,7 @@ const loadQuestion = async () => {
 }
 
 /* ── Ratio & Proportion App ────────────────────────── */
-function RatioApp({ onBack, isGoalMode = false }) {
+function RatioApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, markGoldMastery, updateCoins, setMode, setTransferTopic, isGoalMode = false }) {
   const [difficulty, setDifficulty] = useState('easy')
   const [isAdaptive, setIsAdaptive] = useState(false)
   const [adaptScore, setAdaptScore] = useState(0)
@@ -53046,6 +56935,16 @@ function RatioApp({ onBack, isGoalMode = false }) {
   const [numQuestions, setNumQuestions] = useState(String(DEFAULT_TOTAL))
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
+
+  useEffect(() => {
+    if (finished) {
+      const pass = score / totalQ >= 0.8
+      if (pass && markTopicCompleted) {
+        markTopicCompleted('ratio', isAdaptive ? 'adaptive' : difficulty)
+      }
+    }
+  }, [finished])
+
   const [question, setQuestion] = useState(null)
   const [answer, setAnswer] = useState('')
   const [score, setScore] = useState(0)
@@ -53249,6 +57148,31 @@ const loadQuestion = async () => {
           <input className="answer-input question-count-input" type="text" value={numQuestions} onChange={e => { const v = e.target.value; if (v === '' || (/^\d+$/.test(v) && Number(v) <= 100)) setNumQuestions(v) }} />
         </div>
         <div className="button-row"><button onClick={startQuiz}>Start Quiz</button></div>
+        {isStage3Completed('ratio', completedTopics) && (
+          <div className="transfer-cta-box" style={{ marginTop: '20px', padding: '16px', background: 'var(--clr-hover, rgba(255,255,255,0.03))', borderRadius: '10px', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>
+              {goldMastery.includes('ratio') ? (
+                <>🥇 You have achieved Gold Mastery for this topic!</>
+              ) : (
+                <>🎉 You have completed Stage 3 Practice for this topic!</>
+              )}
+            </p>
+            <button
+              className="btn-transfer-cta"
+              onClick={() => {
+                if (setTransferTopic) setTransferTopic('ratio')
+                if (setMode) setMode('transfer')
+              }}
+              style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              {goldMastery.includes('ratio') ? (
+                <>🔄 Revisit Transfer Challenge (Stage 4) 🥇</>
+              ) : (
+                <>🚀 Start Transfer Challenge (Stage 4) 🥇</>
+              )}
+            </button>
+          </div>
+        )}
       </div>}
       {started && !finished && <>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.3rem' }}>
@@ -53281,7 +57205,7 @@ const loadQuestion = async () => {
 }
 
 /* ── Percentages App ────────────────────────────────── */
-function PercentApp({ onBack, isGoalMode = false }) {
+function PercentApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, markGoldMastery, updateCoins, setMode, setTransferTopic, isGoalMode = false }) {
   const [difficulty, setDifficulty] = useState('easy')
   const [isAdaptive, setIsAdaptive] = useState(false)
   const [adaptScore, setAdaptScore] = useState(0)
@@ -53289,6 +57213,16 @@ function PercentApp({ onBack, isGoalMode = false }) {
   const [numQuestions, setNumQuestions] = useState(String(DEFAULT_TOTAL))
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
+
+  useEffect(() => {
+    if (finished) {
+      const pass = score / totalQ >= 0.8
+      if (pass && markTopicCompleted) {
+        markTopicCompleted('percent', isAdaptive ? 'adaptive' : difficulty)
+      }
+    }
+  }, [finished])
+
   const [question, setQuestion] = useState(null)
   const [answer, setAnswer] = useState('')
   const [score, setScore] = useState(0)
@@ -53491,6 +57425,31 @@ const loadQuestion = async () => {
           <input className="answer-input question-count-input" type="text" value={numQuestions} onChange={e => { const v = e.target.value; if (v === '' || (/^\d+$/.test(v) && Number(v) <= 100)) setNumQuestions(v) }} />
         </div>
         <div className="button-row"><button onClick={startQuiz}>Start Quiz</button></div>
+        {isStage3Completed('percent', completedTopics) && (
+          <div className="transfer-cta-box" style={{ marginTop: '20px', padding: '16px', background: 'var(--clr-hover, rgba(255,255,255,0.03))', borderRadius: '10px', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>
+              {goldMastery.includes('percent') ? (
+                <>🥇 You have achieved Gold Mastery for this topic!</>
+              ) : (
+                <>🎉 You have completed Stage 3 Practice for this topic!</>
+              )}
+            </p>
+            <button
+              className="btn-transfer-cta"
+              onClick={() => {
+                if (setTransferTopic) setTransferTopic('percent')
+                if (setMode) setMode('transfer')
+              }}
+              style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              {goldMastery.includes('percent') ? (
+                <>🔄 Revisit Transfer Challenge (Stage 4) 🥇</>
+              ) : (
+                <>🚀 Start Transfer Challenge (Stage 4) 🥇</>
+              )}
+            </button>
+          </div>
+        )}
       </div>}
       {started && !finished && <>
         <div style={{ display: 'flex', justifyContent: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.3rem' }}>
@@ -54134,7 +58093,7 @@ const loadQuestion = async () => {
   )
 }
 
-function FractionAddApp({ onBack, isGoalMode = false }) {
+function FractionAddApp({ onBack, completedTopics = [], goldMastery = [], markTopicCompleted, markGoldMastery, updateCoins, setMode, setTransferTopic, isGoalMode = false }) {
   // ── State variables ──────────────────────────────────────────────────
   // Difficulty: 'easy' | 'medium' | 'hard' | 'extrahard'
   const [difficulty, setDifficulty] = useState('easy')
@@ -54148,6 +58107,15 @@ function FractionAddApp({ onBack, isGoalMode = false }) {
   // Quiz phase flags
   const [started, setStarted] = useState(false)
   const [finished, setFinished] = useState(false)
+
+  useEffect(() => {
+    if (finished) {
+      const pass = score / totalQ >= 0.8
+      if (pass && markTopicCompleted) {
+        markTopicCompleted('fractionadd', isAdaptive ? 'adaptive' : difficulty)
+      }
+    }
+  }, [finished])
   // Current question object from API
   const [question, setQuestion] = useState(null)
   // User's answer as a string: "3/4" or "2 3/4" for mixed numbers
@@ -54474,6 +58442,31 @@ const loadQuestion = async () => {
           <input className="answer-input question-count-input" type="text" value={numQuestions} onChange={e => { const v = e.target.value; if (v === '' || (/^\d+$/.test(v) && Number(v) <= 100)) setNumQuestions(v) }} />
         </div>
         <div className="button-row"><button onClick={startQuiz}>Start Quiz</button></div>
+        {isStage3Completed('fractionadd', completedTopics) && (
+          <div className="transfer-cta-box" style={{ marginTop: '20px', padding: '16px', background: 'var(--clr-hover, rgba(255,255,255,0.03))', borderRadius: '10px', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 12px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>
+              {goldMastery.includes('fractionadd') ? (
+                <>🥇 You have achieved Gold Mastery for this topic!</>
+              ) : (
+                <>🎉 You have completed Stage 3 Practice for this topic!</>
+              )}
+            </p>
+            <button
+              className="btn-transfer-cta"
+              onClick={() => {
+                if (setTransferTopic) setTransferTopic('fractionadd')
+                if (setMode) setMode('transfer')
+              }}
+              style={{ width: '100%', padding: '10px', background: 'linear-gradient(135deg, #FFD700, #FFA500)', color: '#000', fontWeight: 'bold', border: 'none', borderRadius: '8px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+            >
+              {goldMastery.includes('fractionadd') ? (
+                <>🔄 Revisit Transfer Challenge (Stage 4) 🥇</>
+              ) : (
+                <>🚀 Start Transfer Challenge (Stage 4) 🥇</>
+              )}
+            </button>
+          </div>
+        )}
       </div>}
 
       {/* ── Playing Phase ── */}

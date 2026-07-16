@@ -367,13 +367,34 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
                 }}
               >
                 <span className="menu-title" style={{ width: '100%' }}>{pair.title}</span>
-                <span className="menu-subtitle" style={{ minHeight: 'unset', marginTop: '8px', fontSize: '0.78rem' }}>
+                <span className="menu-subtitle" style={{ minHeight: 'unset', marginTop: '12px', display: 'block' }}>
                   {isCompleted ? (
-                    <span style={{ color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      padding: '6px 14px',
+                      borderRadius: '20px',
+                      background: 'rgba(92, 184, 122, 0.1)',
+                      color: 'var(--clr-correct)',
+                      fontWeight: '600',
+                      fontSize: '0.8rem',
+                      border: '1.5px solid rgba(92, 184, 122, 0.2)'
+                    }}>
                       <CheckIcon /> Done
                     </span>
                   ) : (
-                    <span style={{ color: 'var(--clr-accent)', fontWeight: '500' }}>
+                    <span style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '6px 16px',
+                      borderRadius: '20px',
+                      background: 'var(--clr-accent)',
+                      color: '#ffffff',
+                      fontWeight: '600',
+                      fontSize: '0.8rem',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
+                    }}>
                       Start
                     </span>
                   )}

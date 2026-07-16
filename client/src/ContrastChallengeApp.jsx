@@ -1444,30 +1444,19 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
                 AREA (Inside Space)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What it measures:</strong> The flat space inside a shape (like a floor, wall, or screen).
+                <strong>Measures:</strong> Space *inside* a shape (e.g., laying tiles, painting).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visual Key:</strong> <strong>"Covering"</strong> a surface.
-              </p>
-              <div style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong>
-                <ul style={{ margin: '4px 0 0 16px', padding: 0, fontSize: '0.95rem' }}>
-                  <li>Planting grass seeds</li>
-                  <li>Laying floor tiles</li>
-                  <li>Painting a bedroom wall</li>
-                </ul>
-              </div>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Formula:</strong> Length × Width (for rectangles).
+                <strong>Formula:</strong> Length × Width (rectangles).
               </p>
               <p style={{ margin: '0 0 14px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Units:</strong> Square units (like m² or cm²).
+                <strong>Units:</strong> Square units (e.g., m², cm²).
               </p>
 
               <div style={{ borderTop: '1px solid var(--clr-border)', paddingTop: '12px', marginTop: '14px' }}>
                 <span style={{ display: 'block', fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--clr-text-soft)', marginBottom: '4px' }}>Common Mistake</span>
                 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--clr-wrong)', lineHeight: '1.4' }}>
-                  Adding all the sides together instead of multiplying length × width.
+                  Adding sides instead of multiplying length × width.
                 </p>
               </div>
             </div>
@@ -1488,30 +1477,19 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
                 PERIMETER (Boundary Line)
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>What it measures:</strong> The total distance around the outside edge.
+                <strong>Measures:</strong> Distance *around* a shape (e.g., fencing, borders).
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visual Key:</strong> <strong>"Surrounding"</strong> a boundary.
-              </p>
-              <div style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong>
-                <ul style={{ margin: '4px 0 0 16px', padding: 0, fontSize: '0.95rem' }}>
-                  <li>Building a fence around a garden</li>
-                  <li>Putting a border on a frame</li>
-                  <li>Tying a safety rope around a pool</li>
-                </ul>
-              </div>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                 <strong>Formula:</strong> Add all side lengths together.
               </p>
               <p style={{ margin: '0 0 14px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Units:</strong> Straight lines (like meters or cm).
+                <strong>Units:</strong> Linear units (e.g., m, cm).
               </p>
 
               <div style={{ borderTop: '1px solid var(--clr-border)', paddingTop: '12px', marginTop: '14px' }}>
                 <span style={{ display: 'block', fontSize: '0.8rem', textTransform: 'uppercase', color: 'var(--clr-text-soft)', marginBottom: '4px' }}>Common Mistake</span>
                 <p style={{ margin: 0, fontSize: '0.95rem', color: 'var(--clr-wrong)', lineHeight: '1.4' }}>
-                  Multiplying the sides instead of adding them up.
+                  Multiplying sides instead of adding them up.
                 </p>
               </div>
             </div>
@@ -2334,16 +2312,13 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
                 RADIUS
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Starts & Ends:</strong> Starts at the center dot and ends on the circle boundary.
+                <strong>Span:</strong> Starts at center, ends on boundary ($r$).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Length Relation:</strong> Exactly half the diameter: <code>r = d / 2</code>.
+                <strong>Relation:</strong> Half of diameter ($r = d / 2$).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visual Cue:</strong> Only goes halfway across the circle.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong> Spokes of a bicycle wheel, hands on a clock face.
+                <strong>Visuals:</strong> Spokes of a wheel, hands on a clock.
               </p>
             </div>
 
@@ -2360,16 +2335,13 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
                 DIAMETER
               </h3>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Starts & Ends:</strong> Joins two opposite points on the boundary and passes through the center.
+                <strong>Span:</strong> Corner to corner, passing through center ($d$).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Length Relation:</strong> Twice the radius: <code>d = 2 × r</code>.
+                <strong>Relation:</strong> Twice the radius ($d = 2r$).
               </p>
               <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visual Cue:</strong> Goes all the way across the circle.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Real-life Examples:</strong> Cut-line slicing a pizza in half, the width of a coin.
+                <strong>Visuals:</strong> Slicing a pizza in half.
               </p>
             </div>
           </div>
@@ -2386,7 +2358,7 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
               Common Mistake
             </h4>
             <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often think any straight line inside a circle is a diameter. Remember: <strong>A diameter MUST pass through the center point.</strong> If a line connects two boundary points but misses the center, it is just a chord, not a diameter.
+              Thinking any line crossing a circle is a diameter. **It must pass through the center.** Otherwise, it's just a chord.
             </p>
           </div>
 
@@ -4727,7 +4699,6 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
       {/* Layer 2: Comparison */}
       {subStep === 'comparison' && (
         <div>
-          {/* Side-by-side Cards */}
           <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
             <div style={{
               background: 'var(--clr-surface)',
@@ -4745,15 +4716,8 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
                   CONGRUENT
                 </h3>
-                <div style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Shape constraint:</strong>
-                  <ul style={{ margin: '4px 0 0 16px', padding: 0 }}>
-                    <li>✓ Same shape</li>
-                    <li>✓ Same size</li>
-                  </ul>
-                </div>
                 <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Size constraint:</strong> Exact same size.
+                  <strong>Constraint:</strong> Same shape AND same size.
                 </p>
                 <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
                   <strong>Verification:</strong> Overlap perfectly without resizing.
@@ -4769,7 +4733,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
                 fontSize: '0.95rem',
                 lineHeight: '1.4'
               }}>
-                <strong>Key Rule:</strong> Every congruent figure is also similar.
+                <strong>Key Rule:</strong> Congruent figures are always similar.
               </div>
             </div>
 
@@ -4789,18 +4753,11 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
                   SIMILAR
                 </h3>
-                <div style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Shape constraint:</strong>
-                  <ul style={{ margin: '4px 0 0 16px', padding: 0 }}>
-                    <li>✓ Same shape</li>
-                    <li>✓ Corresponding sides are proportional</li>
-                  </ul>
-                </div>
                 <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Size constraint:</strong> Size may be different (or even the same).
+                  <strong>Constraint:</strong> Same shape, but size can differ.
                 </p>
                 <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                  <strong>Verification:</strong> Overlap only after resizing.
+                  <strong>Verification:</strong> Proportional sides, equal angles.
                 </p>
               </div>
 
@@ -4831,9 +4788,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often think: <em>"If two shapes are congruent, they cannot be similar."</em>
-              <br /><br />
-              <strong>Correction:</strong> Congruence is actually a special case of similarity where the scale factor is exactly 1. Congruent shapes are <strong>always</strong> similar!
+              Congruent shapes are **always** similar (scale factor = 1). Similarity doesn't mean the sizes *must* be different.
             </p>
           </div>
 
@@ -5620,10 +5575,9 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
                 </div>
 
                 <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.98rem', lineHeight: '1.6' }}>
-                  <li>Arrangement structure of numbers in rows and columns</li>
-                  <li>Can be square (2x2, 3x3) or rectangular (3x2, 1x3)</li>
-                  <li>Used to perform arithmetic operations (addition, multiplication, transposing)</li>
-                  <li>Written inside square brackets [ ] or parentheses ( )</li>
+                  <li>Arrangement of numbers in rows and columns.</li>
+                  <li>Can be square ($2 \times 2$) or rectangular ($3 \times 2$).</li>
+                  <li>Written inside square brackets $[ ]$ or parentheses $( )$.</li>
                 </ul>
               </div>
 
@@ -5636,7 +5590,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
                 fontSize: '0.95rem',
                 lineHeight: '1.4'
               }}>
-                <strong>Key Rule:</strong> A matrix is a table grid layout of numbers; it has no single value.
+                <strong>Key Rule:</strong> A matrix is a grid; it has no single value.
               </div>
             </div>
 
@@ -5667,10 +5621,9 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
                 </div>
 
                 <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '0.98rem', lineHeight: '1.6' }}>
-                  <li>A single numerical value calculated from coefficients</li>
-                  <li>Exists only for square matrices (where row count equals column count)</li>
-                  <li>Calculated using proportional arithmetic formulas (e.g. ad - bc for 2x2)</li>
-                  <li>Written inside straight vertical bar lines | |</li>
+                  <li>A single scalar value calculated from a matrix.</li>
+                  <li>Exists only for square matrices.</li>
+                  <li>Written inside straight vertical bars $| |$.</li>
                 </ul>
               </div>
 
@@ -5683,7 +5636,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
                 fontSize: '0.95rem',
                 lineHeight: '1.4'
               }}>
-                <strong>Key Rule:</strong> Only square matrices can have determinants calculated from them.
+                <strong>Key Rule:</strong> Only square matrices have determinants.
               </div>
             </div>
           </div>
@@ -5701,9 +5654,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often think: <em>"A determinant is another kind of matrix."</em>
-              <br /><br />
-              <strong>Correction:</strong> A determinant is not a matrix. It is one single numerical scalar value obtained from a square matrix.
+              A determinant is not a matrix. It is a single calculated number.
             </p>
           </div>
 
@@ -6441,13 +6392,10 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
                   MEAN
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>Mathematical average of all values (sum divided by count).</li>
-                  <li>Uses every single data point in the calculation.</li>
-                  <li>Highly sensitive to outliers (skewed easily).</li>
+                  <li>Mathematical average (Sum / Count).</li>
+                  <li>Uses every data point.</li>
+                  <li>Easily skewed by extreme values (outliers).</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(232, 134, 74, 0.08)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-accent)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Rule:</strong> Excellent for balanced data without extreme high/low values.
               </div>
             </div>
 
@@ -6469,13 +6417,10 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
                   MEDIAN
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>The exact middle value after arranging data in order.</li>
-                  <li>Depends only on the position of data points, not their sizes.</li>
-                  <li>Highly resistant to outliers (remains stable).</li>
+                  <li>Exact middle value when sorted.</li>
+                  <li>Based on order/position only.</li>
+                  <li>Highly stable against outliers.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(92, 184, 122, 0.1)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-correct)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Rule:</strong> Recommended for skewed datasets (like salaries or home values).
               </div>
             </div>
 
@@ -6497,13 +6442,10 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
                   MODE
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.5' }}>
-                  <li>The value that occurs most frequently in the dataset.</li>
-                  <li>Depends entirely on frequency counts, ignoring size.</li>
-                  <li>Only measure that works for non-numerical categories.</li>
+                  <li>Most frequent value(s).</li>
+                  <li>Depends entirely on occurrences.</li>
+                  <li>Works for non-numerical categories.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(75, 163, 227, 0.1)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid #4ba3e3', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Rule:</strong> Best for inventory restocking, popularity polls, or common selections.
               </div>
             </div>
           </div>
@@ -6521,9 +6463,7 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1rem', lineHeight: '1.5' }}>
-              Students often think: <em>"The Mean is always the best representative of a dataset."</em>
-              <br /><br />
-              <strong>Correction:</strong> Skewed values pull the mean dramatically away from the center. The Median is often far more stable and representative for realistic, uneven datasets.
+              The Mean is not always the best average. Outliers skew it easily, where the Median remains far more stable and representative.
             </p>
           </div>
 
@@ -7318,13 +7258,10 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
                   🔍 LIMITS
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Finds the height value a function approaches near a target input.</li>
-                  <li>Focuses entirely on the behavior <strong>near</strong> a point, ignoring what happens exactly at it.</li>
-                  <li>Essential for defining asymptotes, discontinuities, and continuity.</li>
+                  <li>Value a function approaches near a target input.</li>
+                  <li>Ignores the value exactly at the point.</li>
+                  <li>Inquiry: "Where is this curve heading?"</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(232, 134, 74, 0.08)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-accent)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Inquiry:</strong> "Where is this curve heading?"
               </div>
             </div>
 
@@ -7346,13 +7283,10 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
                   📐 DIFFERENTIATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Finds the rate of change or tangent slope of a curve.</li>
-                  <li>Focuses entirely on the behavior <strong>exactly at</strong> a point.</li>
-                  <li>Essential for finding velocity, acceleration, and optimization.</li>
+                  <li>Rate of change / tangent slope of a curve.</li>
+                  <li>Focuses exactly at a specific point.</li>
+                  <li>Inquiry: "How fast is this curve changing?"</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(92, 184, 122, 0.1)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-correct)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Inquiry:</strong> "How fast is this curve changing?"
               </div>
             </div>
           </div>
@@ -7370,9 +7304,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often think: <em>"Limits and Derivatives do the exact same thing on a graph since derivatives use limits."</em>
-              <br /><br />
-              <strong>Correction:</strong> While derivatives are defined mathematically using limits (as the interval width approaches zero), a Limit simply asks for a height destination. A Derivative asks for the curve's steepness (tangent slope) at that destination.
+              A Limit finds the curve's target height destination. A Derivative calculates the slope (steepness) at that height.
             </p>
           </div>
 
@@ -8063,13 +7995,10 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
                   📐 DIFFERENTIATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Finds the rate of change or tangent slope of a curve.</li>
-                  <li>Focuses entirely on the behavior <strong>exactly at</strong> a point.</li>
-                  <li>Tells us "how fast" a quantity is changing at one instant.</li>
+                  <li>Rate of change / tangent slope of a curve.</li>
+                  <li>Focuses exactly at a specific point.</li>
+                  <li>Tells us "how fast" a quantity is changing.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(232, 134, 74, 0.08)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-accent)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Inquiry:</strong> "How fast is it changing?"
               </div>
             </div>
 
@@ -8091,13 +8020,10 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
                   ∫ INTEGRATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Finds the total accumulated quantity (area under the curve).</li>
-                  <li>Focuses entirely on behavior accumulated <strong>over an interval</strong>.</li>
-                  <li>Tells us "how much" total sum has accumulated over time.</li>
+                  <li>Accumulated quantity / area under curve.</li>
+                  <li>Focuses on behavior accumulated over an interval.</li>
+                  <li>Tells us "how much" total sum has accumulated.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(92, 184, 122, 0.1)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-correct)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Inquiry:</strong> "How much has accumulated in total?"
               </div>
             </div>
           </div>
@@ -8115,9 +8041,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often think: <em>"Differentiation and Integration are just two abstract algebraic formulas for finding derivatives and antiderivatives."</em>
-              <br /><br />
-              <strong>Correction:</strong> While they are inverse mathematical processes (Fundamental Theorem of Calculus), they measure opposite properties. Differentiation is local and tells us how fast a quantity changes at a single instant. Integration is cumulative and sums up the total accumulation over a period of time.
+              They are opposite properties: Differentiation is local (rate at one instant); Integration is cumulative (total sum over a period).
             </p>
           </div>
 
@@ -8924,9 +8848,9 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
                   FRACTIONS
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Written using a numerator and denominator (e.g., 3/4).</li>
-                  <li>Highlights splitting quantities into equal segments.</li>
-                  <li>Precise for ratios (e.g. 1/3) that would repeat infinitely in decimals.</li>
+                  <li>Numerator / denominator notation (e.g., $3/4$).</li>
+                  <li>Focuses on parts-of-a-whole segmentations.</li>
+                  <li>Exact for division (e.g. $1/3$ doesn't repeat infinitely).</li>
                 </ul>
               </div>
             </div>
@@ -8949,9 +8873,9 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
                   DECIMALS
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Written using place value and a decimal point (e.g., 0.75).</li>
-                  <li>Highlights base-10 metrics (money, measurements).</li>
-                  <li>Much easier to add, multiply, compare, or program in code.</li>
+                  <li>Place value notation (e.g., $0.75$).</li>
+                  <li>Focuses on base-10 metrics (money, measurements).</li>
+                  <li>Easier to compute, compare, and code.</li>
                 </ul>
               </div>
             </div>
@@ -9000,10 +8924,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often think: <em>"Fractions and decimals are completely different numbers because they look completely different."</em>
-              <br /><br />
-              <strong>Reality:</strong> 1/2 and 0.5 represent the exact same value. They are just different ways of representing the same quantity.
-              Neither is inherently better—choose fractions when dividing parts, and decimals when doing calculator math or working with money.
+              Fractions and decimals are not different numbers; they are just different representations of the same quantity.
             </p>
           </div>
 
@@ -9657,13 +9578,10 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
                   PERMUTATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Order matters</strong>—swapping two elements creates a completely new outcome.</li>
-                  <li>Focuses on arrangements, sequences, or specific rankings.</li>
-                  <li>Example: Gold, Silver, and Bronze winners in a race.</li>
+                  <li><strong>Order matters</strong>—swapping elements creates a new outcome.</li>
+                  <li>Focuses on arrangements, sequences, or rankings.</li>
+                  <li>Example: Gold, Silver, and Bronze medal positions.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(232, 134, 74, 0.08)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-accent)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Test:</strong> Does swapping the order change the outcome? <strong>Yes!</strong>
               </div>
             </div>
 
@@ -9685,13 +9603,10 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
                   COMBINATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Order does NOT matter</strong>—swapping elements yields the same outcome.</li>
-                  <li>Focuses on group selections, teams, or ingredient mixes.</li>
-                  <li>Example: Selecting toppings for a pizza recipe.</li>
+                  <li><strong>Order does NOT matter</strong>—swapping yields the same outcome.</li>
+                  <li>Focuses on selections, groups, or ingredient mixes.</li>
+                  <li>Example: Selecting pizza toppings.</li>
                 </ul>
-              </div>
-              <div style={{ background: 'rgba(92, 184, 122, 0.1)', padding: '8px 12px', borderRadius: '6px', borderLeft: '4px solid var(--clr-correct)', marginTop: '16px', fontSize: '0.9rem', lineHeight: '1.4' }}>
-                <strong>Key Test:</strong> Does swapping the order change the outcome? <strong>No!</strong>
               </div>
             </div>
           </div>
@@ -9709,11 +9624,7 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often assume that choosing <strong>A then B</strong> is mathematically equivalent to choosing <strong>B then A</strong> in every context.
-              <br /><br />
-              <strong>Reality:</strong> It depends entirely on whether roles are ranked.
-              If A is Captain and B is Vice-Captain, that is a Permutation.
-              If A and B are simply joint members of a project team, that is a Combination.
+              Swapping order matters if roles are ranked (Permutation, e.g. Captain and Vice-Captain), but not if they are joint members of a group (Combination).
             </p>
           </div>
 
@@ -10470,12 +10381,12 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
             }}>
               <div>
                 <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                  🔑PRIME
+                  🔑 PRIME
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>Has <strong>exactly two</strong> factors (1 and itself).</li>
+                  <li>Exactly **two factors** (1 and itself).</li>
                   <li>Cannot be grouped into smaller equal sizes.</li>
-                  <li>Examples: 2, 3, 5, 7, 11, 13, 29.</li>
+                  <li>Examples: 2, 3, 5, 7, 11, 13.</li>
                 </ul>
               </div>
             </div>
@@ -10498,9 +10409,9 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
                   🔢 COMPOSITE
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>Has <strong>more than two</strong> factors.</li>
-                  <li>Can be split or grouped into multiple equal rect shapes.</li>
-                  <li>Examples: 4, 6, 8, 9, 10, 12, 25.</li>
+                  <li>More than **two factors**.</li>
+                  <li>Can be split into multiple equal grid layouts.</li>
+                  <li>Examples: 4, 6, 8, 9, 10, 12.</li>
                 </ul>
               </div>
             </div>
@@ -10523,8 +10434,8 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
                   ⭐ NEITHER
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.92rem', lineHeight: '1.5' }}>
-                  <li>Has <strong>only one</strong> factor (1).</li>
-                  <li>Does not meet requirements for Prime (needs 2) or Composite (needs &gt;2).</li>
+                  <li>Exactly **one factor** (1).</li>
+                  <li>Does not meet Prime (needs 2) or Composite (needs &gt;2) requirements.</li>
                   <li>Example: 1.</li>
                 </ul>
               </div>
@@ -10544,9 +10455,7 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often believe: <em>"1 is a Prime number because it cannot be divided by other numbers."</em>
-              <br /><br />
-              <strong>Reality:</strong> Prime numbers are mathematically defined as having <strong>exactly two distinct factors</strong>. Since the number 1 only has one divisor (itself), it cannot be prime. 1 is classified as neither prime nor composite.
+              1 is not prime. Prime numbers must have **exactly two distinct factors**. 1 only has itself.
             </p>
           </div>
 
@@ -11100,9 +11009,9 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
                   📐 TRIGONOMETRY
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Angle is known</strong>, ratio or side is missing.</li>
-                  <li>Takes angle in degrees/radians, outputs decimal ratio.</li>
-                  <li>Example: <strong>sin(30°) = 1/2</strong></li>
+                  <li>Angle is known; side length or ratio is missing.</li>
+                  <li>Input: angle (e.g., $30^\circ$). Output: ratio (e.g., $1/2$).</li>
+                  <li>Example: $\sin(30^\circ) = 1/2$.</li>
                 </ul>
               </div>
             </div>
@@ -11125,9 +11034,9 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
                   📐 INVERSE TRIGONOMETRY
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Ratio (or sides) is known</strong>, angle is missing.</li>
-                  <li>Takes decimal ratio, outputs angle in degrees/radians.</li>
-                  <li>Example: <strong>sin⁻¹(1/2) = 30°</strong></li>
+                  <li>Ratio is known; angle is missing.</li>
+                  <li>Input: ratio (e.g., $1/2$). Output: angle (e.g., $30^\circ$).</li>
+                  <li>Example: $\sin^{-1}(1/2) = 30^\circ$.</li>
                 </ul>
               </div>
             </div>
@@ -11146,9 +11055,7 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often assume that <strong>sin⁻¹(x)</strong> is equal to the reciprocal <strong>1 / sin(x)</strong>.
-              <br /><br />
-              <strong>Reality:</strong> 1/sin(x) is the cosecant function (csc x). The notation <strong>sin⁻¹(x)</strong> represents the inverse function—meaning "the angle whose sine is x".
+              $\sin^{-1}(x)$ is the inverse function ("the angle whose sine is $x$"), NOT the reciprocal $1 / \sin(x)$ (which is $\csc(x)$).
             </p>
           </div>
 
@@ -11687,9 +11594,9 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
                   = LINEAR EQUATION
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>One equation</strong> representing a single straight line.</li>
-                  <li>Has <strong>infinite solutions</strong> (every point on that line satisfies it).</li>
-                  <li>Example: <strong>2x + y = 6</strong></li>
+                  <li>One equation representing a single straight line.</li>
+                  <li>Has infinite solutions (every point on the line).</li>
+                  <li>Example: $2x + y = 6$.</li>
                 </ul>
               </div>
             </div>
@@ -11712,9 +11619,9 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
                   = SIMULTANEOUS EQUATIONS
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li><strong>Two or more equations</strong> solved together.</li>
-                  <li>Finds the <strong>common solution</strong> where the straight lines intersect.</li>
-                  <li>Example: <strong>2x + y = 6</strong> and <strong>x - y = 3</strong></li>
+                  <li>Two or more equations solved together.</li>
+                  <li>Finds the single common solution where lines intersect.</li>
+                  <li>Example: $2x + y = 6$ and $x - y = 3$.</li>
                 </ul>
               </div>
             </div>
@@ -11733,9 +11640,7 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often think multiple linear equations are just separate, individual problems to solve.
-              <br /><br />
-              <strong>Reality:</strong> When solved together (simultaneously), they represent a coordinated system. The solution is no longer a set of infinite lines, but a single common coordinate point where all equations are satisfied.
+              Multiple linear equations solved simultaneously represent a coordinated system, yielding a single common coordinate point rather than infinite lines.
             </p>
           </div>
 
@@ -12232,9 +12137,9 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
                   INTERIOR ANGLE
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Formed <strong>inside</strong> the boundaries of the polygon.</li>
-                  <li>Sits naturally between two adjacent sides.</li>
-                  <li>Example: The inner corners of a square (90°).</li>
+                  <li>Formed inside the boundaries of the polygon.</li>
+                  <li>Sits between two adjacent sides.</li>
+                  <li>Example: Inner corners of a square ($90^\circ$).</li>
                 </ul>
               </div>
             </div>
@@ -12257,9 +12162,9 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
                   EXTERIOR ANGLE
                 </h3>
                 <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '0.95rem', lineHeight: '1.6' }}>
-                  <li>Formed <strong>outside</strong> the polygon boundaries.</li>
-                  <li>Sits between one side and the <strong>extension</strong> of the adjacent side.</li>
-                  <li>Example: Extends straight to form a 180° line with the interior angle.</li>
+                  <li>Formed outside the polygon boundaries.</li>
+                  <li>Sits between one side and the extension of the adjacent side.</li>
+                  <li>Forms a straight $180^\circ$ line with the interior angle.</li>
                 </ul>
               </div>
             </div>
@@ -12278,9 +12183,7 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
               Common Misconception
             </h4>
             <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
-              Students often think <em>any</em> angle outside a polygon shape is an exterior angle.
-              <br /><br />
-              <strong>Reality:</strong> An exterior angle must be formed specifically by extending one side of the polygon. It forms a straight line (180°) with the interior angle at that vertex.
+              Not any angle outside a polygon is an exterior angle. It must specifically form a straight $180^\circ$ line with the interior angle.
             </p>
           </div>
 

@@ -1,11 +1,21 @@
 /**
  * ProctorPanel — Left-side proctoring panel matching vibe's architecture.
  *
- * Architecture (like vibe):
+ * Architecture:
  *   1. Camera lifecycle managed here
- *   2. Detection hooks set state (isBlur, isSpeaking, etc.)
- *   3. Single polling loop (100ms) checks all states → fires anomalies
+ *   2. Detection hooks set state (isBlur, isSpeaking, isMotion, faceCount, etc.)
+ *   3. Single polling loop (500ms) checks all states → fires anomalies with screenshots
  *   4. FloatingVideo renders the UI
+ *   5. Screenshots captured on each anomaly for dashboard evidence
+ *
+ * Detection hooks wired:
+ *   - useTabSwitch: tab/window focus loss
+ *   - useAntiCheat: keyboard shortcuts, right-click
+ *   - useBlurDetector: camera obscured/blurry
+ *   - useVoiceDetection: speech/audio activity
+ *   - useMotionDetector: camera scene changes
+ *   - useFaceDetector: face count (0/1/2+)
+ *   - useScreenActivity: user idle detection
  */
 
 import { useEffect, useCallback, useRef, useState } from 'react'
@@ -15,10 +25,14 @@ import useTabSwitch from './useTabSwitch'
 import useAntiCheat from './useAntiCheat'
 import useBlurDetector from './useBlurDetector'
 import useVoiceDetection from './useVoiceDetection'
-import { reportProctorEvent } from './proctorEvents'
+import useMotionDetector from './useMotionDetector'
+import useFaceDetector from './useFaceDetector'
+import useScreenActivity from './useScreenActivity'
+import { reportProctorEvent, captureScreenshot } from './proctorEvents'
 
 const GRACE_PERIOD_MS = 10000
 const ANOMALY_CHECK_INTERVAL_MS = 500
+const PENALTY_COOLDOWN_MS = 5000
 
 export default function ProctorPanel() {
   const {
@@ -29,13 +43,23 @@ export default function ProctorPanel() {
   // Detection states (set by hooks, read by polling loop)
   const [isBlur, setIsBlur] = useState(false)
   const [isSpeaking, setIsSpeaking] = useState(false)
+  const [faceCount, setFaceCount] = useState(1)
 
-  const [contiguousAnomalyPoints, setContiguousAnomalyPoints] = useState(0)
   const [penaltyType, setPenaltyType] = useState('')
   const [isAnomalyDetected, setIsAnomalyDetected] = useState(false)
   const [anomalyDetectionReady, setAnomalyDetectionReady] = useState(false)
   const readyTimeRef = useRef(0)
   const lastAnomalyTime = useRef({})
+  const lastPenaltyTime = useRef({})
+
+  // Helper: capture screenshot and report anomaly
+  const reportWithScreenshot = useCallback(async (evt, severity) => {
+    const screenshot = await captureScreenshot(camera.videoRef.current)
+    const enriched = { ...evt, screenshot }
+    addAnomaly(enriched)
+    addPenalty(severity || evt.severity || 1)
+    reportProctorEvent({ sessionId, type: evt.type, severity: severity || evt.severity || 1, evidence: screenshot })
+  }, [camera.videoRef, sessionId, addAnomaly, addPenalty])
 
   // Start/stop camera based on proctoring state
   useEffect(() => {
@@ -61,17 +85,15 @@ export default function ProctorPanel() {
     }
   }, [enabled, camera.isRunning, anomalyDetectionReady])
 
-  // Tab switch detection — fires addAnomaly directly
+  // Tab switch detection
   useTabSwitch({
     onTabSwitch: useCallback((evt) => {
       if (!enabled || !anomalyDetectionReady) return
       const now = Date.now()
       if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
       lastAnomalyTime.current[evt.type] = now
-      addAnomaly(evt)
-      addPenalty(1)
-      reportProctorEvent({ sessionId, type: evt.type, severity: 1 })
-    }, [enabled, anomalyDetectionReady, sessionId, addAnomaly, addPenalty]),
+      reportWithScreenshot(evt, 1)
+    }, [enabled, anomalyDetectionReady, reportWithScreenshot]),
     enabled,
   })
 
@@ -83,13 +105,11 @@ export default function ProctorPanel() {
       const now = Date.now()
       if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
       lastAnomalyTime.current[evt.type] = now
-      addAnomaly(evt)
-      addPenalty(1)
-      reportProctorEvent({ sessionId, type: evt.type, severity: 1 })
-    }, [enabled, anomalyDetectionReady, sessionId, addAnomaly, addPenalty]),
+      reportWithScreenshot(evt, 1)
+    }, [enabled, anomalyDetectionReady, reportWithScreenshot]),
   })
 
-  // Blur detection — sets state, polling loop evaluates
+  // Blur detection
   useBlurDetector({
     videoRef: camera.videoRef,
     enabled: enabled && settings.blurDetection && anomalyDetectionReady,
@@ -98,7 +118,7 @@ export default function ProctorPanel() {
     }, []),
   })
 
-  // Voice detection — sets state, polling loop evaluates
+  // Voice detection
   useVoiceDetection({
     enabled: enabled && settings.voiceDetection && anomalyDetectionReady,
     onAnomaly: useCallback((voiceState) => {
@@ -106,55 +126,81 @@ export default function ProctorPanel() {
     }, []),
   })
 
-  // Single polling loop — like vibe's 100ms interval
+  // Motion detection
+  useMotionDetector({
+    videoRef: camera.videoRef,
+    enabled: enabled && settings.motionDetection && anomalyDetectionReady,
+    onAnomaly: useCallback((evt) => {
+      if (!anomalyDetectionReady) return
+      const now = Date.now()
+      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
+      lastAnomalyTime.current[evt.type] = now
+      reportWithScreenshot(evt, evt.severity || 1)
+    }, [anomalyDetectionReady, reportWithScreenshot]),
+  })
+
+  // Face detection
+  useFaceDetector({
+    videoRef: camera.videoRef,
+    enabled: enabled && settings.faceDetection && anomalyDetectionReady,
+    onAnomaly: useCallback((evt) => {
+      if (!anomalyDetectionReady) return
+      const now = Date.now()
+      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
+      lastAnomalyTime.current[evt.type] = now
+      reportWithScreenshot(evt, evt.severity || 2)
+    }, [anomalyDetectionReady, reportWithScreenshot]),
+    onFaceCount: useCallback((count) => setFaceCount(count), []),
+  })
+
+  // Screen activity / idle detection
+  useScreenActivity({
+    enabled: enabled && anomalyDetectionReady,
+    onIdle: useCallback((evt) => {
+      if (!anomalyDetectionReady) return
+      const now = Date.now()
+      if (lastAnomalyTime.current['idle'] && now - lastAnomalyTime.current['idle'] < 60000) return
+      lastAnomalyTime.current['idle'] = now
+      reportWithScreenshot(evt, 1)
+    }, [anomalyDetectionReady, reportWithScreenshot]),
+    onActivity: useCallback(() => {}, []),
+  })
+
+  // Single polling loop — checks all detection states
   useEffect(() => {
     if (!enabled || !anomalyDetectionReady) return
 
     const interval = setInterval(() => {
-      let newPenalty = 0
       let newType = ''
-      const activeAnomalies = []
+      const now = Date.now()
 
       // Check blur
       if (isBlur && settings.blurDetection) {
-        activeAnomalies.push({ type: 'blur_detected', severity: 1 })
-        newPenalty += 1
         newType = 'Camera Obscured'
       }
 
       // Check voice
       if (isSpeaking && settings.voiceDetection) {
-        activeAnomalies.push({ type: 'voice_detected', severity: 1 })
-        newPenalty += 1
         newType = 'Speaking Detected'
       }
 
-      if (activeAnomalies.length > 0) {
+      if (newType) {
         setIsAnomalyDetected(true)
         setPenaltyType(newType)
-        setContiguousAnomalyPoints(prev => {
-          const newPoints = prev + newPenalty
-          addPenalty(newPenalty)
-          for (const a of activeAnomalies) {
-            const now = Date.now()
-            if (!lastAnomalyTime.current[a.type] || now - lastAnomalyTime.current[a.type] > 5000) {
-              lastAnomalyTime.current[a.type] = now
-              addAnomaly(a)
-              reportProctorEvent({ sessionId, type: a.type, severity: a.severity })
-            }
-          }
-          return newPoints
-        })
+
+        // Penalty cooldown — only increment once per 5 seconds per type
+        const penaltyKey = isBlur ? 'blur' : 'voice'
+        if (!lastPenaltyTime.current[penaltyKey] || now - lastPenaltyTime.current[penaltyKey] > PENALTY_COOLDOWN_MS) {
+          lastPenaltyTime.current[penaltyKey] = now
+          addPenalty(1)
+        }
       } else {
         setIsAnomalyDetected(false)
-        if (contiguousAnomalyPoints > 0) {
-          setContiguousAnomalyPoints(0)
-        }
       }
     }, ANOMALY_CHECK_INTERVAL_MS)
 
     return () => clearInterval(interval)
-  }, [enabled, anomalyDetectionReady, isBlur, isSpeaking, settings, contiguousAnomalyPoints, sessionId, addAnomaly, addPenalty])
+  }, [enabled, anomalyDetectionReady, isBlur, isSpeaking, settings, addPenalty])
 
   if (!enabled) return null
 
@@ -167,6 +213,7 @@ export default function ProctorPanel() {
       anomalies={anomalies}
       isAnomalyDetected={isAnomalyDetected}
       penaltyType={penaltyType}
+      faceCount={faceCount}
     />
   )
 }

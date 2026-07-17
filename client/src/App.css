@@ -5533,67 +5533,129 @@ button:disabled {
 }
 
 /* Proctor Dashboard */
-.proctor-dashboard {
-  padding: 16px; max-width: 900px; margin: 0 auto;
+.proctor-dashboard { padding: 16px; max-width: 960px; margin: 0 auto; }
+.proctor-dashboard-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+.proctor-dashboard-header h2 { margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--clr-text); }
+.proctor-dashboard-session-badge {
+  font-size: 0.75rem; font-weight: 600; padding: 3px 10px;
+  border-radius: 999px; background: rgba(108,206,255,0.15); color: #6cf;
 }
-.proctor-dashboard-header {
-  display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+.proctor-dashboard-loading,
+.proctor-dashboard-empty,
+.proctor-dashboard-error {
+  padding: 40px 24px; text-align: center; color: var(--clr-dim);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
 }
-.proctor-dashboard-header h2 {
-  margin: 0; font-size: 1.2rem; font-weight: 700; color: var(--clr-text);
-}
-.proctor-dashboard-content {
-  display: grid; grid-template-columns: 300px 1fr; gap: 16px;
-}
-@media (max-width: 700px) {
-  .proctor-dashboard-content { grid-template-columns: 1fr; }
-}
-.proctor-dashboard-list {
-  display: flex; flex-direction: column; gap: 8px;
-  max-height: 60vh; overflow-y: auto;
-}
+.proctor-dashboard-error h3 { margin: 0; font-size: 1.1rem; color: #fca5a5; }
+.proctor-dashboard-error p { margin: 0; font-size: 0.85rem; color: var(--clr-text-soft, #999); }
+.proctor-dashboard-content { display: grid; grid-template-columns: 280px 1fr; gap: 16px; }
+@media (max-width: 700px) { .proctor-dashboard-content { grid-template-columns: 1fr; } }
+.proctor-dashboard-list { display: flex; flex-direction: column; gap: 8px; max-height: 60vh; overflow-y: auto; }
 .proctor-session-card {
   padding: 12px; border-radius: 8px; cursor: pointer;
   border: 1px solid var(--clr-border, #444);
   background: var(--clr-surface, #1c1c1f); transition: all 0.15s;
 }
 .proctor-session-card:hover { border-color: var(--clr-accent, #6cf); }
-.proctor-session-card.selected {
-  border-color: var(--clr-accent, #6cf);
-  background: rgba(108, 206, 255, 0.08);
-}
-.proctor-session-card-header {
-  display: flex; justify-content: space-between; align-items: center;
-}
-.proctor-session-quiz {
-  font-weight: 700; font-size: 0.9rem; color: var(--clr-text);
-}
+.proctor-session-card.selected { border-color: var(--clr-accent, #6cf); background: rgba(108,206,255,0.08); }
+.proctor-session-card-header { display: flex; justify-content: space-between; align-items: center; }
+.proctor-session-quiz { font-weight: 700; font-size: 0.9rem; color: var(--clr-text); }
 .proctor-session-status {
   font-size: 0.7rem; font-weight: 600; padding: 2px 8px;
   border-radius: 4px; text-transform: uppercase;
 }
-.status-active { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
-.status-completed { background: rgba(108, 206, 255, 0.2); color: #6cf; }
-.status-ejected { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
-.proctor-session-meta {
-  display: flex; justify-content: space-between; margin-top: 6px;
-  font-size: 0.78rem; color: var(--clr-text-soft, #999);
-}
-.proctor-session-date {
-  font-size: 0.72rem; color: var(--clr-dim, #666); margin-top: 4px;
-}
+.status-active { background: rgba(34,197,94,0.2); color: #22c55e; }
+.status-completed { background: rgba(108,206,255,0.2); color: #6cf; }
+.status-ejected { background: rgba(239,68,68,0.2); color: #ef4444; }
+.proctor-session-meta { display: flex; justify-content: space-between; margin-top: 6px; font-size: 0.78rem; color: var(--clr-text-soft, #999); }
+.proctor-session-date { font-size: 0.72rem; color: var(--clr-dim, #666); margin-top: 4px; }
 .proctor-dashboard-detail {
   padding: 16px; border-radius: 10px;
   border: 1px solid var(--clr-border, #444);
   background: var(--clr-surface, #1c1c1f);
 }
-.proctor-dashboard-detail h3 {
-  margin: 0 0 12px; font-size: 1rem; color: var(--clr-text);
+.proctor-dashboard-detail h3 { margin: 0 0 12px; font-size: 1rem; color: var(--clr-text); }
+.proctor-detail-warning-banner {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 14px; border-radius: 8px; margin-bottom: 14px;
+  background: linear-gradient(135deg, rgba(220,38,38,0.2), rgba(185,28,28,0.15));
+  border: 1px solid rgba(239,68,68,0.3); color: #fca5a5;
+  font-size: 0.8rem; font-weight: 600;
 }
 .proctor-detail-stats {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
-  font-size: 0.85rem; color: var(--clr-text-soft, #aaa);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px;
 }
+.proctor-detail-stat {
+  display: flex; flex-direction: column; gap: 2px;
+  padding: 8px 10px; border-radius: 6px;
+  background: rgba(255,255,255,0.03); font-size: 0.82rem; color: var(--clr-text-soft, #aaa);
+}
+.proctor-detail-stat-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--clr-dim, #666); font-weight: 600; }
+.proctor-penalty-high { color: #ef4444; font-weight: 700; }
+
+/* Anomaly Flashcard Styles */
+.proctor-anomaly-cards { margin-top: 16px; }
+.proctor-anomaly-cards-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.proctor-anomaly-cards-header h4 { margin: 0; font-size: 0.88rem; color: var(--clr-text); }
+.proctor-anomaly-cards-header span { font-size: 0.72rem; color: var(--clr-dim, #666); }
+
+.proctor-anomaly-card {
+  display: flex; gap: 12px; padding: 10px; border-radius: 10px;
+  border: 1px solid var(--clr-border, #444);
+  background: var(--clr-surface, #1c1c1f);
+  border-left: 4px solid #eab308;
+  margin-bottom: 8px;
+  transition: all 0.15s;
+}
+.proctor-anomaly-card:hover {
+  border-color: var(--clr-accent, #6cf);
+  background: rgba(108,206,255,0.04);
+}
+
+.proctor-anomaly-card-screenshot { flex-shrink: 0; width: 140px; height: 105px; border-radius: 6px; overflow: hidden; background: #111; }
+.proctor-anomaly-card-screenshot img { width: 100%; height: 100%; object-fit: cover; cursor: pointer; transition: transform 0.2s; }
+.proctor-anomaly-card-screenshot img:hover { transform: scale(1.05); }
+.proctor-anomaly-card-no-screenshot {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.6rem; color: var(--clr-dim, #555); text-align: center; padding: 4px;
+}
+
+.proctor-anomaly-card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.proctor-anomaly-card-top { display: flex; align-items: center; gap: 6px; }
+.proctor-anomaly-card-icon { font-size: 1rem; }
+.proctor-anomaly-card-type { font-size: 0.82rem; font-weight: 600; color: var(--clr-text); flex: 1; }
+.proctor-anomaly-card-severity {
+  font-size: 0.62rem; font-weight: 700; padding: 2px 8px;
+  border-radius: 999px; border: 1px solid; text-transform: uppercase; letter-spacing: 0.04em;
+}
+.proctor-anomaly-card-meta { display: flex; align-items: center; gap: 8px; }
+.proctor-anomaly-card-time { font-size: 0.68rem; color: var(--clr-dim, #666); font-family: monospace; }
+.proctor-anomaly-card-detail {
+  font-size: 0.62rem; color: var(--clr-dim, #555);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;
+}
+
+/* Screenshot Modal */
+.proctor-screenshot-modal-overlay {
+  position: fixed; inset: 0; z-index: 9999999;
+  background: rgba(0,0,0,0.85); display: flex; align-items: center; justify-content: center;
+  animation: proctor-fade-in 0.15s ease;
+}
+.proctor-screenshot-modal {
+  background: var(--clr-surface, #1c1c1f); border-radius: 12px; overflow: hidden;
+  max-width: 90vw; max-height: 90vh; box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+.proctor-screenshot-modal-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px; font-size: 0.85rem; font-weight: 600; color: var(--clr-text);
+  border-bottom: 1px solid var(--clr-border, #444);
+}
+.proctor-screenshot-modal-header button {
+  background: none; border: none; color: var(--clr-text-soft, #999);
+  cursor: pointer; font-size: 1rem; padding: 2px 6px; border-radius: 4px;
+}
+.proctor-screenshot-modal-header button:hover { background: rgba(255,255,255,0.1); }
+.proctor-screenshot-modal img { display: block; width: 100%; height: auto; }
 
 /* End Quiz Floating Button */
 .proctor-end-quiz-btn {
@@ -5633,3 +5695,113 @@ button:disabled {
   background: rgba(255,255,255,0.1);
   border-radius: 3px;
 }
+
+/* Skeleton Loading */
+.proctor-skeleton-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px;
+  width: 100%; max-width: 700px;
+}
+.proctor-skeleton-card {
+  padding: 16px; border-radius: 10px;
+  border: 1px solid var(--clr-border, #333);
+  background: var(--clr-surface, #1c1c1f);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.proctor-skeleton-bar {
+  height: 12px; border-radius: 6px;
+  background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
+  background-size: 200% 100%;
+  animation: proctor-skeleton-shimmer 1.5s infinite;
+}
+@keyframes proctor-skeleton-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Red Warning Banner Animation */
+@keyframes proctor-slide-down {
+  from { transform: translateY(-100%); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Toast Notifications */
+.proctor-toast-container {
+  position: fixed; top: 60px; right: 16px; z-index: 999999;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+}
+.proctor-toast {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--clr-surface, #1c1c1f);
+  border: 1px solid var(--clr-border, #444);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: proctor-toast-in 0.3s ease;
+  pointer-events: auto;
+  min-width: 240px; max-width: 380px;
+}
+.proctor-toast.info { border-left: 4px solid #3b82f6; }
+.proctor-toast.warning { border-left: 4px solid #f59e0b; }
+.proctor-toast.error { border-left: 4px solid #ef4444; }
+.proctor-toast.success { border-left: 4px solid #22c55e; }
+.proctor-toast-icon { font-size: 1.2rem; flex-shrink: 0; }
+.proctor-toast-body { flex: 1; min-width: 0; }
+.proctor-toast-title { font-size: 0.82rem; font-weight: 700; color: var(--clr-text); }
+.proctor-toast-message { font-size: 0.72rem; color: var(--clr-text-soft, #999); margin-top: 2px; }
+.proctor-toast-close {
+  background: none; border: none; color: var(--clr-dim, #666); cursor: pointer;
+  font-size: 0.9rem; padding: 2px; border-radius: 4px; flex-shrink: 0;
+}
+.proctor-toast-close:hover { color: var(--clr-text); background: rgba(255,255,255,0.05); }
+@keyframes proctor-toast-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Proctor Panel Toggle Button */
+.proctor-toggle-btn {
+  position: fixed; bottom: 20px; right: 20px; z-index: 9999;
+  padding: 10px 20px; border-radius: 999px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white; border: none; cursor: pointer;
+  font-weight: 700; font-size: 0.85rem;
+  box-shadow: 0 4px 20px rgba(99,102,241,0.4);
+  transition: all 0.2s;
+  font-family: var(--font-body, system-ui, sans-serif);
+  display: flex; align-items: center; gap: 6px;
+}
+.proctor-toggle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(99,102,241,0.5);
+}
+.proctor-toggle-btn.active {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 4px 20px rgba(34,197,94,0.4);
+}
+.proctor-toggle-btn.active:hover {
+  box-shadow: 0 6px 28px rgba(34,197,94,0.5);
+}
+
+/* Anomaly Card Screenshot Enlarged */
+.proctor-anomaly-card.screenshot-available:hover {
+  border-color: rgba(239,68,68,0.3);
+}
+
+/* Face Status Indicator */
+.proctor-face-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 999px;
+  font-size: 0.6rem; font-weight: 700;
+}
+.proctor-face-status.ok { background: rgba(34,197,94,0.15); color: #22c55e; }
+.proctor-face-status.warning { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.proctor-face-status.error { background: rgba(239,68,68,0.15); color: #ef4444; }
+
+/* Motion Indicator */
+.proctor-motion-indicator {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 999px;
+  font-size: 0.6rem; font-weight: 700;
+}
+.proctor-motion-indicator.active { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.proctor-motion-indicator.clear { background: rgba(34,197,94,0.15); color: #22c55e; }

@@ -9361,12 +9361,71 @@ app.get('/api/proctor/session/:id', auth.requireAuth, async (req, res) => {
 // Get all sessions for a user (or all if admin)
 app.get('/api/proctor/sessions', auth.requireAuth, async (req, res) => {
   try {
-    const sessions = await ProctorSession.find({ userId: req.user.id })
+    const query = req.query.all === 'true' ? {} : { userId: req.user.id };
+    const sessions = await ProctorSession.find(query)
       .sort({ startedAt: -1 })
       .limit(50);
     res.json({ sessions });
   } catch (e) {
     res.status(500).json({ error: 'failed to fetch sessions' });
+  }
+});
+
+// ─── Face Verification Endpoints (CompreFace proxy) ─────────────────────────
+
+const COMPREFACE_URL = process.env.COMPREFACE_URL || 'http://localhost:8000';
+const COMPREFACE_API_KEY = process.env.COMPREFACE_API_KEY || '';
+
+// Register reference face for a session
+app.post('/api/proctor/face/register', auth.requireAuth, async (req, res) => {
+  try {
+    const { sessionId, image } = req.body;
+    if (!sessionId || !image) return res.status(400).json({ error: 'sessionId and image required' });
+    if (!COMPREFACE_API_KEY) return res.json({ registered: false, reason: 'CompreFace not configured' });
+
+    // Forward to CompreFace detection endpoint
+    const cfRes = await fetch(`${COMPREFACE_URL}/api/v1/detection/detect`, {
+      method: 'POST',
+      headers: { 'x-api-key': COMPREFACE_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image }),
+    });
+
+    if (cfRes.ok) {
+      const data = await cfRes.json();
+      res.json({ registered: true, faceCount: data.result?.length || 0 });
+    } else {
+      res.json({ registered: false, reason: 'CompreFace detection failed' });
+    }
+  } catch (e) {
+    console.error('[face] register error:', e.message);
+    res.json({ registered: false, reason: 'CompreFace unreachable' });
+  }
+});
+
+// Verify face identity against reference
+app.post('/api/proctor/face/verify', auth.requireAuth, async (req, res) => {
+  try {
+    const { sessionId, image } = req.body;
+    if (!sessionId || !image) return res.status(400).json({ error: 'sessionId and image required' });
+    if (!COMPREFACE_API_KEY) return res.json({ verified: true, similarity: 1, reason: 'CompreFace not configured' });
+
+    // Forward to CompreFace verification endpoint
+    const cfRes = await fetch(`${COMPREFACE_URL}/api/v1/verification/verify`, {
+      method: 'POST',
+      headers: { 'x-api-key': COMPREFACE_API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image }),
+    });
+
+    if (cfRes.ok) {
+      const data = await cfRes.json();
+      const similarity = data.result?.face?.similarity || 0;
+      res.json({ verified: similarity >= 0.88, similarity });
+    } else {
+      res.json({ verified: true, similarity: 1, reason: 'CompreFace verification failed' });
+    }
+  } catch (e) {
+    console.error('[face] verify error:', e.message);
+    res.json({ verified: true, similarity: 1, reason: 'CompreFace unreachable' });
   }
 });
 

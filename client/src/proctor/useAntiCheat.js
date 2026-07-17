@@ -68,10 +68,46 @@ export default function useAntiCheat({ enabled = true, onViolation }) {
         reportViolation('devtools', { action: 'Ctrl+Shift+I' })
         return
       }
-      // Ctrl+Shift+J
+      // Ctrl+Shift+J / Cmd+Option+J (Console)
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'J') {
         e.preventDefault()
         reportViolation('devtools', { action: 'Ctrl+Shift+J' })
+        return
+      }
+      // Cmd+Option+I (macOS DevTools)
+      if (e.metaKey && e.altKey && e.key === 'i') {
+        e.preventDefault()
+        reportViolation('devtools', { action: 'Cmd+Option+I' })
+        return
+      }
+      // Cmd+Option+J (macOS Console)
+      if (e.metaKey && e.altKey && e.key === 'j') {
+        e.preventDefault()
+        reportViolation('devtools', { action: 'Cmd+Option+J' })
+        return
+      }
+      // Cmd+Option+U (macOS View Source)
+      if (e.metaKey && e.altKey && e.key === 'u') {
+        e.preventDefault()
+        reportViolation('copy_paste', { action: 'Cmd+Option+U' })
+        return
+      }
+      // Ctrl+Shift+C (Inspect Element)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'C') {
+        e.preventDefault()
+        reportViolation('devtools', { action: 'Ctrl+Shift+C' })
+        return
+      }
+      // Ctrl+P (Print)
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault()
+        reportViolation('copy_paste', { action: 'print' })
+        return
+      }
+      // Ctrl+T (New Tab)
+      if ((e.ctrlKey || e.metaKey) && e.key === 't') {
+        e.preventDefault()
+        reportViolation('tab_switch', { action: 'new_tab' })
         return
       }
     }

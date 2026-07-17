@@ -17,9 +17,11 @@ const DEFAULT_SETTINGS = {
   faceDetection: true,
   blurDetection: true,
   voiceDetection: true,
+  motionDetection: true,
   tabSwitch: true,
   antiCheat: true,
   virtualCamera: true,
+  faceVerification: false, // optional server-backed identity check
   securityChallenge: false,
 }
 
@@ -44,7 +46,7 @@ export function ProctorProvider({ children }) {
   }, [])
 
   const addAnomaly = useCallback((anomaly) => {
-    setAnomalies(prev => [...prev, { ...anomaly, timestamp: Date.now() }])
+    setAnomalies(prev => [...prev, { ...anomaly, timestamp: Date.now(), id: Date.now() + Math.random() }])
   }, [])
 
   const resetSession = useCallback(() => {

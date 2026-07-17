@@ -47,6 +47,7 @@ const ProctorEventSchema = new mongoose.Schema({
       'face_mismatch', 'blur_detected', 'voice_detected',
       'virtual_camera', 'security_challenge_failed',
       'right_click', 'copy_paste', 'devtools', 'ejected',
+      'idle', 'motion_detected', 'camera_covered', 'camera_overexposed',
     ],
   },
   severity:   { type: Number, default: 1 }, // penalty points

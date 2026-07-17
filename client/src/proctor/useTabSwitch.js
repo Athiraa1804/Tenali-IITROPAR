@@ -1,22 +1,22 @@
 /**
- * useTabSwitch — Hook to detect tab/window focus loss.
+ * useTabSwitch — Hook to detect tab/window focus loss and return.
  *
  * Tracks:
  *   - Whether the document is currently focused
  *   - Count of tab switches during the session
- *   - Fires callback on each tab-away event
+ *   - Fires onTabSwitch when user leaves, onTabReturn when user comes back
  */
 
 import { useState, useEffect, useRef } from 'react'
 
-export default function useTabSwitch({ onTabSwitch, enabled = true }) {
+export default function useTabSwitch({ onTabSwitch, onTabReturn, enabled = true }) {
   const [isFocused, setIsFocused] = useState(true)
   const [switchCount, setSwitchCount] = useState(0)
-  const onRef = useRef(null)
+  const onSwitchRef = useRef(null)
+  const onReturnRef = useRef(null)
 
-  useEffect(() => {
-    onRef.current = onTabSwitch
-  })
+  useEffect(() => { onSwitchRef.current = onTabSwitch })
+  useEffect(() => { onReturnRef.current = onTabReturn })
 
   useEffect(() => {
     if (!enabled) return
@@ -26,18 +26,21 @@ export default function useTabSwitch({ onTabSwitch, enabled = true }) {
       setIsFocused(focused)
       if (!focused) {
         setSwitchCount(c => c + 1)
-        onRef.current?.({ type: 'tab_switch', timestamp: Date.now() })
+        onSwitchRef.current?.({ type: 'tab_switch', timestamp: Date.now() })
+      } else {
+        onReturnRef.current?.()
       }
     }
 
     const handleBlur = () => {
       setIsFocused(false)
       setSwitchCount(c => c + 1)
-      onRef.current?.({ type: 'tab_blur', timestamp: Date.now() })
+      onSwitchRef.current?.({ type: 'tab_blur', timestamp: Date.now() })
     }
 
     const handleFocus = () => {
       setIsFocused(true)
+      onReturnRef.current?.()
     }
 
     document.addEventListener('visibilitychange', handleVisibility)

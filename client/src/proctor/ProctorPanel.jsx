@@ -4,18 +4,18 @@
  * Architecture:
  *   1. Camera lifecycle managed here (with audio for voice detection)
  *   2. ALL detection hooks call reportWithScreenshot directly (no polling loop)
- *   3. isAnomalyDetected derived from anomalies array
+ *   3. isAnomalyDetected clears automatically when conditions normalize
  *   4. FloatingVideo renders the UI + toast notifications
  *   5. Screenshots captured on each anomaly for dashboard evidence
  *
- * Detection hooks wired:
- *   - useTabSwitch: tab/window focus loss
- *   - useAntiCheat: keyboard shortcuts, right-click
- *   - useBlurDetector: camera obscured/blurry
- *   - useVoiceDetection: speech/audio activity
- *   - useMotionDetector: camera scene changes
- *   - useFaceDetector: face count (0/1/2+)
- *   - useScreenActivity: user idle detection
+ * Compulsory detections (always ON):
+ *   - Webcam video
+ *   - Audio/voice detection
+ *   - Motion/scene detection
+ *   - Tab switching
+ *   - Face detection
+ *   - Blur detection
+ *   - Anti-cheat
  */
 
 import { useEffect, useCallback, useRef, useState } from 'react'
@@ -32,10 +32,11 @@ import { reportProctorEvent, captureScreenshot } from './proctorEvents'
 
 const GRACE_PERIOD_MS = 10000
 const PER_TYPE_COOLDOWN_MS = 5000
+const ANOMALY_CLEAR_MS = 4000
 
 export default function ProctorPanel() {
   const {
-    enabled, settings, sessionId, penaltyScore, anomalies,
+    enabled, sessionId, penaltyScore, anomalies,
     addPenalty, addAnomaly, camera, cameraError, setCameraError,
   } = useProctor()
 
@@ -46,7 +47,30 @@ export default function ProctorPanel() {
   const readyTimeRef = useRef(0)
   const lastAnomalyTime = useRef({})
   const lastPenaltyTime = useRef({})
+  const anomalyClearTimer = useRef(null)
   const prevAnomalyCountRef = useRef(0)
+  const activeAnomalyTypesRef = useRef(new Set())
+
+  const clearAnomalyAlert = useCallback(() => {
+    clearTimeout(anomalyClearTimer.current)
+    anomalyClearTimer.current = setTimeout(() => {
+      activeAnomalyTypesRef.current = new Set()
+      setIsAnomalyDetected(false)
+    }, ANOMALY_CLEAR_MS)
+  }, [])
+
+  const markAnomalyActive = useCallback((type) => {
+    activeAnomalyTypesRef.current.add(type)
+    setIsAnomalyDetected(true)
+    clearTimeout(anomalyClearTimer.current)
+  }, [])
+
+  const markAnomalyCleared = useCallback((type) => {
+    activeAnomalyTypesRef.current.delete(type)
+    if (activeAnomalyTypesRef.current.size === 0) {
+      clearAnomalyAlert()
+    }
+  }, [clearAnomalyAlert])
 
   const reportWithScreenshot = useCallback(async (evt, severity) => {
     const screenshot = await captureScreenshot(camera.videoRef.current)
@@ -72,13 +96,9 @@ export default function ProctorPanel() {
     reportWithScreenshot(evt, severity)
   }, [reportWithScreenshot])
 
-  // Derive isAnomalyDetected from anomalies array (runs on every render)
   useEffect(() => {
     if (anomalies.length > prevAnomalyCountRef.current) {
-      setIsAnomalyDetected(true)
       prevAnomalyCountRef.current = anomalies.length
-      const t = setTimeout(() => setIsAnomalyDetected(false), 8000)
-      return () => clearTimeout(t)
     }
   }, [anomalies.length])
 
@@ -107,8 +127,13 @@ export default function ProctorPanel() {
   useTabSwitch({
     onTabSwitch: useCallback((evt) => {
       if (!enabled || !anomalyDetectionReady) return
+      markAnomalyActive(evt.type)
       throttledReport(evt, 1)
-    }, [enabled, anomalyDetectionReady, throttledReport]),
+    }, [enabled, anomalyDetectionReady, throttledReport, markAnomalyActive]),
+    onTabReturn: useCallback(() => {
+      markAnomalyCleared('tab_switch')
+      markAnomalyCleared('tab_blur')
+    }, [markAnomalyCleared]),
     enabled,
   })
 
@@ -122,41 +147,55 @@ export default function ProctorPanel() {
 
   useBlurDetector({
     videoRef: camera.videoRef,
-    enabled: enabled && settings.blurDetection && anomalyDetectionReady,
+    enabled: enabled && anomalyDetectionReady,
     onAnomaly: useCallback((isBlur) => {
       if (isBlur) {
+        markAnomalyActive('blur_detected')
         throttledReport({ type: 'blur_detected', severity: 2 }, 2)
+      } else {
+        markAnomalyCleared('blur_detected')
       }
-    }, [throttledReport]),
+    }, [throttledReport, markAnomalyActive, markAnomalyCleared]),
   })
 
   useVoiceDetection({
-    enabled: enabled && settings.voiceDetection && anomalyDetectionReady,
+    enabled: enabled && anomalyDetectionReady,
     streamRef: camera.stream,
     onAnomaly: useCallback((isSpeaking) => {
       if (isSpeaking) {
+        markAnomalyActive('voice_detected')
         throttledReport({ type: 'voice_detected', severity: 1 }, 1)
+      } else {
+        markAnomalyCleared('voice_detected')
       }
-    }, [throttledReport]),
+    }, [throttledReport, markAnomalyActive, markAnomalyCleared]),
   })
 
   useMotionDetector({
     videoRef: camera.videoRef,
-    enabled: enabled && settings.motionDetection && anomalyDetectionReady,
+    enabled: enabled && anomalyDetectionReady,
     onAnomaly: useCallback((evt) => {
       if (!anomalyDetectionReady) return
+      markAnomalyActive(evt.type)
       throttledReport(evt, evt.severity || 1)
-    }, [anomalyDetectionReady, throttledReport]),
+    }, [anomalyDetectionReady, throttledReport, markAnomalyActive]),
   })
 
   useFaceDetector({
     videoRef: camera.videoRef,
-    enabled: enabled && settings.faceDetection && anomalyDetectionReady,
+    enabled: enabled && anomalyDetectionReady,
     onAnomaly: useCallback((evt) => {
       if (!anomalyDetectionReady) return
+      markAnomalyActive(evt.type)
       throttledReport(evt, evt.severity || 2)
-    }, [anomalyDetectionReady, throttledReport]),
-    onFaceCount: useCallback((count) => setFaceCount(count), []),
+    }, [anomalyDetectionReady, throttledReport, markAnomalyActive]),
+    onFaceCount: useCallback((count) => {
+      setFaceCount(count)
+      if (count === 1) {
+        markAnomalyCleared('no_face')
+        markAnomalyCleared('multiple_faces')
+      }
+    }, [markAnomalyCleared]),
   })
 
   useScreenActivity({
@@ -165,7 +204,9 @@ export default function ProctorPanel() {
       if (!anomalyDetectionReady) return
       throttledReport(evt, 1)
     }, [anomalyDetectionReady, throttledReport]),
-    onActivity: useCallback(() => {}, []),
+    onActivity: useCallback(() => {
+      markAnomalyCleared('idle')
+    }, [markAnomalyCleared]),
   })
 
   if (!enabled) return null

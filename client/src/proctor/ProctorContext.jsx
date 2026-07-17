@@ -12,6 +12,7 @@ import useCamera from './useCamera'
 
 const ProctorContext = createContext(null)
 
+// Compulsory settings — always ON, cannot be disabled by user
 const DEFAULT_SETTINGS = {
   webcam: true,
   faceDetection: true,
@@ -21,9 +22,11 @@ const DEFAULT_SETTINGS = {
   tabSwitch: true,
   antiCheat: true,
   virtualCamera: true,
-  faceVerification: false, // optional server-backed identity check
+  faceVerification: false,
   securityChallenge: false,
 }
+
+const COMPULSORY_KEYS = ['webcam', 'voiceDetection', 'motionDetection', 'tabSwitch', 'faceDetection', 'blurDetection', 'antiCheat']
 
 export function ProctorProvider({ children }) {
   const [enabled, setEnabled] = useState(false)
@@ -31,7 +34,14 @@ export function ProctorProvider({ children }) {
   const [penaltyScore, setPenaltyScore] = useState(0)
   const [anomalies, setAnomalies] = useState([])
   const [consentGiven, setConsentGiven] = useState(false)
-  const [settings, setSettings] = useState(DEFAULT_SETTINGS)
+  const [settings, setSettingsRaw] = useState(DEFAULT_SETTINGS)
+  const setSettings = useCallback((s) => {
+    setSettingsRaw(prev => {
+      const merged = typeof s === 'function' ? s(prev) : { ...prev, ...s }
+      COMPULSORY_KEYS.forEach(k => { merged[k] = true })
+      return merged
+    })
+  }, [])
   const [quizType, setQuizType] = useState('')
   const [showEmotion, setShowEmotion] = useState(false)
   const [showReport, setShowReport] = useState(false)
@@ -70,7 +80,7 @@ export function ProctorProvider({ children }) {
     penaltyRef.current = 0
     setAnomalies([])
     setEnabled(true)
-  }, [])
+  }, [setSettings])
 
   return (
     <ProctorContext.Provider value={{

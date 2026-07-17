@@ -1,26 +1,17 @@
 /**
- * useCamera — Hook to manage webcam access via getUserMedia.
+ * useCamera — Simplified camera hook matching vibe's pattern.
  *
- * Provides:
- *   - videoRef: attach to a <video> element
- *   - stream: current MediaStream
- *   - error: any error message
- *   - start/stop camera
- *   - isRunning: whether camera is active
- *   - isGracePeriod: 10s grace period after start
+ * Manages getUserMedia stream and attaches to a <video> ref.
+ * The stream is stored in a ref so it persists across renders.
  */
 
-import { useState, useRef, useCallback, useEffect } from 'react'
-
-const GRACE_PERIOD_MS = 10000
+import { useRef, useCallback, useEffect, useState } from 'react'
 
 export default function useCamera() {
   const videoRef = useRef(null)
   const streamRef = useRef(null)
   const [isRunning, setIsRunning] = useState(false)
   const [error, setError] = useState(null)
-  const [isGracePeriod, setIsGracePeriod] = useState(false)
-  const [currentStream, setCurrentStream] = useState(null)
 
   const start = useCallback(async () => {
     try {
@@ -30,10 +21,10 @@ export default function useCamera() {
         audio: false,
       })
       streamRef.current = stream
-      setCurrentStream(stream)
+      // Attach stream to video element — try immediately, retry on next frame
+      attachStream(videoRef.current, stream)
+      requestAnimationFrame(() => attachStream(videoRef.current, stream))
       setIsRunning(true)
-      setIsGracePeriod(true)
-      setTimeout(() => setIsGracePeriod(false), GRACE_PERIOD_MS)
     } catch (e) {
       setError(e.message || 'Camera access denied')
       setIsRunning(false)
@@ -44,31 +35,22 @@ export default function useCamera() {
     if (streamRef.current) {
       streamRef.current.getTracks().forEach(t => t.stop())
       streamRef.current = null
-      setCurrentStream(null)
     }
     if (videoRef.current) {
       videoRef.current.srcObject = null
     }
     setIsRunning(false)
-    setIsGracePeriod(false)
   }, [])
 
-  // Sync stream to video element whenever either changes.
-  // This handles the race where getUserMedia resolves before the <video> mounts.
+  // Keep trying to attach stream to video element (handles mount timing)
   useEffect(() => {
-    if (currentStream && videoRef.current) {
-      videoRef.current.srcObject = currentStream
-      videoRef.current.play().catch(() => {})
-    }
-  }, [currentStream])
-
-  // Also sync on every render in case videoRef was just attached.
-  useEffect(() => {
-    if (currentStream && videoRef.current && !videoRef.current.srcObject) {
-      videoRef.current.srcObject = currentStream
-      videoRef.current.play().catch(() => {})
-    }
-  })
+    const id = setInterval(() => {
+      if (streamRef.current && videoRef.current && !videoRef.current.srcObject) {
+        attachStream(videoRef.current, streamRef.current)
+      }
+    }, 500)
+    return () => clearInterval(id)
+  }, [])
 
   // Cleanup on unmount
   useEffect(() => {
@@ -79,5 +61,12 @@ export default function useCamera() {
     }
   }, [])
 
-  return { videoRef, stream: currentStream, isRunning, error, start, stop, isGracePeriod }
+  return { videoRef, stream: streamRef, isRunning, error, start, stop }
+}
+
+function attachStream(video, stream) {
+  if (!video || !stream) return
+  if (video.srcObject === stream) return
+  video.srcObject = stream
+  video.play().catch(() => {})
 }

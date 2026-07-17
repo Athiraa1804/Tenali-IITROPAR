@@ -1,15 +1,13 @@
 /**
- * useVoiceDetection — Hook to detect voice/speech using Web Audio API.
+ * useVoiceDetection — Detects voice/speech using Web Audio API.
  *
- * Uses AnalyserNode to monitor microphone input levels.
- * Fires anomaly callback when audio levels exceed threshold.
+ * Sets isSpeaking=true when audio levels exceed threshold.
+ * Does NOT fire anomaly callbacks — the parent polling loop evaluates state.
  */
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 
 export default function useVoiceDetection({ enabled = false, onAnomaly, threshold = 0.15 }) {
-  const [isSpeaking, setIsSpeaking] = useState(false)
-  const [audioLevel, setAudioLevel] = useState(0)
   const contextRef = useRef(null)
   const analyserRef = useRef(null)
   const streamRef = useRef(null)
@@ -17,9 +15,7 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, threshol
   const onRef = useRef(null)
   const graceRef = useRef(true)
 
-  useEffect(() => {
-    onRef.current = onAnomaly
-  })
+  useEffect(() => { onRef.current = onAnomaly })
 
   useEffect(() => {
     if (enabled) {
@@ -49,19 +45,15 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, threshol
         let sum = 0
         for (let i = 0; i < dataArray.length; i++) sum += dataArray[i]
         const avg = sum / dataArray.length / 255
-        setAudioLevel(avg)
 
-        if (!graceRef.current && avg > threshold) {
-          setIsSpeaking(true)
-          onRef.current?.({ type: 'voice_detected', severity: 1, metadata: { level: avg.toFixed(3) } })
-        } else {
-          setIsSpeaking(false)
+        if (!graceRef.current) {
+          onRef.current?.(avg > threshold)
         }
         rafRef.current = requestAnimationFrame(check)
       }
       check()
     } catch {
-      // Microphone access denied — silently ignore
+      // Microphone access denied
     }
   }, [enabled, threshold])
 
@@ -76,6 +68,7 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, threshol
       contextRef.current = null
     }
     analyserRef.current = null
+    onRef.current?.(false)
   }, [])
 
   useEffect(() => {
@@ -83,6 +76,4 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, threshol
     else stopListening()
     return stopListening
   }, [enabled, startListening, stopListening])
-
-  return { isSpeaking, audioLevel }
 }

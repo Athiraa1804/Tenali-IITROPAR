@@ -1,22 +1,24 @@
 /**
- * ProctorPanel — Left-side proctoring panel with webcam + detection hooks.
+ * ProctorPanel — Left-side proctoring panel matching vibe's architecture.
  *
- * Manages camera lifecycle and runs ALL detection hooks at the App level:
- *   - Tab switch, anti-cheat, face detection, blur, voice, virtual camera
- *   - Shows live webcam feed + anomaly alerts on the left side
+ * Architecture (like vibe):
+ *   1. Camera lifecycle managed here
+ *   2. Detection hooks set state (isBlur, isSpeaking, etc.)
+ *   3. Single polling loop (100ms) checks all states → fires anomalies
+ *   4. FloatingVideo renders the UI
  */
 
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef, useState } from 'react'
 import useProctor from './useProctor'
 import FloatingVideo from './FloatingVideo'
 import useTabSwitch from './useTabSwitch'
 import useAntiCheat from './useAntiCheat'
-import useFaceDetection from './useFaceDetection'
 import useBlurDetector from './useBlurDetector'
 import useVoiceDetection from './useVoiceDetection'
-import useVirtualCamera from './useVirtualCamera'
-import useScreenActivity from './useScreenActivity'
 import { reportProctorEvent } from './proctorEvents'
+
+const GRACE_PERIOD_MS = 10000
+const ANOMALY_CHECK_INTERVAL_MS = 500
 
 export default function ProctorPanel() {
   const {
@@ -24,6 +26,15 @@ export default function ProctorPanel() {
     addPenalty, addAnomaly, camera, cameraError, setCameraError,
   } = useProctor()
 
+  // Detection states (set by hooks, read by polling loop)
+  const [isBlur, setIsBlur] = useState(false)
+  const [isSpeaking, setIsSpeaking] = useState(false)
+
+  const [contiguousAnomalyPoints, setContiguousAnomalyPoints] = useState(0)
+  const [penaltyType, setPenaltyType] = useState('')
+  const [isAnomalyDetected, setIsAnomalyDetected] = useState(false)
+  const [anomalyDetectionReady, setAnomalyDetectionReady] = useState(false)
+  const readyTimeRef = useRef(0)
   const lastAnomalyTime = useRef({})
 
   // Start/stop camera based on proctoring state
@@ -36,66 +47,114 @@ export default function ProctorPanel() {
     } else {
       camera.stop()
     }
-    return () => {
-      cancelled = true
-      camera.stop()
-    }
+    return () => { cancelled = true; camera.stop() }
   }, [enabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Throttled anomaly handler
-  const handleAnomaly = useCallback((evt, severity) => {
-    if (!enabled) return
-    const now = Date.now()
-    if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
-    lastAnomalyTime.current[evt.type] = now
-    addAnomaly(evt)
-    addPenalty(severity || evt.severity || 1)
-    reportProctorEvent({ sessionId, type: evt.type, severity: severity || evt.severity || 1 })
-  }, [enabled, sessionId, addAnomaly, addPenalty])
+  // Mark anomaly detection ready after grace period
+  useEffect(() => {
+    if (enabled && camera.isRunning && !anomalyDetectionReady) {
+      const timer = setTimeout(() => {
+        readyTimeRef.current = Date.now()
+        setAnomalyDetectionReady(true)
+      }, GRACE_PERIOD_MS)
+      return () => clearTimeout(timer)
+    }
+  }, [enabled, camera.isRunning, anomalyDetectionReady])
 
-  // Tab switch detection — always on when proctoring enabled
+  // Tab switch detection — fires addAnomaly directly
   useTabSwitch({
-    onTabSwitch: useCallback((evt) => handleAnomaly(evt, 1), [handleAnomaly]),
+    onTabSwitch: useCallback((evt) => {
+      if (!enabled || !anomalyDetectionReady) return
+      const now = Date.now()
+      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
+      lastAnomalyTime.current[evt.type] = now
+      addAnomaly(evt)
+      addPenalty(1)
+      reportProctorEvent({ sessionId, type: evt.type, severity: 1 })
+    }, [enabled, anomalyDetectionReady, sessionId, addAnomaly, addPenalty]),
     enabled,
   })
 
   // Anti-cheat detection
   useAntiCheat({
     enabled,
-    onViolation: useCallback((evt) => handleAnomaly(evt, 1), [handleAnomaly]),
+    onViolation: useCallback((evt) => {
+      if (!enabled || !anomalyDetectionReady) return
+      const now = Date.now()
+      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
+      lastAnomalyTime.current[evt.type] = now
+      addAnomaly(evt)
+      addPenalty(1)
+      reportProctorEvent({ sessionId, type: evt.type, severity: 1 })
+    }, [enabled, anomalyDetectionReady, sessionId, addAnomaly, addPenalty]),
   })
 
-  // Face detection
-  useFaceDetection({
-    videoRef: camera.videoRef,
-    enabled: enabled && settings.faceDetection,
-    onAnomaly: useCallback((evt) => handleAnomaly(evt, evt.severity || 1), [handleAnomaly]),
-  })
-
-  // Blur detection
+  // Blur detection — sets state, polling loop evaluates
   useBlurDetector({
     videoRef: camera.videoRef,
-    enabled: enabled && settings.blurDetection,
-    onAnomaly: useCallback((evt) => handleAnomaly(evt, evt.severity || 1), [handleAnomaly]),
+    enabled: enabled && settings.blurDetection && anomalyDetectionReady,
+    onAnomaly: useCallback((blurState) => {
+      setIsBlur(blurState)
+    }, []),
   })
 
-  // Voice detection
+  // Voice detection — sets state, polling loop evaluates
   useVoiceDetection({
-    enabled: enabled && settings.voiceDetection,
-    onAnomaly: useCallback((evt) => handleAnomaly(evt, evt.severity || 1), [handleAnomaly]),
+    enabled: enabled && settings.voiceDetection && anomalyDetectionReady,
+    onAnomaly: useCallback((voiceState) => {
+      setIsSpeaking(voiceState)
+    }, []),
   })
 
-  // Virtual camera detection
-  useVirtualCamera({
-    enabled: enabled && settings.virtualCamera,
-    onAnomaly: useCallback((evt) => handleAnomaly(evt, evt.severity || 2), [handleAnomaly]),
-  })
+  // Single polling loop — like vibe's 100ms interval
+  useEffect(() => {
+    if (!enabled || !anomalyDetectionReady) return
 
-  // Screen activity monitoring — detect idle user
-  useScreenActivity({
-    enabled,
-    onIdle: useCallback((evt) => handleAnomaly(evt, 1), [handleAnomaly]),
-  })
+    const interval = setInterval(() => {
+      let newPenalty = 0
+      let newType = ''
+      const activeAnomalies = []
+
+      // Check blur
+      if (isBlur && settings.blurDetection) {
+        activeAnomalies.push({ type: 'blur_detected', severity: 1 })
+        newPenalty += 1
+        newType = 'Camera Obscured'
+      }
+
+      // Check voice
+      if (isSpeaking && settings.voiceDetection) {
+        activeAnomalies.push({ type: 'voice_detected', severity: 1 })
+        newPenalty += 1
+        newType = 'Speaking Detected'
+      }
+
+      if (activeAnomalies.length > 0) {
+        setIsAnomalyDetected(true)
+        setPenaltyType(newType)
+        setContiguousAnomalyPoints(prev => {
+          const newPoints = prev + newPenalty
+          addPenalty(newPenalty)
+          for (const a of activeAnomalies) {
+            const now = Date.now()
+            if (!lastAnomalyTime.current[a.type] || now - lastAnomalyTime.current[a.type] > 5000) {
+              lastAnomalyTime.current[a.type] = now
+              addAnomaly(a)
+              reportProctorEvent({ sessionId, type: a.type, severity: a.severity })
+            }
+          }
+          return newPoints
+        })
+      } else {
+        setIsAnomalyDetected(false)
+        if (contiguousAnomalyPoints > 0) {
+          setContiguousAnomalyPoints(0)
+        }
+      }
+    }, ANOMALY_CHECK_INTERVAL_MS)
+
+    return () => clearInterval(interval)
+  }, [enabled, anomalyDetectionReady, isBlur, isSpeaking, settings, contiguousAnomalyPoints, sessionId, addAnomaly, addPenalty])
 
   if (!enabled) return null
 
@@ -106,6 +165,8 @@ export default function ProctorPanel() {
       error={cameraError}
       penaltyScore={penaltyScore}
       anomalies={anomalies}
+      isAnomalyDetected={isAnomalyDetected}
+      penaltyType={penaltyType}
     />
   )
 }

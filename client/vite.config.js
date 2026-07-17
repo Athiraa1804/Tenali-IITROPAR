@@ -31,9 +31,7 @@ export default defineConfig({
   // Enable React support for JSX compilation
   plugins: [react()],
   server: {
-    // Listen on all network interfaces (0.0.0.0) for development
-    host: '0.0.0.0',
-    // Development server port
+    host: 'localhost',
     port: 5173,
     // API proxy configuration: Forward API requests to backend services
     proxy: {

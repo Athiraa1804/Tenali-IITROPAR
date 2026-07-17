@@ -77,6 +77,10 @@ import LanguageDashboard from './language/LanguageDashboard'
 import { VOCAB_CORPUS } from './vocabCorpus'
 import PercentExplanationApp from './PercentExplanationApp'
 import { playSound } from './audioContext'
+import ProctoredQuiz from './proctor/ProctoredQuiz'
+import useProctor from './proctor/useProctor'
+import ProctorDashboard from './proctor/ProctorDashboard'
+import ProctorPanel from './proctor/ProctorPanel'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -43170,6 +43174,21 @@ function App() {
     return <ExtendedEuclidApp />
   }
 
+  // Route: /proctor → Proctor Dashboard (instructor view)
+  if (pathname === '/proctor') {
+    const ProctorDash = ProctorDashboard
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <div className="app-shell"><div className="card">
+          <ProctorDash onBack={() => { window.location.href = '/' }} />
+        </div></div>
+      </>
+    )
+  }
+
   // Route: /supertables1 → Adaptive speed drill (2-phase)
   if (pathname === '/supertables1') {
     return (
@@ -44064,7 +44083,7 @@ function App() {
     }
 
     if (ActiveApp) {
-      const element = (
+      const appEl = (
         <ActiveApp
           completedTopics={completedTopics}
           goldMastery={goldMastery}
@@ -44100,7 +44119,7 @@ function App() {
           isGoalMode={isGoalMode}
         />
       );
-      return journeyContext ? <AuthGate>{element}</AuthGate> : element;
+      return journeyContext ? <AuthGate>{appEl}</AuthGate> : appEl;
     }
 
     return (
@@ -44117,6 +44136,11 @@ function App() {
     );
   };
 
+  // Check if proctoring is enabled (from ProctorContext)
+  let proctorEnabled = false
+  let proctorCtx = null
+  try { proctorCtx = useProctor(); proctorEnabled = proctorCtx.enabled } catch {}
+
   return (
     <div className="app-shell">
       {showTour && <OnboardingTour onFinish={() => { localStorage.setItem('tenali_tour_seen', 'true'); setShowTour(false) }} mode={mode} />}
@@ -44126,14 +44150,99 @@ function App() {
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      {mode === 'vachana' ? (
-        <Vachana onBack={() => setMode(null)} />
-      ) : (
-        <div className="card">
-          {renderContent()}
-        </div>
+      {proctorCtx && (
+        <button
+          className="proctor-toggle-btn"
+          onClick={() => {
+            if (proctorEnabled) {
+              proctorCtx.resetSession()
+            } else {
+              proctorCtx.setEnabled(true)
+            }
+          }}
+          title={proctorEnabled ? 'Proctoring ON — click to disable' : 'Proctoring OFF — click to enable'}
+          style={{
+            position: 'fixed', bottom: '16px', left: '16px', zIndex: 90000,
+            width: 44, height: 44, borderRadius: '50%', border: '2px solid',
+            borderColor: proctorEnabled ? '#4caf50' : '#666',
+            background: proctorEnabled ? 'rgba(76,175,80,0.15)' : 'rgba(100,100,100,0.15)',
+            color: proctorEnabled ? '#4caf50' : '#999',
+            cursor: 'pointer', fontSize: '1.2rem',
+            boxShadow: proctorEnabled ? '0 0 12px rgba(76,175,80,0.4)' : '0 2px 6px rgba(0,0,0,0.3)',
+            transition: 'all 0.2s',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          {proctorEnabled ? '🔒' : '🔓'}
+        </button>
       )}
+      <ProctorPanel />
+      <div style={proctorEnabled ? { marginLeft: 230, transition: 'margin-left 0.3s ease' } : {}}>
+        {mode === 'vachana' ? (
+          <Vachana onBack={() => setMode(null)} />
+        ) : (
+          <div className="card">
+            {proctorEnabled && mode ? (
+              <ProctoredQuiz quizType={mode} onBack={() => { proctorCtx?.resetSession(); isGoalMode ? setMode('goalpractice') : setMode(null) }}>
+                {renderContent()}
+              </ProctoredQuiz>
+            ) : renderContent()}
+          </div>
+        )}
+      </div>
       {renderCelebrationModal()}
+    </div>
+  )
+}
+
+/**
+ * ProctorToggleMenuItem — Menu item to toggle proctoring on/off.
+ */
+function ProctorToggleMenuItem() {
+  let ctx
+  try { ctx = useProctor() } catch { return null }
+  const { enabled, setEnabled, resetSession } = ctx
+
+  return (
+    <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--clr-border, #333)' }}>
+      <label style={{
+        display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer',
+        fontSize: '0.9rem', color: 'var(--clr-text)',
+      }}>
+        <span>🔒 Proctoring</span>
+        <span style={{ marginLeft: 'auto', position: 'relative', display: 'inline-block', width: 40, height: 22 }}>
+          <input
+            type="checkbox"
+            checked={enabled}
+            onChange={e => {
+              if (e.target.checked) {
+                setEnabled(true)
+              } else {
+                resetSession()
+              }
+            }}
+            style={{ opacity: 0, width: 0, height: 0, position: 'absolute' }}
+          />
+          <span style={{
+            position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+            background: enabled ? '#4caf50' : '#666', borderRadius: 11, cursor: 'pointer',
+            transition: 'background 0.2s',
+          }}>
+            <span style={{
+              position: 'absolute', top: 2, left: enabled ? 20 : 2,
+              width: 18, height: 18, background: '#fff', borderRadius: '50%',
+              transition: 'left 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.3)',
+            }} />
+          </span>
+        </span>
+      </label>
+      <a href="/proctor" style={{
+        display: 'block', marginTop: 6, fontSize: '0.82rem', color: 'var(--clr-accent, #6cf)',
+        textDecoration: 'none',
+      }} onMouseEnter={e => e.target.style.textDecoration = 'underline'}
+         onMouseLeave={e => e.target.style.textDecoration = 'none'}>
+        📊 View Proctor Dashboard
+      </a>
     </div>
   )
 }
@@ -44375,6 +44484,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
               <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>Practice with targets & limits</span>
             </button>
 
+            <ProctorToggleMenuItem />
             {featuredApps.map(app => (
               <button key={app.key} onClick={() => { setMenuOpen(false); onSelect(app.key) }} style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',

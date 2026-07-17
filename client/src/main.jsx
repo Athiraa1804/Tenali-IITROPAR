@@ -22,6 +22,7 @@
 import React from 'react'; window.React = React;
 import ReactDOM from 'react-dom/client'
 import App, { AuthMenu } from './App.jsx?v=2'
+import { ProctorProvider } from './proctor/ProctorContext'
 import './index.css';
 import './kid-zone.css';
 
@@ -29,8 +30,10 @@ import './kid-zone.css';
 ReactDOM.createRoot(document.getElementById('root')).render(
   // StrictMode: Enables additional development checks and warnings
   <React.StrictMode>
-    <App />
-    {/* Hamburger menu (login/logout) — fixed top-right, visible on every page */}
-    <AuthMenu />
+    <ProctorProvider>
+      <App />
+      {/* Hamburger menu (login/logout) — fixed top-right, visible on every page */}
+      <AuthMenu />
+    </ProctorProvider>
   </React.StrictMode>,
 )

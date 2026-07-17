@@ -3,7 +3,7 @@
  *
  * Manages getUserMedia stream and attaches to a <video> ref.
  * Requests audio alongside video so mic permission is bundled with camera.
- * The stream is stored in a ref so it persists across renders.
+ * Uses reasonable resolution (640x480) for clarity without overwhelming CPU.
  */
 
 import { useRef, useCallback, useEffect, useState } from 'react'
@@ -15,15 +15,15 @@ export default function useCamera() {
   const [error, setError] = useState(null)
 
   const start = useCallback(async () => {
+    if (streamRef.current) return
     try {
       setError(null)
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { width: { ideal: 320 }, height: { ideal: 240 }, facingMode: 'user' },
+        video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: 'user' },
         audio: true,
       })
       streamRef.current = stream
       attachStream(videoRef.current, stream)
-      requestAnimationFrame(() => attachStream(videoRef.current, stream))
       setIsRunning(true)
     } catch (e) {
       setError(e.message || 'Camera access denied')

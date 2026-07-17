@@ -140,7 +140,7 @@ export async function captureScreenshot(videoElement) {
   if (!videoElement) return null;
   try {
     const canvas = document.createElement('canvas');
-    const maxDim = 320
+    const maxDim = 480
     const vw = videoElement.videoWidth || 320
     const vh = videoElement.videoHeight || 240
     const scale = Math.min(maxDim / vw, maxDim / vh, 1)
@@ -148,7 +148,7 @@ export async function captureScreenshot(videoElement) {
     canvas.height = Math.round(vh * scale)
     const ctx = canvas.getContext('2d')
     ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
-    return canvas.toDataURL('image/jpeg', 0.5);
+    return canvas.toDataURL('image/jpeg', 0.6);
   } catch { return null }
 }
 

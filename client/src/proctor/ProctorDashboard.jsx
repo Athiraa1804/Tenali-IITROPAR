@@ -62,7 +62,9 @@ export default function ProctorDashboard({ onBack }) {
   const [sessions, setSessions] = useState([])
   const [selected, setSelected] = useState(null)
   const [detail, setDetail] = useState(null)
-  const [loading, setLoading] = useState(() => !getToken())
+  const [loading, setLoading] = useState(() => {
+    return getToken() ? true : false
+  })
   const [error, setError] = useState(() => getToken() ? null : 'Authentication required')
   const [screenshotModal, setScreenshotModal] = useState(null)
   const [visibleSessions, setVisibleSessions] = useState(20)

@@ -30,6 +30,9 @@ export default defineConfig({
   base: '/',
   // Enable React support for JSX compilation
   plugins: [react()],
+  resolve: {
+    dedupe: ['react', 'react-dom'],
+  },
   optimizeDeps: {
     include: ['face-api.js'],
   },

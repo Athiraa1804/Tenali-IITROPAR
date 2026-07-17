@@ -34,7 +34,7 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, streamRe
   }, [enabled])
 
   const stopListening = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    clearTimeout(rafRef.current)
     if (activeStreamRef.current) {
       activeStreamRef.current.getTracks().forEach(t => t.stop())
       activeStreamRef.current = null
@@ -77,6 +77,7 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, streamRe
       analyserRef.current = analyser
 
       const dataArray = new Uint8Array(analyser.frequencyBinCount)
+      const CHECK_INTERVAL_MS = 100
 
       const check = () => {
         analyser.getByteFrequencyData(dataArray)
@@ -93,7 +94,7 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, streamRe
         if (!graceRef.current) {
           onRef.current?.(avg > threshold)
         }
-        rafRef.current = requestAnimationFrame(check)
+        rafRef.current = setTimeout(check, CHECK_INTERVAL_MS)
       }
       check()
     } catch {

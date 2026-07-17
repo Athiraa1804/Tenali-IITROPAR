@@ -1,32 +1,29 @@
 /**
  * useVoiceDetection — Detects voice/speech using Web Audio API.
  *
+ * Uses the camera stream's audio track (shared via ProctorContext).
+ * Falls back to separate getUserMedia if camera stream unavailable.
+ *
  * Fixes applied:
+ *   - Uses camera stream audio track (no second permission prompt)
  *   - AudioContext.resume() for browser compatibility
  *   - Frequency band filtering (85Hz-4kHz speech range only)
  *   - Raised threshold to reduce false positives
- *   - Error callback for mic permission denied
- *
- * Sets isSpeaking=true when audio levels exceed threshold.
- * Does NOT fire anomaly callbacks — the parent polling loop evaluates state.
  */
 
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 
-const SPEECH_HIGH_BIN = 23 // ~4kHz with fftSize=256 at 44.1kHz
+const SPEECH_HIGH_BIN = 23
 
-export default function useVoiceDetection({ enabled = false, onAnomaly, onMicError, threshold = 0.25 }) {
-  const [micPermissionDenied, setMicPermissionDenied] = useState(false)
+export default function useVoiceDetection({ enabled = false, onAnomaly, streamRef, threshold = 0.25 }) {
   const contextRef = useRef(null)
   const analyserRef = useRef(null)
-  const streamRef = useRef(null)
+  const activeStreamRef = useRef(null)
   const rafRef = useRef(null)
   const onRef = useRef(null)
-  const onErrorRef = useRef(null)
   const graceRef = useRef(true)
 
   useEffect(() => { onRef.current = onAnomaly })
-  useEffect(() => { onErrorRef.current = onMicError })
 
   useEffect(() => {
     if (enabled) {
@@ -36,20 +33,43 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, onMicErr
     }
   }, [enabled])
 
+  const stopListening = useCallback(() => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current)
+    if (activeStreamRef.current) {
+      activeStreamRef.current.getTracks().forEach(t => t.stop())
+      activeStreamRef.current = null
+    }
+    if (contextRef.current) {
+      contextRef.current.close().catch(() => {})
+      contextRef.current = null
+    }
+    analyserRef.current = null
+    onRef.current?.(false)
+  }, [])
+
   const startListening = useCallback(async () => {
     if (!enabled) return
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
-      streamRef.current = stream
-      setMicPermissionDenied(false)
+      let audioStream = null
+
+      const cameraStream = streamRef?.current
+      if (cameraStream) {
+        const audioTracks = cameraStream.getAudioTracks()
+        if (audioTracks.length > 0) {
+          audioStream = new MediaStream(audioTracks)
+        }
+      }
+
+      if (!audioStream) {
+        audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        activeStreamRef.current = audioStream
+      }
 
       const ctx = new (window.AudioContext || window.webkitAudioContext)()
       contextRef.current = ctx
-
-      // Resume AudioContext — required by browsers after user gesture
       await ctx.resume()
 
-      const source = ctx.createMediaStreamSource(stream)
+      const source = ctx.createMediaStreamSource(audioStream)
       const analyser = ctx.createAnalyser()
       analyser.fftSize = 256
       analyser.smoothingTimeConstant = 0.3
@@ -61,8 +81,6 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, onMicErr
       const check = () => {
         analyser.getByteFrequencyData(dataArray)
 
-        // Sum only speech frequency band (bins 1 to ~4kHz)
-        // Skip bin 0 (DC offset / noise floor)
         let sum = 0
         let count = 0
         const highBin = Math.min(SPEECH_HIGH_BIN, dataArray.length)
@@ -78,33 +96,16 @@ export default function useVoiceDetection({ enabled = false, onAnomaly, onMicErr
         rafRef.current = requestAnimationFrame(check)
       }
       check()
-    } catch (err) {
-      setMicPermissionDenied(true)
-      onErrorRef.current?.(err.message || 'Microphone access denied')
+    } catch {
+      onRef.current?.(false)
     }
-  }, [enabled, threshold])
+  }, [enabled, streamRef, threshold])
 
-  const stopListening = useCallback(() => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current)
-    if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop())
-      streamRef.current = null
-    }
-    if (contextRef.current) {
-      contextRef.current.close().catch(() => {})
-      contextRef.current = null
-    }
-    analyserRef.current = null
-    onRef.current?.(false)
-  }, [])
-
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     if (enabled) void startListening()
     else void stopListening()
     return () => { void stopListening() }
   }, [enabled, startListening, stopListening])
-  /* eslint-enable react-hooks/set-state-in-effect */
 
-  return { micPermissionDenied }
+  return {}
 }

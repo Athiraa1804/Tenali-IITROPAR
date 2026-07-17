@@ -4,7 +4,8 @@
  * Layout:
  *   - Green header bar "All Clear" / Red header bar "Detected Anomalies"
  *   - Live webcam feed below
- *   - Overlay with anomaly details on the video
+ *   - Overlay with anomaly details on the video (shown for ALL anomalies)
+ *   - Toast notifications for each new anomaly
  *   - Penalty score + face count badge
  *   - Collapsible / pop-out
  *   - Red warning banner across top of screen when anomalies detected
@@ -20,12 +21,15 @@ const SEVERITY_COLORS = {
   3: { bg: 'rgba(239,68,68,0.2)', border: '#ef4444', text: '#fca5a5' },
 }
 
+const SEVERITY_LABELS = { 1: 'Low', 2: 'Medium', 3: 'High' }
+
 const ANOMALY_ICONS = {
   tab_switch: '🔄', tab_blur: '👁️', no_face: '👤',
   multiple_faces: '👥', blur_detected: '🌫️', voice_detected: '🎤',
   virtual_camera: '💻', right_click: '🖱️', copy_paste: '📋',
   devtools: '🛠️', idle: '😴', motion_detected: '🏃',
   camera_covered: '🙈', camera_overexposed: '☀️', face_mismatch: '🎭',
+  ejected: '🚫',
 }
 
 const ANOMALY_LABELS = {
@@ -36,6 +40,32 @@ const ANOMALY_LABELS = {
   copy_paste: 'Copy/Paste', devtools: 'DevTools', idle: 'Inactivity',
   motion_detected: 'Scene Change', camera_covered: 'Camera Covered',
   camera_overexposed: 'Overexposed', face_mismatch: 'Identity Mismatch',
+  ejected: 'Session Ejected',
+}
+
+function Toast({ anomaly, onDismiss }) {
+  const sev = SEVERITY_COLORS[anomaly.severity] || SEVERITY_COLORS[1]
+  const icon = ANOMALY_ICONS[anomaly.type] || '⚠️'
+  const label = ANOMALY_LABELS[anomaly.type] || anomaly.type.replace(/_/g, ' ')
+
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 4000)
+    return () => clearTimeout(t)
+  }, [onDismiss])
+
+  return (
+    <div className="proctor-toast" style={{ borderLeftColor: sev.border }}>
+      <span className="proctor-toast-icon">{icon}</span>
+      <div className="proctor-toast-body">
+        <div className="proctor-toast-title">{label}</div>
+        <div className="proctor-toast-message">
+          Severity: {SEVERITY_LABELS[anomaly.severity] || 'Low'}
+          {anomaly.screenshot ? ' · Screenshot captured' : ''}
+        </div>
+      </div>
+      <button className="proctor-toast-close" onClick={onDismiss}>✕</button>
+    </div>
+  )
 }
 
 function FaceBadge({ faceCount }) {
@@ -60,10 +90,24 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [showRedBanner, setShowRedBanner] = useState(false)
+  const [toasts, setToasts] = useState([])
+  const prevAnomalyCountRef = useRef(0)
   const bannerShowRef = useRef(null)
   const bannerHideRef = useRef(null)
-
   const { pipActive, pipSupported, togglePip } = usePipWindow({ videoRef, enabled: isRunning })
+
+  const recentAnomalies = anomalies.slice(-5)
+
+  useEffect(() => {
+    const newCount = anomalies.length
+    if (newCount > prevAnomalyCountRef.current) {
+      const newAnomalies = anomalies.slice(prevAnomalyCountRef.current)
+      newAnomalies.forEach(a => {
+        setToasts(prev => [...prev.slice(-3), { ...a, _toastId: a.id || Date.now() + Math.random() }])
+      })
+      prevAnomalyCountRef.current = newCount
+    }
+  }, [anomalies])
 
   useEffect(() => {
     if (isAnomalyDetected && penaltyScore > 0) {
@@ -96,13 +140,23 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
 
   const toggleCollapse = (e) => { e.stopPropagation(); setIsCollapsed(c => !c) }
 
+  const removeToast = (toastId) => {
+    setToasts(prev => prev.filter(t => t._toastId !== toastId))
+  }
+
   const videoHeight = isCollapsed ? 1 : 196
   const containerHeight = isCollapsed ? 34 : 230
-  const latestAnomaly = anomalies.length > 0 ? anomalies[anomalies.length - 1] : null
 
   return (
     <>
-      {/* Red warning banner — z-index: 100001 */}
+      {/* Toast notifications — top right */}
+      <div className="proctor-toast-container">
+        {toasts.map(t => (
+          <Toast key={t._toastId} anomaly={t} onDismiss={() => removeToast(t._toastId)} />
+        ))}
+      </div>
+
+      {/* Red warning banner */}
       {showRedBanner && isAnomalyDetected && (
         <div className="proctor-red-banner" style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100001,
@@ -112,20 +166,14 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
           boxShadow: '0 4px 20px rgba(220,38,38,0.5)', animation: 'proctor-slide-down 0.3s ease',
         }}>
           <span style={{ fontSize: '1.2rem' }}>⚠️</span>
-          <span>Anomaly Detected: {penaltyType || 'Suspicious Activity'}</span>
+          <span>Anomaly Detected: {ANOMALY_LABELS[penaltyType] || penaltyType || 'Suspicious Activity'}</span>
           <span style={{ background: 'rgba(255,255,255,0.2)', borderRadius: 6, padding: '2px 8px', fontSize: '0.75rem' }}>
             Penalty: {penaltyScore}/50
           </span>
-          {latestAnomaly?.screenshot && (
-            <img src={latestAnomaly.screenshot} alt="Evidence" style={{
-              width: 48, height: 36, objectFit: 'cover', borderRadius: 4,
-              border: '2px solid rgba(255,255,255,0.3)',
-            }} />
-          )}
         </div>
       )}
 
-      {/* Main sidebar — z-index: 10000 (sidebar) or 100000 (popped out) */}
+      {/* Main sidebar */}
       <div className="proctor-sidebar" style={isPoppedOut ? {
         position: 'fixed', left: `${position.x}px`, top: `${position.y}px`,
         width: 224, height: containerHeight, zIndex: 100000,
@@ -137,7 +185,7 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
         transition: 'height 0.3s ease, top 0.3s ease', borderRadius: '0 12px 12px 0',
       }} onMouseDown={handleMouseDown}>
 
-        {/* Header bar — green = clear, red = anomaly */}
+        {/* Header bar */}
         <div style={{
           background: isAnomalyDetected ? '#dc2626' : '#16a34a', color: 'white',
           padding: '0 8px', display: 'flex', justifyContent: 'space-between',
@@ -148,7 +196,7 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
             <span>{isAnomalyDetected ? '⚠️' : '☑️'}</span>
             <span style={{ flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {isCollapsed
-                ? (isAnomalyDetected ? `${penaltyType || 'Anomaly'} (${penaltyScore})` : `All Clear (${penaltyScore})`)
+                ? (isAnomalyDetected ? `${ANOMALY_LABELS[penaltyType] || 'Anomaly'} (${penaltyScore})` : `All Clear (${penaltyScore})`)
                 : (isAnomalyDetected ? 'Detected Anomalies!' : 'All Clear')
               }
             </span>
@@ -173,8 +221,6 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
 
         {/* Video container */}
         <div style={{ position: 'relative', width: '100%', height: videoHeight, overflow: 'hidden', transition: 'height 0.3s', background: '#111' }}>
-
-          {/* Error overlay */}
           {error && (
             <div style={{
               position: 'absolute', inset: 0, zIndex: 20,
@@ -187,7 +233,6 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
             </div>
           )}
 
-          {/* Video element */}
           {!isCollapsed && (
             <video ref={videoRef} autoPlay muted playsInline style={{
               width: '100%', height: '100%', objectFit: 'cover',
@@ -195,8 +240,8 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
             }} />
           )}
 
-          {/* Anomaly overlay on video */}
-          {isAnomalyDetected && !isCollapsed && (
+          {/* Anomaly overlay — always show when there are recent anomalies */}
+          {recentAnomalies.length > 0 && !isCollapsed && (
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
               background: 'rgba(0,0,0,0.75)', zIndex: 10,
@@ -207,7 +252,7 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
                 Anomaly Details
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                {anomalies.slice(-5).reverse().map((a, i) => {
+                {recentAnomalies.slice(-5).reverse().map((a, i) => {
                   const sev = SEVERITY_COLORS[a.severity] || SEVERITY_COLORS[1]
                   return (
                     <div key={i} style={{
@@ -227,7 +272,6 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
             </div>
           )}
 
-          {/* Status bar at bottom */}
           {!error && !isCollapsed && (
             <div style={{
               position: 'absolute', bottom: 0, left: 0, right: 0,

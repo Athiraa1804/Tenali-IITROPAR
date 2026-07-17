@@ -140,11 +140,15 @@ export async function captureScreenshot(videoElement) {
   if (!videoElement) return null;
   try {
     const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth || 320;
-    canvas.height = videoElement.videoHeight || 240;
-    const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL('image/jpeg', 0.6);
+    const maxDim = 320
+    const vw = videoElement.videoWidth || 320
+    const vh = videoElement.videoHeight || 240
+    const scale = Math.min(maxDim / vw, maxDim / vh, 1)
+    canvas.width = Math.round(vw * scale)
+    canvas.height = Math.round(vh * scale)
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height)
+    return canvas.toDataURL('image/jpeg', 0.5);
   } catch { return null }
 }
 

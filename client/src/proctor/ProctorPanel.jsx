@@ -2,10 +2,10 @@
  * ProctorPanel — Left-side proctoring panel matching vibe's architecture.
  *
  * Architecture:
- *   1. Camera lifecycle managed here
- *   2. Detection hooks set state (isBlur, isSpeaking, isMotion, faceCount, etc.)
- *   3. Single polling loop (500ms) checks all states → fires anomalies with screenshots
- *   4. FloatingVideo renders the UI
+ *   1. Camera lifecycle managed here (with audio for voice detection)
+ *   2. ALL detection hooks call reportWithScreenshot directly (no polling loop)
+ *   3. isAnomalyDetected derived from anomalies array
+ *   4. FloatingVideo renders the UI + toast notifications
  *   5. Screenshots captured on each anomaly for dashboard evidence
  *
  * Detection hooks wired:
@@ -31,8 +31,7 @@ import useScreenActivity from './useScreenActivity'
 import { reportProctorEvent, captureScreenshot } from './proctorEvents'
 
 const GRACE_PERIOD_MS = 10000
-const ANOMALY_CHECK_INTERVAL_MS = 500
-const PENALTY_COOLDOWN_MS = 5000
+const PER_TYPE_COOLDOWN_MS = 5000
 
 export default function ProctorPanel() {
   const {
@@ -40,28 +39,49 @@ export default function ProctorPanel() {
     addPenalty, addAnomaly, camera, cameraError, setCameraError,
   } = useProctor()
 
-  // Detection states (set by hooks, read by polling loop)
-  const [isBlur, setIsBlur] = useState(false)
-  const [isSpeaking, setIsSpeaking] = useState(false)
   const [faceCount, setFaceCount] = useState(1)
-
   const [penaltyType, setPenaltyType] = useState('')
-  const [isAnomalyDetected, setIsAnomalyDetected] = useState(false)
   const [anomalyDetectionReady, setAnomalyDetectionReady] = useState(false)
+  const [isAnomalyDetected, setIsAnomalyDetected] = useState(false)
   const readyTimeRef = useRef(0)
   const lastAnomalyTime = useRef({})
   const lastPenaltyTime = useRef({})
+  const prevAnomalyCountRef = useRef(0)
 
-  // Helper: capture screenshot and report anomaly
   const reportWithScreenshot = useCallback(async (evt, severity) => {
     const screenshot = await captureScreenshot(camera.videoRef.current)
     const enriched = { ...evt, screenshot }
     addAnomaly(enriched)
-    addPenalty(severity || evt.severity || 1)
+
+    const now = Date.now()
+    const key = evt.type
+    if (!lastPenaltyTime.current[key] || now - lastPenaltyTime.current[key] > PER_TYPE_COOLDOWN_MS) {
+      lastPenaltyTime.current[key] = now
+      addPenalty(severity || evt.severity || 1)
+      setPenaltyType(evt.type)
+    }
+
     reportProctorEvent({ sessionId, type: evt.type, severity: severity || evt.severity || 1, evidence: screenshot })
   }, [camera.videoRef, sessionId, addAnomaly, addPenalty])
 
-  // Start/stop camera based on proctoring state
+  const throttledReport = useCallback((evt, severity) => {
+    const now = Date.now()
+    const key = evt.type
+    if (lastAnomalyTime.current[key] && now - lastAnomalyTime.current[key] < PER_TYPE_COOLDOWN_MS) return
+    lastAnomalyTime.current[key] = now
+    reportWithScreenshot(evt, severity)
+  }, [reportWithScreenshot])
+
+  // Derive isAnomalyDetected from anomalies array (runs on every render)
+  useEffect(() => {
+    if (anomalies.length > prevAnomalyCountRef.current) {
+      setIsAnomalyDetected(true)
+      prevAnomalyCountRef.current = anomalies.length
+      const t = setTimeout(() => setIsAnomalyDetected(false), 8000)
+      return () => clearTimeout(t)
+    }
+  }, [anomalies.length])
+
   useEffect(() => {
     let cancelled = false
     if (enabled) {
@@ -74,7 +94,6 @@ export default function ProctorPanel() {
     return () => { cancelled = true; camera.stop() }
   }, [enabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Mark anomaly detection ready after grace period
   useEffect(() => {
     if (enabled && camera.isRunning && !anomalyDetectionReady) {
       const timer = setTimeout(() => {
@@ -85,122 +104,69 @@ export default function ProctorPanel() {
     }
   }, [enabled, camera.isRunning, anomalyDetectionReady])
 
-  // Tab switch detection
   useTabSwitch({
     onTabSwitch: useCallback((evt) => {
       if (!enabled || !anomalyDetectionReady) return
-      const now = Date.now()
-      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
-      lastAnomalyTime.current[evt.type] = now
-      reportWithScreenshot(evt, 1)
-    }, [enabled, anomalyDetectionReady, reportWithScreenshot]),
+      throttledReport(evt, 1)
+    }, [enabled, anomalyDetectionReady, throttledReport]),
     enabled,
   })
 
-  // Anti-cheat detection
   useAntiCheat({
     enabled,
     onViolation: useCallback((evt) => {
       if (!enabled || !anomalyDetectionReady) return
-      const now = Date.now()
-      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
-      lastAnomalyTime.current[evt.type] = now
-      reportWithScreenshot(evt, 1)
-    }, [enabled, anomalyDetectionReady, reportWithScreenshot]),
+      throttledReport(evt, 1)
+    }, [enabled, anomalyDetectionReady, throttledReport]),
   })
 
-  // Blur detection
   useBlurDetector({
     videoRef: camera.videoRef,
     enabled: enabled && settings.blurDetection && anomalyDetectionReady,
-    onAnomaly: useCallback((blurState) => {
-      setIsBlur(blurState)
-    }, []),
+    onAnomaly: useCallback((isBlur) => {
+      if (isBlur) {
+        throttledReport({ type: 'blur_detected', severity: 2 }, 2)
+      }
+    }, [throttledReport]),
   })
 
-  // Voice detection
   useVoiceDetection({
     enabled: enabled && settings.voiceDetection && anomalyDetectionReady,
-    onAnomaly: useCallback((voiceState) => {
-      setIsSpeaking(voiceState)
-    }, []),
+    streamRef: camera.stream,
+    onAnomaly: useCallback((isSpeaking) => {
+      if (isSpeaking) {
+        throttledReport({ type: 'voice_detected', severity: 1 }, 1)
+      }
+    }, [throttledReport]),
   })
 
-  // Motion detection
   useMotionDetector({
     videoRef: camera.videoRef,
     enabled: enabled && settings.motionDetection && anomalyDetectionReady,
     onAnomaly: useCallback((evt) => {
       if (!anomalyDetectionReady) return
-      const now = Date.now()
-      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
-      lastAnomalyTime.current[evt.type] = now
-      reportWithScreenshot(evt, evt.severity || 1)
-    }, [anomalyDetectionReady, reportWithScreenshot]),
+      throttledReport(evt, evt.severity || 1)
+    }, [anomalyDetectionReady, throttledReport]),
   })
 
-  // Face detection
   useFaceDetector({
     videoRef: camera.videoRef,
     enabled: enabled && settings.faceDetection && anomalyDetectionReady,
     onAnomaly: useCallback((evt) => {
       if (!anomalyDetectionReady) return
-      const now = Date.now()
-      if (lastAnomalyTime.current[evt.type] && now - lastAnomalyTime.current[evt.type] < 5000) return
-      lastAnomalyTime.current[evt.type] = now
-      reportWithScreenshot(evt, evt.severity || 2)
-    }, [anomalyDetectionReady, reportWithScreenshot]),
+      throttledReport(evt, evt.severity || 2)
+    }, [anomalyDetectionReady, throttledReport]),
     onFaceCount: useCallback((count) => setFaceCount(count), []),
   })
 
-  // Screen activity / idle detection
   useScreenActivity({
     enabled: enabled && anomalyDetectionReady,
     onIdle: useCallback((evt) => {
       if (!anomalyDetectionReady) return
-      const now = Date.now()
-      if (lastAnomalyTime.current['idle'] && now - lastAnomalyTime.current['idle'] < 60000) return
-      lastAnomalyTime.current['idle'] = now
-      reportWithScreenshot(evt, 1)
-    }, [anomalyDetectionReady, reportWithScreenshot]),
+      throttledReport(evt, 1)
+    }, [anomalyDetectionReady, throttledReport]),
     onActivity: useCallback(() => {}, []),
   })
-
-  // Single polling loop — checks all detection states
-  useEffect(() => {
-    if (!enabled || !anomalyDetectionReady) return
-
-    const interval = setInterval(() => {
-      let newType = ''
-      const now = Date.now()
-
-      // Check blur
-      if (isBlur && settings.blurDetection) {
-        newType = 'Camera Obscured'
-      }
-
-      // Check voice
-      if (isSpeaking && settings.voiceDetection) {
-        newType = 'Speaking Detected'
-      }
-
-      if (newType) {
-        setIsAnomalyDetected(true)
-        setPenaltyType(newType)
-
-        // Penalty cooldown — only increment once per 5 seconds per type
-        const penaltyKey = isBlur ? 'blur' : 'voice'
-        if (!lastPenaltyTime.current[penaltyKey] || now - lastPenaltyTime.current[penaltyKey] > PENALTY_COOLDOWN_MS) {
-          lastPenaltyTime.current[penaltyKey] = now
-          addPenalty(1)
-        }
-      } else {
-        setIsAnomalyDetected(false)
-      }
-    }, ANOMALY_CHECK_INTERVAL_MS)
-
-    return () => clearInterval(interval)
-  }, [enabled, anomalyDetectionReady, isBlur, isSpeaking, settings, addPenalty])
 
   if (!enabled) return null
 

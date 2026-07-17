@@ -1,7 +1,8 @@
 /**
- * useCamera — Simplified camera hook matching vibe's pattern.
+ * useCamera — Camera hook matching vibe's pattern.
  *
  * Manages getUserMedia stream and attaches to a <video> ref.
+ * Requests audio alongside video so mic permission is bundled with camera.
  * The stream is stored in a ref so it persists across renders.
  */
 
@@ -18,10 +19,9 @@ export default function useCamera() {
       setError(null)
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { width: { ideal: 320 }, height: { ideal: 240 }, facingMode: 'user' },
-        audio: false,
+        audio: true,
       })
       streamRef.current = stream
-      // Attach stream to video element — try immediately, retry on next frame
       attachStream(videoRef.current, stream)
       requestAnimationFrame(() => attachStream(videoRef.current, stream))
       setIsRunning(true)
@@ -42,7 +42,6 @@ export default function useCamera() {
     setIsRunning(false)
   }, [])
 
-  // Keep trying to attach stream to video element (handles mount timing)
   useEffect(() => {
     const id = setInterval(() => {
       if (streamRef.current && videoRef.current && !videoRef.current.srcObject) {
@@ -52,7 +51,6 @@ export default function useCamera() {
     return () => clearInterval(id)
   }, [])
 
-  // Cleanup on unmount
   useEffect(() => {
     return () => {
       if (streamRef.current) {

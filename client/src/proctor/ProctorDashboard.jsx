@@ -65,9 +65,12 @@ export default function ProctorDashboard({ onBack }) {
   const [loading, setLoading] = useState(() => !getToken())
   const [error, setError] = useState(() => getToken() ? null : 'Authentication required')
   const [screenshotModal, setScreenshotModal] = useState(null)
+  const [visibleSessions, setVisibleSessions] = useState(20)
+  const [visibleEvents, setVisibleEvents] = useState(20)
 
   const handleSelect = (id) => {
     setSelected(id)
+    setVisibleEvents(20)
     if (!id) setDetail(null)
   }
 
@@ -143,7 +146,7 @@ export default function ProctorDashboard({ onBack }) {
       ) : (
         <div className="proctor-dashboard-content">
           <div className="proctor-dashboard-list">
-            {sessions.map(s => (
+            {sessions.slice(0, visibleSessions).map(s => (
               <div
                 key={s._id}
                 className={`proctor-session-card ${selected === s._id ? 'selected' : ''}`}
@@ -162,6 +165,12 @@ export default function ProctorDashboard({ onBack }) {
                 </div>
               </div>
             ))}
+            {sessions.length > visibleSessions && (
+              <button className="proctor-btn proctor-btn-skip" style={{ width: '100%', marginTop: 8 }}
+                onClick={() => setVisibleSessions(v => v + 20)}>
+                Show more ({sessions.length - visibleSessions} remaining)
+              </button>
+            )}
           </div>
 
           {detail && detail.session && (
@@ -200,7 +209,7 @@ export default function ProctorDashboard({ onBack }) {
                     <h4>Anomaly Evidence</h4>
                     <span>{detail.events.length} events</span>
                   </div>
-                  {detail.events.map((ev, i) => {
+                  {detail.events.slice(0, visibleEvents).map((ev, i) => {
                     const sev = SEVERITY_STYLES[ev.severity] || SEVERITY_STYLES[1]
                     return (
                       <div
@@ -253,6 +262,12 @@ export default function ProctorDashboard({ onBack }) {
                       </div>
                     )
                   })}
+                  {detail.events.length > visibleEvents && (
+                    <button className="proctor-btn proctor-btn-skip" style={{ width: '100%', marginTop: 8 }}
+                      onClick={() => setVisibleEvents(v => v + 20)}>
+                      Show more ({detail.events.length - visibleEvents} remaining)
+                    </button>
+                  )}
                 </div>
               ) : (
                 <p className="proctor-dashboard-no-events">No events recorded — clean session.</p>

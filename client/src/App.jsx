@@ -23,6 +23,7 @@
 
 import { useEffect, useState, useRef, useMemo } from 'react'
 import './App.css'
+import TreasureHuntApp from './treasurehunt/TreasureHuntApp.jsx'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -36047,6 +36048,7 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
+    treasurehunt: TreasureHuntApp, // Treasure Hunt — solve & seek grid game
   }
 
   // Get the component to render (or null if mode not set)
@@ -36084,6 +36086,7 @@ function Home({ onSelect }) {
     { key: 'randommix', name: 'Random Mix', subtitle: 'Adaptive cross-topic quiz', color: 'featured' },
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
     { key: 'gym', name: 'Gym', subtitle: 'Adaptive workout across all 7 gym puzzles', color: 'featured' },
+    { key: 'treasurehunt', name: 'Treasure Hunt', subtitle: 'Solve & seek on a treasure grid', color: 'featured' },
   ]
 
   // All regular quiz apps sorted alphabetically by name

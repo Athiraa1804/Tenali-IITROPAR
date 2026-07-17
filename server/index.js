@@ -67,6 +67,22 @@ app.use(express.static(clientDistPath));
 // serves; only the auth endpoints will return 503.
 const auth = require('./auth');
 app.use('/api/auth', auth.router);
+const treasurehuntRouter = require('./treasurehunt/routes');
+
+console.log("Treasure router imported");
+
+app.use('/treasurehunt-api/', (req, res, next) => {
+    console.log("Treasure API:", req.method, req.url);
+    next();
+});
+
+app.use('/treasurehunt-api', treasurehuntRouter);
+app.get('/test-12345', (req, res) => {
+  res.json({
+    ok: true,
+    message: "THIS IS THE SERVER YOU ARE EDITING"
+  });
+});
 auth.seedUsers().catch(() => {});  // always populate in-memory fallback
 auth.connectMongo()
   .then(() => auth.seedUsers())
@@ -8944,3 +8960,4 @@ app.get(/.*/, (_req, res) => {
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Tenali app running on http://0.0.0.0:${PORT}`);
 });
+

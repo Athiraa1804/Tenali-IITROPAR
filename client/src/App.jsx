@@ -43174,6 +43174,37 @@ function App() {
     return <ExtendedEuclidApp />
   }
 
+  // Route: /linear → Linear Algebra flashcards (proctored quiz)
+  // Proctoring starts automatically on this route — no toggle needed.
+  if (pathname === '/linear') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <a href="/proctor" style={{
+          position: 'fixed', top: 12, right: 12, zIndex: 95000,
+          padding: '6px 12px', borderRadius: 8,
+          background: 'rgba(76,175,80,0.15)', color: '#4caf50',
+          border: '1px solid rgba(76,175,80,0.3)',
+          textDecoration: 'none', fontSize: '0.78rem', fontWeight: 600,
+        }} title="Instructor dashboard — view all proctor sessions">
+          📊 Dashboard
+        </a>
+        <ProctorPanel />
+        <div className="app-shell"><div className="card">
+          <ProctoredQuiz
+            quizType="linear-algebra"
+            onBack={() => { window.location.href = '/' }}
+            autoStartConsent={true}
+          >
+            <LinearAlgebraApp onBack={() => { window.location.href = '/' }} />
+          </ProctoredQuiz>
+        </div></div>
+      </>
+    )
+  }
+
   // Route: /proctor → Proctor Dashboard (instructor view)
   if (pathname === '/proctor') {
     const ProctorDash = ProctorDashboard
@@ -44136,11 +44167,6 @@ function App() {
     );
   };
 
-  // Check if proctoring is enabled (from ProctorContext)
-  let proctorEnabled = false
-  let proctorCtx = null
-  try { proctorCtx = useProctor(); proctorEnabled = proctorCtx.enabled } catch {}
-
   return (
     <div className="app-shell">
       {showTour && <OnboardingTour onFinish={() => { localStorage.setItem('tenali_tour_seen', 'true'); setShowTour(false) }} mode={mode} />}
@@ -44150,43 +44176,12 @@ function App() {
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
         {theme === 'dark' ? '☀️' : '🌙'}
       </button>
-      {proctorCtx && (
-        <button
-          className="proctor-toggle-btn"
-          onClick={() => {
-            if (proctorEnabled) {
-              proctorCtx.resetSession()
-            } else {
-              proctorCtx.setEnabled(true)
-            }
-          }}
-          title={proctorEnabled ? 'Proctoring ON — click to disable' : 'Proctoring OFF — click to enable'}
-          style={{
-            position: 'fixed', bottom: '16px', left: '16px', zIndex: 90000,
-            width: 44, height: 44, borderRadius: '50%', border: '2px solid',
-            borderColor: proctorEnabled ? '#4caf50' : '#666',
-            background: proctorEnabled ? 'rgba(76,175,80,0.15)' : 'rgba(100,100,100,0.15)',
-            color: proctorEnabled ? '#4caf50' : '#999',
-            cursor: 'pointer', fontSize: '1.2rem',
-            boxShadow: proctorEnabled ? '0 0 12px rgba(76,175,80,0.4)' : '0 2px 6px rgba(0,0,0,0.3)',
-            transition: 'all 0.2s',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {proctorEnabled ? '🔒' : '🔓'}
-        </button>
-      )}
-      <ProctorPanel />
-      <div style={proctorEnabled ? { marginLeft: 230, transition: 'margin-left 0.3s ease' } : {}}>
+      <div>
         {mode === 'vachana' ? (
           <Vachana onBack={() => setMode(null)} />
         ) : (
           <div className="card">
-            {proctorEnabled && mode ? (
-              <ProctoredQuiz quizType={mode} onBack={() => { proctorCtx?.resetSession(); isGoalMode ? setMode('goalpractice') : setMode(null) }}>
-                {renderContent()}
-              </ProctoredQuiz>
-            ) : renderContent()}
+            {renderContent()}
           </div>
         )}
       </div>

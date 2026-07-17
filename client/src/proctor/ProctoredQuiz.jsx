@@ -20,22 +20,40 @@ import ProctorReport from './ProctorReport'
 const PENALTY_EJECT_THRESHOLD = 50
 const FLAG_RESTART_THRESHOLD = 3
 
-export default function ProctoredQuiz({ children, quizType, onBack }) {
+export default function ProctoredQuiz({ children, quizType, onBack, autoStartConsent = false }) {
   const proctor = useProctor()
   const {
     enabled, settings, sessionId, penaltyScore, anomalies,
-    addAnomaly, startSession, resetSession,
+    addAnomaly, startSession, resetSession, setEnabled,
     setConsentGiven,
     showEmotion, setShowEmotion,
     showReport, setShowReport,
   } = proctor
 
-  const [phase, setPhase] = useState('consent')
+  const [phase, setPhase] = useState(autoStartConsent ? 'starting' : 'consent')
   const [quizFinished, setQuizFinished] = useState(false)
   const [quizScore, setQuizScore] = useState(0)
   const [quizTotal, setQuizTotal] = useState(0)
   const [restartKey, setRestartKey] = useState(0)
   const prevAnomalyCount = useRef(0)
+
+  // For autoStartConsent mode (/linear route), proctoring is mandatory
+  // — enable the provider and skip the consent screen on mount.
+  useEffect(() => {
+    if (!autoStartConsent) return
+    setEnabled(true)
+    setConsentGiven(true)
+    let cancelled = false
+    ;(async () => {
+      const result = await startProctorSession({ quizType, settings, consentGiven: true })
+      if (cancelled) return
+      if (result?.sessionId) {
+        startSession(result.sessionId, quizType, settings)
+      }
+      setPhase('active')
+    })()
+    return () => { cancelled = true }
+  }, [autoStartConsent]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Consent handlers
   const handleConsentAccept = useCallback(async () => {
@@ -103,8 +121,11 @@ export default function ProctoredQuiz({ children, quizType, onBack }) {
   }, [penaltyScore, phase, addAnomaly, setShowReport])
   /* eslint-enable react-hooks/set-state-in-effect */
 
-  // Don't wrap if proctoring not enabled
-  if (!enabled) return children
+  // Don't wrap if proctoring not enabled.
+  // For autoStartConsent routes: render children directly while session boots.
+  if (!enabled) {
+    return children
+  }
 
   return (
     <>

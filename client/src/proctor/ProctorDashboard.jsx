@@ -1,19 +1,20 @@
 /**
  * ProctorDashboard — Instructor view with flashcard-style anomaly evidence cards.
  *
- * Shows:
- *   - Session list (left panel)
- *   - Session detail with red warning banner + stats
- *   - Anomaly flashcards with screenshot thumbnails, timestamps, severity badges
+ * Features:
+ *   - No login required — public endpoints
+ *   - localStorage persistence — survives refresh
+ *   - Auto-refresh polling (5s sessions, 3s detail)
+ *   - localStorage cache survives page reload
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const API = import.meta.env?.VITE_API_BASE_URL || '';
-
-function getToken() {
-  try { return localStorage.getItem('tenali-auth-token') || null } catch { return null }
-}
+const STORAGE_KEY_SESSIONS = 'tenali_proctor_sessions_cache'
+const STORAGE_KEY_DETAIL = 'tenali_proctor_detail_cache'
+const POLL_SESSIONS_MS = 5000
+const POLL_DETAIL_MS = 3000
 
 const TYPE_ICONS = {
   tab_switch: '🔄', tab_blur: '👁️', no_face: '👤',
@@ -58,54 +59,89 @@ function ScreenshotModal({ src, onClose }) {
   )
 }
 
+function loadCache(key, fallback) {
+  try { return JSON.parse(localStorage.getItem(key) || 'null') ?? fallback } catch { return fallback }
+}
+
+function saveCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)) } catch { /* quota */ }
+}
+
+function makeHeaders(token) {
+  const h = { 'Content-Type': 'application/json' }
+  if (token) h['Authorization'] = `Bearer ${token}`
+  return h
+}
+
 export default function ProctorDashboard({ onBack }) {
-  const [sessions, setSessions] = useState([])
+  const [sessions, setSessions] = useState(() => loadCache(STORAGE_KEY_SESSIONS, []))
   const [selected, setSelected] = useState(null)
-  const [detail, setDetail] = useState(null)
-  const [loading, setLoading] = useState(() => {
-    return getToken() ? true : false
-  })
-  const [error, setError] = useState(() => getToken() ? null : 'Authentication required')
+  const [detail, setDetail] = useState(() => loadCache(STORAGE_KEY_DETAIL, null))
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [screenshotModal, setScreenshotModal] = useState(null)
   const [visibleSessions, setVisibleSessions] = useState(20)
   const [visibleEvents, setVisibleEvents] = useState(20)
+  const [lastRefreshed, setLastRefreshed] = useState(null)
+  const [refreshing, setRefreshing] = useState(false)
 
-  const handleSelect = (id) => {
+  const fetchSessions = useCallback(async (silent = false) => {
+    if (!silent) setRefreshing(true)
+    try {
+      const r = await fetch(`${API}/api/proctor/sessions`, {
+        headers: makeHeaders(null)
+      })
+      if (!r.ok) throw new Error(`HTTP ${r.status}`)
+      const d = await r.json()
+      const sessionsData = d.sessions || []
+      setSessions(sessionsData)
+      saveCache(STORAGE_KEY_SESSIONS, sessionsData)
+      setError(null)
+      setLastRefreshed(Date.now())
+    } catch (err) {
+      setError(err.message || 'Failed to load sessions')
+    } finally {
+      if (!silent) setRefreshing(false)
+    }
+  }, [])
+
+  const fetchDetail = useCallback(async (id) => {
+    if (!id) return
+    try {
+      const r = await fetch(`${API}/api/proctor/session/${id}`, {
+        headers: makeHeaders(null)
+      })
+      if (r.ok) {
+        const d = await r.json()
+        setDetail(d)
+        saveCache(STORAGE_KEY_DETAIL, d)
+      }
+    } catch { /* silent */ }
+  }, [])
+
+  const handleSelect = useCallback((id) => {
     setSelected(id)
     setVisibleEvents(20)
     if (!id) setDetail(null)
-  }
-
-  useEffect(() => {
-    const token = getToken()
-    if (!token) return
-
-    let cancelled = false
-    fetch(`${API}/api/proctor/sessions?all=true`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    })
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
-      })
-      .then(d => { if (!cancelled) { setSessions(d.sessions || []); setLoading(false) } })
-      .catch(err => { if (!cancelled) { setError(err.message || 'Failed to load sessions'); setLoading(false) } })
-    return () => { cancelled = true }
   }, [])
 
+  // Poll sessions every 5s
+  /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    setLoading(true)
+    fetchSessions().finally(() => setLoading(false))
+    const id = setInterval(() => fetchSessions(true), POLL_SESSIONS_MS)
+    return () => clearInterval(id)
+  }, [fetchSessions])
+
+  // Poll detail every 3s when selected
   useEffect(() => {
     if (!selected) return
-    const controller = new AbortController()
-    const token = getToken()
-    fetch(`${API}/api/proctor/session/${selected}`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      signal: controller.signal,
-    })
-      .then(r => r.json())
-      .then(d => setDetail(d))
-      .catch(() => {})
-    return () => controller.abort()
-  }, [selected])
+    fetchDetail(selected)
+    const id = setInterval(() => fetchDetail(selected), POLL_DETAIL_MS)
+    return () => clearInterval(id)
+  }, [selected, fetchDetail])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const hasHighSeverity = detail?.events?.some(e => e.severity >= 3)
 
@@ -114,6 +150,19 @@ export default function ProctorDashboard({ onBack }) {
       <div className="proctor-dashboard-header">
         <button className="proctor-btn proctor-btn-skip" onClick={onBack}>← Back</button>
         <h2>Proctor Dashboard</h2>
+        <button
+          className="proctor-btn proctor-btn-skip"
+          onClick={() => fetchSessions()}
+          title="Refresh now"
+          style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}
+        >
+          {refreshing ? '⟳ Refreshing…' : '⟳ Refresh'}
+        </button>
+        {lastRefreshed && (
+          <span style={{ fontSize: '0.7rem', color: 'var(--clr-dim, #888)' }}>
+            Updated {new Date(lastRefreshed).toLocaleTimeString()}
+          </span>
+        )}
         {detail?.session && (
           <span className="proctor-dashboard-session-badge">
             {detail.events?.length || 0} events recorded
@@ -177,7 +226,6 @@ export default function ProctorDashboard({ onBack }) {
 
           {detail && detail.session && (
             <div className="proctor-dashboard-detail">
-              {/* Red warning banner if high-severity events */}
               {hasHighSeverity && (
                 <div className="proctor-detail-warning-banner">
                   <span>⚠️</span>

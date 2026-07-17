@@ -9283,13 +9283,13 @@ app.use('/wordcreator-api', wordCreatorRouter);
 // ═══════════════════════════════════════════════════════════════════════════
 const { ProctorSession, ProctorEvent, Emotion } = require('./proctorSchema');
 
-// Start a proctored quiz session
-app.post('/api/proctor/start', auth.requireAuth, async (req, res) => {
+// Start a proctored quiz session — public (no login required)
+app.post('/api/proctor/start', async (req, res) => {
   try {
-    const { quizType, settings, consentGiven } = req.body;
+    const { quizType, settings, consentGiven, userId, username } = req.body;
     const session = await ProctorSession.create({
-      userId: req.user.id,
-      username: req.user.username,
+      userId: userId || `anon-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      username: username || 'Anonymous',
       quizType: quizType || 'unknown',
       settings: settings || {},
       consentGiven: consentGiven || false,
@@ -9301,20 +9301,20 @@ app.post('/api/proctor/start', auth.requireAuth, async (req, res) => {
   }
 });
 
-// Log a proctor event (anomaly)
-app.post('/api/proctor/event', auth.requireAuth, async (req, res) => {
+// Log a proctor event (anomaly) — public
+app.post('/api/proctor/event', async (req, res) => {
   try {
-    const { sessionId, type, severity, evidence, metadata } = req.body;
+    const { sessionId, type, severity, evidence, metadata, userId, username } = req.body;
     if (!sessionId || !type) return res.status(400).json({ error: 'sessionId and type required' });
     const event = await ProctorEvent.create({
       sessionId,
-      userId: req.user.id,
+      userId: userId || `anon-${Date.now()}-${Math.random().toString(36).slice(2)}`,
+      username: username || 'Anonymous',
       type,
       severity: severity || 1,
       evidence: evidence || undefined,
       metadata: metadata || undefined,
     });
-    // Update session total penalty
     await ProctorSession.findByIdAndUpdate(sessionId, {
       $inc: { totalPenalty: severity || 1 },
       $set: { status: (req.body.sessionStatus === 'ejected') ? 'ejected' : undefined },
@@ -9326,8 +9326,8 @@ app.post('/api/proctor/event', auth.requireAuth, async (req, res) => {
   }
 });
 
-// End a proctored quiz session
-app.post('/api/proctor/end', auth.requireAuth, async (req, res) => {
+// End a proctored quiz session — public
+app.post('/api/proctor/end', async (req, res) => {
   try {
     const { sessionId } = req.body;
     if (!sessionId) return res.status(400).json({ error: 'sessionId required' });
@@ -9337,7 +9337,6 @@ app.post('/api/proctor/end', auth.requireAuth, async (req, res) => {
       { new: true }
     );
     if (!session) return res.status(404).json({ error: 'session not found' });
-    // Fetch all events for this session
     const events = await ProctorEvent.find({ sessionId }).sort({ timestamp: 1 });
     res.json({ session, events });
   } catch (e) {
@@ -9346,8 +9345,8 @@ app.post('/api/proctor/end', auth.requireAuth, async (req, res) => {
   }
 });
 
-// Get proctor session details
-app.get('/api/proctor/session/:id', auth.requireAuth, async (req, res) => {
+// Get proctor session details — public for dashboard view (no login)
+app.get('/api/proctor/session/:id', async (req, res) => {
   try {
     const session = await ProctorSession.findById(req.params.id);
     if (!session) return res.status(404).json({ error: 'session not found' });
@@ -9358,13 +9357,16 @@ app.get('/api/proctor/session/:id', auth.requireAuth, async (req, res) => {
   }
 });
 
-// Get all sessions for a user (or all if admin)
-app.get('/api/proctor/sessions', auth.requireAuth, async (req, res) => {
+// Get all proctor sessions — public for instructor dashboard view (no login)
+// The dashboard at /proctor is meant to be accessible to anyone monitoring the exam
+app.get('/api/proctor/ping', (req, res) => { res.json({ ok: true }) });
+
+app.get('/api/proctor/sessions', async (req, res) => {
   try {
-    const query = req.query.all === 'true' ? {} : { userId: req.user.id };
-    const sessions = await ProctorSession.find(query)
+    const limit = Math.min(parseInt(req.query.limit, 10) || 100, 200)
+    const sessions = await ProctorSession.find({})
       .sort({ startedAt: -1 })
-      .limit(50);
+      .limit(limit);
     res.json({ sessions });
   } catch (e) {
     res.status(500).json({ error: 'failed to fetch sessions' });
@@ -9402,8 +9404,8 @@ app.post('/api/proctor/face/register', auth.requireAuth, async (req, res) => {
   }
 });
 
-// Verify face identity against reference
-app.post('/api/proctor/face/verify', auth.requireAuth, async (req, res) => {
+// Verify face identity against reference — public
+app.post('/api/proctor/face/verify', async (req, res) => {
   try {
     const { sessionId, image } = req.body;
     if (!sessionId || !image) return res.status(400).json({ error: 'sessionId and image required' });
@@ -9431,16 +9433,16 @@ app.post('/api/proctor/face/verify', auth.requireAuth, async (req, res) => {
 
 // ─── Emotion endpoints ───────────────────────────────────────────────────────
 
-// Submit an emotion for a quiz
-app.post('/api/emotions/submit', auth.requireAuth, async (req, res) => {
+// Submit an emotion for a quiz — public (no login)
+app.post('/api/emotions/submit', async (req, res) => {
   try {
-    const { quizType, emotion, feedback } = req.body;
+    const { quizType, emotion, feedback, userId, username } = req.body;
     if (!quizType || !emotion) return res.status(400).json({ error: 'quizType and emotion required' });
     const valid = ['very_sad', 'sad', 'neutral', 'happy', 'very_happy'];
     if (!valid.includes(emotion)) return res.status(400).json({ error: 'invalid emotion' });
     const doc = await Emotion.create({
-      userId: req.user.id,
-      username: req.user.username,
+      userId: userId || 'anonymous',
+      username: username || 'anonymous',
       quizType,
       emotion,
       feedback: feedback || '',
@@ -9472,12 +9474,12 @@ app.get('/api/emotions/stats/:quizType', async (req, res) => {
   }
 });
 
-// Get emotion history for a user
-app.get('/api/emotions/history', auth.requireAuth, async (req, res) => {
+// Get emotion history for a user — public (filter by userId if provided)
+app.get('/api/emotions/history', async (req, res) => {
   try {
-    const emotions = await Emotion.find({ userId: req.user.id })
-      .sort({ timestamp: -1 })
-      .limit(100);
+    const { userId, limit = 50 } = req.query;
+    const query = userId ? { userId } : {};
+    const emotions = await Emotion.find(query).sort({ timestamp: -1 }).limit(parseInt(limit));
     res.json({ emotions });
   } catch (e) {
     res.status(500).json({ error: 'failed to fetch emotion history' });

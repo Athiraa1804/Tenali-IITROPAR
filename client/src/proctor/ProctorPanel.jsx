@@ -15,6 +15,7 @@ import useFaceDetection from './useFaceDetection'
 import useBlurDetector from './useBlurDetector'
 import useVoiceDetection from './useVoiceDetection'
 import useVirtualCamera from './useVirtualCamera'
+import useScreenActivity from './useScreenActivity'
 import { reportProctorEvent } from './proctorEvents'
 
 export default function ProctorPanel() {
@@ -88,6 +89,12 @@ export default function ProctorPanel() {
   useVirtualCamera({
     enabled: enabled && settings.virtualCamera,
     onAnomaly: useCallback((evt) => handleAnomaly(evt, evt.severity || 2), [handleAnomaly]),
+  })
+
+  // Screen activity monitoring — detect idle user
+  useScreenActivity({
+    enabled,
+    onIdle: useCallback((evt) => handleAnomaly(evt, 1), [handleAnomaly]),
   })
 
   if (!enabled) return null

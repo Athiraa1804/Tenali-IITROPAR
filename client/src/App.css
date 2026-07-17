@@ -5613,3 +5613,23 @@ button:disabled {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
+
+@keyframes proctor-slide-in {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes proctor-spin {
+  to { transform: rotate(360deg); }
+}
+
+.proctor-sidebar::-webkit-scrollbar {
+  width: 3px;
+}
+.proctor-sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.proctor-sidebar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}

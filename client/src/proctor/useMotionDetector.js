@@ -50,7 +50,7 @@ export default function useMotionDetector({ videoRef, enabled = false, onAnomaly
       canvasRef.current.height = CANVAS_H
     }
     const canvas = canvasRef.current
-    const ctx = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d', { willReadFrequently: true })
     ctx.drawImage(video, 0, 0, CANVAS_W, CANVAS_H)
 
     const imageData = ctx.getImageData(0, 0, CANVAS_W, CANVAS_H)

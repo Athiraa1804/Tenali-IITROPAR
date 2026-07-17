@@ -30,6 +30,9 @@ export default defineConfig({
   base: '/',
   // Enable React support for JSX compilation
   plugins: [react()],
+  optimizeDeps: {
+    include: ['face-api.js'],
+  },
   server: {
     host: 'localhost',
     port: 5173,

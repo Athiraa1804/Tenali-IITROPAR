@@ -5,7 +5,7 @@
  * side-by-side comparison of concept pairs.
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // Hardcoded list of all contrast pairs (replaces server JSON + API)
 const CONTRAST_PAIRS = [
@@ -35,7 +35,7 @@ export function getUsernameNamespace() {
         return authUser.username;
       }
     }
-  } catch (e) {}
+  } catch (e) { }
   return 'guest';
 }
 
@@ -72,7 +72,7 @@ export async function syncContrastProgress(token) {
   if (!token) return;
   try {
     const API = import.meta.env.VITE_API_BASE_URL || '';
-    
+
     // Get current logged in username to identify user switches
     const authUserStr = localStorage.getItem('tenali-auth-user');
     let currentUsername = null;
@@ -80,7 +80,7 @@ export async function syncContrastProgress(token) {
       try {
         const authUser = JSON.parse(authUserStr);
         currentUsername = authUser ? authUser.username : null;
-      } catch {}
+      } catch { }
     }
     if (!currentUsername) return;
 
@@ -148,15 +148,15 @@ export async function syncContrastProgress(token) {
   }
 }
 
-// Shuffle array helper
-function shuffleArray(arr) {
-  const shuffled = [...arr];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
+
+
+
+
+
+
+
+
+
 
 export const CONTRAST_MAPPING = {
   'area-perimeter': ['mensur'],
@@ -218,11 +218,7 @@ export const CHALLENGE_TITLES = {
   'trig-inverse-trig': "Trig vs Inverse Trig"
 };
 
-const LockIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ verticalAlign: 'middle', marginRight: '4px' }}>
-    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
-  </svg>
-);
+
 
 const CheckIcon = () => (
   <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--clr-correct)" style={{ verticalAlign: 'middle', marginRight: '4px' }}>
@@ -254,7 +250,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
           const keys = getStorageKeys();
           const data = localStorage.getItem(keys.unlocked);
           setUnlockedPairs(data ? JSON.parse(data) : []);
-        } catch {}
+        } catch { }
       });
     }
   }, []);
@@ -269,7 +265,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
         const keys = getStorageKeys();
         const data = localStorage.getItem(keys.unlocked);
         setUnlockedPairs(data ? JSON.parse(data) : []);
-      } catch {}
+      } catch { }
 
       if (token) {
         // User logged in: trigger sync
@@ -279,7 +275,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
             const keys = getStorageKeys();
             const data = localStorage.getItem(keys.unlocked);
             setUnlockedPairs(data ? JSON.parse(data) : []);
-          } catch {}
+          } catch { }
         });
       }
     };
@@ -339,6 +335,26 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
     }
 
     setPhase('list');
+  };
+
+  // Mark a pair as completed without returning to the list phase (used when completing all questions)
+  const handleMarkComplete = (pairId) => {
+    const newProgress = {
+      seenPairs: progress.seenPairs.includes(pairId)
+        ? progress.seenPairs
+        : [...progress.seenPairs, pairId],
+      completedPairs: progress.completedPairs.includes(pairId)
+        ? progress.completedPairs
+        : [...progress.completedPairs, pairId]
+    };
+    setProgress(newProgress);
+    saveProgress(newProgress);
+
+    // Sync to server if authenticated
+    const token = localStorage.getItem('tenali-auth-token');
+    if (token) {
+      syncContrastProgress(token);
+    }
   };
 
   // Render list view
@@ -414,6 +430,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <AreaPerimeterChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('area-perimeter')}
+        onMarkComplete={() => handleMarkComplete('area-perimeter')}
       />
     );
   }
@@ -424,6 +441,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <RadiusDiameterChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('radius-diameter')}
+        onMarkComplete={() => handleMarkComplete('radius-diameter')}
       />
     );
   }
@@ -434,6 +452,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <HcfLcmChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('hcf-lcm')}
+        onMarkComplete={() => handleMarkComplete('hcf-lcm')}
       />
     );
   }
@@ -444,6 +463,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <FactorsMultiplesChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('factors-multiples')}
+        onMarkComplete={() => handleMarkComplete('factors-multiples')}
       />
     );
   }
@@ -454,6 +474,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <CongruenceSimilarityChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('congruence-similarity')}
+        onMarkComplete={() => handleMarkComplete('congruence-similarity')}
       />
     );
   }
@@ -464,6 +485,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <MatricesDeterminantsChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('matrices-determinants')}
+        onMarkComplete={() => handleMarkComplete('matrices-determinants')}
       />
     );
   }
@@ -474,6 +496,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <MeanMedianModeChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('mean-median-mode')}
+        onMarkComplete={() => handleMarkComplete('mean-median-mode')}
       />
     );
   }
@@ -484,6 +507,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <LimitsDifferentiationChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('limits-differentiation')}
+        onMarkComplete={() => handleMarkComplete('limits-differentiation')}
       />
     );
   }
@@ -494,6 +518,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <DifferentiationIntegrationChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('differentiation-integration')}
+        onMarkComplete={() => handleMarkComplete('differentiation-integration')}
       />
     );
   }
@@ -504,6 +529,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <DecimalsFractionsChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('decimals-fractions')}
+        onMarkComplete={() => handleMarkComplete('decimals-fractions')}
       />
     );
   }
@@ -514,6 +540,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <PermutationCombinationChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('permutation-combination')}
+        onMarkComplete={() => handleMarkComplete('permutation-combination')}
       />
     );
   }
@@ -524,6 +551,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <PrimeCompositeChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('prime-composite')}
+        onMarkComplete={() => handleMarkComplete('prime-composite')}
       />
     );
   }
@@ -534,6 +562,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <TrigInverseTrigChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('trig-inverse-trig')}
+        onMarkComplete={() => handlePairComplete('trig-inverse-trig', true)}
       />
     );
   }
@@ -544,6 +573,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <LinearSimultaneousChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('linear-simultaneous')}
+        onMarkComplete={() => handleMarkComplete('linear-simultaneous')}
       />
     );
   }
@@ -554,6 +584,7 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
       <InteriorExteriorChallenge
         onBack={() => setPhase('list')}
         onComplete={() => handlePairComplete('interior-exterior')}
+        onMarkComplete={() => handleMarkComplete('interior-exterior')}
       />
     );
   }
@@ -859,8 +890,8 @@ const styles = {
   },
 };
 
-function AreaPerimeterChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3_1, r3_2, comparison
+function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-area'); // vd-area, vd-perimeter, intro, r1, r2, r3_1, r3_2, comparison, q1, q2, q3, q4, practice-redirect
   const [isFilled, setIsFilled] = useState(false);
   const [isBorderGlowing, setIsBorderGlowing] = useState(false);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
@@ -885,6 +916,119 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
   const [activeTask, setActiveTask] = useState(null);
   const [q4Sorted, setQ4Sorted] = useState({ Area: [], Perimeter: [] });
   const [q4Feedback, setQ4Feedback] = useState('');
+
+  // Helper to determine the active step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-area' || subStep === 'vd-perimeter') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3_1' || subStep === 'r3_2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2' || subStep === 'q3' || subStep === 'q4') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   // Reset animations and states when moving to a new step
   useEffect(() => {
@@ -986,6 +1130,13 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
 
   const allQ4Placed = (q4Sorted.Area.length + q4Sorted.Perimeter.length) === 4;
 
+  // Mark as completed immediately when Q4 is fully sorted
+  useEffect(() => {
+    if (allQ4Placed) {
+      onMarkComplete?.();
+    }
+  }, [allQ4Placed, onMarkComplete]);
+
   const handleRegionClick = (clickedRegion) => {
     if (answerState === 'correct') return;
 
@@ -1061,7 +1212,9 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
   };
 
   const handleNext = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-area') setSubStep('vd-perimeter');
+    else if (subStep === 'vd-perimeter') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3_1');
     else if (subStep === 'r3_1') setSubStep('r3_2');
@@ -1091,39 +1244,303 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
     .region-boundary:hover {
       stroke: rgba(232, 134, 74, 0.22) !important;
     }
+    /* Shape Visibility Loops (15s total loop) */
+    @keyframes shape1Vis {
+      0%, 30% { opacity: 1; visibility: visible; }
+      33.3%, 100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes shape2Vis {
+      0%, 33.3% { opacity: 0; visibility: hidden; }
+      36.6%, 66.6% { opacity: 1; visibility: visible; }
+      70%, 100% { opacity: 0; visibility: hidden; }
+    }
+    @keyframes shape3Vis {
+      0%, 70% { opacity: 0; visibility: hidden; }
+      73.3%, 96.6% { opacity: 1; visibility: visible; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+
+    .shape1-group {
+      animation: shape1Vis 15s infinite ease-in-out;
+    }
+    .shape2-group {
+      animation: shape2Vis 15s infinite ease-in-out;
+    }
+    .shape3-group {
+      animation: shape3Vis 15s infinite ease-in-out;
+    }
+
+    /* Area Rising Fill Loop (5s loop) */
+    @keyframes raiseFillLoop {
+      0%, 12% { transform: scaleY(0); }
+      48%, 82% { transform: scaleY(1); }
+      92%, 100% { transform: scaleY(0); }
+    }
+    .area-solid-fill {
+      transform-origin: 160px 290px;
+      animation: raiseFillLoop 5s infinite ease-in-out;
+    }
+
+    /* Perimeter Path Drawing Loops (5s loop) */
+    @keyframes drawRectStroke {
+      0%, 12% { stroke-dashoffset: 1040; }
+      48%, 82% { stroke-dashoffset: 0; }
+      92%, 100% { stroke-dashoffset: 1040; }
+    }
+    @keyframes drawTriStroke {
+      0%, 12% { stroke-dashoffset: 850; }
+      48%, 82% { stroke-dashoffset: 0; }
+      92%, 100% { stroke-dashoffset: 850; }
+    }
+    @keyframes drawCircleStroke {
+      0%, 12% { stroke-dashoffset: 820; }
+      48%, 82% { stroke-dashoffset: 0; }
+      92%, 100% { stroke-dashoffset: 820; }
+    }
+
+    .perimeter-rect-draw {
+      animation: drawRectStroke 5s infinite ease-in-out;
+    }
+    .perimeter-tri-draw {
+      animation: drawTriStroke 5s infinite ease-in-out;
+    }
+    .perimeter-circle-draw {
+      animation: drawCircleStroke 5s infinite ease-in-out;
+    }
   `;
 
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px' }}>
+    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
       <style>{hoverStyles}</style>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Area vs Perimeter
+        </span>
+        <div style={{ width: '70px' }} /> {/* Balance placeholder matching back-button size */}
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Area vs Perimeter
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Paint or Fence
-      </p>
+      {renderProgressBar()}
 
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
-            <svg width="300" height="180" viewBox="0 0 300 180" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              <rect x="25" y="25" width="250" height="130" rx="8" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-              <text x="150" y="95" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="16" fontFamily="var(--font-body)">Garden</text>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🟩</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Inside Space (Area)</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measuring the total space inside a shape.</p>
+            </div>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔲</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Outer Edge (Perimeter)</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measuring the distance around a shape.</p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            The same shape requires different measurements depending on the task. Let's find out!
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+        </div>
+      )}
+
+      {subStep === 'vd-area' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            AREA
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the inside of the shapes fill up.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-area" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+                <linearGradient id="area-grad" x1="0%" y1="100%" x2="0%" y2="0%">
+                  <stop offset="0%" stopColor="var(--clr-correct)" />
+                  <stop offset="100%" stopColor="#81c784" />
+                </linearGradient>
+                <clipPath id="clip-rect">
+                  <rect x="30" y="30" width="260" height="260" rx="16" />
+                </clipPath>
+                <clipPath id="clip-tri">
+                  <polygon points="160,30 30,290 290,290" />
+                </clipPath>
+                <clipPath id="clip-circle">
+                  <circle cx="160" cy="160" r="130" />
+                </clipPath>
+              </defs>
+
+              {/* Shape 1: Rectangle (visible 0s to 5s in 15s loop) */}
+              <g className="shape1-group">
+                <rect x="30" y="30" width="260" height="260" rx="16" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
+                <rect x="30" y="30" width="260" height="260" rx="16" fill="url(#grid-pattern-area)" />
+                <rect
+                  x="30"
+                  y="30"
+                  width="260"
+                  height="260"
+                  fill="url(#area-grad)"
+                  opacity="0.8"
+                  clipPath="url(#clip-rect)"
+                  className="area-solid-fill"
+                />
+              </g>
+
+              {/* Shape 2: Triangle (visible 5s to 10s in 15s loop) */}
+              <g className="shape2-group">
+                <polygon points="160,30 30,290 290,290" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
+                <polygon points="160,30 30,290 290,290" fill="url(#grid-pattern-area)" />
+                <rect
+                  x="30"
+                  y="30"
+                  width="260"
+                  height="260"
+                  fill="url(#area-grad)"
+                  opacity="0.8"
+                  clipPath="url(#clip-tri)"
+                  className="area-solid-fill"
+                />
+              </g>
+
+              {/* Shape 3: Circle (visible 10s to 15s in 15s loop) */}
+              <g className="shape3-group">
+                <circle cx="160" cy="160" r="130" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
+                <circle cx="160" cy="160" r="130" fill="url(#grid-pattern-area)" />
+                <rect
+                  x="30"
+                  y="30"
+                  width="260"
+                  height="260"
+                  fill="url(#area-grad)"
+                  opacity="0.8"
+                  clipPath="url(#clip-circle)"
+                  className="area-solid-fill"
+                />
+              </g>
             </svg>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            The same garden can require different measurements depending on the task. Can you identify which one?
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Area is everything inside a shape.
           </p>
-          <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Activity</button>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Perimeter ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-perimeter' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            PERIMETER
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the path trace along the outer border.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-peri" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+                <linearGradient id="peri-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="var(--clr-accent)" />
+                  <stop offset="100%" stopColor="#ffb74d" />
+                </linearGradient>
+              </defs>
+
+              {/* Shape 1: Rectangle (visible 0s to 5s in 15s loop) */}
+              <g className="shape1-group">
+                <rect x="30" y="30" width="260" height="260" rx="16" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
+                <rect
+                  x="30"
+                  y="30"
+                  width="260"
+                  height="260"
+                  rx="16"
+                  fill="none"
+                  stroke="url(#peri-grad)"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray="1040"
+                  strokeDashoffset="1040"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
+                  className="perimeter-rect-draw"
+                />
+              </g>
+
+              {/* Shape 2: Triangle (visible 5s to 10s in 15s loop) */}
+              <g className="shape2-group">
+                <polygon points="160,30 30,290 290,290" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
+                <path
+                  d="M160,30 L290,290 L30,290 Z"
+                  fill="none"
+                  stroke="url(#peri-grad)"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray="850"
+                  strokeDashoffset="850"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
+                  className="perimeter-tri-draw"
+                />
+              </g>
+
+              {/* Shape 3: Circle (visible 10s to 15s in 15s loop) */}
+              <g className="shape3-group">
+                <circle cx="160" cy="160" r="130" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
+                <circle
+                  cx="160"
+                  cy="160"
+                  r="130"
+                  fill="none"
+                  stroke="url(#peri-grad)"
+                  strokeWidth="6"
+                  strokeDasharray="820"
+                  strokeDashoffset="820"
+                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
+                  className="perimeter-circle-draw"
+                />
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 40px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Perimeter is everything around a shape.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Continue ➔
+          </button>
         </div>
       )}
 
       {(subStep === 'r1' || subStep === 'r2') && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
             <svg width="300" height="180" viewBox="0 0 300 180" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', overflow: 'hidden', boxShadow: 'var(--shadow-btn)' }}>
               {/* Paint Fill Animation (Left to Right) */}
@@ -1218,7 +1635,7 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
       )}
 
       {(subStep === 'r3_1' || subStep === 'r3_2') && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
             <svg width="300" height="180" viewBox="0 0 300 180" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', overflow: 'hidden', boxShadow: 'var(--shadow-btn)' }}>
               {/* Tiles Fill Animation */}
@@ -1315,54 +1732,6 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
 
       {subStep === 'comparison' && (
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
-            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.02rem', marginBottom: '16px', fontWeight: '500' }}>
-              Hover & click inside or border of the shape to visualize the contrast:
-            </p>
-            <svg width="300" height="180" viewBox="0 0 300 180" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', overflow: 'hidden', boxShadow: 'var(--shadow-btn)' }}>
-              <rect
-                x="25"
-                y="25"
-                width={isFilled ? 250 : 0}
-                height="130"
-                fill="rgba(92, 184, 122, 0.4)"
-                style={{ transition: 'width 0.8s ease-in-out' }}
-              />
-              <rect
-                x="25"
-                y="25"
-                width="250"
-                height="130"
-                rx="8"
-                fill="none"
-                stroke="var(--clr-accent)"
-                strokeWidth="6"
-                strokeDasharray="760"
-                strokeDashoffset={isBorderGlowing ? 0 : 760}
-                style={{ transition: 'stroke-dashoffset 0.8s ease-in-out' }}
-              />
-              <text x="150" y="95" textAnchor="middle" fill="var(--clr-text)" fontSize="16" fontWeight="600" style={{ pointerEvents: 'none' }}>Garden</text>
-
-              <rect
-                className="region-inside"
-                x="28"
-                y="28"
-                width="244"
-                height="124"
-                onClick={() => { setIsFilled(true); setIsBorderGlowing(false); }}
-              />
-              <rect
-                className="region-boundary"
-                x="25"
-                y="25"
-                width="250"
-                height="130"
-                rx="8"
-                onClick={() => { setIsFilled(false); setIsBorderGlowing(true); }}
-              />
-            </svg>
-          </div>
-
           {/* Premium side-by-side comparison cards */}
           <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
             {/* Area Card */}
@@ -1373,21 +1742,27 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
               border: isFilled ? '2px solid var(--clr-correct)' : '2.5px solid var(--clr-border)',
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
-              maxWidth: '340px',
+              maxWidth: '350px',
               boxShadow: 'var(--shadow-btn)',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                AREA (Inside Space)
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                AREA
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> Space inside a shape (e.g., laying tiles, painting).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Measures:</strong> The space inside a shape.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Formula:</strong> Length × Width (rectangles).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Units:</strong> Square units (e.g., m², cm²).
+              <div style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Formulas:</strong>
+                <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px', fontSize: '0.92rem' }}>
+                  <li>Rectangle: Length × Width</li>
+                  <li>Triangle: ½ × Base × Height</li>
+                  <li>Circle: π × Radius²</li>
+                </ul>
+              </div>
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Units:</strong> Square units (e.g. cm², m²)
               </p>
             </div>
 
@@ -1399,21 +1774,27 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
               border: isBorderGlowing ? '2px solid var(--clr-accent)' : '2.5px solid var(--clr-border)',
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 300px',
-              maxWidth: '340px',
+              maxWidth: '350px',
               boxShadow: 'var(--shadow-btn)',
-              transition: 'all 0.3s ease'
+              transition: 'all 0.3s ease',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                PERIMETER (Boundary Line)
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                PERIMETER
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> Distance around a shape (e.g., fencing, borders).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Measures:</strong> The distance around a shape.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Formula:</strong> Add all side lengths together.
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Units:</strong> Linear units (e.g., m, cm).
+              <div style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Formulas:</strong>
+                <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px', fontSize: '0.92rem' }}>
+                  <li>Rectangle: 2 × (Length + Width)</li>
+                  <li>Triangle: Sum of all side lengths</li>
+                  <li>Circle (Circumference): 2 × π × Radius</li>
+                </ul>
+              </div>
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Units:</strong> Linear units (e.g. cm, m)
               </p>
             </div>
           </div>
@@ -1796,17 +2177,71 @@ function AreaPerimeterChallenge({ onBack, onComplete }) {
               <p style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.15rem', marginBottom: '16px' }}>
                 🎉 Magnificent! All tasks are sorted correctly!
               </p>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={() => setSubStep('practice-redirect')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Area vs Perimeter challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['area-perimeter'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function RadiusDiameterChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-radius'); // vd-radius, vd-diameter, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [firstClick, setFirstClick] = useState(null);
   const [secondClick, setSecondClick] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
@@ -1822,6 +2257,119 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
   const [q1Answer, setQ1Answer] = useState(null);
   const [q2Answer, setQ2Answer] = useState(null);
   const [selectedQOption, setSelectedQOption] = useState(null);
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-radius' || subStep === 'vd-diameter') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   // R3 animation stages
   const [r3Stage, setR3Stage] = useState('stage1');
@@ -1853,6 +2401,13 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
     setSelectedQOption(null);
   }, [subStep]);
+
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Answer === 'correct') {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
 
   const svgRef = useRef(null);
 
@@ -1945,12 +2500,14 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
   };
 
   const handleNext = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-radius') setSubStep('vd-diameter');
+    else if (subStep === 'vd-diameter') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
-    else if (subStep === 'r2') setSubStep('r3');
-    else if (subStep === 'r3') setSubStep('comparison');
+    else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleQ1Select = (option) => {
@@ -2018,38 +2575,163 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
     </svg>
   );
 
+  const circleStyles = `
+    @keyframes circleReveal {
+      0%, 10% { opacity: 0; transform: scale(0.95); }
+      15%, 85% { opacity: 1; transform: scale(1); }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes lineRadiusGrow {
+      0%, 20% { stroke-dashoffset: 70; }
+      45%, 85% { stroke-dashoffset: 0; }
+      90%, 100% { stroke-dashoffset: 70; }
+    }
+    @keyframes lineDiameterGrow {
+      0%, 20% { stroke-dashoffset: 140; }
+      50%, 85% { stroke-dashoffset: 0; }
+      90%, 100% { stroke-dashoffset: 140; }
+    }
+    @keyframes lineGlow {
+      0%, 50%, 85%, 100% { filter: drop-shadow(0px 0px 0px var(--clr-accent)); }
+      60%, 75% { filter: drop-shadow(0px 0px 5px var(--clr-accent)); stroke-width: 4.5px; }
+    }
+
+    .circle-fade { animation: circleReveal 6s infinite ease-in-out; transform-origin: 150px 100px; }
+    .radius-line-grow {
+      animation: lineRadiusGrow 6s infinite ease-in-out, lineGlow 6s infinite ease-in-out;
+      stroke-dasharray: 70;
+      stroke-dashoffset: 70;
+    }
+    .diameter-line-grow {
+      animation: lineDiameterGrow 6s infinite ease-in-out, lineGlow 6s infinite ease-in-out;
+      stroke-dasharray: 140;
+      stroke-dashoffset: 140;
+    }
+  `;
+
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{`
+        ${circleStyles}
+      `}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Radius vs Diameter
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Radius vs Diameter
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Draw the Line
-      </p>
+      {renderProgressBar()}
 
-      {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
+      {subStep === 'vd-radius' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            RADIUS
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Distance from the center to the edge. Watch the line grow.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
             <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="2.5" />
-              <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
-              <line x1="150" y1="100" x2="220" y2="100" stroke="var(--clr-text-soft)" strokeWidth="2" strokeDasharray="4,4" />
-              <text x="185" y="90" textAnchor="middle" fontSize="12" fill="var(--clr-text-soft)">Radius</text>
+              <g className="circle-fade">
+                <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+                <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
+                <text x="150" y="120" textAnchor="middle" fill="var(--clr-accent)" fontSize="11" fontWeight="600">Center</text>
+
+                {/* Radius line grows at a 45 degree angle */}
+                <line x1="150" y1="100" x2="200" y2="50" stroke="var(--clr-accent)" strokeWidth="3.5" className="radius-line-grow" strokeLinecap="round" />
+              </g>
             </svg>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Circles have unique lines that measure them. Let's learn to draw and recognize them interactively!
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A radius is the distance from the center to the circle.
           </p>
-          <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Drawing</button>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Diameter ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-diameter' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            DIAMETER
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Distance across the circle passing through the center. Watch the line grow.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
+              <g className="circle-fade">
+                <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+                <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
+                <text x="150" y="120" textAnchor="middle" fill="var(--clr-accent)" fontSize="11" fontWeight="600">Center</text>
+
+                {/* Diameter line grows across the entire horizontal line */}
+                <line x1="80" y1="100" x2="220" y2="100" stroke="var(--clr-correct)" strokeWidth="3.5" className="diameter-line-grow" strokeLinecap="round" />
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A diameter is the distance across the circle through its center.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Interactive Challenge ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'intro' && (
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>⭕</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Radius</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>The distance from the center point to the outer edge.</p>
+            </div>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>↔️</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Diameter</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>The straight distance across through the center point.</p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Circles have unique lines that measure them. Let's trace and recognize them!
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {(subStep === 'r1' || subStep === 'r2') && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
             {drawInteractiveCircle()}
           </div>
@@ -2112,116 +2794,11 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
         </div>
       )}
 
-      {subStep === 'r3' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
-            <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-              <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
-
-              {(r3Stage === 'stage1' || r3Stage === 'stage2' || r3Stage === 'stage3') && (
-                <>
-                  <line x1="150" y1="100" x2="220" y2="100" stroke="#4ba3e3" strokeWidth="4.5" />
-                  <text x="185" y="88" textAnchor="middle" fill="#4ba3e3" fontSize="12" fontWeight="bold">Radius (r)</text>
-                </>
-              )}
-
-              {(r3Stage === 'stage2') && (
-                <>
-                  <line x1="150" y1="100" x2="80" y2="100" stroke="#e8864a" strokeWidth="4.5" strokeDasharray="3,3" />
-                  <text x="115" y="88" textAnchor="middle" fill="#e8864a" fontSize="12" fontWeight="bold">Radius (r)</text>
-                </>
-              )}
-
-              {(r3Stage === 'stage3') && (
-                <>
-                  <line x1="80" y1="100" x2="220" y2="100" stroke="var(--clr-correct)" strokeWidth="5" />
-                  <text x="115" y="88" textAnchor="middle" fill="#e8864a" fontSize="12" fontWeight="bold">Radius (r)</text>
-                  <text x="150" y="130" textAnchor="middle" fill="var(--clr-correct)" fontSize="13" fontWeight="bold">Diameter (d) = 2r</text>
-                </>
-              )}
-            </svg>
-          </div>
-
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '12px' }}>
-            Visual Discovery: The Relationship
-          </h3>
-
-          <div style={{ minHeight: '80px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '20px' }}>
-            {r3Stage === 'stage1' && (
-              <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)' }}>
-                Here is one <strong>Radius (r)</strong> extending from center to circle boundary.
-              </p>
-            )}
-            {r3Stage === 'stage2' && (
-              <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', animation: 'pulse 1s infinite' }}>
-                Adding a second <strong>Radius (r)</strong> extending in the exact opposite direction...
-              </p>
-            )}
-            {r3Stage === 'stage3' && (
-              <p style={{ fontSize: '1.2rem', color: 'var(--clr-correct)', fontWeight: '600' }}>
-                They merge together! Radius + Radius = 2 × Radius = <strong>Diameter (d)</strong>!
-              </p>
-            )}
-          </div>
-
-          <div>
-            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue to Review →</button>
-          </div>
-        </div>
-      )}
-
       {subStep === 'comparison' && (
         <div>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '28px' }}>
-            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.02rem', marginBottom: '16px', fontWeight: '500' }}>
-              Select a view mode to inspect the radius and diameter:
-            </p>
-            <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
-              <button
-                className={comparisonMode === 'radius' ? 'primary' : 'secondary'}
-                onClick={() => setComparisonMode('radius')}
-                style={{ padding: '8px 16px', fontSize: '0.95rem' }}
-              >
-                Show Radius
-              </button>
-              <button
-                className={comparisonMode === 'diameter' ? 'primary' : 'secondary'}
-                onClick={() => setComparisonMode('diameter')}
-                style={{ padding: '8px 16px', fontSize: '0.95rem' }}
-              >
-                Show Diameter
-              </button>
-              <button
-                className={comparisonMode === 'both' ? 'primary' : 'secondary'}
-                onClick={() => setComparisonMode('both')}
-                style={{ padding: '8px 16px', fontSize: '0.95rem' }}
-              >
-                Show Both
-              </button>
-            </div>
-
-            <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', overflow: 'hidden', boxShadow: 'var(--shadow-btn)' }}>
-              <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-              <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
-
-              {(comparisonMode === 'radius' || comparisonMode === 'both') && (
-                <>
-                  <line x1="150" y1="100" x2="150" y2="30" stroke="#4ba3e3" strokeWidth="4.5" />
-                  <text x="162" y="65" textAnchor="start" fill="#4ba3e3" fontSize="12" fontWeight="bold">Radius (r)</text>
-                </>
-              )}
-
-              {(comparisonMode === 'diameter' || comparisonMode === 'both') && (
-                <>
-                  <line x1="80" y1="100" x2="220" y2="100" stroke="var(--clr-correct)" strokeWidth="4.5" />
-                  <text x="150" y="118" textAnchor="middle" fill="var(--clr-correct)" fontSize="12" fontWeight="bold">Diameter (d)</text>
-                </>
-              )}
-            </svg>
-          </div>
 
           <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
+            {/* Radius Card */}
             <div style={{
               background: 'var(--clr-surface)',
               borderRadius: 'var(--radius-sm)',
@@ -2229,22 +2806,25 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: '#4ba3e3', fontWeight: 'bold' }}>
                 RADIUS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Span:</strong> Starts at center, ends on boundary (r).
+              <p style={{ margin: '0 0 16px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The distance from the center to any point on the circle.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Relation:</strong> Half of diameter (r = d / 2).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visuals:</strong> Spokes of a wheel, hands on a clock.
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.05rem', margin: 0 }}>
+                <strong>Formula:</strong>
+                <span style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', verticalAlign: 'middle', lineHeight: '1' }}>
+                  <span style={{ borderBottom: '1px solid var(--clr-text)', padding: '0 4px', fontSize: '0.95rem' }}>diameter</span>
+                  <span style={{ fontSize: '0.95rem', paddingTop: '2px' }}>2</span>
+                </span>
+              </div>
             </div>
 
+            {/* Diameter Card */}
             <div style={{
               background: 'var(--clr-surface)',
               borderRadius: 'var(--radius-sm)',
@@ -2252,19 +2832,17 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
               maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 DIAMETER
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Span:</strong> Corner to corner, passing through center (d).
+              <p style={{ margin: '0 0 16px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The distance across the circle through the center.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Relation:</strong> Twice the radius (d = 2 × r).
-              </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Visuals:</strong> Slicing a pizza in half.
+              <p style={{ margin: 0, fontSize: '1.05rem', lineHeight: '1.5' }}>
+                <strong>Formula:</strong> <code style={{ fontSize: '1.1rem', background: 'var(--clr-border)', padding: '2px 6px', borderRadius: '4px' }}>radius * 2</code>
               </p>
             </div>
           </div>
@@ -2275,7 +2853,8 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
             <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
@@ -2283,22 +2862,23 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
             <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>
               Before solving a circular question, ask:
             </p>
-            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Does the line start at center?</span>
-                <strong style={{ fontSize: '1.25rem', color: '#4ba3e3' }}>RADIUS</strong>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginTop: '4px' }}>d / 2</span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', marginBottom: '8px' }}>Does the line start at center?</span>
+                <strong style={{ fontSize: '1.3rem', color: '#4ba3e3' }}>RADIUS</strong>
+                <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', verticalAlign: 'middle', lineHeight: '1', marginTop: '8px' }}>
+
+                </div>
               </div>
-              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Does it cross center completely?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)' }}>DIAMETER</strong>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginTop: '4px' }}>2r</span>
+              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', marginBottom: '8px' }}>Does it cross center completely?</span>
+                <strong style={{ fontSize: '1.3rem', color: 'var(--clr-correct)' }}>DIAMETER</strong>
+
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -2492,20 +3072,298 @@ function RadiusDiameterChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Radius vs Diameter challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['radius-diameter'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-radius')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function HcfLcmChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2
+function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-hcf'); // vd-hcf, vd-lcm, intro, r1, r2, comparison, q1, q2, practice-redirect
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-hcf' || subStep === 'vd-lcm') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const hcfLcmStyles = `
+    @keyframes hcfItemFade {
+      0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+      10%, 93% { opacity: 1; transform: translateY(0) scale(1); }
+      96%, 100% { opacity: 0; }
+    }
+
+    @keyframes hcfLineFade {
+      0%, 54% { opacity: 0; }
+      57%, 93% { opacity: 1; }
+      96%, 100% { opacity: 0; }
+    }
+
+    @keyframes hcfCommonAnim {
+      0%, 54% { fill: var(--clr-card); stroke: var(--clr-border); }
+      57%, 93% { fill: rgba(92,184,122,0.1); stroke: var(--clr-correct); }
+      96%, 100% { fill: var(--clr-card); stroke: var(--clr-border); }
+    }
+
+    @keyframes hcfGreatestAnim {
+      0%, 72% { transform: scale(1); fill: var(--clr-card); stroke: var(--clr-border); filter: none; }
+      75%, 93% { transform: scale(1.22); fill: var(--clr-correct); stroke: var(--clr-correct); filter: drop-shadow(0 0 6px rgba(92,184,122,0.5)); }
+      96%, 100% { transform: scale(1); fill: var(--clr-card); stroke: var(--clr-border); filter: none; }
+    }
+
+    @keyframes hcfGreatestText {
+      0%, 72% { fill: var(--clr-text); }
+      75%, 93% { fill: white; }
+      96%, 100% { fill: var(--clr-text); }
+    }
+
+    .hcf-f12-item, .hcf-f18-item {
+      animation: hcfItemFade 8s infinite ease-out;
+      animation-fill-mode: both;
+    }
+    .hcf-common-high rect {
+      animation: hcfCommonAnim 8s infinite ease-in-out;
+    }
+    .hcf-greatest-glow {
+      transform-origin: 0px 0px;
+      animation: hcfGreatestAnim 8s infinite ease-in-out;
+    }
+    .hcf-greatest-glow text {
+      animation: hcfGreatestText 8s infinite ease-in-out;
+    }
+    .hcf-lines {
+      animation: hcfLineFade 8s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    @keyframes lcmItemFade {
+      0% { opacity: 0; transform: translateY(8px) scale(0.9); }
+      10%, 93% { opacity: 1; transform: translateY(0) scale(1); }
+      96%, 100% { opacity: 0; }
+    }
+
+    @keyframes lcmMatchGlow {
+      0%, 65% { transform: scale(1); fill: var(--clr-card); stroke: var(--clr-border); filter: none; }
+      68%, 93% { transform: scale(1.2); fill: var(--clr-correct); stroke: var(--clr-correct); filter: drop-shadow(0 0 6px rgba(92,184,122,0.5)); }
+      96%, 100% { transform: scale(1); fill: var(--clr-card); stroke: var(--clr-border); filter: none; }
+    }
+
+    @keyframes lcmMatchText {
+      0%, 65% { fill: var(--clr-text); }
+      68%, 93% { fill: white; }
+      96%, 100% { fill: var(--clr-text); }
+    }
+
+    @keyframes lcmLineFade {
+      0%, 65% { opacity: 0; stroke-dashoffset: 200; }
+      68%, 93% { opacity: 1; stroke-dashoffset: 0; }
+      96%, 100% { opacity: 0; stroke-dashoffset: 200; }
+    }
+
+    .lcm-m12-item, .lcm-m18-item {
+      animation: lcmItemFade 8s infinite ease-out;
+      animation-fill-mode: both;
+    }
+    .lcm-match-node {
+      transform-origin: 0px 0px;
+      animation: lcmMatchGlow 8s infinite ease-in-out;
+    }
+    .lcm-match-node text {
+      animation: lcmMatchText 8s infinite ease-in-out;
+    }
+    .lcm-match-line {
+      animation: lcmLineFade 8s infinite ease-in-out;
+      stroke-dasharray: 6 3;
+    }
+
+    @keyframes hcfSummaryFade {
+      0%, 72% { opacity: 0; transform: translateY(5px); }
+      75%, 93% { opacity: 1; transform: translateY(0); }
+      96%, 100% { opacity: 0; }
+    }
+    .hcf-summary-overlay {
+      animation: hcfSummaryFade 8s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    @keyframes lcmSummaryFade {
+      0%, 65% { opacity: 0; transform: translateY(5px); }
+      68%, 93% { opacity: 1; transform: translateY(0); }
+      96%, 100% { opacity: 0; }
+    }
+    .lcm-summary-overlay {
+      animation: lcmSummaryFade 8s infinite ease-in-out;
+      opacity: 0;
+    }
+  `;
 
   // R1: LCM conveyor simulation
   const [simTime, setSimTime] = useState(0);
@@ -2601,12 +3459,22 @@ function HcfLcmChallenge({ onBack, onComplete }) {
     }
   };
 
+  // Save progress automatically when Q2 is finished
+  useEffect(() => {
+    if (q2Answer === 'correct') {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNext = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-hcf') setSubStep('vd-lcm');
+    else if (subStep === 'vd-lcm') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleQ1Select = (option) => {
@@ -2634,21 +3502,225 @@ function HcfLcmChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{hcfLcmStyles}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          HCF vs LCM
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: HCF vs LCM
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Two Machines
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-hcf' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            HIGHEST COMMON FACTOR (HCF)
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the factors align and the highest shared factor glow.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-hcf" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-hcf)" />
+
+              {/* HCF visual container */}
+              <g transform="translate(0, 10)">
+                {/* Left section: 12 */}
+                <g transform="translate(75, 40)">
+                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
+                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">12</text>
+                </g>
+
+                {/* Right section: 18 */}
+                <g transform="translate(245, 40)">
+                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
+                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">18</text>
+                </g>
+
+                {/* Factors lists rows */}
+                <g transform="translate(75, 95)">
+                  {[1, 2, 3, 4, 6, 12].map((f, idx) => {
+                    const isCommon = [1, 2, 3, 6].includes(f);
+                    const isGreatest = f === 6;
+                    let className = "hcf-f12-item";
+                    if (isGreatest) className += " hcf-greatest-glow";
+                    else if (isCommon) className += " hcf-common-high";
+                    return (
+                      <g key={idx} transform={`translate(0, ${idx * 28})`}>
+                        <g className={className} style={{ animationDelay: `${idx * 0.15}s` }}>
+                          <rect x="-28" y="-12" width="56" height="24" rx="6" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
+                          <text x="0" y="6" textAnchor="middle" fontSize="15" fontWeight="bold" fill="var(--clr-text)">{f}</text>
+                        </g>
+                      </g>
+                    );
+                  })}
+                </g>
+
+                <g transform="translate(245, 95)">
+                  {[1, 2, 3, 6, 9, 18].map((f, idx) => {
+                    const isCommon = [1, 2, 3, 6].includes(f);
+                    const isGreatest = f === 6;
+                    let className = "hcf-f18-item";
+                    if (isGreatest) className += " hcf-greatest-glow";
+                    else if (isCommon) className += " hcf-common-high";
+                    return (
+                      <g key={idx} transform={`translate(0, ${idx * 28})`}>
+                        <g className={className} style={{ animationDelay: `${0.9 + idx * 0.15}s` }}>
+                          <rect x="-28" y="-12" width="56" height="24" rx="6" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
+                          <text x="0" y="6" textAnchor="middle" fontSize="15" fontWeight="bold" fill="var(--clr-text)">{f}</text>
+                        </g>
+                      </g>
+                    );
+                  })}
+                </g>
+
+                {/* Connecting lines */}
+                <g className="hcf-lines">
+                  <line x1="103" y1="95" x2="217" y2="95" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="103" y1="123" x2="217" y2="123" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="103" y1="151" x2="217" y2="151" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
+                  <line x1="103" y1="207" x2="217" y2="179" stroke="var(--clr-correct)" strokeWidth="2.5" opacity="0.9" />
+                </g>
+
+                {/* HCF Summary Overlay */}
+                <g className="hcf-summary-overlay">
+                  <rect x="50" y="255" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
+                  <text x="160" y="276" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">HCF (12, 18) = 6</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            HCF is the greatest factor shared by two or more numbers.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover LCM ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-lcm' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            LEAST COMMON MULTIPLE (LCM)
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the multiples grow and find the first matching number.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-lcm" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-lcm)" />
+
+              {/* LCM visual container */}
+              <g transform="translate(0, 10)">
+                {/* Left section: 12 */}
+                <g transform="translate(75, 40)">
+                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
+                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">12</text>
+                </g>
+
+                {/* Right section: 18 */}
+                <g transform="translate(245, 40)">
+                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
+                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">18</text>
+                </g>
+
+                {/* Multiples lists rows */}
+                <g transform="translate(75, 95)">
+                  {[12, 24, 36, 48].map((m, idx) => {
+                    const isMatch = m === 36;
+                    let className = "lcm-m12-item";
+                    if (isMatch) className += " lcm-match-node";
+                    return (
+                      <g key={idx} transform={`translate(0, ${idx * 38})`}>
+                        <g className={className} style={{ animationDelay: `${idx * 0.4}s` }}>
+                          <rect x="-28" y="-16" width="56" height="32" rx="8" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
+                          <text x="0" y="6" textAnchor="middle" fontSize="16" fontWeight="bold" fill="var(--clr-text)">{m}</text>
+                        </g>
+                      </g>
+                    );
+                  })}
+                </g>
+
+                <g transform="translate(245, 95)">
+                  {[18, 36, 54].map((m, idx) => {
+                    const isMatch = m === 36;
+                    let className = "lcm-m18-item";
+                    if (isMatch) className += " lcm-match-node";
+                    return (
+                      <g key={idx} transform={`translate(0, ${idx * 38})`}>
+                        <g className={className} style={{ animationDelay: `${0.2 + idx * 0.45}s` }}>
+                          <rect x="-28" y="-16" width="56" height="32" rx="8" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
+                          <text x="0" y="6" textAnchor="middle" fontSize="16" fontWeight="bold" fill="var(--clr-text)">{m}</text>
+                        </g>
+                      </g>
+                    );
+                  })}
+                </g>
+
+                {/* Connecting line */}
+                <line x1="103" y1="171" x2="217" y2="133" stroke="var(--clr-correct)" strokeWidth="3" className="lcm-match-line" />
+
+                {/* LCM Summary Overlay */}
+                <g className="lcm-summary-overlay">
+                  <rect x="50" y="255" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
+                  <text x="160" y="276" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">LCM (12, 18) = 36</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            LCM is the smallest multiple shared by two or more numbers.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '24px' }}>
             <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
               <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔩</span>
@@ -2670,7 +3742,7 @@ function HcfLcmChallenge({ onBack, onComplete }) {
 
       {/* R1: LCM Two Machines Simulation */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '20px',
@@ -2810,7 +3882,7 @@ function HcfLcmChallenge({ onBack, onComplete }) {
 
       {/* R2: HCF Factory Kits packing */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '20px',
@@ -2887,7 +3959,10 @@ function HcfLcmChallenge({ onBack, onComplete }) {
             border: '1px solid var(--clr-border)',
             marginBottom: '24px',
             maxHeight: '320px',
-            overflowY: 'auto'
+            overflowY: 'auto',
+            width: '100%',
+            maxWidth: '520px',
+            margin: '0 auto'
           }}>
             {Array.from({ length: numKits }).map((_, i) => {
               const nutsInKit = Math.floor(36 / numKits);
@@ -2982,17 +4057,18 @@ function HcfLcmChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                HCF (Highest Common Factor)
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                HCF
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> The largest number that divides into both values.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The greatest factor shared by two or more numbers.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Use Case:</strong> Dividing or splitting things into equal groups.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> HCF of 12 and 18 = 6
               </p>
             </div>
 
@@ -3003,17 +4079,18 @@ function HcfLcmChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                LCM (Least Common Multiple)
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                LCM
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> The smallest number that both values divide into.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The smallest multiple shared by two or more numbers.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Use Case:</strong> Synchronizing repeating events.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> LCM of 12 and 18 = 36
               </p>
             </div>
           </div>
@@ -3046,7 +4123,6 @@ function HcfLcmChallenge({ onBack, onComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -3054,7 +4130,7 @@ function HcfLcmChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q1 */}
       {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Recognition</p>
 
@@ -3128,7 +4204,7 @@ function HcfLcmChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q2 */}
       {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Recognition</p>
 
@@ -3194,20 +4270,269 @@ function HcfLcmChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the HCF vs LCM challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['hcf-lcm'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-hcf')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function FactorsMultiplesChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, discovery, comparison, q1, q2
+function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-factors'); // vd-factors, vd-multiples, intro, r1, r2, discovery, comparison, q1, q2, practice-redirect
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-factors' || subStep === 'vd-multiples') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'discovery') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const generateDotStyles = () => {
+    let css = '';
+    for (let i = 0; i < 18; i++) {
+      const angle = (i * 2 * Math.PI) / 18;
+      const r = 65;
+      const x1 = Math.round(Math.cos(angle) * r);
+      const y1 = Math.round(Math.sin(angle) * r);
+
+      const x2 = Math.round((i - 8.5) * 13);
+      const y2 = 0;
+
+      const col2 = i % 9;
+      const row2 = Math.floor(i / 9);
+      const x3 = Math.round((col2 - 4) * 24);
+      const y3 = Math.round((row2 - 0.5) * 32);
+
+      const col3 = i % 6;
+      const row3 = Math.floor(i / 6);
+      const x4 = Math.round((col3 - 2.5) * 32);
+      const y4 = Math.round((row3 - 1) * 32);
+
+      css += `
+        @keyframes moveDot${i} {
+          0%, 15% { transform: translate(${x1}px, ${y1}px); }
+          20%, 35% { transform: translate(${x2}px, ${y2}px); }
+          40%, 55% { transform: translate(${x3}px, ${y3}px); }
+          60%, 75% { transform: translate(${x4}px, ${y4}px); }
+          80%, 95% { transform: translate(${x1}px, ${y1}px); }
+          100% { transform: translate(${x1}px, ${y1}px); }
+        }
+        .factor-dot-${i} {
+          animation: moveDot${i} 8s infinite ease-in-out;
+        }
+      `;
+    }
+    return css;
+  };
+
+  const factorsStyles = `
+    ${generateDotStyles()}
+
+    @keyframes showEq1 { 0%, 15% { opacity: 1; } 16%, 100% { opacity: 0; } }
+    @keyframes showEq2 { 0%, 19% { opacity: 0; } 20%, 35% { opacity: 1; } 36%, 100% { opacity: 0; } }
+    @keyframes showEq3 { 0%, 39% { opacity: 0; } 40%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+    @keyframes showEq4 { 0%, 59% { opacity: 0; } 60%, 75% { opacity: 1; } 76%, 100% { opacity: 0; } }
+    @keyframes showEq5 { 0%, 79% { opacity: 0; } 80%, 95% { opacity: 1; } 96%, 100% { opacity: 0; } }
+
+    .factor-eq-1 { animation: showEq1 8s infinite ease-in-out; }
+    .factor-eq-2 { animation: showEq2 8s infinite ease-in-out; }
+    .factor-eq-3 { animation: showEq3 8s infinite ease-in-out; }
+    .factor-eq-4 { animation: showEq4 8s infinite ease-in-out; }
+    .factor-eq-5 { animation: showEq5 8s infinite ease-in-out; }
+
+    @keyframes showMultEq1 { 0%, 15% { opacity: 1; } 16%, 100% { opacity: 0; } }
+    @keyframes showMultEq2 { 0%, 19% { opacity: 0; } 20%, 35% { opacity: 1; } 36%, 100% { opacity: 0; } }
+    @keyframes showMultEq3 { 0%, 39% { opacity: 0; } 40%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+    @keyframes showMultEq4 { 0%, 59% { opacity: 0; } 60%, 75% { opacity: 1; } 76%, 100% { opacity: 0; } }
+    @keyframes showMultEq5 { 0%, 79% { opacity: 0; } 80%, 95% { opacity: 1; } 96%, 100% { opacity: 0; } }
+
+    @keyframes showNode1 { 0%, 19% { opacity: 0; transform: scale(0.5); } 20%, 95% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+    @keyframes showArrow1 { 0%, 39% { opacity: 0; } 40%, 95% { opacity: 1; } 96%, 100% { opacity: 0; } }
+    @keyframes showNode2 { 0%, 39% { opacity: 0; transform: scale(0.5); } 40%, 95% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+    @keyframes showArrow2 { 0%, 59% { opacity: 0; } 60%, 95% { opacity: 1; } 96%, 100% { opacity: 0; } }
+    @keyframes showNode3 { 0%, 59% { opacity: 0; transform: scale(0.5); } 60%, 95% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+    @keyframes showArrow3 { 0%, 79% { opacity: 0; } 80%, 95% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+    @keyframes showNode4 { 0%, 79% { opacity: 0; transform: scale(0.5); } 80%, 95% { opacity: 1; transform: scale(1); } 96%, 100% { opacity: 0; } }
+
+    .mult-eq-1 { animation: showMultEq1 8s infinite ease-in-out; }
+    .mult-eq-2 { animation: showMultEq2 8s infinite ease-in-out; }
+    .mult-eq-3 { animation: showMultEq3 8s infinite ease-in-out; }
+    .mult-eq-4 { animation: showMultEq4 8s infinite ease-in-out; }
+    .mult-eq-5 { animation: showMultEq5 8s infinite ease-in-out; }
+
+    .mult-node-1 { animation: showNode1 8s infinite ease-in-out; transform-origin: 50px 20px; }
+    .mult-arrow-1 { animation: showArrow1 8s infinite ease-in-out; }
+    .mult-node-2 { animation: showNode2 8s infinite ease-in-out; transform-origin: 125px 20px; }
+    .mult-arrow-2 { animation: showArrow2 8s infinite ease-in-out; }
+    .mult-node-3 { animation: showNode3 8s infinite ease-in-out; transform-origin: 200px 20px; }
+    .mult-arrow-3 { animation: showArrow3 8s infinite ease-in-out; }
+    .mult-node-4 { animation: showNode4 8s infinite ease-in-out; transform-origin: 270px 20px; }
+  `;
 
   // R1: Factors
   const [factorsFound, setFactorsFound] = useState([]);
@@ -3302,13 +4627,23 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
     });
   }, [subStep]);
 
+  // Save progress automatically when Q2 is finished
+  useEffect(() => {
+    if (q2Answer === 'correct') {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNext = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-factors') setSubStep('vd-multiples');
+    else if (subStep === 'vd-multiples') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('discovery');
     else if (subStep === 'discovery') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleDiscoverySubmit = (val) => {
@@ -3380,7 +4715,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px' }}>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
       <style>{`
         @keyframes shake {
           0% { transform: translateX(0); }
@@ -3412,21 +4747,200 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
           animation: pop 0.35s ease-out;
         }
       `}</style>
+      <style>{factorsStyles}</style>
 
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Factors vs Multiples
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Factors vs Multiples
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Factor or Multiple Machine
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-factors' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: '#4ba3e3', fontWeight: 'bold', letterSpacing: '1px' }}>
+            FACTORS
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch 18 dots split into equal rectangular grids with no remainder.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-facs" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-facs)" />
+
+              {/* Equations and status texts replacing each other */}
+              <g className="factor-eq-1">
+                <text x="160" y="55" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold">18</text>
+                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">Let's find all factors of 18.</text>
+              </g>
+              <g className="factor-eq-2">
+                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">1 × 18 = 18</text>
+                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">1 group of 18 dots (no remainder!)</text>
+              </g>
+              <g className="factor-eq-3">
+                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">2 × 9 = 18</text>
+                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">2 rows of 9 dots (no remainder!)</text>
+              </g>
+              <g className="factor-eq-4">
+                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">3 × 6 = 18</text>
+                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">3 rows of 6 dots (no remainder!)</text>
+              </g>
+              <g className="factor-eq-5">
+                <text x="160" y="55" textAnchor="middle" fill="var(--clr-correct)" fontSize="22" fontWeight="bold">Factors: 1, 2, 3, 6, 9, 18</text>
+                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">These numbers divide 18 exactly!</text>
+              </g>
+
+              {/* The 18 moving factor dots */}
+              {Array.from({ length: 18 }).map((_, idx) => (
+                <circle
+                  key={idx}
+                  cx="160"
+                  cy="150"
+                  r="6.5"
+                  fill="var(--clr-correct)"
+                  className={`factor-dot-${idx}`}
+                  style={{ filter: 'drop-shadow(0 0 2px rgba(92,184,122,0.4))' }}
+                />
+              ))}
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Factors divide a number exactly.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Multiples ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-multiples' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            MULTIPLES
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch how the multiples grow by multiplying 18.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-mults" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mults)" />
+
+              {/* Equations replacing each other */}
+              <g className="mult-eq-1">
+                <text x="160" y="75" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold">18</text>
+              </g>
+              <g className="mult-eq-2">
+                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">1 × 18 = 18</text>
+              </g>
+              <g className="mult-eq-3">
+                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">2 × 18 = 36</text>
+              </g>
+              <g className="mult-eq-4">
+                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">3 × 18 = 54</text>
+              </g>
+              <g className="mult-eq-5">
+                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">4 × 18 = 72</text>
+              </g>
+
+              {/* Growing number sequence */}
+              <g transform="translate(0, 160)">
+                <line x1="30" y1="20" x2="290" y2="20" stroke="var(--clr-border)" strokeWidth="2.5" strokeDasharray="4 4" />
+
+                {/* Multiple 18 */}
+                <g className="mult-node-1">
+                  <circle cx="50" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                  <text x="50" y="26" textAnchor="middle" fill="var(--clr-accent)" fontSize="16" fontWeight="bold">18</text>
+                </g>
+
+                {/* Arrow 1 to 36 */}
+                <g className="mult-arrow-1">
+                  <path d="M 75,20 L 102,20 M 96,15 L 102,20 L 96,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <text x="88" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
+                </g>
+
+                {/* Multiple 36 */}
+                <g className="mult-node-2">
+                  <circle cx="125" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                  <text x="125" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">36</text>
+                </g>
+
+                {/* Arrow 2 to 54 */}
+                <g className="mult-arrow-2">
+                  <path d="M 150,20 L 177,20 M 171,15 L 177,20 L 171,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <text x="163" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
+                </g>
+
+                {/* Multiple 54 */}
+                <g className="mult-node-3">
+                  <circle cx="200" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                  <text x="200" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">54</text>
+                </g>
+
+                {/* Arrow 3 to 72 */}
+                <g className="mult-arrow-3">
+                  <path d="M 225,20 L 252,20 M 246,15 L 252,20 L 246,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <text x="238" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
+                </g>
+
+                {/* Multiple 72 */}
+                <g className="mult-node-4">
+                  <circle cx="270" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                  <text x="270" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">72</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Multiples are made by multiplying a number.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '24px' }}>
             <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
               <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔢</span>
@@ -3448,7 +4962,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
 
       {/* R1: Factors */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '20px' }}>
             Find the Factors of 12
           </p>
@@ -3557,7 +5071,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
 
       {/* R2: Multiples */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <p style={{ fontSize: '1.2rem', fontWeight: 'bold', marginBottom: '20px' }}>
             Generate Multiples of 12
           </p>
@@ -3632,7 +5146,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
 
       {/* SubStep: Discovery */}
       {subStep === 'discovery' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>What did you notice?</h3>
           <p style={{ fontSize: '1.15rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>
             Think about the Factor or Multiple Machine activities we just ran.
@@ -3711,17 +5225,18 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: '#4ba3e3', fontWeight: 'bold' }}>
                 FACTORS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Numbers that divide a target number exactly (smaller or equal).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Numbers that divide another number exactly.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> Factors of 6 are 1, 2, 3, and 6.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Factors of 18 ➔ 1, 2, 3, 6, 9, 18
               </p>
             </div>
 
@@ -3732,17 +5247,18 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 MULTIPLES
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Numbers obtained by multiplying a target number (equal or larger).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Numbers obtained by multiplying a number by whole numbers.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> Multiples of 6 are 6, 12, 18, 24...
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Multiples of 18 ➔ 18, 36, 54, 72,etc
               </p>
             </div>
           </div>
@@ -3775,7 +5291,6 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -4013,20 +5528,213 @@ function FactorsMultiplesChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Factors vs Multiples challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['factors-multiples'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-factors')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function CongruenceSimilarityChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-congruence'); // vd-congruence, vd-similarity, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine the active step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-congruence' || subStep === 'vd-similarity') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const congruenceStyles = `
+    @keyframes slideCongruence {
+      0%, 20% { transform: translate(0px, 0px); filter: none; }
+      40% { transform: translate(-120px, 0px); filter: none; }
+      45%, 75% { transform: translate(-120px, 0px); filter: drop-shadow(0 0 10px rgba(92, 184, 122, 0.8)); }
+      85%, 100% { transform: translate(0px, 0px); filter: none; }
+    }
+    
+    @keyframes slideSimilarity {
+      0%, 15% { transform: translate(0px, 0px) scale(0.5); filter: none; }
+      30%, 45% { transform: translate(-120px, 0px) scale(0.5); filter: none; }
+      55%, 80% { transform: translate(-120px, 0px) scale(1); filter: drop-shadow(0 0 10px rgba(75, 163, 227, 0.85)); }
+      90%, 100% { transform: translate(0px, 0px) scale(0.5); filter: none; }
+    }
+
+    .congruence-sliding-triangle {
+      transform-origin: 160px 220px;
+      animation: slideCongruence 5s infinite ease-in-out;
+    }
+
+    .similarity-growing-triangle {
+      transform-origin: 160px 220px;
+      animation: slideSimilarity 5.5s infinite ease-in-out;
+    }
+  `;
 
   // Interactive Inspector States
   const [rotateAngle, setRotateAngle] = useState(0);
@@ -4089,13 +5797,23 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
     }
   }, [subStep]);
 
+  // Mark as completed immediately when Q2 is successfully answered
+  useEffect(() => {
+    if (q2Answer === 'correct') {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNext = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-congruence') setSubStep('vd-similarity');
+    else if (subStep === 'vd-similarity') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleRotate = () => {
@@ -4306,41 +6024,157 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '780px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{congruenceStyles}</style>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Congruence vs Similarity
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Congruence vs Similarity
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Shape Inspector
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-congruence' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            CONGRUENCE
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the shapes match perfectly without resizing.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-cong" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              {/* Grid pattern background inside the card */}
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-cong)" />
+
+              {/* Left Reference static outline (dashed shape) */}
+              <path d="M 40,100 L 160,220 L 40,220 Z" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3" strokeDasharray="6 6" />
+
+              {/* Right Reference base outline (dotted returning spot) */}
+              <path d="M 160,100 L 280,220 L 160,220 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2" strokeDasharray="4 4" />
+
+              {/* Sliding matching shape (with congruence green glow) */}
+              <path
+                d="M 160,100 L 280,220 L 160,220 Z"
+                fill="rgba(92, 184, 122, 0.15)"
+                stroke="var(--clr-correct)"
+                strokeWidth="3.5"
+                className="congruence-sliding-triangle"
+              />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Congruent shapes have the same shape and the same size.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Similarity ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-similarity' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: '#4ba3e3', fontWeight: 'bold', letterSpacing: '1px' }}>
+            SIMILARITY
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the shapes resize to overlap perfectly.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-sim" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              {/* Grid pattern background inside the card */}
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-sim)" />
+
+              {/* Left Reference static outline (large dashed shape) */}
+              <path d="M 40,100 L 160,220 L 40,220 Z" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3" strokeDasharray="6 6" />
+
+              {/* Right Reference base outline (small candidate base returning spot) */}
+              <path d="M 160,160 L 220,220 L 160,220 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2" strokeDasharray="4 4" />
+
+              {/* Scaling matching shape (with similarity blue glow) */}
+              <path
+                d="M 160,100 L 280,220 L 160,220 Z"
+                fill="rgba(75, 163, 227, 0.15)"
+                stroke="#4ba3e3"
+                strokeWidth="3.5"
+                className="similarity-growing-triangle"
+              />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Similar shapes have the same shape but can be different sizes.
+          </p>
+
+          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '24px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)', marginTop: '8px' }}>Congruence</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Same Shape + Same Size. Perfect overlap.</p>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Congruence</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Identical shapes with the exact same size and angle measures.</p>
             </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)', marginTop: '8px' }}>Similarity</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Same Shape. Size can change proportionally.</p>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔍</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Similarity</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Matching shapes scaled larger or smaller proportionally.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Can shapes look similar without being congruent? Let's inspect them interactively!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Can shapes look similar without being congruent? Let's check them!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Inspection</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* R1, R2, R3 Inspector loops */}
       {(subStep === 'r1' || subStep === 'r2' || subStep === 'r3') && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -4549,17 +6383,18 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                CONGRUENT
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                CONGRUENCE
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Identical shape AND identical size.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Shapes are identical in both shape and size.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Test:</strong> Fits perfectly on top of each other.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Two identical triangles.
               </p>
             </div>
 
@@ -4569,17 +6404,18 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '350px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
-                SIMILAR
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: '#4ba3e3', fontWeight: 'bold' }}>
+                SIMILARITY
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Identical shape, but size can differ.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Shapes have the same shape but may have different sizes.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Test:</strong> Proportional side ratios and equal angles.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> A photo and its enlarged copy.
               </p>
             </div>
           </div>
@@ -4618,7 +6454,6 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -4626,7 +6461,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q1 */}
       {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Recognition</p>
 
@@ -4709,7 +6544,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q2 Classification Grid */}
       {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Classification Challenge</p>
 
@@ -4882,17 +6717,71 @@ function CongruenceSimilarityChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Congruence vs Similarity challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['congruence-similarity'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-congruence')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function MatricesDeterminantsChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, detective, comparison, q1, q2
+function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-matrix'); // vd-matrix, vd-determinant, intro, detective, comparison, q1, q2, practice-redirect
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
@@ -4944,11 +6833,207 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
     });
   }, [subStep]);
 
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-matrix' || subStep === 'vd-determinant') return 0;
+    if (subStep === 'intro' || subStep === 'detective') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const matStyles = `
+    @keyframes matrixBrackets {
+      0%, 10% { opacity: 0; }
+      15%, 90% { opacity: 1; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes numFill1 {
+      0%, 20% { opacity: 0; transform: translateY(-5px); }
+      25%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes numFill2 {
+      0%, 30% { opacity: 0; transform: translateY(-5px); }
+      35%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes numFill3 {
+      0%, 40% { opacity: 0; transform: translateY(-5px); }
+      45%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes numFill4 {
+      0%, 50% { opacity: 0; transform: translateY(-5px); }
+      55%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes matrixHighlight {
+      0%, 60% { opacity: 0; transform: scale(0.95); }
+      65%, 90% { opacity: 1; transform: scale(1); }
+      95%, 100% { opacity: 0; }
+    }
+
+    .mat-brackets { animation: matrixBrackets 6s infinite ease-in-out; }
+    .mat-num-1 { animation: numFill1 6s infinite ease-in-out; }
+    .mat-num-2 { animation: numFill2 6s infinite ease-in-out; }
+    .mat-num-3 { animation: numFill3 6s infinite ease-in-out; }
+    .mat-num-4 { animation: numFill4 6s infinite ease-in-out; }
+    .mat-highlight { animation: matrixHighlight 6s infinite ease-in-out; transform-origin: 160px 140px; }
+
+    @keyframes detBars {
+      0%, 5% { opacity: 0; }
+      10%, 90% { opacity: 1; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes detLines {
+      0%, 15% { opacity: 0; stroke-dashoffset: 60; }
+      25%, 90% { opacity: 1; stroke-dashoffset: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes detStep1 {
+      0%, 40% { opacity: 0; transform: translateY(-5px); }
+      45%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes detStep2 {
+      0%, 60% { opacity: 0; transform: translateY(-5px); }
+      65%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes detStep3 {
+      0%, 75% { opacity: 0; transform: scale(0.8); }
+      80%, 90% { opacity: 1; transform: scale(1.2); }
+      95%, 100% { opacity: 0; }
+    }
+
+    .det-bars { animation: detBars 8s infinite ease-in-out; }
+    .det-diag-1 { animation: detLines 8s infinite ease-in-out; stroke-dasharray: 60; }
+    .det-diag-2 { animation: detLines 8s infinite ease-in-out; stroke-dasharray: 60; }
+    .det-step-1 { animation: detStep1 8s infinite ease-in-out; }
+    .det-step-2 { animation: detStep2 8s infinite ease-in-out; }
+    .det-step-3 { animation: detStep3 8s infinite ease-in-out; transform-origin: 160px 255px; }
+  `;
+
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Answer !== null) {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('detective');
+    if (subStep === 'vd-matrix') setSubStep('vd-determinant');
+    else if (subStep === 'vd-determinant') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('detective');
     else if (subStep === 'detective') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleInspectCard = (cardId) => {
@@ -5036,8 +7121,9 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
       <style>{`
+        ${matStyles}
         @keyframes scan {
           0% { top: 0%; opacity: 0.8; }
           50% { top: 100%; opacity: 0.8; }
@@ -5075,58 +7161,180 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
         }
       `}</style>
 
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Matrices vs Determinants
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Matrices vs Determinants
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Matrix Detective
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-matrix' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            MATRIX
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the rectangular grid fill with numbers and glow as a single system.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-matrix" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-matrix)" />
+
+              {/* Square brackets for matrix */}
+              <g className="mat-brackets">
+                {/* Left bracket */}
+                <path d="M 105,95 L 90,95 L 90,185 L 105,185" fill="none" stroke="var(--clr-text)" strokeWidth="3" />
+                {/* Right bracket */}
+                <path d="M 215,95 L 230,95 L 230,185 L 215,185" fill="none" stroke="var(--clr-text)" strokeWidth="3" />
+              </g>
+
+              {/* Numbers filling in */}
+              <text x="125" y="135" className="mat-num-1" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">2</text>
+              <text x="195" y="135" className="mat-num-2" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">1</text>
+              <text x="125" y="170" className="mat-num-3" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">3</text>
+              <text x="195" y="170" className="mat-num-4" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">4</text>
+
+              {/* Grid Highlight glow */}
+              <rect x="80" y="85" width="160" height="110" rx="8" fill="rgba(232, 134, 74, 0.08)" stroke="var(--clr-accent)" strokeWidth="2.5" className="mat-highlight" />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A matrix is a rectangular arrangement of numbers.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Determinants ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-determinant' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            DETERMINANT
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the diagonal values multiply and subtract to reduce the matrix to a single number.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-det" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-det)" />
+
+              {/* Determinant straight bars */}
+              <g className="det-bars">
+                <line x1="95" y1="70" x2="95" y2="160" stroke="var(--clr-text)" strokeWidth="3" />
+                <line x1="225" y1="70" x2="225" y2="160" stroke="var(--clr-text)" strokeWidth="3" />
+              </g>
+
+              {/* Numbers */}
+              <text x="125" y="105" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">2</text>
+              <text x="195" y="105" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">1</text>
+              <text x="125" y="145" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">3</text>
+              <text x="195" y="145" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">4</text>
+
+              {/* Diagonal lines */}
+              {/* Main diagonal (2 * 4) */}
+              <line x1="130" y1="110" x2="190" y2="140" stroke="var(--clr-correct)" strokeWidth="2.5" strokeDasharray="60" strokeDashoffset="60" className="det-diag-1" strokeLinecap="round" />
+              {/* Anti diagonal (1 * 3) */}
+              <line x1="190" y1="110" x2="130" y2="140" stroke="var(--clr-accent)" strokeWidth="2.5" strokeDasharray="60" strokeDashoffset="60" className="det-diag-2" strokeLinecap="round" />
+
+              {/* Calculation step 1: (2 x 4) - (1 x 3) */}
+              <g className="det-step-1">
+                <text x="160" y="195" fill="var(--clr-text)" fontSize="18" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+                  (2 × 4) − (1 × 3)
+                </text>
+              </g>
+
+              {/* Calculation step 2: 8 - 3 */}
+              <g className="det-step-2">
+                <text x="160" y="225" fill="var(--clr-text-soft)" fontSize="18" fontWeight="bold" textAnchor="middle">↓</text>
+                <text x="160" y="248" fill="var(--clr-text)" fontSize="18" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+                  8 − 3
+                </text>
+              </g>
+
+              {/* Final Step: 5 */}
+              <g className="det-step-3">
+                <text x="160" y="275" fill="var(--clr-correct)" fontSize="28" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
+                  5
+                </text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A determinant is a single value calculated from a square matrix.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '480px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Matrix</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>An arrangement grid of numbers inside brackets.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📦</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Matrix Grid</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>A rectangular array of numbers inside brackets.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '480px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Determinant</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>A single numeric value computed from a square matrix.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔢</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Determinant Value</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>A single calculated number from a square grid.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Only specific matrices have determinants. Let's start the scanner and detect determinants!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Only square matrices have determinants. Let's start the scanner and inspect them!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Detection</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Layer 1: Detective Scanner */}
       {subStep === 'detective' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -5145,7 +7353,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
             </p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(235px, 1fr))', gap: '16px', marginBottom: '32px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '16px', marginBottom: '32px', width: '100%', maxWidth: '520px' }}>
             {/* Card A (2x2) */}
             <div
               onClick={() => handleInspectCard('A')}
@@ -5340,33 +7548,35 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
       {/* Layer 2: Comparison */}
       {subStep === 'comparison' && (
         <div>
-          {/* Side-by-side Cards */}
-          <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
             {/* Matrix Card */}
             <div style={{
               background: 'var(--clr-surface)',
               borderRadius: 'var(--radius-sm)',
               padding: '24px',
               borderTop: '6px solid var(--clr-accent)',
-              flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              flex: '1 1 340px',
+              maxWidth: '380px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
                 MATRIX
               </h3>
-
-              <div style={{ display: 'flex', justifyContent: 'center', margin: '14px 0' }}>
-                <div className="matrix-bracket">
-                  2 &nbsp; 3<br />1 &nbsp; 4
-                </div>
-              </div>
-
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Grid of numbers arranged in rows and columns.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> A rectangular arrangement of numbers in rows and columns.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Format:</strong> Written inside brackets [ ] or parentheses ( ).
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-accent)', fontWeight: '600', fontFamily: 'monospace', fontSize: '1.1rem', letterSpacing: '2px', whiteSpace: 'pre' }}>
+                  ┌      ┐
+                  <br />
+                  │ 2  1 │
+                  <br />
+                  │ 3  4 │
+                  <br />
+                  └      ┘
+                </span>
               </p>
             </div>
 
@@ -5376,27 +7586,24 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
               borderRadius: 'var(--radius-sm)',
               padding: '24px',
               borderTop: '6px solid var(--clr-correct)',
-              flex: '1 1 300px',
-              maxWidth: '340px',
-              boxShadow: 'var(--shadow-btn)'
+              flex: '1 1 340px',
+              maxWidth: '380px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                DETERMINANT
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                DETERMINANTS
               </h3>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center', margin: '14px 0' }}>
-                <div className="determinant-bars">
-                  2 &nbsp; 3<br />1 &nbsp; 4
-                </div>
-                <span style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>→</span>
-                <span style={{ fontSize: '1.4rem', fontWeight: 'bold', color: 'var(--clr-correct)' }}>5</span>
-              </div>
-
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> A single value calculated from a square matrix.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> A single value calculated from a square matrix.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Format:</strong> Written inside straight vertical bars | |.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-correct)', fontWeight: '600', fontFamily: 'monospace', fontSize: '1.1rem', letterSpacing: '2px', whiteSpace: 'pre' }}>
+                  │ 2  1 │
+                  <br />
+                  │ 3  4 │  =  5
+                </span>
               </p>
             </div>
           </div>
@@ -5408,27 +7615,28 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1rem' }}>Am I looking at...</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'center' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '14px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>Before calculating, ask yourself:</p>
+
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
                 <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>The arrangement of numbers?</span>
-                <strong style={{ fontSize: '1.2rem', color: 'var(--clr-accent)', display: 'block', margin: '6px 0' }}>MATRIX</strong>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>MATRIX</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '14px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
                 <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>The value obtained after calculation?</span>
-                <strong style={{ fontSize: '1.2rem', color: 'var(--clr-correct)', display: 'block', margin: '6px 0' }}>DETERMINANT</strong>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>DETERMINANT</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -5635,17 +7843,71 @@ function MatricesDeterminantsChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Matrices vs Determinants challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['matrices-determinants'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-matrix')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function MeanMedianModeChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-mean'); // vd-mean, vd-median, vd-mode, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
@@ -5680,13 +7942,239 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
   }, [subStep]);
 
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-mean' || subStep === 'vd-median' || subStep === 'vd-mode') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const statStyles = `
+    /* Mean animations */
+    @keyframes meanMove6 {
+      0%, 15% { transform: translate(0, 0); opacity: 1; }
+      25%, 90% { transform: translate(80px, 30px); opacity: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanMove8 {
+      0%, 15% { transform: translate(0, 0); opacity: 1; }
+      25%, 90% { transform: translate(40px, 30px); opacity: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanMove10 {
+      0%, 15% { transform: translate(0, 0); opacity: 1; }
+      25%, 90% { transform: translate(0, 30px); opacity: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanMove12 {
+      0%, 15% { transform: translate(0, 0); opacity: 1; }
+      25%, 90% { transform: translate(-40px, 30px); opacity: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanMove14 {
+      0%, 15% { transform: translate(0, 0); opacity: 1; }
+      25%, 90% { transform: translate(-80px, 30px); opacity: 0; }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanTotalBox {
+      0%, 25% { opacity: 0; transform: scale(0.8); }
+      32%, 52% { opacity: 1; transform: scale(1); }
+      58%, 100% { opacity: 0; transform: scale(0.8); }
+    }
+    @keyframes meanFormula {
+      0%, 58% { opacity: 0; transform: translateY(10px); }
+      65%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes meanResult {
+      0%, 75% { opacity: 0; transform: scale(0.8); }
+      82%, 92% { opacity: 1; transform: scale(1.3); }
+      97%, 100% { opacity: 0; }
+    }
+
+    .mean-n6 { animation: meanMove6 9s infinite ease-in-out; transform-origin: 80px 70px; }
+    .mean-n8 { animation: meanMove8 9s infinite ease-in-out; transform-origin: 120px 70px; }
+    .mean-n10 { animation: meanMove10 9s infinite ease-in-out; transform-origin: 160px 70px; }
+    .mean-n12 { animation: meanMove12 9s infinite ease-in-out; transform-origin: 200px 70px; }
+    .mean-n14 { animation: meanMove14 9s infinite ease-in-out; transform-origin: 240px 70px; }
+    .mean-total-box { animation: meanTotalBox 9s infinite ease-in-out; transform-origin: 160px 115px; }
+    .mean-formula { animation: meanFormula 9s infinite ease-in-out; }
+    .mean-result { animation: meanResult 9s infinite ease-in-out; transform-origin: 160px 255px; }
+
+    /* Median animations */
+    @keyframes medianOuter1 {
+      0%, 22% { opacity: 1; }
+      28%, 100% { opacity: 0.15; }
+    }
+    @keyframes medianOuter2 {
+      0%, 52% { opacity: 1; }
+      58%, 100% { opacity: 0.15; }
+    }
+    @keyframes medianCenterGlow {
+      0%, 58% { opacity: 1; transform: scale(1); fill: var(--clr-text); }
+      68%, 92% { opacity: 1; transform: scale(1.35); fill: var(--clr-correct); filter: drop-shadow(0 0 6px rgba(92,184,122,0.6)); }
+      96%, 100% { opacity: 0; }
+    }
+    @keyframes medianFadeOutAll {
+      0%, 92% { opacity: 1; }
+      96%, 100% { opacity: 0; }
+    }
+
+    .med-o1 { animation: medianOuter1 9s infinite ease-in-out; }
+    .med-o2 { animation: medianOuter2 9s infinite ease-in-out; }
+    .med-center { animation: medianCenterGlow 9s infinite ease-in-out; transform-origin: 160px 140px; }
+    .med-fade-all { animation: medianFadeOutAll 9s infinite ease-in-out; }
+
+    /* Mode animations */
+    @keyframes modePulse {
+      0%, 15% { transform: scale(1); fill: var(--clr-text); }
+      22%, 28% { transform: scale(1.3); fill: var(--clr-accent); }
+      35%, 41% { transform: scale(1); fill: var(--clr-text); }
+      48%, 54% { transform: scale(1.3); fill: var(--clr-accent); }
+      62%, 92% { transform: scale(1); fill: var(--clr-accent); filter: drop-shadow(0 0 4px rgba(232,134,74,0.4)); }
+      96%, 100% { opacity: 0; }
+    }
+    @keyframes modeNormal {
+      0%, 92% { opacity: 1; }
+      96%, 100% { opacity: 0; }
+    }
+    @keyframes modeResultBox {
+      0%, 58% { opacity: 0; transform: translateY(10px); }
+      65%, 92% { opacity: 1; transform: translateY(0); }
+      96%, 100% { opacity: 0; }
+    }
+
+    .mod-pulse { animation: modePulse 8s infinite ease-in-out; }
+    .mod-pulse-left { animation: modePulse 8s infinite ease-in-out; transform-origin: 130px 110px; }
+    .mod-pulse-right { animation: modePulse 8s infinite ease-in-out; transform-origin: 190px 110px; }
+    .mod-normal { animation: modeNormal 8s infinite ease-in-out; }
+    .mod-result { animation: modeResultBox 8s infinite ease-in-out; }
+  `;
+
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Answer !== null) {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-mean') setSubStep('vd-median');
+    else if (subStep === 'vd-median') setSubStep('vd-mode');
+    else if (subStep === 'vd-mode') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -5745,8 +8233,9 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
       <style>{`
+        ${statStyles}
         .balance-beam {
           height: 14px;
           background: #9ca3af;
@@ -5790,73 +8279,235 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
           bottom: 0px;
           transform: translateX(-50%);
         }
+        .stats-vertical-divider {
+          position: absolute;
+          left: 50%;
+          border-left: 2px dashed var(--clr-border);
+          width: 4px;
+          height: 40px;
+          bottom: 0px;
+          transform: translateX(-50%);
+        }
       `}</style>
 
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Mean vs Median vs Mode
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Mean vs Median vs Mode
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Representative Detective
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-mean' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            MEAN
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the values merge into a total sum and divide to find the average.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-mean" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mean)" />
+
+              {/* Numbers that move */}
+              <text x="80" y="70" className="mean-n6" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">6</text>
+              <text x="120" y="70" className="mean-n8" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">8</text>
+              <text x="160" y="70" className="mean-n10" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">10</text>
+              <text x="200" y="70" className="mean-n12" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">12</text>
+              <text x="240" y="70" className="mean-n14" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">14</text>
+
+              {/* Box: Total = 50 */}
+              <g className="mean-total-box">
+                <rect x="80" y="90" width="160" height="50" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="160" y="121" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">Total = 50</text>
+              </g>
+
+              {/* Formula: 50 ÷ 5 = 10 */}
+              <g className="mean-formula">
+                <text x="160" y="185" fill="var(--clr-text-soft)" fontSize="20" fontWeight="bold" textAnchor="middle">↓</text>
+                <text x="160" y="215" fill="var(--clr-text)" fontSize="22" fontFamily="monospace" fontWeight="bold" textAnchor="middle">50 ÷ 5 = 10</text>
+              </g>
+
+              {/* Result display */}
+              <g className="mean-result">
+                <rect x="90" y="235" width="140" height="42" rx="6" fill="rgba(232, 134, 74, 0.15)" stroke="var(--clr-accent)" strokeWidth="2" />
+                <text x="160" y="264" fill="var(--clr-accent)" fontSize="24" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">10</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Mean is the average of all values.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Median ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-median' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            MEDIAN
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the numbers narrow down from both outer ends to reveal the middle value.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-median" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-median)" />
+
+              {/* Values row */}
+              <g className="med-fade-all">
+                {/* 6 (outer) */}
+                <text x="60" y="150" className="med-o1" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">6</text>
+                {/* 8 (inner-outer) */}
+                <text x="110" y="150" className="med-o2" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">8</text>
+
+                {/* 10 (middle) */}
+                <text x="160" y="150" className="med-center" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">10</text>
+
+                {/* 12 (inner-outer) */}
+                <text x="210" y="150" className="med-o2" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">12</text>
+                {/* 14 (outer) */}
+                <text x="260" y="150" className="med-o1" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">14</text>
+              </g>
+
+              {/* Explanatory arrows / paths */}
+              <path d="M 60,110 L 80,120 M 260,110 L 240,120" stroke="var(--clr-text-soft)" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Median is the middle value in an ordered dataset.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Mode ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-mode' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            MODE
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the most frequent value pulse to stand out from the rest.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-mode" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mode)" />
+
+              {/* Row: 4   7   7   9   11 */}
+              <g className="mod-normal">
+                <text x="70" y="110" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">4</text>
+
+                {/* Pulser 7s */}
+                <text x="130" y="110" className="mod-pulse-left" fill="var(--clr-text)" fontSize="28" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">7</text>
+                <text x="190" y="110" className="mod-pulse-right" fill="var(--clr-text)" fontSize="28" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">7</text>
+
+                <text x="250" y="110" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">9</text>
+                <text x="250" y="150" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">11</text>
+              </g>
+
+              {/* Mode = 7 banner */}
+              <g className="mod-result">
+                <rect x="80" y="210" width="160" height="50" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="160" y="242" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">Mode = 7</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Mode is the value that appears most often.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '480px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Mean</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>The mathematical balance point. The sum of all values divided by count.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>⚖️</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Balancing Data</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the average balance point of the set.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '480px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Median</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>The middle position. Arranges scores in order and finds the exact center.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📍</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Finding the Center</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the exact middle position value.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '480px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: '#4ba3e3', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Mode</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>The popularity winner. The value that appears most frequently.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: '#4ba3e3' }}>Spotting Frequency</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the most common matching value.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Outliers change the metrics dramatically. Let's start the detective rounds and see them in action!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Each average represents a different center point. Let's see them in action with real data!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Balanced Scores */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -5877,7 +8528,7 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
             </p>
           </div>
 
-          <div style={{ background: 'var(--clr-surface)', borderRadius: '12px', padding: '24px', position: 'relative', marginBottom: '24px', minHeight: '160px', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--clr-surface)', borderRadius: '12px', padding: '24px', position: 'relative', marginBottom: '24px', minHeight: '160px', overflow: 'hidden', width: '100%', maxWidth: '480px' }}>
             <div className="balance-beam" style={{
               transform: selectedOption === 'mean' ? 'rotate(0deg)' : selectedOption === 'median' ? 'rotate(-2deg)' : 'rotate(0deg)'
             }}>
@@ -5885,8 +8536,8 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               <div className="score-weight" style={{ left: '26%' }}>68</div>
               <div className="score-weight" style={{ left: '40%' }}>72</div>
               <div className="score-weight" style={{ left: '50%' }}>75</div>
-              <div className="score-weight" style={{ left: '56%' }}>77</div>
-              <div className="score-weight" style={{ left: '60%' }}>78</div>
+              <div className="score-weight" style={{ left: '56%', bottom: '50px' }}>77</div>
+              <div className="score-weight" style={{ left: '62%' }}>78</div>
 
               {/* Mean marker line (74 -> 46%) */}
               {selectedOption === 'mean' && (
@@ -5936,7 +8587,7 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Outlier Animation */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -5957,7 +8608,7 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
             </p>
           </div>
 
-          <div style={{ background: 'var(--clr-surface)', borderRadius: '12px', padding: '24px', position: 'relative', marginBottom: '24px', minHeight: '160px', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--clr-surface)', borderRadius: '12px', padding: '24px', position: 'relative', marginBottom: '24px', minHeight: '160px', overflow: 'hidden', width: '100%', maxWidth: '480px' }}>
             <div className="balance-beam" style={{
               transform: selectedOption === 'mean' ? 'rotate(5deg)' : selectedOption === 'median' ? 'rotate(0deg)' : 'rotate(2deg)'
             }}>
@@ -6033,7 +8684,7 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
 
       {/* Round 3: Category / Mode Popularity */}
       {subStep === 'r3' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -6115,7 +8766,6 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
       {/* Layer 2: Comparison Cards */}
       {subStep === 'comparison' && (
         <div>
-          {/* 3-Column Comparison Layout */}
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
             {/* Mean Card */}
             <div style={{
@@ -6124,17 +8774,21 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 260px',
-              maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '300px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
                 MEAN
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Mathematical average (Sum / Count).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The average of all values.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Properties:</strong> Uses every value; easily skewed by outliers.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Formula:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-accent)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  Sum of values ÷ Number of values
+                </span>
               </p>
             </div>
 
@@ -6145,17 +8799,23 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 260px',
-              maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '300px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 MEDIAN
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Exact middle value of a sorted list.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The middle value after arranging the data.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Properties:</strong> Based on position; highly stable against outliers.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-correct)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  6, 8, 10, 12, 14
+                  <br />
+                  Median = 10
+                </span>
               </p>
             </div>
 
@@ -6166,17 +8826,23 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
               padding: '24px',
               borderTop: '6px solid #4ba3e3',
               flex: '1 1 260px',
-              maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              maxWidth: '300px',
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: '#4ba3e3' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: '#4ba3e3', fontWeight: 'bold' }}>
                 MODE
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> The most frequent value(s) in a dataset.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> The value that occurs most frequently.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Properties:</strong> Depends entirely on occurrences; can be non-numerical.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '12px', borderLeft: '3px solid #4ba3e3', fontWeight: '600', fontFamily: 'monospace' }}>
+                  4, 7, 7, 9, 11
+                  <br />
+                  Mode = 7
+                </span>
               </p>
             </div>
           </div>
@@ -6188,24 +8854,25 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1rem' }}>Am I looking for...</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '14px 16px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>Am I looking for...</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginTop: '16px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>The overall mathematical average?</span>
                 <strong style={{ fontSize: '1.2rem', color: 'var(--clr-accent)', display: 'block', marginTop: '10px' }}>MEAN</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '14px 16px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>The exact middle value (resistant to outliers)?</span>
                 <strong style={{ fontSize: '1.2rem', color: 'var(--clr-correct)', display: 'block', marginTop: '10px' }}>MEDIAN</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '14px 16px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                 <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>The most common popularity selection?</span>
                 <strong style={{ fontSize: '1.2rem', color: '#4ba3e3', display: 'block', marginTop: '10px' }}>MODE</strong>
               </div>
@@ -6213,7 +8880,6 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -6371,17 +9037,71 @@ function MeanMedianModeChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Mean vs Median vs Mode challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['mean-median-mode'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-mean')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function LimitsDifferentiationChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-limits'); // vd-limits, vd-differentiation, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [pointX, setPointX] = useState(150);
   const [selectedTool, setSelectedTool] = useState(null); // magnifying, tangent
   const [selectedOption, setSelectedOption] = useState(null);
@@ -6418,6 +9138,144 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
     return -0.0036 * (x - 250);
   };
 
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-limits' || subStep === 'vd-differentiation') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const limitDiffStyles = `
+    @keyframes limitSummaryFade {
+      0%, 65% { opacity: 0; transform: translateY(5px); }
+      75%, 93% { opacity: 1; transform: translateY(0); }
+      96%, 100% { opacity: 0; }
+    }
+    .limit-summary-overlay {
+      animation: limitSummaryFade 4s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    @keyframes diffSummaryFade {
+      0%, 50% { opacity: 0; transform: translateY(5px); }
+      60%, 93% { opacity: 1; transform: translateY(0); }
+      96%, 100% { opacity: 0; }
+    }
+    .diff-summary-overlay {
+      animation: diffSummaryFade 6s infinite ease-in-out;
+      opacity: 0;
+    }
+    .diff-tangent-glow {
+      filter: drop-shadow(0 0 3px rgba(92, 184, 122, 0.6));
+    }
+  `;
+
   // Reset states on subStep changes
   useEffect(() => {
     setSelectedOption(null);
@@ -6434,13 +9292,23 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
     }
   }, [subStep]);
 
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (sortingFinished) {
+      onMarkComplete?.();
+    }
+  }, [sortingFinished, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-limits') setSubStep('vd-differentiation');
+    else if (subStep === 'vd-differentiation') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -6538,59 +9406,164 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
   const ty2 = currentY + tLength * currentSlope;
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{limitDiffStyles}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Limits vs Differentiation
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Limits vs Differentiation
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Explore the Curve
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-limits' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            LIMITS
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the point move closer to the target without touching it.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-limits" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-limits)" />
+
+              {/* Curve line */}
+              <path d="M 60,240 C 130,240 190,80 260,80" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+
+              {/* Target point (Hole at 160, 160) */}
+              <circle cx="160" cy="160" r="6" fill="var(--clr-surface)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+
+              {/* Left approaching point */}
+              <circle r="6" fill="var(--clr-accent)">
+                <animateMotion dur="4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.8;1" keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1" path="M 60,240 C 95,240 125,200 148,172" />
+              </circle>
+
+              {/* Right approaching point */}
+              <circle r="6" fill="var(--clr-accent)">
+                <animateMotion dur="4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.8;1" keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1" path="M 260,80 C 225,80 195,120 172,148" />
+              </circle>
+
+              {/* Limit Summary Overlay */}
+              <g className="limit-summary-overlay">
+                <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
+                <text x="160" y="281" textAnchor="middle" fill="var(--clr-accent)" fontSize="15" fontWeight="bold">lim x→a f(x) = L</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Limits find the value a function approaches.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Differentiation ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-differentiation' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            DIFFERENTIATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the tangent line tilt and adapt as the point moves along the curve.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-diff" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-diff)" />
+
+              {/* Curve line */}
+              <path d="M 60,240 C 130,240 190,80 260,80" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+
+              {/* Animating Point and Tangent Line */}
+              <g>
+                <animateMotion dur="6s" repeatCount="indefinite" rotate="auto" path="M 60,240 C 130,240 190,80 260,80" />
+                <line x1="-35" y1="0" x2="35" y2="0" stroke="var(--clr-correct)" strokeWidth="3" className="diff-tangent-glow" />
+                <circle cx="0" cy="0" r="6" fill="var(--clr-correct)" />
+              </g>
+
+              {/* Differentiation Summary Overlay */}
+              <g className="diff-summary-overlay">
+                <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
+                <text x="160" y="281" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">dy/dx = f'(x) = Slope</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Differentiation finds how fast a function changes.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Limits</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>"Where is the function heading?" Investigates the height a curve approaches near a point, even if the point is missing.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🎯</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Approaching Limits</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the height a curve approaches near a point.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Differentiation</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>"How fast is it changing right now?" Measures the exact instantaneous slope or rate of change at a specific point.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Calculating Slopes</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the exact rate of change at a single point.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's interact with a live calculus curve to discover the difference visually!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Calculus helps us understand dynamic graphs. Let's explore how limits and derivatives work!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Magnifying Glass (Limits) */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -6747,7 +9720,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Tangent Ruler (Differentiation) */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -6861,7 +9834,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
 
       {/* Round 3: Mini Scenarios */}
       {subStep === 'r3' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -6962,16 +9935,20 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                🔍 LIMITS
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                LIMITS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> The height value a function approaches near a target input.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Finds the value a function approaches as the input gets closer to a point.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Question:</strong> Where is this curve heading?
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Common Notation:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-accent)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  lim x → a f(x)
+                </span>
               </p>
             </div>
 
@@ -6983,16 +9960,22 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                📐 DIFFERENTIATION
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                DIFFERENTIATION
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> The exact rate of change or tangent slope at a specific point.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Finds how fast a function changes at a point.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Question:</strong> How fast is this curve changing?
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Common Notation:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-correct)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  dy/dx
+                  <br />
+                  f′(x)
+                </span>
               </p>
             </div>
           </div>
@@ -7004,28 +9987,28 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>Am I trying to investigate...</p>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>Before calculating, ask yourself:</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>Where the graph height is heading?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '12px' }}>🔍 LIMIT</strong>
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Where the graph height is heading?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>🔍 LIMIT</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>How fast the graph is changing (steepness)?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '12px' }}>📐 DIFFERENTIATION</strong>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>How fast the graph is changing (steepness)?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>📐 DIFFERENTIATION</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -7230,21 +10213,214 @@ function LimitsDifferentiationChallenge({ onBack, onComplete }) {
           </div>
 
           {sortingFinished && (
-            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Finish Challenge</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Continue</button>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Limits vs Differentiation challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['limits-differentiation'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-limits')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2, q3
+function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-differentiation'); // vd-differentiation, vd-integration, intro, r1, r2, comparison, q1, q2, q3, practice-redirect
   const [pointX, setPointX] = useState(150);
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine active step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-differentiation' || subStep === 'vd-integration') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2' || subStep === 'q3') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const calcStyles = `
+    @keyframes waterFlow {
+      0%, 15% { stroke-width: 2.5px; stroke-dashoffset: 0; }
+      40%, 65% { stroke-width: 14px; stroke-dashoffset: -320px; }
+      82%, 100% { stroke-width: 2.5px; stroke-dashoffset: -450px; }
+    }
+
+    @keyframes fillBucket {
+      0%, 15% { transform: scaleY(0); }
+      75%, 85% { transform: scaleY(1); }
+      95%, 100% { transform: scaleY(0); }
+    }
+
+    .tap-water-stream {
+      stroke: #4ba3e3;
+      stroke-linecap: round;
+      stroke-dasharray: 8 12;
+      animation: waterFlow 5s infinite ease-in-out;
+    }
+
+    .water-in-bucket {
+      transform-origin: 160px 275px;
+      animation: fillBucket 5s infinite ease-in-out;
+    }
+  `;
 
   // Layer 3 MCQs
   const [q1Answer, setQ1Answer] = useState(null);
@@ -7292,13 +10468,23 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
     setPointX(150);
   }, [subStep]);
 
+  // Save progress automatically when Q3 is finished
+  useEffect(() => {
+    if (sortingFinished) {
+      onMarkComplete?.();
+    }
+  }, [sortingFinished, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-differentiation') setSubStep('vd-integration');
+    else if (subStep === 'vd-integration') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
     else if (subStep === 'q2') setSubStep('q3');
+    else if (subStep === 'q3') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -7379,59 +10565,147 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
   const ty2 = currentY + tLen * currentSlope;
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{calcStyles}</style>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Differentiation vs Integration
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Differentiation vs Integration
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Measure or Collect?
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-differentiation' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            DIFFERENTIATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            See how the speed of the water flow changes over time.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-diff" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-diff)" />
+
+              {/* Water tap drawing at the top */}
+              <path d="M 80,50 L 160,50 L 160,80" fill="none" stroke="var(--clr-border)" strokeWidth="8" strokeLinecap="round" />
+              {/* Nozzle collar */}
+              <rect x="148" y="80" width="24" height="8" rx="2" fill="var(--clr-text-soft)" />
+
+              {/* Water Stream (animating thickness/speed) */}
+              <line x1="160" y1="88" x2="160" y2="280" className="tap-water-stream" strokeWidth="4" />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Differentiation measures how fast something changes.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Integration ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-integration' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            INTEGRATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch how the water collects and fills the bucket.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-integ" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-integ)" />
+
+              {/* Water tap drawing at the top */}
+              <path d="M 80,50 L 160,50 L 160,80" fill="none" stroke="var(--clr-border)" strokeWidth="8" strokeLinecap="round" />
+              {/* Nozzle collar */}
+              <rect x="148" y="80" width="24" height="8" rx="2" fill="var(--clr-text-soft)" />
+
+              {/* Water in bucket (scales up bottom-to-top) */}
+              <path d="M 112,212 L 125,274 L 195,274 L 208,212 Z" fill="#4ba3e3" opacity="0.8" className="water-in-bucket" />
+
+              {/* Bucket Outline */}
+              <path d="M 110,210 L 125,275 L 195,275 L 210,210 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3.5" />
+
+              {/* Water Stream (animating thickness/speed) entering the bucket */}
+              <line x1="160" y1="88" x2="160" y2="212" className="tap-water-stream" strokeWidth="4" />
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Integration adds up everything over time.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Differentiation</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Measures the steepness (rate of change) exactly at one specific point. Tells us "how fast" a function changes.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Differentiation</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measures the rate of change or slope at one specific point.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Integration</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Collects and accumulates the total value under a curve over an interval. Tells us "how much" has accumulated.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🪣</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Integration</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measures the total accumulated amount under a curve.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's explore the graph using both tools to see the concepts in action!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Calculus links rates of change with accumulation. Let's compare both concepts!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Slope Tool */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -7547,7 +10821,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Area Collector */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -7674,16 +10948,20 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                📐 DIFFERENTIATION
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                DIFFERENTIATION
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Rate of change / tangent slope of a curve.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Measures how fast a quantity changes at a point.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> How fast a quantity is changing at a specific instant.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Finding the slope of a curve.
+              </p>
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Notation:</strong> <code style={{ fontSize: '0.92rem', padding: '2px 6px', background: 'var(--clr-border)', borderRadius: '4px', fontWeight: 'bold' }}>dy/dx</code> or <code style={{ fontSize: '0.92rem', padding: '2px 6px', background: 'var(--clr-border)', borderRadius: '4px', fontWeight: 'bold' }}>f′(x)</code>
               </p>
             </div>
 
@@ -7695,16 +10973,20 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                ∫ INTEGRATION
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                INTEGRATION (Accumulation)
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Accumulated quantity / area under a curve.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Adds up small changes to find the total.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Measures:</strong> How much total quantity has accumulated over an interval.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> Finding the area under a curve.
+              </p>
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Notation:</strong> <code style={{ fontSize: '0.92rem', padding: '2px 6px', background: 'var(--clr-border)', borderRadius: '4px', fontWeight: 'bold' }}>∫ f(x) dx</code>
               </p>
             </div>
           </div>
@@ -7745,7 +11027,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q1 */}
       {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 3: Instantaneous Speed</p>
 
@@ -7823,7 +11105,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q2 */}
       {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 3: Volume Accumulation</p>
 
@@ -7901,7 +11183,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q3 Sorter */}
       {subStep === 'q3' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 3 of 3: Situation Matcher</p>
 
@@ -8020,21 +11302,229 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete }) {
           </div>
 
           {sortingFinished && (
-            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Finish Challenge</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Continue</button>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Differentiation vs Integration challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['differentiation-integration'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-differentiation')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function DecimalsFractionsChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-fraction'); // vd-fraction, vd-decimal, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [activeMode, setActiveMode] = useState('fraction'); // fraction, decimal
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine the active step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-fraction' || subStep === 'vd-decimal') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const decimalStyles = `
+    @keyframes highlightBarPiece {
+      0%, 15% { fill: rgba(255, 255, 255, 0.02); stroke: var(--clr-border); filter: none; }
+      25%, 80% { fill: rgba(92, 184, 122, 0.25); stroke: var(--clr-correct); filter: drop-shadow(0 0 6px rgba(92, 184, 122, 0.4)); }
+      90%, 100% { fill: rgba(255, 255, 255, 0.02); stroke: var(--clr-border); filter: none; }
+    }
+
+    @keyframes fractionLabelShow {
+      0%, 20% { opacity: 0; transform: scale(0.85); }
+      30%, 80% { opacity: 1; transform: scale(1); }
+      90%, 100% { opacity: 0; transform: scale(0.85); }
+    }
+
+    @keyframes textLabel1 {
+      0%, 25% { opacity: 1; transform: translateY(0px) scale(1); }
+      35%, 100% { opacity: 0; transform: translateY(-5px) scale(0.85); }
+    }
+
+    @keyframes textLabel2 {
+      0%, 35% { opacity: 0; transform: translateY(5px) scale(0.85); }
+      45%, 80% { opacity: 1; transform: translateY(0px) scale(1); }
+      90%, 100% { opacity: 0; transform: translateY(0px) scale(0.85); }
+    }
+
+    .frac-pulse-piece {
+      animation: highlightBarPiece 5s infinite ease-in-out;
+    }
+
+    .frac-label-fade {
+      animation: fractionLabelShow 5s infinite ease-in-out;
+    }
+
+    .morph-text-1 {
+      animation: textLabel1 5s infinite ease-in-out;
+    }
+
+    .morph-text-2 {
+      animation: textLabel2 5s infinite ease-in-out;
+    }
+  `;
 
   // Layer 3 Q1 Connections Game
   const [selectedLeft, setSelectedLeft] = useState(null);
@@ -8066,13 +11556,23 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
   }, [subStep]);
 
+  // Mark as completed immediately when Q2 is successfully answered
+  useEffect(() => {
+    if (q2Answer === 'correct') {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-fraction') setSubStep('vd-decimal');
+    else if (subStep === 'vd-decimal') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -8145,53 +11645,172 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{decimalStyles}</style>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Decimals vs Fractions
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Decimals vs Fractions
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Representation Switch
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-fraction' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            FRACTION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            See how one piece of the grid is represented as a fraction.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-frac" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-frac)" />
+
+              {/* The Chocolate Bar Frame */}
+              <rect x="60" y="40" width="200" height="200" rx="8" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+
+              {/* Grid divisions */}
+              <rect x="60" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+              <rect x="160" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+              <rect x="160" y="140" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+
+              {/* Highlighted square */}
+              <rect
+                x="60"
+                y="140"
+                width="100"
+                height="100"
+                fill="rgba(255, 255, 255, 0.02)"
+                stroke="var(--clr-border)"
+                strokeWidth="1.5"
+                className="frac-pulse-piece"
+              />
+
+              {/* Fraction label 1/4 */}
+              <text x="160" y="285" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold" className="frac-label-fade">
+                1/4
+              </text>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Fractions show parts of a whole.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Decimals ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-decimal' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            DECIMAL
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the fraction notation transform into decimal form.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-dec" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-dec)" />
+
+              {/* The Chocolate Bar Frame */}
+              <rect x="60" y="40" width="200" height="200" rx="8" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+
+              {/* Grid divisions */}
+              <rect x="60" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+              <rect x="160" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+              <rect x="160" y="140" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
+
+              {/* Highlighted square */}
+              <rect
+                x="60"
+                y="140"
+                width="100"
+                height="100"
+                fill="rgba(255, 255, 255, 0.02)"
+                stroke="var(--clr-border)"
+                strokeWidth="1.5"
+                className="frac-pulse-piece"
+              />
+
+              {/* Morphing text labels */}
+              <text x="160" y="285" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold" className="morph-text-1">
+                1/4
+              </text>
+              <text x="160" y="285" textAnchor="middle" fill="#4ba3e3" fontSize="28" fontWeight="bold" className="morph-text-2">
+                0.25
+              </text>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Decimals show the same amount in decimal form.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>🍰 Fractions</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Represent parts of a whole using a numerator and denominator (e.g., 3/4). Show divisions visually.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🍰</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Fractions</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Representing parts of a whole using numerator and denominator ratios.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>🔍 Decimals</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Represent parts of a whole using place value base-10 and a decimal point (e.g., 0.75). Easy for calculations.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔍</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Decimals</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Representing parts of a whole in base-10 with a decimal point.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's interact with equivalent shapes and number lines to discover the difference!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Fractions and decimals are two ways to write the same value. Let's compare them!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
@@ -8298,7 +11917,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Circle */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -8394,7 +12013,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
 
       {/* Round 3: Number Line */}
       {subStep === 'r3' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -8502,16 +12121,17 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
                 FRACTIONS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Numerator/denominator format (e.g., 3/4).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Represents equal parts of a whole.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Best for:</strong> Parts-of-a-whole segmentations and exact dividing values.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> 3/4 of a pizza.
               </p>
             </div>
 
@@ -8523,16 +12143,17 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.45rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 DECIMALS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Place value base-10 notation (e.g., 0.75).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Represents the same value using place value.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Best for:</strong> Money, measurements, comparing values quickly, and coding.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Example:</strong> 0.75 of a pizza.
               </p>
             </div>
           </div>
@@ -8588,7 +12209,6 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -8596,7 +12216,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
 
       {/* Layer 3: Practice Q1 Connections */}
       {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
           <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Final Challenge</h3>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Match Equivalent Pairs</p>
           <p style={{ fontSize: '1.05rem', marginBottom: '20px' }}>Tap a fraction, then tap its equivalent decimal to link them together.</p>
@@ -8766,17 +12386,71 @@ function DecimalsFractionsChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Decimals vs Fractions challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['decimals-fractions'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-fraction')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function PermutationCombinationChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2
+function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-permutation'); // vd-permutation, vd-combination, intro, r1, r2, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
@@ -8808,12 +12482,135 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
   }, [subStep]);
 
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Answer !== null) {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-permutation' || subStep === 'vd-combination') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-permutation') setSubStep('vd-combination');
+    else if (subStep === 'vd-combination') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handlePlacePodium = (runner) => {
@@ -8892,60 +12689,247 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
     }
   };
 
+  const permCombStyles = `
+    /* Permutation animations */
+    @keyframes permA {
+      0%, 20% { transform: translate(0, 0); }
+      30%, 85% { transform: translate(80px, 0); }
+      95%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes permB {
+      0%, 20% { transform: translate(0, 0); }
+      30%, 85% { transform: translate(80px, 0); }
+      95%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes permC {
+      0%, 20% { transform: translate(0, 0); }
+      30%, 85% { transform: translate(-160px, 0); }
+      95%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes permBadge {
+      0%, 35% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      45%, 85% { opacity: 1; transform: scale(1) translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+
+    .perm-char-a { animation: permA 6s infinite ease-in-out; }
+    .perm-char-b { animation: permB 6s infinite ease-in-out; }
+    .perm-char-c { animation: permC 6s infinite ease-in-out; }
+    .perm-badge { animation: permBadge 6s infinite ease-in-out; transform-origin: 160px 230px; }
+
+    /* Combination animations */
+    @keyframes combA {
+      0%, 20% { transform: translate(0, 0); }
+      30%, 45% { transform: translate(50px, 80px); }
+      55%, 80% { transform: translate(110px, 80px); }
+      90%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes combB {
+      0%, 20% { transform: translate(0, 0); }
+      30%, 45% { transform: translate(30px, 80px); }
+      55%, 80% { transform: translate(-30px, 80px); }
+      90%, 100% { transform: translate(0, 0); }
+    }
+    @keyframes combBoxGlow {
+      0%, 20% { stroke: var(--clr-border); fill: rgba(255, 255, 255, 0.02); }
+      30%, 80% { stroke: var(--clr-correct); fill: rgba(92, 184, 122, 0.08); filter: drop-shadow(0 0 4px rgba(92, 184, 122, 0.3)); }
+      90%, 100% { stroke: var(--clr-border); fill: rgba(255, 255, 255, 0.02); }
+    }
+    @keyframes combBadge {
+      0%, 50% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      55%, 80% { opacity: 1; transform: scale(1) translateY(0); }
+      85%, 100% { opacity: 0; transform: scale(0.8) translateY(10px); }
+    }
+
+    .comb-char-a { animation: combA 6s infinite ease-in-out; }
+    .comb-char-b { animation: combB 6s infinite ease-in-out; }
+    .comb-box { animation: combBoxGlow 6s infinite ease-in-out; }
+    .comb-badge { animation: combBadge 6s infinite ease-in-out; transform-origin: 160px 245px; }
+  `;
+
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{`
+        ${permCombStyles}
+      `}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Permutation vs Combination
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Permutation vs Combination
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Order Matters?
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-permutation' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            PERMUTATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Three people labeled A, B, and C stand in a row. Watch them rearrange into a different sequence.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-perm" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-perm)" />
+
+              {/* Character labels */}
+              <text x="80" y="70" fill="var(--clr-text-soft)" fontSize="14" fontWeight="600" textAnchor="middle">1st</text>
+              <text x="160" y="70" fill="var(--clr-text-soft)" fontSize="14" fontWeight="600" textAnchor="middle">2nd</text>
+              <text x="240" y="70" fill="var(--clr-text-soft)" fontSize="14" fontWeight="600" textAnchor="middle">3rd</text>
+
+              {/* Person A */}
+              <g className="perm-char-a">
+                <circle cx="80" cy="120" r="22" fill="rgba(232, 134, 74, 0.15)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="80" y="127" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">A</text>
+              </g>
+
+              {/* Person B */}
+              <g className="perm-char-b">
+                <circle cx="160" cy="120" r="22" fill="rgba(232, 134, 74, 0.15)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="160" y="127" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">B</text>
+              </g>
+
+              {/* Person C */}
+              <g className="perm-char-c">
+                <circle cx="240" cy="120" r="22" fill="rgba(232, 134, 74, 0.15)" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="240" y="127" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">C</text>
+              </g>
+
+              {/* Badge: Different arrangement */}
+              <g className="perm-badge">
+                <rect x="70" y="210" width="180" height="44" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
+                <text x="160" y="237" fill="var(--clr-accent)" fontSize="16" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">Different arrangement</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Permutation is an arrangement where order matters.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Combination ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-combination' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            COMBINATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            A and B are selected into a group. Watch the order swap inside the group.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-comb" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-comb)" />
+
+              {/* Characters original pool label */}
+              <text x="160" y="45" fill="var(--clr-text-soft)" fontSize="13" fontWeight="500" textAnchor="middle">Initial Pool</text>
+
+              {/* Person C (not selected, muted) */}
+              <g opacity="0.2">
+                <circle cx="240" cy="80" r="20" fill="var(--clr-text)" />
+                <text x="240" y="86" fill="var(--clr-surface)" fontSize="16" fontWeight="bold" textAnchor="middle">C</text>
+              </g>
+
+              {/* Selection box container */}
+              <rect x="95" y="125" width="130" height="70" rx="8" className="comb-box" strokeWidth="2.5" fill="none" />
+              <text x="160" y="117" fill="var(--clr-text-soft)" fontSize="12" fontWeight="600" textAnchor="middle">Selected Group</text>
+
+              {/* Selected Person A */}
+              <g className="comb-char-a">
+                <circle cx="80" cy="80" r="22" fill="rgba(92, 184, 122, 0.15)" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                <text x="80" y="87" fill="var(--clr-correct)" fontSize="18" fontWeight="bold" textAnchor="middle">A</text>
+              </g>
+
+              {/* Selected Person B */}
+              <g className="comb-char-b">
+                <circle cx="160" cy="80" r="22" fill="rgba(92, 184, 122, 0.15)" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                <text x="160" y="87" fill="var(--clr-correct)" fontSize="18" fontWeight="bold" textAnchor="middle">B</text>
+              </g>
+
+              {/* Badge: Same group */}
+              <g className="comb-badge">
+                <rect x="90" y="225" width="140" height="40" rx="8" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="2" />
+                <text x="160" y="250" fill="var(--clr-correct)" fontSize="16" fontWeight="bold" textAnchor="middle">Same group</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Combination is a selection where order does not matter.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>🏆  Permutation</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Arrangements where <strong>order matters</strong>. Changing the sequence of items creates a completely different outcome.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🏆</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Podium Positions</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Arrangements where order of choice matters.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>🤝 Combination</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Selections where <strong>order doesn't matter</strong>. The final group is identical regardless of the selection sequence.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🤝</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Team Selection</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Group selections where order does not matter.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's play through real-life scenarios to see how order changes the mathematical results!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Does the arrangement order change the final result? Let's check real scenarios!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Podium Winners */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -9077,7 +13061,7 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Pizza Toppings */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -9207,17 +13191,27 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
                 PERMUTATION
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Order matters. Changing the order of items creates a new outcome.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Arranging objects where the order is important.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> Gold, Silver, and Bronze medal positions.
-              </p>
+              <div style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Formula:</strong>
+                <div style={{ display: 'block', marginTop: '10px' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-accent)', fontFamily: 'monospace', fontWeight: '600', fontSize: '1.1rem' }}>
+                    <span><sup>n</sup>P<sub>r</sub> = </span>
+                    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', verticalAlign: 'middle', padding: '0 4px' }}>
+                      <span style={{ borderBottom: '1px solid var(--clr-text)', padding: '0 4px', paddingBottom: '2px', width: '100%', textAlign: 'center' }}>n!</span>
+                      <span style={{ paddingTop: '2px' }}>(n - r)!</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Combination Card */}
@@ -9228,17 +13222,27 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 COMBINATION
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Order does NOT matter. Changing the order of items yields the same outcome.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Selecting objects where the order is not important.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> Selecting a group of joint members or pizza toppings.
-              </p>
+              <div style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Common Formula:</strong>
+                <div style={{ display: 'block', marginTop: '10px' }}>
+                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', paddingLeft: '12px', borderLeft: '3px solid var(--clr-correct)', fontFamily: 'monospace', fontWeight: '600', fontSize: '1.1rem' }}>
+                    <span><sup>n</sup>C<sub>r</sub> = </span>
+                    <div style={{ display: 'inline-flex', flexDirection: 'column', alignItems: 'center', verticalAlign: 'middle', padding: '0 4px' }}>
+                      <span style={{ borderBottom: '1px solid var(--clr-text)', padding: '0 4px', paddingBottom: '2px', width: '100%', textAlign: 'center' }}>n!</span>
+                      <span style={{ paddingTop: '2px' }}>r!(n - r)!</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -9249,28 +13253,28 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>If I swap the selection order...</p>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>If I swap the selection order...</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>Does the result change? <strong>YES</strong></span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '12px' }}>🏆  Permutation</strong>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginTop: '16px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>Does the result change? <strong>YES</strong></span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '10px' }}>🏆  Permutation</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>Does the result change? <strong>NO</strong></span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '12px' }}>🤝 Combination</strong>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)', lineHeight: '1.4' }}>Does the result change? <strong>NO</strong></span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '10px' }}>🤝 Combination</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -9427,17 +13431,71 @@ function PermutationCombinationChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Permutation vs Combination challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['permutation-combination'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-permutation')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function PrimeCompositeChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, r3, comparison, q1, q2
+function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-prime'); // vd-prime, vd-composite, intro, r1, r2, r3, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
@@ -9479,13 +13537,136 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
   }, [subStep]);
 
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Part === 'finished') {
+      onMarkComplete?.();
+    }
+  }, [q2Part, onMarkComplete]);
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-prime' || subStep === 'vd-composite') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-prime') setSubStep('vd-composite');
+    else if (subStep === 'vd-composite') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleTapKey = (key, target, divisors) => {
@@ -9576,85 +13757,292 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
     }
   };
 
+  const primeCompStyles = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+    .shake-btn {
+      animation: shake 0.3s ease-in-out;
+      border-color: var(--clr-wrong) !important;
+      background: rgba(235, 94, 85, 0.1) !important;
+    }
+
+    /* Prime / Composite Animations */
+    @keyframes primeNum {
+      0%, 10% { transform: scale(0.9); opacity: 0; }
+      15%, 85% { transform: scale(1); opacity: 1; }
+      90%, 100% { transform: scale(0.9); opacity: 0; }
+    }
+    @keyframes primeLine1 {
+      0%, 20% { stroke-dashoffset: 70; opacity: 0; }
+      35%, 85% { stroke-dashoffset: 0; opacity: 1; }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes primeLine2 {
+      0%, 20% { stroke-dashoffset: 70; opacity: 0; }
+      35%, 85% { stroke-dashoffset: 0; opacity: 1; }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes primeFactor1 {
+      0%, 40% { transform: scale(0.8); opacity: 0; }
+      50%, 85% { transform: scale(1); opacity: 1; }
+      90%, 100% { transform: scale(0.8); opacity: 0; }
+    }
+    @keyframes primeFactor2 {
+      0%, 40% { transform: scale(0.8); opacity: 0; }
+      50%, 85% { transform: scale(1); opacity: 1; }
+      90%, 100% { transform: scale(0.8); opacity: 0; }
+    }
+    @keyframes primeBadge {
+      0%, 50% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      60%, 85% { opacity: 1; transform: scale(1) translateY(0); }
+      90%, 100% { opacity: 0; }
+    }
+
+    .prime-node-num { animation: primeNum 6s infinite ease-in-out; }
+    .prime-line-1 { animation: primeLine1 6s infinite ease-in-out; stroke-dasharray: 70; }
+    .prime-line-2 { animation: primeLine2 6s infinite ease-in-out; stroke-dasharray: 70; }
+    .prime-fac-1 { animation: primeFactor1 6s infinite ease-in-out; }
+    .prime-fac-2 { animation: primeFactor2 6s infinite ease-in-out; }
+    .prime-badge-glow { animation: primeBadge 6s infinite ease-in-out; transform-origin: 160px 230px; }
+
+    /* Composite Animations */
+    @keyframes compNum {
+      0%, 10% { transform: scale(0.9); opacity: 0; }
+      15%, 85% { transform: scale(1); opacity: 1; }
+      90%, 100% { transform: scale(0.9); opacity: 0; }
+    }
+    @keyframes compLine {
+      0%, 20% { stroke-dashoffset: 120; opacity: 0; }
+      35%, 85% { stroke-dashoffset: 0; opacity: 1; }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes compFactor {
+      0%, 45% { transform: scale(0.7); opacity: 0; }
+      55%, 85% { transform: scale(1); opacity: 1; }
+      90%, 100% { transform: scale(0.7); opacity: 0; }
+    }
+    @keyframes compBadge {
+      0%, 55% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      65%, 85% { opacity: 1; transform: scale(1) translateY(0); }
+      90%, 100% { opacity: 0; }
+    }
+
+    .comp-node-num { animation: compNum 6s infinite ease-in-out; }
+    .comp-branch-line { animation: compLine 6s infinite ease-in-out; stroke-dasharray: 120; }
+    .comp-fac-node { animation: compFactor 6s infinite ease-in-out; }
+    .comp-badge-glow { animation: compBadge 6s infinite ease-in-out; transform-origin: 160px 230px; }
+  `;
+
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
       <style>{`
-        @keyframes shake {
-          0%, 100% { transform: translateX(0); }
-          25% { transform: translateX(-5px); }
-          75% { transform: translateX(5px); }
-        }
-        .shake-btn {
-          animation: shake 0.3s ease-in-out;
-          border-color: var(--clr-wrong) !important;
-          background: rgba(235, 94, 85, 0.1) !important;
-        }
+        ${primeCompStyles}
       `}</style>
 
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Prime vs Composite
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Prime vs Composite
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Factor Explorer
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-prime' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            PRIME NUMBER
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            The number 11 has exactly two factors. Watch them reveal.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-prime" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-prime)" />
+
+              {/* Main Number 11 Node */}
+              <g className="prime-node-num">
+                <circle cx="160" cy="65" r="28" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="3" />
+                <text x="160" y="73" fill="var(--clr-accent)" fontSize="24" fontWeight="bold" textAnchor="middle">11</text>
+              </g>
+
+              {/* Connecting branch lines */}
+              <line x1="160" y1="93" x2="110" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="prime-line-1" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="210" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="prime-line-2" strokeLinecap="round" />
+
+              {/* Factor 1 Circle */}
+              <g className="prime-fac-1">
+                <circle cx="110" cy="160" r="20" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="110" y="166" fill="var(--clr-text)" fontSize="16" fontWeight="bold" textAnchor="middle">1</text>
+              </g>
+
+              {/* Factor 11 Circle */}
+              <g className="prime-fac-2">
+                <circle cx="210" cy="160" r="20" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="210" y="166" fill="var(--clr-text)" fontSize="16" fontWeight="bold" textAnchor="middle">11</text>
+              </g>
+
+              {/* Badge: Only 2 factors */}
+              <g className="prime-badge-glow">
+                <rect x="80" y="225" width="160" height="40" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
+                <text x="160" y="250" fill="var(--clr-accent)" fontSize="15" fontWeight="bold" textAnchor="middle">Only 2 factors</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A prime number has exactly two factors.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Composite Number ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-composite' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            COMPOSITE NUMBER
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            The number 18 has multiple factors. Watch them reveal.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-comp" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-comp)" />
+
+              {/* Main Number 18 Node */}
+              <g className="comp-node-num">
+                <circle cx="160" cy="65" r="28" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="3" />
+                <text x="160" y="73" fill="var(--clr-correct)" fontSize="24" fontWeight="bold" textAnchor="middle">18</text>
+              </g>
+
+              {/* Connecting branch lines (6 branches) */}
+              <line x1="160" y1="93" x2="45" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="91" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="137" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="183" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="229" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+              <line x1="160" y1="93" x2="275" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
+
+              {/* Factor 1 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="45" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="45" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">1</text>
+              </g>
+
+              {/* Factor 2 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="91" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="91" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">2</text>
+              </g>
+
+              {/* Factor 3 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="137" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="137" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">3</text>
+              </g>
+
+              {/* Factor 6 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="183" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="183" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">6</text>
+              </g>
+
+              {/* Factor 9 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="229" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="229" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">9</text>
+              </g>
+
+              {/* Factor 18 Circle */}
+              <g className="comp-fac-node">
+                <circle cx="275" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                <text x="275" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">18</text>
+              </g>
+
+              {/* Badge: More than 2 factors */}
+              <g className="comp-badge-glow">
+                <rect x="70" y="225" width="180" height="40" rx="8" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="2" />
+                <text x="160" y="250" fill="var(--clr-correct)" fontSize="15" fontWeight="bold" textAnchor="middle">More than 2 factors</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A composite number has more than two factors.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Prime Numbers</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Numbers that have <strong>exactly 2 factors</strong>: 1 and themselves (e.g. 2, 3, 5, 7, 13).</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔒</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Prime Numbers</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers with exactly two factors: 1 and itself.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Composite Numbers</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Numbers that have <strong>more than 2 factors</strong> (e.g. 4, 6, 8, 9, 12). Can be split in multiple ways.</span>
-            </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '16px 20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px dashed var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-text)', marginBottom: '4px' }}>The Number 1</strong>
-              <span style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>Has <strong>only 1 factor</strong> (itself). Therefore, it is neither prime nor composite.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔓</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Composite Numbers</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers with more than two factors.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's become factor detectives and search for divisors to see the rules in action!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Let's sort numbers by finding their divisors and counting their factors!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Number 12 */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -9770,7 +14158,7 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Number 13 */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -9886,7 +14274,7 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
 
       {/* Round 3: Number 1 */}
       {subStep === 'r3' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -9976,7 +14364,6 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
         </div>
       )}
 
-      {/* Layer 2: Comparison Cards */}
       {subStep === 'comparison' && (
         <div>
           <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '32px' }}>
@@ -9988,16 +14375,20 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                🔑 PRIME
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                PRIME NUMBER
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Exactly two distinct factors (1 and itself).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> A number with exactly two factors.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Examples:</strong> 2, 3, 5, 7, 11, 13.
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Example:</strong> 7
+              </p>
+              <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Factors:</strong> 1, 7
               </p>
             </div>
 
@@ -10009,16 +14400,20 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                🔢 COMPOSITE
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                COMPOSITE NUMBER
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> More than two factors.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> A number with more than two factors.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Examples:</strong> 4, 6, 8, 9, 10, 12.
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Example:</strong> 12
+              </p>
+              <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Factors:</strong> 1, 2, 3, 4, 6, 12
               </p>
             </div>
 
@@ -10030,16 +14425,20 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-text-soft)',
               flex: '1 1 240px',
               maxWidth: '280px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.25rem', margin: '0 0 12px 0', color: 'var(--clr-text-soft)' }}>
-                ⭐ NEITHER
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 16px 0', color: 'var(--clr-text-soft)', fontWeight: 'bold' }}>
+                NEITHER
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Exactly one factor (1).
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> A number with exactly one factor.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> 1 (not prime and not composite).
+              <p style={{ margin: '0 0 10px 0', fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Example:</strong> 1
+              </p>
+              <p style={{ margin: 0, fontSize: '0.95rem', lineHeight: '1.5', color: 'var(--clr-text-soft)' }}>
+                <strong>Factors:</strong> 1
               </p>
             </div>
           </div>
@@ -10051,33 +14450,33 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>Count the factors of the number:</p>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>Count the factors of the number:</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px', marginTop: '16px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Exactly 2 factors?</span>
-                <strong style={{ fontSize: '1.15rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>Prime</strong>
+                <strong style={{ fontSize: '1.2rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>Prime</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>More than 2 factors?</span>
-                <strong style={{ fontSize: '1.15rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>Composite</strong>
+                <strong style={{ fontSize: '1.2rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>Composite</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 14px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', textAlign: 'center' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Only 1 factor?</span>
-                <strong style={{ fontSize: '1.15rem', color: 'var(--clr-text-soft)', display: 'block', marginTop: '8px' }}>Neither</strong>
+                <strong style={{ fontSize: '1.2rem', color: 'var(--clr-text-soft)', display: 'block', marginTop: '8px' }}>Neither</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -10287,21 +14686,75 @@ function PrimeCompositeChallenge({ onBack, onComplete }) {
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
               <button
-                onClick={q2Part === 'p1' ? handleQ2Next : onComplete}
+                onClick={q2Part === 'p1' ? handleQ2Next : handleNextStep}
                 style={{ padding: '12px 24px', fontSize: '1.05rem' }}
               >
-                {q2Part === 'p1' ? 'Next Part →' : 'Finish Challenge'}
+                {q2Part === 'p1' ? 'Next Part →' : 'Continue'}
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Prime vs Composite challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['prime-composite'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-prime')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function TrigInverseTrigChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2
+function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-trig'); // vd-trig, vd-invtrig, intro, r1, r2, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
@@ -10321,6 +14774,15 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
   // Layer 3 Q2
   const [q2Answer, setQ2Answer] = useState(null);
 
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-trig' || subStep === 'vd-invtrig') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
   // Reset states on subStep changes
   useEffect(() => {
     setSelectedOption(null);
@@ -10333,12 +14795,21 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
     setQ2Answer(null);
   }, [subStep]);
 
+  useEffect(() => {
+    if (subStep === 'practice-redirect' && onMarkComplete) {
+      onMarkComplete();
+    }
+  }, [subStep, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-trig') setSubStep('vd-invtrig');
+    else if (subStep === 'vd-invtrig') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -10393,60 +14864,280 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
     }
   };
 
+  const trigStyles = `
+    @keyframes trigReveal {
+      0%, 10% { opacity: 0; transform: scale(0.95); }
+      15%, 85% { opacity: 1; transform: scale(1); }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes arrowTrigDown {
+      0%, 25% { opacity: 0; transform: translateY(-8px); }
+      35%, 85% { opacity: 1; transform: translateY(0); }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes ratioTrigReveal {
+      0%, 35% { opacity: 0; transform: scale(0.9); }
+      45%, 85% { opacity: 1; transform: scale(1); }
+      90%, 100% { opacity: 0; }
+    }
+    @keyframes textGlowTrig {
+      0%, 45%, 85%, 100% { text-shadow: none; filter: none; }
+      55%, 75% { text-shadow: 0 0 8px var(--clr-accent-soft); filter: drop-shadow(0 0 5px var(--clr-accent)); }
+    }
+
+    .trig-fade { animation: trigReveal 6s infinite ease-in-out; transform-origin: 150px 100px; }
+    .trig-arrow { animation: arrowTrigDown 6s infinite ease-in-out; }
+    .trig-ratio { animation: ratioTrigReveal 6s infinite ease-in-out; }
+    .trig-glow { animation: textGlowTrig 6s infinite ease-in-out; }
+  `;
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        marginBottom: '32px',
+        maxWidth: '480px',
+        margin: '0 auto 32px auto',
+        padding: '0 10px'
+      }}>
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '30px',
+          right: '30px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          zIndex: 1
+        }} />
+
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '30px',
+          width: `${(activeIndex / (steps.length - 1)) * 100}%`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          zIndex: 2,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((step, idx) => {
+          const isCompleted = idx < activeIndex;
+          const isActive = idx === activeIndex;
+          return (
+            <div key={step} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', zIndex: 3, position: 'relative' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '50%',
+                background: isCompleted ? 'var(--clr-correct)' : isActive ? 'var(--clr-surface)' : 'var(--clr-surface)',
+                border: isCompleted ? '2px solid var(--clr-correct)' : isActive ? '3px solid var(--clr-accent)' : '2px solid var(--clr-border)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 'bold',
+                fontSize: '0.9rem',
+                color: isCompleted ? '#fff' : isActive ? 'var(--clr-accent)' : 'var(--clr-text-soft)',
+                transition: 'all 0.3s ease',
+                boxShadow: isActive ? '0 0 10px rgba(232, 134, 74, 0.4)' : 'none'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+              <span style={{
+                fontSize: '0.78rem',
+                marginTop: '6px',
+                fontWeight: isActive ? 'bold' : '500',
+                color: isActive ? 'var(--clr-accent)' : 'var(--clr-text-soft)',
+                letterSpacing: '0.3px'
+              }}>
+                {step}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{`
+        ${trigStyles}
+      `}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Trigonometry vs Inverse Trig
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Trigonometry vs Inverse Trig
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Missing Piece Mystery
-      </p>
+      {renderProgressBar()}
 
-      {/* Intro SubStep */}
-      {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Trigonometry</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Takes an <strong>angle</strong> and outputs a <strong>ratio</strong> of side lengths. Used to find missing sides.</span>
-            </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Inverse Trigonometry</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Takes a <strong>ratio</strong> of side lengths and outputs the corresponding <strong>angle</strong>. Used to find missing angles.</span>
-            </div>
+      {subStep === 'vd-trig' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's examine right triangles to identify which tool solves the mystery!
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            TRIGONOMETRY
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Uses a known angle to calculate a side ratio. Watch the flow.
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="240" viewBox="0 0 320 240" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
+              {/* Coordinate Grid Background */}
+              <defs>
+                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+
+              <g className="trig-fade">
+                {/* Right Triangle */}
+                <path d="M 60,180 L 260,180 L 260,64.5 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+                {/* Right angle marker */}
+                <path d="M 245,180 L 245,165 L 260,165" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
+
+                {/* Angle Arc marker */}
+                <path d="M 90,180 A 30,30 0 0,0 86,165" fill="none" stroke="var(--clr-accent)" strokeWidth="2.5" />
+                <text x="105" y="172" fill="var(--clr-accent)" fontSize="14" fontWeight="bold">30°</text>
+
+                {/* Angle Arrow pointing down to side ratio */}
+                <g className="trig-arrow">
+                  <path d="M 125,160 L 125,120 L 140,120" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" markerEnd="url(#arrow)" />
+                  <text x="155" y="115" fill="var(--clr-text-soft)" fontSize="12" textAnchor="middle">angle to ratio</text>
+                  <path d="M 175,120 L 190,120 L 190,140" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <path d="M 190,140 L 187,135 M 190,140 L 193,135" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                </g>
+
+                {/* Output Ratio Box */}
+                <g className="trig-ratio">
+                  <rect x="145" y="145" width="90" height="32" rx="4" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
+                  <text x="190" y="166" textAnchor="middle" fill="var(--clr-accent)" fontSize="14" fontWeight="bold" className="trig-glow">sin = 0.5</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Trigonometry uses an angle to find side ratios.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Inverse Trig ➔
+          </button>
         </div>
       )}
 
-      {/* Round 1: Trigonometry */}
+      {subStep === 'vd-invtrig' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            INVERSE TRIGONOMETRY
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Uses a known side ratio to calculate the angle. Watch the flow.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="240" viewBox="0 0 320 240" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
+              {/* Coordinate Grid Background */}
+              <defs>
+                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+
+              <g className="trig-fade">
+                {/* Right Triangle */}
+                <path d="M 60,180 L 260,180 L 260,64.5 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
+                {/* Right angle marker */}
+                <path d="M 245,180 L 245,165 L 260,165" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
+
+                {/* Input Ratio Box highlighted */}
+                <g className="trig-ratio">
+                  <rect x="145" y="145" width="90" height="32" rx="4" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="2" />
+                  <text x="190" y="166" textAnchor="middle" fill="var(--clr-correct)" fontSize="14" fontWeight="bold">sin = 0.5</text>
+                </g>
+
+                {/* Arrow pointing back from ratio to angle */}
+                <g className="trig-arrow">
+                  <path d="M 190,140 L 190,120 L 155,120" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <text x="155" y="115" fill="var(--clr-text-soft)" fontSize="12" textAnchor="middle">ratio to angle</text>
+                  <path d="M 125,120 L 125,150" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                  <path d="M 125,150 L 122,145 M 125,150 L 128,145" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
+                </g>
+
+                {/* Angle Arc marker output */}
+                <path d="M 90,180 A 30,30 0 0,0 86,165" fill="none" stroke="var(--clr-correct)" strokeWidth="2.5" />
+                <text x="105" y="172" fill="var(--clr-correct)" fontSize="14" fontWeight="bold" className="trig-glow">30°</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Inverse trigonometry uses a side ratio to find an angle.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Interactive Challenge ➔
+          </button>
+        </div>
+      )}
+
+      {/* Intro SubStep */}
+      {subStep === 'intro' && (
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Finding Side Lengths</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Use a known angle to calculate a missing side.</p>
+            </div>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Finding Angles</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Use side ratios to calculate a missing angle.</p>
+            </div>
+          </div>
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Trigonometry and Inverse Trig are tools for right triangles. Let's find which one solves the mystery!
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+        </div>
+      )}
+
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -10508,9 +15199,8 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
         </div>
       )}
 
-      {/* Round 2: Inverse Trigonometry */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -10589,12 +15279,13 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
                 📐 TRIGONOMETRY
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Finding a missing side length when the angle is known.
+              <p style={{ margin: '0 0 12px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Uses a known angle to find side ratios or side lengths.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Formula:</strong> Input is an angle, output is a ratio (e.g., sin(30°) = 1/2).
-              </p>
+              <div style={{ background: 'rgba(232, 134, 74, 0.08)', padding: '12px 16px', borderRadius: '4px', borderLeft: '3px solid var(--clr-accent)' }}>
+                <strong style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-accent)', marginBottom: '4px' }}>Common Ratios:</strong>
+                <span style={{ fontFamily: 'monospace', fontSize: '1.05rem', color: 'var(--clr-text)' }}>sin, cos, tan</span>
+              </div>
             </div>
 
             {/* Inverse Trigonometry Card */}
@@ -10610,12 +15301,13 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
               <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
                 📐 INVERSE TRIGONOMETRY
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Finding a missing angle when side lengths or ratios are known.
+              <p style={{ margin: '0 0 12px 0', fontSize: '1rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Uses a known side ratio to find an angle.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Formula:</strong> Input is a ratio, output is an angle (e.g., sin⁻¹(1/2) = 30°).
-              </p>
+              <div style={{ background: 'rgba(92, 184, 122, 0.08)', padding: '12px 16px', borderRadius: '4px', borderLeft: '3px solid var(--clr-correct)' }}>
+                <strong style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-correct)', marginBottom: '4px' }}>Common Functions:</strong>
+                <span style={{ fontFamily: 'monospace', fontSize: '1.05rem', color: 'var(--clr-text)' }}>sin⁻¹, cos⁻¹, tan⁻¹</span>
+              </div>
             </div>
           </div>
 
@@ -10633,15 +15325,15 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
             </h4>
             <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>Ask yourself: What do I already know?</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', marginTop: '16px' }}>
               <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>Know angle, need side?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '12px' }}>📐 Trigonometry</strong>
+                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '8px' }}>Know angle, need side?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)' }}>📐 TRIGONOMETRY</strong>
               </div>
 
               <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>Know sides, need angle?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '12px' }}>📐 Inverse Trig</strong>
+                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '8px' }}>Know sides, need angle?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)' }}>📐 INVERSE TRIG</strong>
               </div>
             </div>
           </div>
@@ -10798,17 +15490,103 @@ function TrigInverseTrigChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '30px 0' }}>
+          <div style={{
+            width: '80px',
+            height: '80px',
+            borderRadius: '50%',
+            background: 'rgba(92, 184, 122, 0.1)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 24px auto',
+            border: '2px solid var(--clr-correct)',
+            animation: 'pulse 2s infinite'
+          }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--clr-correct)">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>
+          </div>
+
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', marginBottom: '12px', color: 'var(--clr-text)' }}>
+            Challenge Completed!
+          </h2>
+          <p style={{ fontSize: '1.15rem', color: 'var(--clr-text-soft)', maxWidth: '560px', margin: '0 auto 32px auto', lineHeight: '1.6' }}>
+            You have mastered the distinction between **Trigonometry** and **Inverse Trigonometry**! Your progress has been saved.
+          </p>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-md)',
+            border: '1.5px solid var(--clr-border)',
+            maxWidth: '560px',
+            margin: '0 auto 32px auto'
+          }}>
+            <strong style={{ display: 'block', fontSize: '1.1rem', marginBottom: '16px', color: 'var(--clr-text-soft)' }}>
+              Choose your next step:
+            </strong>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <button
+                onClick={() => {
+                  window.location.hash = '#/worksheets';
+                  onComplete();
+                }}
+                style={{
+                  padding: '14px 20px',
+                  background: 'rgba(232, 134, 74, 0.1)',
+                  border: '1.5px solid var(--clr-accent)',
+                  color: 'var(--clr-accent)',
+                  fontSize: '1.05rem',
+                  fontWeight: '600'
+                }}
+              >
+                Practice Trigonometry Worksheets
+              </button>
+              <button
+                onClick={() => {
+                  window.location.hash = '#/worksheets';
+                  onComplete();
+                }}
+                style={{
+                  padding: '14px 20px',
+                  background: 'rgba(92, 184, 122, 0.1)',
+                  border: '1.5px solid var(--clr-correct)',
+                  color: 'var(--clr-correct)',
+                  fontSize: '1.05rem',
+                  fontWeight: '600'
+                }}
+              >
+                Practice Inverse Trigonometry Worksheets
+              </button>
+              <button
+                onClick={onComplete}
+                className="secondary"
+                style={{
+                  padding: '12px 20px',
+                  fontSize: '1rem',
+                  color: 'var(--clr-text-soft)'
+                }}
+              >
+                Back to Challenges List
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function LinearSimultaneousChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2
+function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-linear'); // vd-linear, vd-simultaneous, intro, r1, r2, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
@@ -10847,12 +15625,169 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
     }
   }, [r2X, subStep]);
 
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-linear' || subStep === 'vd-simultaneous') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const eqStyles = `
+    @keyframes linearStep1 {
+      0%, 15% { opacity: 0; transform: translateY(-10px); }
+      20%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes linearStep2 {
+      0%, 40% { opacity: 0; transform: translateY(-10px); }
+      45%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    @keyframes linearStep3 {
+      0%, 65% { opacity: 0; transform: translateY(-10px); }
+      70%, 90% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    .linear-step-1 { animation: linearStep1 8s infinite ease-in-out; transform-origin: center; }
+    .linear-step-2 { animation: linearStep2 8s infinite ease-in-out; transform-origin: center; }
+    .linear-step-3 { animation: linearStep3 8s infinite ease-in-out; transform-origin: center; }
+
+    @keyframes simGroupA {
+      0%, 5% { opacity: 0; transform: scale(0.95); }
+      10%, 45% { opacity: 1; transform: scale(1); }
+      50%, 100% { opacity: 0; }
+    }
+    @keyframes simGroupB {
+      0%, 50% { opacity: 0; transform: scale(0.95); }
+      55%, 90% { opacity: 1; transform: scale(1); }
+      95%, 100% { opacity: 0; }
+    }
+    .sim-group-a { animation: simGroupA 8s infinite ease-in-out; transform-origin: center; }
+    .sim-group-b { animation: simGroupB 8s infinite ease-in-out; transform-origin: center; }
+  `;
+
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Answer !== null) {
+      onMarkComplete?.();
+    }
+  }, [q2Answer, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-linear') setSubStep('vd-simultaneous');
+    else if (subStep === 'vd-simultaneous') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleR1Submit = (opt) => {
@@ -10907,59 +15842,167 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
   const r2Y = -0.5 * r2X + 130;
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{eqStyles}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Linear vs Simultaneous Equations
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Linear vs Simultaneous Equations
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Find the Meeting Point
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-linear' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            LINEAR EQUATION
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the single equation simplify step-by-step to find the unknown value.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-linear" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-linear)" />
+
+              {/* Equation Step 1 */}
+              <g className="linear-step-1">
+                <text x="160" y="70" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold">5x − 7 = 18</text>
+              </g>
+
+              {/* Arrow 1 */}
+              <g className="linear-step-2">
+                <text x="160" y="120" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="22" fontWeight="bold">↓</text>
+                {/* Equation Step 2 */}
+                <text x="160" y="170" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold">5x = 25</text>
+              </g>
+
+              {/* Arrow 2 */}
+              <g className="linear-step-3">
+                <text x="160" y="215" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="22" fontWeight="bold">↓</text>
+                {/* Equation Step 3 */}
+                <rect x="90" y="240" width="140" height="42" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
+                <text x="160" y="269" textAnchor="middle" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold">x = 5</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            A linear equation has one equation with unknown value(s).
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Simultaneous Equations ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-simultaneous' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-correct)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            SIMULTANEOUS EQUATIONS
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the bracket join both equations to solve for multiple variables together.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-sim" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-sim)" />
+
+              {/* Group A: Equations joined by a curly brace */}
+              <g className="sim-group-a" transform="translate(0, 0)">
+                {/* Bracket line */}
+                <path d="M 90,110 L 80,110 L 80,150 L 73,150 L 80,150 L 80,190 L 90,190" fill="none" stroke="var(--clr-correct)" strokeWidth="3.5" strokeLinecap="round" />
+                <text x="100" y="135" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold" textAnchor="start">2a + b = 9</text>
+                <text x="100" y="175" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold" textAnchor="start">a − b = 0</text>
+
+                <text x="160" y="240" fill="var(--clr-text-soft)" fontSize="15" fontWeight="bold" textAnchor="middle">Two equations together</text>
+              </g>
+
+              {/* Group B: Solved values joined by a curly brace */}
+              <g className="sim-group-b" transform="translate(0, 0)">
+                {/* Bracket line */}
+                <path d="M 100,110 L 90,110 L 90,150 L 83,150 L 90,150 L 90,190 L 100,190" fill="none" stroke="var(--clr-accent)" strokeWidth="3.5" strokeLinecap="round" />
+                <text x="110" y="135" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="start">a = 3</text>
+                <text x="110" y="175" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="start">b = 3</text>
+
+                <rect x="50" y="225" width="220" height="36" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
+                <text x="160" y="248" fill="var(--clr-accent)" fontSize="16" fontWeight="bold" textAnchor="middle">Common values found!</text>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Simultaneous equations solve two or more equations together.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Linear Equation</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>A single equation representing a single straight line. Has <strong>infinite solution points</strong> along the line.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>➖</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Single Line Solutions</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find infinite coordinate points along a single line.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Simultaneous Equations</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>Two or more equations solved together. Represents multiple lines with a <strong>common solution</strong> where they intersect.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>✖️</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Intersection Points</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the single common solution shared by two lines.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's interact with straight lines on a graph grid to visualize their solutions!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Equations represent spatial arrangements. Let's solve them to find their unknown values!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: One Line */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -11039,7 +16082,7 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Two Lines */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -11144,16 +16187,20 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
                 LINEAR EQUATION
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> A single equation representing one straight line.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> An equation with variables of degree 1.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Solutions:</strong> Infinite solutions (every point on the line is a solution, e.g., 2x + y = 6).
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-accent)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  5x − 7 = 18
+                </span>
               </p>
             </div>
 
@@ -11165,16 +16212,22 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
                 SIMULTANEOUS EQUATIONS
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> Two or more equations solved together to find a common point.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Two or more equations solved together to find common values.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Solutions:</strong> A single solution where the lines intersect (e.g., 2x + y = 6 and x - y = 3).
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Example:</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-correct)', fontWeight: '600', fontFamily: 'monospace' }}>
+                  2a + b = 9
+                  <br />
+                  a − b = 0
+                </span>
               </p>
             </div>
           </div>
@@ -11186,28 +16239,28 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>Am I solving...</p>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>Before calculating, ask yourself:</p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>One individual equation?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '12px' }}>= Linear Equation</strong>
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>One individual equation?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>= Linear Equation</strong>
               </div>
 
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>More than one equation together?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '12px' }}>= Simultaneous</strong>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>More than one equation together?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>= Simultaneous</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -11335,21 +16388,265 @@ function LinearSimultaneousChallenge({ onBack, onComplete }) {
                 </strong>
                 <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Linear Equation vs Simultaneous Equations challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['linear-simultaneous'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-linear')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>
   );
 }
 
-function InteriorExteriorChallenge({ onBack, onComplete }) {
-  const [subStep, setSubStep] = useState('intro'); // intro, r1, r2, comparison, q1, q2
+function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
+  const [subStep, setSubStep] = useState('vd-interior'); // vd-interior, vd-exterior, intro, r1, r2, comparison, q1, q2, practice-redirect
   const [selectedOption, setSelectedOption] = useState(null);
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+
+  // Helper to determine step index (0-3)
+  const getActiveStepIndex = () => {
+    if (subStep === 'vd-interior' || subStep === 'vd-exterior') return 0;
+    if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
+    if (subStep === 'comparison') return 2;
+    if (subStep === 'q1' || subStep === 'q2') return 3;
+    return 4; // Finished / redirect
+  };
+
+  const activeIndex = getActiveStepIndex();
+  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+
+  const renderProgressBar = () => {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        position: 'relative',
+        maxWidth: '480px',
+        margin: '0 auto 30px auto',
+        padding: '0 10px'
+      }}>
+        {/* Background Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          right: '20px',
+          height: '4px',
+          background: 'var(--clr-border)',
+          borderRadius: '2px',
+          zIndex: 1
+        }} />
+
+        {/* Progress Line */}
+        <div style={{
+          position: 'absolute',
+          top: '15px',
+          left: '20px',
+          width: activeIndex === 4 ? 'calc(100% - 40px)' : `calc(${(activeIndex / 3) * 100}% - ${activeIndex === 0 ? 0 : 40}px)`,
+          height: '4px',
+          background: 'var(--clr-correct)',
+          borderRadius: '2px',
+          zIndex: 1,
+          transition: 'width 0.4s ease'
+        }} />
+
+        {steps.map((label, idx) => {
+          const isCompleted = activeIndex > idx;
+          const isActive = activeIndex === idx;
+
+          let circleBg = 'var(--clr-card)';
+          let circleBorder = '2px solid var(--clr-border)';
+          let textColor = 'var(--clr-text-soft)';
+          let fontWeight = 'normal';
+
+          if (isCompleted) {
+            circleBg = 'var(--clr-correct)';
+            circleBorder = '2px solid var(--clr-correct)';
+            textColor = 'var(--clr-correct)';
+          } else if (isActive) {
+            circleBg = 'var(--clr-surface)';
+            circleBorder = '3px solid var(--clr-accent)';
+            textColor = 'var(--clr-text)';
+            fontWeight = 'bold';
+          }
+
+          return (
+            <div key={idx} style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              position: 'relative',
+              zIndex: 2,
+              flex: 1
+            }}>
+              {/* Node Circle */}
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                background: circleBg,
+                border: circleBorder,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: isCompleted ? '#fff' : textColor,
+                fontSize: '0.85rem',
+                fontWeight: 'bold',
+                boxShadow: isActive ? '0 0 8px rgba(232, 134, 74, 0.4)' : 'none',
+                transition: 'all 0.3s ease'
+              }}>
+                {isCompleted ? '✓' : idx + 1}
+              </div>
+
+              {/* Node Label */}
+              <span style={{
+                marginTop: '6px',
+                fontSize: '0.8rem',
+                color: textColor,
+                fontWeight: fontWeight,
+                transition: 'all 0.3s ease'
+              }}>
+                {label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
+
+  const angleStyles = `
+    @keyframes angleLineExtend {
+      0%, 20% { stroke-dashoffset: 60; }
+      40%, 92% { stroke-dashoffset: 0; }
+      95%, 100% { stroke-dashoffset: 60; }
+    }
+    .angle-extend-line {
+      stroke-dasharray: 60;
+      stroke-dashoffset: 60;
+      animation: angleLineExtend 8s infinite ease-in-out;
+    }
+
+    @keyframes angleWedgeFillInterior {
+      0%, 25% { fill: rgba(232, 134, 74, 0); stroke: transparent; }
+      45%, 92% { fill: rgba(232, 134, 74, 0.25); stroke: var(--clr-accent); }
+      95%, 100% { fill: rgba(232, 134, 74, 0); stroke: transparent; }
+    }
+    .angle-interior-wedge {
+      animation: angleWedgeFillInterior 8s infinite ease-in-out;
+      fill: rgba(232, 134, 74, 0);
+      stroke: transparent;
+      stroke-width: 1.5;
+    }
+
+    @keyframes angleWedgeFillExterior {
+      0%, 45% { fill: rgba(92, 184, 122, 0); stroke: transparent; }
+      65%, 92% { fill: rgba(92, 184, 122, 0.25); stroke: var(--clr-correct); }
+      95%, 100% { fill: rgba(92, 184, 122, 0); stroke: transparent; }
+    }
+    .angle-exterior-wedge {
+      animation: angleWedgeFillExterior 8s infinite ease-in-out;
+      fill: rgba(92, 184, 122, 0);
+      stroke: transparent;
+      stroke-width: 1.5;
+    }
+
+    @keyframes angleVertexGlowInterior {
+      0%, 15% { transform: scale(1); filter: none; fill: var(--clr-border); }
+      30%, 92% { transform: scale(1.3); filter: drop-shadow(0 0 4px rgba(232,134,74,0.6)); fill: var(--clr-accent); }
+      95%, 100% { transform: scale(1); filter: none; fill: var(--clr-border); }
+    }
+    .angle-vertex-interior {
+      transform-origin: 200px 210px;
+      animation: angleVertexGlowInterior 8s infinite ease-in-out;
+    }
+
+    @keyframes angleVertexGlowExterior {
+      0%, 35% { transform: scale(1); filter: none; fill: var(--clr-border); }
+      50%, 92% { transform: scale(1.3); filter: drop-shadow(0 0 4px rgba(92,184,122,0.6)); fill: var(--clr-correct); }
+      95%, 100% { transform: scale(1); filter: none; fill: var(--clr-border); }
+    }
+    .angle-vertex-exterior {
+      transform-origin: 200px 210px;
+      animation: angleVertexGlowExterior 8s infinite ease-in-out;
+    }
+
+    @keyframes angleInteriorSummaryFade {
+      0%, 40% { opacity: 0; transform: translateY(5px); }
+      45%, 92% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    .angle-interior-summary-overlay {
+      animation: angleInteriorSummaryFade 8s infinite ease-in-out;
+      opacity: 0;
+    }
+
+    @keyframes angleExteriorSummaryFade {
+      0%, 60% { opacity: 0; transform: translateY(5px); }
+      65%, 92% { opacity: 1; transform: translateY(0); }
+      95%, 100% { opacity: 0; }
+    }
+    .angle-exterior-summary-overlay {
+      animation: angleExteriorSummaryFade 8s infinite ease-in-out;
+      opacity: 0;
+    }
+  `;
 
   // Round 1 state
   const [r1Filled, setR1Filled] = useState(false);
@@ -11393,12 +16690,22 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
     }
   }, [q2Extension, subStep]);
 
+  // Save progress automatically when final practice step is completed
+  useEffect(() => {
+    if (q2Finished) {
+      onMarkComplete?.();
+    }
+  }, [q2Finished, onMarkComplete]);
+
   const handleNextStep = () => {
-    if (subStep === 'intro') setSubStep('r1');
+    if (subStep === 'vd-interior') setSubStep('vd-exterior');
+    else if (subStep === 'vd-exterior') setSubStep('intro');
+    else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
     else if (subStep === 'comparison') setSubStep('q1');
     else if (subStep === 'q1') setSubStep('q2');
+    else if (subStep === 'q2') setSubStep('practice-redirect');
   };
 
   const handleTapAngle = (type) => {
@@ -11440,59 +16747,166 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
   };
 
   return (
-    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px' }}>
-      <div className="header-row">
-        <button className="back-button" onClick={onBack}>← Back</button>
+    <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
+      <style>{angleStyles}</style>
+
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: '20px',
+        padding: '0 5px'
+      }}>
+        <button className="back-button" onClick={onBack} style={{ margin: 0 }}>← Back</button>
+        <span style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: '1.15rem',
+          fontWeight: '600',
+          color: 'var(--clr-text-soft)',
+          letterSpacing: '0.5px'
+        }}>
+          Interior vs Exterior Angles
+        </span>
+        <div style={{ width: '70px' }} />
       </div>
 
-      <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.9rem', textAlign: 'center', margin: '0 0 8px 0', color: 'var(--clr-accent)' }}>
-        Contrast Challenge: Interior vs Exterior Angles
-      </h2>
-      <p style={{ textAlign: 'center', color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0 0 28px 0' }}>
-        Inside or Outside?
-      </p>
+      {renderProgressBar()}
+
+      {subStep === 'vd-interior' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            INTERIOR ANGLES
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the inside angle color fill and glow within the shape.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-interior" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-interior)" />
+
+              {/* Pentagon shape */}
+              <g transform="translate(0, 0)">
+                {/* Outline */}
+                <polygon points="160,90 230,140 200,210 120,210 90,140" fill="none" stroke="var(--clr-border)" strokeWidth="3" strokeLinejoin="round" />
+
+                {/* Interior angle arc */}
+                <path d="M 165 210 A 35 35 0 0 1 213.8 177.8 L 200 210 Z" className="angle-interior-wedge" />
+
+                {/* Highlighted Vertex */}
+                <circle cx="200" cy="210" r="6" className="angle-vertex-interior" />
+
+                {/* Interior Summary Overlay */}
+                <g className="angle-interior-summary-overlay">
+                  <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
+                  <text x="160" y="281" textAnchor="middle" fill="var(--clr-accent)" fontSize="15" fontWeight="bold">Interior Angle</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Interior angles are formed inside a polygon.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Discover Exterior Angles ➔
+          </button>
+        </div>
+      )}
+
+      {subStep === 'vd-exterior' && (
+        <div style={{ textAlign: 'center', padding: '10px 0' }}>
+          <div style={{ textTransform: 'uppercase', letterSpacing: '2px', fontSize: '0.9rem', color: 'var(--clr-text-soft)', marginBottom: '10px', fontWeight: 'bold' }}>
+            Discover
+          </div>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: '2.5rem', margin: '0 0 5px 0', color: 'var(--clr-accent)', fontWeight: 'bold', letterSpacing: '1px' }}>
+            EXTERIOR ANGLES
+          </h1>
+          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
+            Watch the side line extend outward to form the exterior angle.
+          </p>
+
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
+              <defs>
+                <pattern id="grid-pattern-exterior" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
+                </pattern>
+              </defs>
+
+              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-exterior)" />
+
+              {/* Pentagon shape */}
+              <g transform="translate(0, 0)">
+                {/* Outline */}
+                <polygon points="160,90 230,140 200,210 120,210 90,140" fill="none" stroke="var(--clr-border)" strokeWidth="3" strokeLinejoin="round" />
+
+                {/* Extended line */}
+                <line x1="200" y1="210" x2="260" y2="210" stroke="var(--clr-correct)" strokeWidth="3" strokeDasharray="3 3" />
+                <line x1="200" y1="210" x2="260" y2="210" stroke="var(--clr-correct)" strokeWidth="3.5" className="angle-extend-line" />
+
+                {/* Exterior angle arc */}
+                <path d="M 213.8 177.8 A 35 35 0 0 1 235 210 L 200 210 Z" className="angle-exterior-wedge" />
+
+                {/* Highlighted Vertex */}
+                <circle cx="200" cy="210" r="6" className="angle-vertex-exterior" />
+
+                {/* Exterior Summary Overlay */}
+                <g className="angle-exterior-summary-overlay">
+                  <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
+                  <text x="160" y="281" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">Exterior Angle</text>
+                </g>
+              </g>
+            </svg>
+          </div>
+
+          <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
+            Exterior angles are formed outside a polygon when a side is extended.
+          </p>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold', cursor: 'pointer' }}>
+            Start Challenge ➔
+          </button>
+        </div>
+      )}
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-accent)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Interior Angle</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>An angle formed inside a polygon between two adjacent side lines.</span>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📥</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Interior Angle</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>An angle formed inside a polygon between two adjacent side lines.</p>
             </div>
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '20px',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--clr-border)',
-              width: '100%',
-              maxWidth: '520px',
-              boxShadow: 'var(--shadow-btn)',
-              textAlign: 'center'
-            }}>
-              <strong style={{ display: 'block', fontSize: '1.25rem', color: 'var(--clr-correct)', marginBottom: '8px', fontFamily: 'var(--font-display)' }}>Exterior Angle</strong>
-              <span style={{ fontSize: '0.95rem', color: 'var(--clr-text-soft)' }}>An angle formed outside a polygon when one of its side lines is extended outward.</span>
+            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
+              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📤</span>
+              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Exterior Angle</strong>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>An angle formed outside a polygon when a side line is extended.</p>
             </div>
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's explore a polygon vertex to find these angles visually!
+
+          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
+            Every polygon vertex has interior and exterior angles. Let's trace them!
           </p>
-          <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Discovery</button>
+
+          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
         </div>
       )}
 
       {/* Round 1: Find the Interior */}
       {subStep === 'r1' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -11566,7 +16980,7 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
 
       {/* Round 2: Extend the Side */}
       {subStep === 'r2' && (
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
           <div style={{
             background: 'var(--clr-surface)',
             padding: '16px 20px',
@@ -11662,16 +17076,22 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-accent)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-accent)' }}>
-                INTERIOR ANGLE
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-accent)', fontWeight: 'bold' }}>
+                INTERIOR ANGLES
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> An angle formed inside the boundaries of a polygon between two adjacent sides.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Angles formed inside a polygon.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Example:</strong> Inner corners of a square (90°).
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Key Formula(s):</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-accent)' }}>
+                  Sum of interior angles = (n − 2) × 180°
+                  <br />
+                  Regular polygon: Interior angle = (n−2)×180°/n
+                </span>
               </p>
             </div>
 
@@ -11683,16 +17103,22 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
               borderTop: '6px solid var(--clr-correct)',
               flex: '1 1 340px',
               maxWidth: '380px',
-              boxShadow: 'var(--shadow-btn)'
+              boxShadow: 'var(--shadow-btn)',
+              textAlign: 'left'
             }}>
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', margin: '0 0 12px 0', color: 'var(--clr-correct)' }}>
-                EXTERIOR ANGLE
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', margin: '0 0 16px 0', color: 'var(--clr-correct)', fontWeight: 'bold' }}>
+                EXTERIOR ANGLES
               </h3>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Concept:</strong> An angle formed outside the polygon boundaries between one side and the extension of the adjacent side.
+              <p style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
+                <strong>Means:</strong> Angles formed outside a polygon when a side is extended.
               </p>
-              <p style={{ margin: '0 0 10px 0', fontSize: '1rem', lineHeight: '1.5' }}>
-                <strong>Relation:</strong> Forms a straight 180° line with the adjacent interior angle.
+              <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.6' }}>
+                <strong>Key Formula(s):</strong>
+                <span style={{ display: 'block', marginTop: '6px', paddingLeft: '8px', borderLeft: '3px solid var(--clr-correct)' }}>
+                  Sum of exterior angles = 360°
+                  <br />
+                  Regular polygon: Exterior angle = 360°/n
+                </span>
               </p>
             </div>
           </div>
@@ -11704,28 +17130,28 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
             borderRadius: 'var(--radius-sm)',
             borderLeft: '6px solid var(--clr-accent)',
             boxShadow: 'var(--shadow-btn)',
-            marginBottom: '32px'
+            marginBottom: '32px',
+            textAlign: 'left'
           }}>
-            <h4 style={{ margin: '0 0 16px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
+            <h4 style={{ margin: '0 0 10px 0', color: 'var(--clr-accent)', fontFamily: 'var(--font-display)', fontSize: '1.25rem' }}>
               Decision Rule
             </h4>
-            <p style={{ margin: '0 0 16px 0', fontSize: '1.05rem' }}>Ask yourself: Is the angle...</p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', marginTop: '16px' }}>
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>Inside the polygon?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '12px' }}> Interior Angle</strong>
+            <p style={{ margin: '0 0 14px 0', fontSize: '1.05rem', fontWeight: '500' }}>
+              Before identifying the angle, ask:
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '20px' }}>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Inside the polygon?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-accent)', display: 'block', marginTop: '8px' }}>Interior Angle</strong>
               </div>
-
-              <div style={{ background: 'var(--clr-card)', padding: '16px 20px', borderRadius: 'var(--radius-sm)', border: '1.5px solid var(--clr-border)', textAlign: 'center' }}>
-                <span style={{ display: 'block', fontSize: '0.9rem', color: 'var(--clr-text-soft)' }}>Outside after extending a side?</span>
-                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '12px' }}> Exterior Angle</strong>
+              <div style={{ background: 'var(--clr-card)', padding: '12px 24px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', textAlign: 'center' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', color: 'var(--clr-text-soft)' }}>Outside after extending a side?</span>
+                <strong style={{ fontSize: '1.25rem', color: 'var(--clr-correct)', display: 'block', marginTop: '8px' }}>Exterior Angle</strong>
               </div>
             </div>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
           </div>
         </div>
@@ -11891,9 +17317,63 @@ function InteriorExteriorChallenge({ onBack, onComplete }) {
                   Great! You created an exterior angle by extending one side.
                 </p>
               </div>
-              <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Finish Challenge</button>
+              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
             </div>
           )}
+        </div>
+      )}
+
+      {subStep === 'practice-redirect' && (
+        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+            <span style={{ fontSize: '3.5rem', marginBottom: '16px' }}>🎉</span>
+            <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-correct)', fontSize: '1.8rem', margin: '0 0 8px 0' }}>
+              Challenge Completed!
+            </h3>
+            <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.05rem', margin: '0', textAlign: 'center' }}>
+              You have successfully completed the Interior vs Exterior Angles challenge.
+            </p>
+          </div>
+
+          <div style={{
+            background: 'var(--clr-surface)',
+            padding: '24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1.5px solid var(--clr-border)',
+            textAlign: 'center',
+            marginBottom: '32px',
+            boxShadow: 'var(--shadow-btn)'
+          }}>
+            <p style={{ margin: '0 0 16px 0', color: 'var(--clr-text)', fontSize: '1.05rem', fontWeight: '600' }}>
+              Want to practice more on these standard quizzes?
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              {CONTRAST_MAPPING['interior-exterior'].map(mKey => (
+                <button
+                  key={mKey}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: mKey }));
+                  }}
+                  className="secondary"
+                  style={{
+                    padding: '10px 20px',
+                    fontSize: '0.95rem',
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  Practice {MODULE_NAMES[mKey] || mKey} ➔
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <button className="secondary" onClick={() => setSubStep('vd-interior')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
+          </div>
         </div>
       )}
     </div>

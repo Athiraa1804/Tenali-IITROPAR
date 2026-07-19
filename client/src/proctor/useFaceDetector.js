@@ -36,15 +36,17 @@ async function loadModels() {
   }
 }
 
-export default function useFaceDetector({ videoRef, enabled = false, onAnomaly }) {
+export default function useFaceDetector({ videoRef, enabled = false, onAnomaly, onFaceCount }) {
   const [faceCount, setFaceCount] = useState(1) // assume 1 until checked
   const [modelsReady, setModelsReady] = useState(false)
   const intervalRef = useRef(null)
   const graceRef = useRef(true)
   const onRef = useRef(null)
+  const onFaceCountRef = useRef(null)
   const prevCountRef = useRef(1)
 
   useEffect(() => { onRef.current = onAnomaly })
+  useEffect(() => { onFaceCountRef.current = onFaceCount })
 
   useEffect(() => {
     if (enabled) {
@@ -69,12 +71,13 @@ export default function useFaceDetector({ videoRef, enabled = false, onAnomaly }
     try {
       const detections = await faceapi
         .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions({
-          inputSize: 224,
-          scoreThreshold: 0.4,
+          inputSize: 320,
+          scoreThreshold: 0.3,
         }))
 
       const count = detections.length
       setFaceCount(count)
+      onFaceCountRef.current?.(count)
 
       // Only fire anomaly if count changed from expected (1)
       if (count !== prevCountRef.current) {

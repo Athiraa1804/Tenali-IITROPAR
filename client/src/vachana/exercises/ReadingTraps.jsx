@@ -314,6 +314,7 @@ export default function ReadingTraps() {
   const [selectedLevel, setSelectedLevel] = useState(null);
   const [hoveredLevel, setHoveredLevel] = useState(null);
   const [checked, setChecked] = useState(false);
+  const [score, setScore] = useState(0);
   const currentLevel = LEVELS.find(level => level.id === selectedLevel);
   const questions = currentLevel?.questions || [];
   useEffect(() => {
@@ -328,7 +329,7 @@ export default function ReadingTraps() {
       setChecked(false);
     } else {
       setChecked(true);
-      setMsg("⏰ Time's up!");
+      setCurrentScreen("results");
     }
   }, 7000);
 
@@ -339,10 +340,11 @@ const check = (a) => {
   setChecked(true);
 
   if (a === questions[idx].correct) {
-    setMsg("✅ Correct! " + questions[idx].explanation);
-  } else {
-    setMsg("❌ Incorrect. " + questions[idx].explanation);
-  }
+  setScore(score + 1);
+  setMsg("✅ Correct! " + questions[idx].explanation);
+} else {
+  setMsg("❌ Incorrect. " + questions[idx].explanation);
+}
 };
   if (currentScreen === "overview") {
   return (
@@ -521,42 +523,75 @@ if (currentScreen === "quiz") {
     textAlign: "center", }}>
       <div
   style={{
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
     width: "100%",
-    marginBottom: "16px",
+    marginBottom: "24px",
   }}
 >
-  <span
+  <div
     style={{
-      fontSize: "0.9rem",
-      opacity: 0.7,
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "14px",
     }}
   >
-    Question {idx + 1} of {questions.length}
-  </span>
+    <button
+      onClick={() => {
+        setCurrentScreen("levels");
+        setIdx(0);
+        setAns(null);
+        setMsg("");
+        setChecked(false);
+      }}
+      style={{
+        padding: "6px 14px",
+        fontSize: "0.85rem",
+        borderRadius: "8px",
+        border: "1px solid var(--clr-border)",
+        background: "var(--clr-surface)",
+        cursor: "pointer",
+      }}
+    >
+      ← Back to Levels
+    </button>
 
-  <button
-    onClick={() => {
-      setCurrentScreen("levels");
-      setIdx(0);
-      setAns(null);
-      setMsg("");
-      setChecked(false);
-    }}
+    <span
+      style={{
+        fontSize: "0.95rem",
+        fontWeight: "600",
+        opacity: 0.75,
+      }}
+    >
+      Question {idx + 1} of {questions.length}
+    </span>
+  </div>
+
+  <div
     style={{
-      padding: "4px 10px",
-      fontSize: "0.8rem",
-      borderRadius: "8px",
-      border: "1px solid var(--clr-border)",
-      background: "var(--clr-surface)",
-      cursor: "pointer",
+      width: "100%",
+      height: "8px",
+      background: "var(--clr-border)",
+      borderRadius: "999px",
+      overflow: "hidden",
     }}
   >
-    ← Back To Levels
-  </button>
+    <div
+      style={{
+        width: `${((idx + 1) / questions.length) * 100}%`,
+        height: "100%",
+        background: "var(--clr-accent)",
+      }}
+    />
+  </div>
 </div>
+<h3
+  style={{
+    margin: "0 0 6px 0",
+    fontSize: "1.15rem",
+    color: "var(--clr-accent)",
+  }}
+>
+</h3>
         <h3 style={{ margin: '0 0 6px 0', fontSize: '1.15rem', color: 'var(--clr-accent)' }}>{questions[idx].title}</h3>
         <p style={{ margin: '0 0 12px 0', fontSize: '0.95rem', lineHeight: '1.5' }}>{questions[idx].concept}</p>
         
@@ -680,19 +715,134 @@ if (currentScreen === "quiz") {
   </div>
 )}
 {checked && idx === questions.length - 1 && (
-  <div
-    style={{
-      marginTop: "20px",
-      textAlign: "center",
-      fontWeight: "bold",
-      color: "var(--clr-accent)",
-    }}
-  >
-    Level Complete!
+  <div style={{ marginTop: "20px" }}>
+    <button
+      className="submit-btn"
+      onClick={() => setCurrentScreen("results")}
+    >
+      Finish Level
+    </button>
   </div>
 )}
       </div>
     </div>
   );
 }
+if (currentScreen === "results") {
+  return (
+    <div
+      style={{
+        background: "var(--clr-surface)",
+        padding: "24px",
+        borderRadius: "12px",
+        border: "1px solid var(--clr-border)",
+        textAlign: "center",
+      }}
+    >
+      <h2
+  style={{
+    color: "var(--clr-accent)",
+    marginBottom: "8px",
+  }}
+>
+   Level Complete
+</h2>
+
+      <p
+  style={{
+    fontSize: "1.15rem",
+    fontWeight: "600",
+    marginBottom: "28px",
+  }}
+>
+  {currentLevel.title}
+</p>
+
+      <h1
+  style={{
+    fontSize: "3rem",
+    margin: "0",
+    color: "var(--clr-accent)",
+  }}
+>
+  {score}/{questions.length}
+</h1>
+
+<p
+  style={{
+    marginTop: "8px",
+    fontSize: "1rem",
+    opacity: 0.8,
+  }}
+>
+  You answered {score} out of {questions.length} questions correctly.
+</p>
+<p
+  style={{
+    marginTop: "20px",
+    marginBottom: "30px",
+    fontWeight: "600",
+  }}
+>
+  Accuracy: {Math.round((score / questions.length) * 100)}%
+</p>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "12px",
+          marginTop: "24px",
+          flexWrap: "wrap",
+        }}
+      >
+        <button
+          className="submit-btn"
+          onClick={() => {
+            setIdx(0);
+            setScore(0);
+            setAns(null);
+            setChecked(false);
+            setMsg("");
+            setCurrentScreen("quiz");
+          }}
+        >
+          Retry Level
+        </button>
+
+        <button
+          className="submit-btn"
+          onClick={() => {
+            setIdx(0);
+            setScore(0);
+            setAns(null);
+            setChecked(false);
+            setMsg("");
+            setCurrentScreen("levels");
+          }}
+        >
+          Back to Levels
+        </button>
+
+        {selectedLevel < LEVELS.length && (
+          <button
+            className="submit-btn"
+            onClick={() => {
+              setSelectedLevel(selectedLevel + 1);
+              setIdx(0);
+              setScore(0);
+              setAns(null);
+              setChecked(false);
+              setMsg("");
+              setCurrentScreen("quiz");
+            }}
+          >
+            Next Level →
+          </button>
+        )}
+      </div>
+    </div>
+  );
 }
+}
+

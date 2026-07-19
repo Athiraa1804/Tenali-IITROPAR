@@ -53,6 +53,8 @@ export default defineConfig({
       '/addition-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Column Addition quiz API
       '/column-addition-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
+      // Column Division quiz API
+      '/column-division-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Column Multiplication quiz API
       '/column-multiplication-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       // Column Subtraction quiz API

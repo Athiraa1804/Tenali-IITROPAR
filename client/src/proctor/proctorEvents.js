@@ -33,9 +33,12 @@ function addToPending(event) {
 
 export async function reportProctorEvent({ sessionId, type, severity = 1, evidence, metadata, sessionStatus }) {
   const token = getToken();
-  if (!token || !sessionId) return null;
+  if (!sessionId) return null;
 
   const body = { sessionId, type, severity, evidence, metadata, sessionStatus };
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
   // Try with retry
   for (let attempt = 0; attempt <= 1; attempt++) {
@@ -44,13 +47,12 @@ export async function reportProctorEvent({ sessionId, type, severity = 1, eviden
       const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
       const r = await fetch(`${API}/api/proctor/event`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        headers,
         body: JSON.stringify(body),
         signal: controller.signal,
       });
       clearTimeout(timeout)
       if (r.ok) {
-        // Retry any pending events on success
         retryPendingEvents(token)
         return await r.json()
       }
@@ -59,7 +61,6 @@ export async function reportProctorEvent({ sessionId, type, severity = 1, eviden
     }
   }
 
-  // All attempts failed — save to localStorage
   addToPending(body)
   return null
 }
@@ -67,6 +68,9 @@ export async function reportProctorEvent({ sessionId, type, severity = 1, eviden
 async function retryPendingEvents(token) {
   const pending = getPendingEvents()
   if (pending.length === 0) return
+
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
 
   const remaining = []
   for (const event of pending) {
@@ -76,7 +80,7 @@ async function retryPendingEvents(token) {
       const { _pendingAt, ...body } = event
       const r = await fetch(`${API}/api/proctor/event`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        headers,
         body: JSON.stringify(body),
         signal: controller.signal,
       });
@@ -91,13 +95,14 @@ async function retryPendingEvents(token) {
 
 export async function startProctorSession({ quizType, settings, consentGiven }) {
   const token = getToken();
-  if (!token) return null;
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
   try {
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
     const r = await fetch(`${API}/api/proctor/start`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      headers,
       body: JSON.stringify({ quizType, settings, consentGiven }),
       signal: controller.signal,
     });
@@ -107,14 +112,16 @@ export async function startProctorSession({ quizType, settings, consentGiven }) 
 }
 
 export async function endProctorSession(sessionId) {
+  if (!sessionId) return null;
   const token = getToken();
-  if (!token || !sessionId) return null;
+  const headers = { 'Content-Type': 'application/json' };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
   try {
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS)
     const r = await fetch(`${API}/api/proctor/end`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      headers,
       body: JSON.stringify({ sessionId }),
       signal: controller.signal,
     });

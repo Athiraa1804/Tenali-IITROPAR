@@ -923,6 +923,160 @@ app.post('/column-multiplication-api/check', (req, res) => {
 });
 
 /**
+ * COLUMN DIVISION API
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Long division: dividend ÷ divisor.
+ * User fills quotient digits + partial remainder digits.
+ */
+
+function computeColumnDivision(dividend, divisor) {
+  const dStr = String(dividend);
+  const dividendDigits = dStr.split('').map(Number);
+  const divisorDigits = String(divisor).split('').map(Number);
+  const steps = [];
+  const quotientDigits = [];
+  let current = 0;
+  let firstQuotientCol = -1;
+  for (let i = 0; i < dividendDigits.length; i++) {
+    current = current * 10 + dividendDigits[i];
+    if (current >= divisor || quotientDigits.length > 0) {
+      if (firstQuotientCol === -1) firstQuotientCol = i;
+      const q = Math.floor(current / divisor);
+      const product = q * divisor;
+      const remainder = current - product;
+      quotientDigits.push(q);
+      const isLast = quotientDigits.length === dividendDigits.length - firstQuotientCol;
+      const nextDigit = (i + 1 < dividendDigits.length) ? dividendDigits[i + 1] : null;
+      steps.push({ product, remainder, current, isLast, nextDigit });
+      current = remainder;
+    }
+  }
+  if (quotientDigits.length === 0) {
+    quotientDigits.push(0);
+    firstQuotientCol = 0;
+    steps.push({ product: 0, remainder: dividend, current: dividend, isLast: true, nextDigit: null });
+  }
+  return {
+    quotientDigits,
+    dividendDigits,
+    divisorDigits,
+    steps,
+    firstQuotientCol,
+    digits: dStr.length,
+  };
+}
+
+app.get('/column-division-api/question', (req, res) => {
+  const difficulty = req.query.difficulty || 'easy';
+  const digitMap = { easy: [1, 3], medium: [1, 4], hard: [2, 4], extrahard: [2, 5] };
+  const [divisorDigits, dividendDigits] = digitMap[difficulty] || [1, 3];
+  const dRange = digitRange(divisorDigits);
+  const mRange = digitRange(dividendDigits);
+  const divisorMin = Math.max(dRange.min, 2);
+  let dividend, divisor, data;
+  let attempts = 0;
+  do {
+    divisor = randomInt(divisorMin, dRange.max);
+    dividend = randomInt(Math.max(2 * divisor, divisor + 1), mRange.max);
+    data = computeColumnDivision(dividend, divisor);
+    attempts++;
+  } while (data.steps.length < 2 && attempts < 50);
+  res.json({
+    id: `cd-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+    dividend,
+    divisor,
+    answer: Math.floor(dividend / divisor),
+    quotientDigits: data.quotientDigits,
+    dividendDigits: data.dividendDigits,
+    divisorDigits: data.divisorDigits,
+    firstQuotientCol: data.firstQuotientCol,
+    steps: data.steps,
+  });
+});
+
+app.post('/column-division-api/check', (req, res) => {
+  const { dividend, divisor, userQuotient, userProducts, userRemainders, solve, sessionGoal } = req.body || {};
+  const numDividend = Number(dividend);
+  const numDivisor = Number(divisor);
+  const correctAnswer = Math.floor(numDividend / numDivisor);
+  const data = computeColumnDivision(numDividend, numDivisor);
+
+  if (solve) {
+    const solutionSteps = data.steps.map((step, i) => ({
+      stepNum: i + 1,
+      partialDividend: step.current,
+      divisor: numDivisor,
+      quotientDigit: data.quotientDigits[i],
+      product: step.product,
+      difference: step.current - step.product,
+      remainder: step.remainder,
+      isLast: step.isLast,
+      nextDigit: step.nextDigit,
+    }));
+    return res.json({
+      correct: false,
+      answer: correctAnswer,
+      display: `${numDividend} \u00f7 ${numDivisor} = ${correctAnswer}`,
+      steps: data.steps,
+      solutionSteps,
+      quotientDigits: data.quotientDigits,
+      dividendDigits: data.dividendDigits,
+      divisorDigits: data.divisorDigits,
+      firstQuotientCol: data.firstQuotientCol,
+      explanation: `Long division: ${numDividend} \u00f7 ${numDivisor} = ${correctAnswer}${numDividend % numDivisor !== 0 ? ' R' + (numDividend % numDivisor) : ''}`,
+    });
+  }
+
+  const answerCorrect = Array.isArray(userQuotient) &&
+    userQuotient.length === data.quotientDigits.length &&
+    userQuotient.every((d, i) => Number(d) === data.quotientDigits[i]);
+
+  const productsCorrect = Array.isArray(userProducts) &&
+    userProducts.length === data.steps.length &&
+    userProducts.every((p, i) => Number(p) === data.steps[i].product);
+
+  const remaindersCorrect = Array.isArray(userRemainders) &&
+    userRemainders.length === data.steps.length &&
+    userRemainders.every((r, i) => Number(r) === data.steps[i].remainder);
+
+  const allCorrect = answerCorrect && productsCorrect && remaindersCorrect;
+  let lilCoins = 0;
+  if (allCorrect) lilCoins = 15;
+
+  const solutionSteps = data.steps.map((step, i) => {
+    const qDigit = data.quotientDigits[i];
+    const bdStr = !step.isLast && step.nextDigit !== null ? ` \u2192 ${step.current * 10 + step.nextDigit}` : '';
+    return {
+      stepNum: i + 1,
+      partialDividend: step.current,
+      divisor: numDivisor,
+      quotientDigit: qDigit,
+      product: step.product,
+      difference: step.current - step.product,
+      remainder: step.remainder,
+      bringDown: bdStr,
+      isLast: step.isLast,
+      nextDigit: step.nextDigit,
+    };
+  });
+
+  res.json({
+    correct: allCorrect,
+    display: `${numDividend} \u00f7 ${numDivisor} = ${correctAnswer}${allCorrect ? ` (+${lilCoins} \ud83e\ude99)` : ''}`,
+    lil: allCorrect ? { coinsEarned: lilCoins } : null,
+    explanation: allCorrect ? '' : `Correct: ${numDividend} \u00f7 ${numDivisor} = ${correctAnswer}${numDividend % numDivisor !== 0 ? ' R' + (numDividend % numDivisor) : ''}`,
+    correctAnswer,
+    steps: data.steps,
+    solutionSteps,
+    quotientDigits: data.quotientDigits,
+    dividendDigits: data.dividendDigits,
+    divisorDigits: data.divisorDigits,
+    firstQuotientCol: data.firstQuotientCol,
+    message: allCorrect ? '' : !answerCorrect ? 'Incorrect quotient' : !productsCorrect ? 'Incorrect product(s)' : 'Incorrect remainder(s)',
+  });
+});
+
+/**
  * COLUMN SUBTRACTION API
  * ═══════════════════════════════════════════════════════════════════════════
  * Vertical column subtraction: minuend − subtrahend (minuend >= subtrahend).

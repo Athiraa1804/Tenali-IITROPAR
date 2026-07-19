@@ -90,13 +90,16 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
   const [isDragging, setIsDragging] = useState(false)
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 })
   const [showRedBanner, setShowRedBanner] = useState(false)
+  const [showOverlay, setShowOverlay] = useState(false)
   const [toasts, setToasts] = useState([])
   const prevAnomalyCountRef = useRef(0)
   const bannerShowRef = useRef(null)
   const bannerHideRef = useRef(null)
+  const overlayTimerRef = useRef(null)
   const { pipActive, pipSupported, togglePip } = usePipWindow({ videoRef, enabled: isRunning })
 
   const recentAnomalies = anomalies.slice(-5)
+  const OVERLAY_DISMISS_MS = 8000
 
   useEffect(() => {
     const newCount = anomalies.length
@@ -109,17 +112,38 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
     }
   }, [anomalies])
 
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
+    const showRef = bannerShowRef.current
+    const hideRef = bannerHideRef.current
     if (isAnomalyDetected && penaltyScore > 0) {
-      clearTimeout(bannerShowRef.current)
-      clearTimeout(bannerHideRef.current)
+      clearTimeout(showRef)
+      clearTimeout(hideRef)
+      clearTimeout(overlayTimerRef.current)
       bannerShowRef.current = setTimeout(() => {
         setShowRedBanner(true)
-        bannerHideRef.current = setTimeout(() => setShowRedBanner(false), 5000)
+        setShowOverlay(true)
+        // Auto-dismiss overlay + banner after delay even if anomaly persists
+        overlayTimerRef.current = setTimeout(() => {
+          setShowRedBanner(false)
+          setShowOverlay(false)
+        }, OVERLAY_DISMISS_MS)
       }, 0)
+    } else {
+      // Instantly hide when anomaly resolves
+      clearTimeout(showRef)
+      clearTimeout(hideRef)
+      clearTimeout(overlayTimerRef.current)
+      setShowRedBanner(false)
+      setShowOverlay(false)
     }
-    return () => { clearTimeout(bannerShowRef.current); clearTimeout(bannerHideRef.current) }
+    return () => {
+      clearTimeout(bannerShowRef.current)
+      clearTimeout(bannerHideRef.current)
+      clearTimeout(overlayTimerRef.current)
+    }
   }, [isAnomalyDetected, penaltyScore])
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   const handleMouseDown = (e) => {
     if (e.target.closest('button')) return
@@ -157,7 +181,7 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
       </div>
 
       {/* Red warning banner */}
-      {showRedBanner && isAnomalyDetected && (
+      {showRedBanner && (
         <div className="proctor-red-banner" style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100001,
           background: 'linear-gradient(135deg, #dc2626, #b91c1c)', color: 'white',
@@ -240,8 +264,8 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
             }} />
           )}
 
-          {/* Anomaly overlay — always show when there are recent anomalies */}
-          {recentAnomalies.length > 0 && !isCollapsed && (
+          {/* Anomaly overlay — auto-dismisses after delay */}
+          {showOverlay && recentAnomalies.length > 0 && !isCollapsed && (
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
               background: 'rgba(0,0,0,0.75)', zIndex: 10,

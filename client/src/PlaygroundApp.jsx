@@ -932,7 +932,20 @@ export default function PlaygroundApp({ onBack }) {
         </div>
 
         {/* History */}
-        <History output={output} langId={langId} />
+        <History
+          output={output}
+          langId={langId}
+          code={code}
+          stdin={stdin}
+          onLoad={(h) => {
+            setLangId(h.langId)
+            setCode(h.code)
+            setStdin(h.stdin || '')
+            setOutput(null)
+            setError(null)
+            setActiveTab('output')
+          }}
+        />
       </div>
 
       <style>{`
@@ -945,14 +958,18 @@ export default function PlaygroundApp({ onBack }) {
   )
 }
 
-function History({ output, langId }) {
+function History({ output, langId, code, stdin, onLoad }) {
   const [history, setHistory] = useState([])
+  const [viewing, setViewing] = useState(null)
 
   useEffect(() => {
     if (!output) return
     const entry = {
       id: Date.now(),
       lang: getLangName(langId),
+      langId,
+      code,
+      stdin: stdin || '',
       status: output.status?.description || 'Unknown',
       statusId: output.status?.id,
       time: output.time,
@@ -990,17 +1007,115 @@ function History({ output, langId }) {
               color: h.statusId === 3 ? 'var(--clr-correct)' : 'var(--clr-wrong)',
               fontWeight: 500, fontSize: '0.78rem',
             }}>{h.status}</span>
-            {h.time && <span style={{ color: 'var(--clr-text-soft)', marginLeft: 'auto' }}>{h.time}s</span>}
+            {h.time && <span style={{ color: 'var(--clr-text-soft)' }}>{h.time}s</span>}
             {h.stdout && h.stdout.trim().length > 0 && (
               <span style={{
                 color: 'var(--clr-text-soft)', fontFamily: "'JetBrains Mono', monospace",
-                fontSize: '0.75rem', maxWidth: 120, overflow: 'hidden', textOverflow: 'ellipsis',
+                fontSize: '0.75rem', maxWidth: 100, overflow: 'hidden', textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
               }}>{h.stdout.trim()}</span>
             )}
+            <div style={{ marginLeft: 'auto', display: 'flex', gap: 4 }}>
+              <button
+                onClick={() => setViewing(h)}
+                style={{
+                  background: 'transparent', color: 'var(--clr-accent)',
+                  border: '1px solid var(--clr-border)', borderRadius: 4,
+                  padding: '3px 8px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 500,
+                }}
+              >
+                View Code
+              </button>
+              <button
+                onClick={() => onLoad(h)}
+                style={{
+                  background: 'transparent', color: 'var(--clr-text-soft)',
+                  border: '1px solid var(--clr-border)', borderRadius: 4,
+                  padding: '3px 8px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 500,
+                }}
+              >
+                Load
+              </button>
+            </div>
           </div>
         ))}
       </div>
+
+      {/* View Code Modal */}
+      {viewing && (
+        <div
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)',
+            zIndex: 10000, display: 'flex', justifyContent: 'center', alignItems: 'center',
+            padding: 24,
+          }}
+          onClick={() => setViewing(null)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: '#1a1b26', border: '1px solid #2f3146', borderRadius: 'var(--radius)',
+              width: '100%', maxWidth: 720, maxHeight: '80vh', display: 'flex', flexDirection: 'column',
+              overflow: 'hidden',
+            }}
+          >
+            <div style={{
+              padding: '12px 16px', borderBottom: '1px solid #2f3146',
+              display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+            }}>
+              <div>
+                <span style={{ color: '#c0caf5', fontWeight: 600, fontSize: '0.9rem' }}>
+                  {viewing.lang}
+                </span>
+                <span style={{ color: '#7982a9', fontSize: '0.78rem', marginLeft: 10 }}>
+                  {viewing.status}
+                  {viewing.time && ` · ${viewing.time}s`}
+                </span>
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button
+                  onClick={() => {
+                    onLoad(viewing)
+                    setViewing(null)
+                  }}
+                  style={{
+                    background: '#7aa2f7', color: '#fff', border: 'none', borderRadius: 6,
+                    padding: '6px 14px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
+                  }}
+                >
+                  Load Code
+                </button>
+                <button
+                  onClick={() => setViewing(null)}
+                  style={{
+                    background: 'transparent', color: '#7982a9', border: '1px solid #2f3146',
+                    borderRadius: 6, padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer',
+                  }}
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+            <div style={{ padding: '14px 16px', overflow: 'auto', flex: 1 }}>
+              <pre style={{
+                margin: 0, color: '#c0caf5', fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.84rem', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word',
+              }}>{viewing.code}</pre>
+            </div>
+            {viewing.stdout && (
+              <div style={{
+                borderTop: '1px solid #2f3146', padding: '10px 16px',
+                fontSize: '0.78rem', color: '#7982a9',
+              }}>
+                <span style={{ fontWeight: 600 }}>Output:</span>{' '}
+                <span style={{ color: '#9ece6a', fontFamily: "'JetBrains Mono', monospace" }}>
+                  {viewing.stdout.length > 120 ? viewing.stdout.slice(0, 120) + '...' : viewing.stdout}
+                </span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -451,221 +451,311 @@ const PREVIEW_LANG_IDS = new Set([43, 97, 102, 93, 101, 94, 74])
 function isPreviewLang(id) { return PREVIEW_LANG_IDS.has(id) }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* Code Visualizer — traces variables, arrays, loops, and conditionals       */
+/* Code Visualizer — line-by-line execution trace like Python Tutor          */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 function generateVizSteps(code, langId) {
-  const lines = code.split('\n').filter(l => l.trim())
-  if (lines.length === 0) return []
+  const lines = code.split('\n')
+  const nonEmpty = lines.map((l, i) => ({ text: l, origIdx: i })).filter(l => l.text.trim())
+  if (nonEmpty.length === 0) return []
 
   const vars = {}
   const steps = []
-  let lineIdx = 0
+  const seenOutputs = []
 
-  function snapshot(label) {
+  function snap(lineNum, label, arrow) {
     steps.push({
+      line: lineNum,
       label,
-      line: lineIdx + 1,
-      codeLine: lines[lineIdx]?.trim() || '',
+      arrow: arrow || '→',
       vars: JSON.parse(JSON.stringify(vars)),
+      outputs: [...seenOutputs],
     })
   }
 
-  function findBlock(startIdx) {
-    const braceMatch = lines[startIdx]?.match(/{\s*$/)
-    if (braceMatch) {
-      let depth = 1, i = startIdx + 1
-      while (i < lines.length && depth > 0) {
-        if (lines[i].includes('{')) depth++
-        if (lines[i].includes('}')) depth--
-        i++
-      }
-      return lines.slice(startIdx + 1, i - 1)
-    }
-    const indent = (lines[startIdx + 1] || '').match(/^(\s+)/)?.[1]?.length || 2
-    const body = []
-    for (let i = startIdx + 1; i < lines.length; i++) {
-      const lineIndent = (lines[i].match(/^(\s+)/)?.[1] || '').length
-      if (lines[i].trim() === '' || lineIndent >= indent) body.push(lines[i])
-      else break
-    }
-    return body
+  function getIndent(line) {
+    return (line.match(/^(\s*)/)?.[1] || '').length
   }
 
-  function parseVal(s) {
-    if (!s) return s
-    s = s.trim().replace(/;$/, '').replace(/,$/, '')
-    if (/^-?\d+$/.test(s)) return parseInt(s)
-    if (/^-?\d+\.\d+$/.test(s)) return parseFloat(s)
-    if (/^["'].*["']$/.test(s)) return s.slice(1, -1)
-    if (s === 'true') return true
-    if (s === 'false') return false
-    if (/^\[.*\]$/.test(s)) {
-      try { return JSON.parse(s) } catch { return s }
+  function resolveVal(expr) {
+    if (!expr) return 0
+    expr = expr.trim().replace(/;$/, '')
+    if (/^-?\d+(\.\d+)?$/.test(expr)) return parseFloat(expr)
+    if (/^["'].*["']$/.test(expr)) return expr.slice(1, -1)
+    if (expr === 'true') return true
+    if (expr === 'false') return false
+    if (vars[expr] !== undefined) return vars[expr]
+    if (/^\w+\s*\+\s*\w+$/.test(expr)) {
+      const [a, b] = expr.split(/\s*\+\s*/)
+      const va = vars[a] !== undefined ? vars[a] : parseFloat(a)
+      const vb = vars[b] !== undefined ? vars[b] : parseFloat(b)
+      if (typeof va === 'number' && typeof vb === 'number') return va + vb
     }
-    if (vars[s] !== undefined) return vars[s]
-    return s
+    if (/^\w+\s*\*\s*\w+$/.test(expr)) {
+      const [a, b] = expr.split(/\s*\*\s*/)
+      const va = vars[a] !== undefined ? vars[a] : parseFloat(a)
+      const vb = vars[b] !== undefined ? vars[b] : parseFloat(b)
+      if (typeof va === 'number' && typeof vb === 'number') return va * vb
+    }
+    if (/^\w+\s*-\s*\w+$/.test(expr)) {
+      const [a, b] = expr.split(/\s*-\s*/)
+      const va = vars[a] !== undefined ? vars[a] : parseFloat(a)
+      const vb = vars[b] !== undefined ? vars[b] : parseFloat(b)
+      if (typeof va === 'number' && typeof vb === 'number') return va - vb
+    }
+    if (/^\w+\s*\/\s*\w+$/.test(expr)) {
+      const [a, b] = expr.split(/\s*\//)
+      const va = vars[a] !== undefined ? vars[a] : parseFloat(a)
+      const vb = vars[b] !== undefined ? vars[b] : parseFloat(b)
+      if (typeof va === 'number' && typeof vb === 'number') return va / vb
+    }
+    return expr
   }
 
-  function assignVar(name, val) {
-    const clean = val.trim().replace(/;$/, '').replace(/,$/, '')
-    if (/^\[/.test(clean)) {
-      try { vars[name] = JSON.parse(clean); return } catch {}
-    }
-    if (/^-?\d+(\.\d+)?$/.test(clean)) {
-      vars[name] = parseFloat(clean); return
-    }
-    if (/^["']/.test(clean)) {
-      vars[name] = clean.slice(1, -1); return
-    }
-    if (/^\w+\s*\+/.test(clean)) {
-      const parts = clean.split(/\s*\+\s*/)
-      let sum = 0, allNum = true
-      for (const p of parts) {
-        const v = vars[p] !== undefined ? vars[p] : (parseFloat(p))
-        if (isNaN(v)) { allNum = false; break }
-        sum += v
-      }
-      if (allNum) { vars[name] = sum; return }
-    }
-    if (/^\w+\s*\*/.test(clean)) {
-      const parts = clean.split(/\s*\*\s*/)
-      let prod = 1, allNum = true
-      for (const p of parts) {
-        const v = vars[p] !== undefined ? vars[p] : (parseFloat(p))
-        if (isNaN(v)) { allNum = false; break }
-        prod *= v
-      }
-      if (allNum) { vars[name] = prod; return }
-    }
-    if (vars[clean] !== undefined) { vars[name] = vars[clean]; return }
-    vars[name] = clean
+  function setVar(name, val) {
+    if (Array.isArray(val)) { vars[name] = [...val]; return }
+    vars[name] = val
   }
 
-  snapshot('Start')
+  let i = 0
+  snap(nonEmpty[0]?.origIdx + 1 || 1, 'Start program', '▶')
 
-  while (lineIdx < lines.length) {
-    const line = lines[lineIdx].trim()
+  while (i < nonEmpty.length) {
+    const { text: rawLine, origIdx } = nonEmpty[i]
+    const line = rawLine.trim()
+    const lineNum = origIdx + 1
 
-    const pyFor = line.match(/^for\s+(\w+)\s+in\s+range\((.+?)\)/)
-    const jsFor = line.match(/^for\s*\(\s*(?:let|var|const\s+)?(\w+)\s*=\s*(\d+)\s*;\s*\w+\s*([<>=!]+)\s*(\d+)\s*;.*?\)/)
-    const cFor = jsFor
-    const whileMatch = line.match(/^while\s*\((.+?)\)\s*\{?\s*$/)
+    if (line === '' || line.startsWith('#') || line.startsWith('//') || line.startsWith('/*') || line.startsWith('*') || line.startsWith(';;;') || line.startsWith('%')) {
+      i++; continue
+    }
 
+    /* ─── for ... in range(...) — Python ─── */
+    const pyFor = line.match(/^for\s+(\w+)\s+in\s+range\((.+?)\)\s*:?$/)
     if (pyFor) {
       const v = pyFor[1]
-      const rangeArgs = pyFor[2].split(',').map(s => parseInt(s.trim()))
+      const args = pyFor[2].split(',').map(s => resolveVal(s.trim()))
       let start = 0, end, step = 1
-      if (rangeArgs.length === 1) { end = rangeArgs[0] }
-      else if (rangeArgs.length === 2) { start = rangeArgs[0]; end = rangeArgs[1] }
-      else { start = rangeArgs[0]; end = rangeArgs[1]; step = rangeArgs[2] }
-      const body = findBlock(lineIdx)
-      for (let i = start; step > 0 ? i < end : i > end; i += step) {
-        vars[v] = i
-        for (const bl of body) {
-          const trimmed = bl.trim()
-          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
-          if (asgn) assignVar(asgn[1], asgn[2])
-          const augAdd = trimmed.match(/^(\w+)\s*\+=\s*(.+)/)
-          if (augAdd && vars[augAdd[1]] !== undefined) {
-            const rv = parseVal(augAdd[2])
-            if (typeof vars[augAdd[1]] === 'number' && typeof rv === 'number')
-              vars[augAdd[1]] += rv
-          }
-        }
-        snapshot(`Loop ${v}=${i}`)
+      if (args.length === 1) end = args[0]
+      else if (args.length === 2) { start = args[0]; end = args[1] }
+      else { start = args[0]; end = args[1]; step = args[2] }
+      end = typeof end === 'number' ? end : parseInt(end) || 0
+      start = typeof start === 'number' ? start : parseInt(start) || 0
+      step = typeof step === 'number' ? step : parseInt(step) || 1
+
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      if (bodyStart < nonEmpty.length) {
+        const bodyIndent = getIndent(nonEmpty[bodyStart].text)
+        while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
       }
-      lineIdx += 1 + body.length
-    } else if (jsFor) {
-      const v = jsFor[1]
-      let val = parseInt(jsFor[2])
-      const end = parseInt(jsFor[4])
-      const op = jsFor[3]
-      const body = findBlock(lineIdx)
+      const body = nonEmpty.slice(bodyStart, bodyEnd).filter(l => l.text.trim())
+
+      snap(lineNum, `for ${v} in range(${start}, ${end}, ${step})`, '⟳')
+      for (let iter = start; step > 0 ? iter < end : iter > end; iter += step) {
+        setVar(v, iter)
+        for (const bl of body) {
+          const blLine = bl.origIdx + 1
+          const blText = bl.text.trim()
+          const asgn = blText.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) { const nv = resolveVal(asgn[2]); setVar(asgn[1], nv); snap(blLine, `${asgn[1]} = ${nv}`, '→') }
+          const aug = blText.match(/^(\w+)\s*\+=\s*(.+)/)
+          if (aug && vars[aug[1]] !== undefined) {
+            const rv = resolveVal(aug[2])
+            if (typeof vars[aug[1]] === 'number' && typeof rv === 'number') { vars[aug[1]] += rv; snap(blLine, `${aug[1]} += ${rv} → ${vars[aug[1]]}`, '→') }
+          }
+          const pr = blText.match(/^print\((.+)\)$/)
+          if (pr) { const outVal = resolveVal(pr[1]); seenOutputs.push(String(outVal)); snap(blLine, `print → ${outVal}`, '▸') }
+        }
+        snap(lineNum, `i = ${iter}`, '⟳')
+      }
+      i = bodyEnd
+      continue
+    }
+
+    /* ─── for (let i = ...) — JS/C/C++/Java ─── */
+    const cFor = line.match(/^for\s*\(\s*(?:let|var|const\s+)?(\w+)\s*=\s*(\d+)\s*;\s*\w+\s*([<>=!]+)\s*(\d+)\s*;/)
+    if (cFor) {
+      const v = cFor[1]
+      let val = parseInt(cFor[2])
+      const end = parseInt(cFor[4])
+      const op = cFor[3]
       const check = (a, b) => {
-        if (op === '<') return a < b
-        if (op === '<=') return a <= b
-        if (op === '>') return a > b
-        if (op === '>=') return a >= b
-        if (op === '!==') return a !== b
-        if (op === '!=') return a !== b
+        if (op === '<') return a < b; if (op === '<=') return a <= b
+        if (op === '>') return a > b; if (op === '>=') return a >= b
         return a < b
       }
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      const bodyIndent = bodyStart < nonEmpty.length ? getIndent(nonEmpty[bodyStart].text) : 0
+      while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
+      const body = nonEmpty.slice(bodyStart, bodyEnd).filter(l => l.text.trim())
+
+      snap(lineNum, `for (${v} = ${val}; ${v} ${op} ${end})`, '⟳')
       let safety = 0
       while (check(val, end) && safety < 200) {
-        vars[v] = val
+        setVar(v, val)
         for (const bl of body) {
-          const trimmed = bl.trim()
-          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
-          if (asgn) assignVar(asgn[1], asgn[2])
-          const augAdd = trimmed.match(/^(\w+)\s*\+=\s*(.+)/)
-          if (augAdd && vars[augAdd[1]] !== undefined) {
-            const rv = parseVal(augAdd[2])
-            if (typeof vars[augAdd[1]] === 'number' && typeof rv === 'number')
-              vars[augAdd[1]] += rv
+          const blLine = bl.origIdx + 1
+          const blText = bl.text.trim()
+          const asgn = blText.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) { const nv = resolveVal(asgn[2]); setVar(asgn[1], nv); snap(blLine, `${asgn[1]} = ${nv}`, '→') }
+          const aug = blText.match(/^(\w+)\s*\+=\s*(.+)/)
+          if (aug && vars[aug[1]] !== undefined) {
+            const rv = resolveVal(aug[2])
+            if (typeof vars[aug[1]] === 'number' && typeof rv === 'number') { vars[aug[1]] += rv; snap(blLine, `${aug[1]} += ${rv} → ${vars[aug[1]]}`, '→') }
           }
-          const inc = trimmed.match(/^(\w+)\+\+$/)
-          if (inc && typeof vars[inc[1]] === 'number') vars[inc[1]]++
+          const inc = blText.match(/^(\w+)\+\+$/)
+          if (inc && typeof vars[inc[1]] === 'number') { vars[inc[1]]++; snap(blLine, `${inc[1]}++ → ${vars[inc[1]]}`, '→') }
+          const pr = blText.match(/console\.log\((.+)\)/)
+          if (pr) { const outVal = resolveVal(pr[1]); seenOutputs.push(String(outVal)); snap(blLine, `console.log → ${outVal}`, '▸') }
+          const pr2 = blText.match(/printf\((.+)\)/)
+          if (pr2) { seenOutputs.push(pr2[1]); snap(blLine, `printf → ${pr2[1]}`, '▸') }
         }
-        snapshot(`Loop ${v}=${val}`)
-        val += (step => step || 1)(body.join('').match(/(\w+)\s*\+=\s*1/) ? 1 : 1)
-        const incInBody = body.join('').match(new RegExp(`${v}\\+\\+`))
-        if (incInBody) val = vars[v] !== undefined ? vars[v] + 1 : val
+        snap(lineNum, `${v} = ${val}`, '⟳')
+        const incInBody = body.some(bl => bl.text.trim() === `${v}++`)
+        if (incInBody) { val = vars[v] + 1 }
         else {
-          const addMatch = body.join('').match(new RegExp(`${v}\\s*\\+=\\s*(\\d+)`))
-          val = vars[v] !== undefined ? vars[v] + (addMatch ? parseInt(addMatch[1]) : 1) : val
+          const addMatch = body.find(bl => bl.text.trim().match(new RegExp(`^${v}\\s*\\+=\\s*\\d+$`)))
+          if (addMatch) val = vars[v] + parseInt(addMatch.text.trim().match(/\+=\s*(\d+)/)[1])
+          else val++
         }
         safety++
       }
-      lineIdx += 1 + body.length
-    } else if (whileMatch) {
-      const body = findBlock(lineIdx)
+      i = bodyEnd
+      continue
+    }
+
+    /* ─── while (...) ─── */
+    const whileMatch = line.match(/^while\s*\((.+?)\)\s*\{?\s*$/)
+    if (whileMatch) {
+      const cond = whileMatch[1]
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      const bodyIndent = bodyStart < nonEmpty.length ? getIndent(nonEmpty[bodyStart].text) : 0
+      while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
+      const body = nonEmpty.slice(bodyStart, bodyEnd).filter(l => l.text.trim())
+
+      snap(lineNum, `while (${cond})`, '⟳')
       let safety = 0
+      let condVal = true
       while (safety < 50) {
         for (const bl of body) {
-          const trimmed = bl.trim()
-          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
-          if (asgn) assignVar(asgn[1], asgn[2])
-          const inc = trimmed.match(/^(\w+)\+\+$/)
-          if (inc && typeof vars[inc[1]] === 'number') vars[inc[1]]++
+          const blLine = bl.origIdx + 1
+          const blText = bl.text.trim()
+          const asgn = blText.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) { const nv = resolveVal(asgn[2]); setVar(asgn[1], nv); snap(blLine, `${asgn[1]} = ${nv}`, '→') }
+          const inc = blText.match(/^(\w+)\+\+$/)
+          if (inc && typeof vars[inc[1]] === 'number') { vars[inc[1]]++; snap(blLine, `${inc[1]}++ → ${vars[inc[1]]}`, '→') }
         }
-        snapshot(`While iter ${safety + 1}`)
+        snap(lineNum, `while iter ${safety + 1}`, '⟳')
         safety++
-        let condTrue = true
-        const cond = whileMatch[1]
-        if (/\s*<\s*\d+/.test(cond)) {
-          const [lv, rv] = cond.split(/<\s*/)
-          const lval = vars[lv.trim()] ?? parseInt(lv)
-          condTrue = parseInt(lval) < parseInt(rv)
-        }
-        if (!condTrue) break
+        const matchOp = cond.match(/(\w+)\s*<\s*(\w+)/)
+        if (matchOp) {
+          const lv = vars[matchOp[1]] !== undefined ? vars[matchOp[1]] : parseInt(matchOp[1])
+          const rv = parseInt(matchOp[2])
+          if (!(parseInt(lv) < rv)) { condVal = false; break }
+        } else break
       }
-      lineIdx += 1 + body.length
-    } else if (/^(if|else\s+if)\s*[\({]/.test(line)) {
-      const body = findBlock(lineIdx)
-      lineIdx += 1 + body.length
-      snapshot(`If branch`)
-    } else {
-      const asgn = line.match(/^(\w+)\s*=\s*(.+)/)
-      if (asgn) {
-        assignVar(asgn[1], asgn[2])
-        snapshot(`Assign ${asgn[1]}`)
-      } else {
-        const inc = line.match(/^(\w+)\+\+$/)
-        if (inc && typeof vars[inc[1]] === 'number') {
-          vars[inc[1]]++
-          snapshot(`Increment ${inc[1]}`)
-        }
-      }
-      lineIdx++
+      i = bodyEnd
+      continue
     }
+
+    /* ─── if / else if / else ─── */
+    if (/^(if|else\s*if)\s*[\({]/.test(line)) {
+      snap(lineNum, line.length > 50 ? line.slice(0, 47) + '...' : line, '?')
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      if (bodyStart < nonEmpty.length) {
+        const bodyIndent = getIndent(nonEmpty[bodyStart].text)
+        while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
+      }
+      i = bodyEnd
+      continue
+    }
+    if (/^else\s*[:{]/.test(line)) {
+      snap(lineNum, 'else', '?')
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      if (bodyStart < nonEmpty.length) {
+        const bodyIndent = getIndent(nonEmpty[bodyStart].text)
+        while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
+      }
+      i = bodyEnd
+      continue
+    }
+
+    /* ─── print / console.log / printf ─── */
+    const prPy = line.match(/^print\((.+)\)$/)
+    if (prPy) { const v = resolveVal(prPy[1]); seenOutputs.push(String(v)); snap(lineNum, `print → ${v}`, '▸'); i++; continue }
+    const prJs = line.match(/console\.log\((.+)\)/)
+    if (prJs) { const v = resolveVal(prJs[1]); seenOutputs.push(String(v)); snap(lineNum, `console.log → ${v}`, '▸'); i++; continue }
+    const prC = line.match(/printf\((.+)\)/)
+    if (prC) { seenOutputs.push(prC[1]); snap(lineNum, `printf`, '▸'); i++; continue }
+    const prJs2 = line.match(/System\.out\.println\((.+)\)/)
+    if (prJs2) { seenOutputs.push(prJs2[1]); snap(lineNum, `System.out.println`, '▸'); i++; continue }
+    const prPuts = line.match(/puts\s+(.+)/)
+    if (prPuts) { seenOutputs.push(prPuts[1]); snap(lineNum, `puts`, '▸'); i++; continue }
+
+    /* ─── variable assignment ─── */
+    const pyAssign = line.match(/^(\w+)\s*=\s*(.+)/)
+    if (pyAssign && !line.includes('(')) {
+      const nv = resolveVal(pyAssign[2])
+      setVar(pyAssign[1], nv)
+      snap(lineNum, `${pyAssign[1]} = ${JSON.stringify(nv)}`, '→')
+      i++; continue
+    }
+    const cAssign = line.match(/^(?:int|float|double|long|char|string|var|let|const)\s+(\w+)\s*=\s*(.+)/)
+    if (cAssign) {
+      const nv = resolveVal(cAssign[2])
+      setVar(cAssign[1], nv)
+      snap(lineNum, `${cAssign[1]} = ${JSON.stringify(nv)}`, '→')
+      i++; continue
+    }
+    const jsAssign = line.match(/^(\w+)\s*=\s*(.+)/)
+    if (jsAssign) {
+      const nv = resolveVal(jsAssign[2])
+      setVar(jsAssign[1], nv)
+      snap(lineNum, `${jsAssign[1]} = ${JSON.stringify(nv)}`, '→')
+      i++; continue
+    }
+
+    /* ─── i++ / i-- ─── */
+    const inc = line.match(/^(\w+)\+\+$/)
+    if (inc && typeof vars[inc[1]] === 'number') {
+      vars[inc[1]]++
+      snap(lineNum, `${inc[1]}++ → ${vars[inc[1]]}`, '→')
+      i++; continue
+    }
+
+    /* ─── C array init: int[] arr = {1,2,3} or let arr = [1,2,3] ─── */
+    const arrInit = line.match(/(\w+)\s*=\s*\[(.+)\]/) || line.match(/(\w+)\s*=\s*\{(.+)\}/)
+    if (arrInit) {
+      try {
+        const arr = arrInit[2].split(',').map(s => resolveVal(s.trim()))
+        setVar(arrInit[1], arr)
+        snap(lineNum, `${arrInit[1]} = [${arr.join(', ')}]`, '→')
+      } catch {}
+      i++; continue
+    }
+
+    /* ─── function definitions — skip body ─── */
+    if (/^(def |function |fn |func |fun |void |int |char )/.test(line)) {
+      snap(lineNum, line.length > 50 ? line.slice(0, 47) + '...' : line, 'ƒ')
+      const bodyStart = i + 1
+      let bodyEnd = bodyStart
+      if (bodyStart < nonEmpty.length) {
+        const bodyIndent = getIndent(nonEmpty[bodyStart].text)
+        while (bodyEnd < nonEmpty.length && (getIndent(nonEmpty[bodyEnd].text) > bodyIndent || nonEmpty[bodyEnd].text.trim() === '')) bodyEnd++
+      }
+      i = bodyEnd
+      continue
+    }
+
+    /* ─── anything else — just show the line ─── */
+    snap(lineNum, line.length > 50 ? line.slice(0, 47) + '...' : line, '→')
+    i++
   }
 
-  if (steps.length === 0) {
-    snapshot('End')
-  } else {
-    steps.push({ label: 'Done', line: lines.length, codeLine: '', vars: JSON.parse(JSON.stringify(vars)) })
-  }
-
+  snap(nonEmpty[nonEmpty.length - 1]?.origIdx + 1 || 1, 'Program ended', '■')
   return steps
 }
 
@@ -1232,180 +1322,277 @@ function TerminalPanel({ output, error, running, stdout, stderr, compileOut, sta
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════ */
-/* Code Visualizer Panel — shows variables and execution steps              */
+/* Code Visualizer Panel - Python Tutor style: code+arrow | memory boxes    */
 /* ═══════════════════════════════════════════════════════════════════════════ */
 function CodeVizPanel({ steps, code }) {
   const [activeStep, setActiveStep] = useState(0)
+  const [playing, setPlaying] = useState(false)
+  const timerRef = useRef(null)
 
   useEffect(() => {
     setActiveStep(0)
+    setPlaying(false)
+    if (timerRef.current) clearInterval(timerRef.current)
   }, [code])
+
+  useEffect(() => {
+    return () => { if (timerRef.current) clearInterval(timerRef.current) }
+  }, [])
+
+  const togglePlay = useCallback(() => {
+    if (playing) {
+      setPlaying(false)
+      if (timerRef.current) clearInterval(timerRef.current)
+      return
+    }
+    if (activeStep >= steps.length - 1) setActiveStep(0)
+    setPlaying(true)
+    timerRef.current = setInterval(() => {
+      setActiveStep(prev => {
+        if (prev >= steps.length - 1) {
+          setPlaying(false)
+          clearInterval(timerRef.current)
+          return prev
+        }
+        return prev + 1
+      })
+    }, 600)
+  }, [playing, activeStep, steps.length])
 
   if (steps.length === 0) {
     return (
       <div style={{
         background: '#1a1b26', border: '1px solid #2f3146',
         borderRadius: '0 0 var(--radius) var(--radius)',
-        minHeight: 200, maxHeight: 420, overflow: 'auto', padding: '48px 16px',
+        minHeight: 200, maxHeight: 500, overflow: 'auto', padding: '48px 16px',
         textAlign: 'center',
       }}>
         <div style={{ color: '#7982a9', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem' }}>
           Write code with variables and loops to see the execution trace
           <div style={{ marginTop: 8, fontSize: '0.75rem', opacity: 0.6 }}>
-            Supports: for/while loops, variable assignments, array operations
+            Supports: for/while loops, variable assignments, print statements
           </div>
         </div>
       </div>
     )
   }
 
-  const step = steps[activeStep] || steps[0]
+  const step = steps[Math.min(activeStep, steps.length - 1)]
+  const codeLines = code.split('\n')
   const allVarKeys = new Set()
   steps.forEach(s => Object.keys(s.vars).forEach(k => allVarKeys.add(k)))
   const varKeys = [...allVarKeys]
+  const prevStep = activeStep > 0 ? steps[activeStep - 1] : null
 
   return (
     <div style={{
       background: '#1a1b26', border: '1px solid #2f3146',
       borderRadius: '0 0 var(--radius) var(--radius)',
-      minHeight: 200, maxHeight: 420, overflow: 'auto', display: 'flex', flexDirection: 'column',
+      minHeight: 300, maxHeight: 500, overflow: 'hidden', display: 'flex', flexDirection: 'column',
     }}>
-      {/* Step controls */}
+      {/* Controls bar */}
       <div style={{
         padding: '8px 12px', borderBottom: '1px solid #2f3146',
-        display: 'flex', alignItems: 'center', gap: 8,
+        display: 'flex', alignItems: 'center', gap: 8, background: '#16161e',
       }}>
         <button
-          onClick={() => setActiveStep(s => Math.max(0, s - 1))}
+          onClick={() => { setActiveStep(0); setPlaying(false); if (timerRef.current) clearInterval(timerRef.current) }}
+          style={{ background: 'transparent', color: '#7982a9', border: 'none', padding: '4px 6px', fontSize: '0.9rem', cursor: 'pointer' }}
+          title="Reset"
+        >{'\u27F2'}</button>
+        <button
+          onClick={() => { if (activeStep > 0) { setActiveStep(s => s - 1); setPlaying(false) } }}
           disabled={activeStep === 0}
+          style={{ background: 'transparent', color: activeStep === 0 ? '#3b3f5c' : '#7aa2f7', border: 'none', padding: '4px 8px', fontSize: '0.9rem', cursor: activeStep === 0 ? 'not-allowed' : 'pointer' }}
+        >{'\u25C0'}</button>
+        <button
+          onClick={togglePlay}
           style={{
-            background: 'transparent', color: activeStep === 0 ? '#3b3f5c' : '#7aa2f7',
-            border: '1px solid #2f3146', borderRadius: 4, padding: '3px 10px',
-            fontSize: '0.75rem', cursor: activeStep === 0 ? 'not-allowed' : 'pointer',
+            background: playing ? '#f7768e' : '#7aa2f7', color: '#fff',
+            border: 'none', borderRadius: '50%', width: 28, height: 28,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: '0.7rem', cursor: 'pointer', fontWeight: 700,
           }}
-        >← Prev</button>
-        <span style={{ color: '#7982a9', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
+        >{playing ? '\u275A\u275A' : '\u25B6'}</button>
+        <button
+          onClick={() => { if (activeStep < steps.length - 1) { setActiveStep(s => s + 1); setPlaying(false) } }}
+          disabled={activeStep >= steps.length - 1}
+          style={{ background: 'transparent', color: activeStep >= steps.length - 1 ? '#3b3f5c' : '#7aa2f7', border: 'none', padding: '4px 8px', fontSize: '0.9rem', cursor: activeStep >= steps.length - 1 ? 'not-allowed' : 'pointer' }}
+        >{'\u25B6'}</button>
+        <span style={{ color: '#7982a9', fontSize: '0.72rem', fontFamily: "'JetBrains Mono', monospace", marginLeft: 4 }}>
           Step {activeStep + 1} / {steps.length}
         </span>
-        <button
-          onClick={() => setActiveStep(s => Math.min(steps.length - 1, s + 1))}
-          disabled={activeStep === steps.length - 1}
-          style={{
-            background: 'transparent',
-            color: activeStep === steps.length - 1 ? '#3b3f5c' : '#7aa2f7',
-            border: '1px solid #2f3146', borderRadius: 4, padding: '3px 10px',
-            fontSize: '0.75rem',
-            cursor: activeStep === steps.length - 1 ? 'not-allowed' : 'pointer',
-          }}
-        >Next →</button>
         <div style={{ flex: 1 }} />
-        <button
-          onClick={() => {
-            let i = activeStep
-            const timer = setInterval(() => {
-              i++
-              if (i >= steps.length) { clearInterval(timer); return }
-              setActiveStep(i)
-            }, 400)
-          }}
-          disabled={activeStep === steps.length - 1}
-          style={{
-            background: activeStep === steps.length - 1 ? '#3b3f5c' : '#7aa2f7',
-            color: '#fff', border: 'none', borderRadius: 4, padding: '3px 12px',
-            fontSize: '0.72rem', fontWeight: 600,
-            cursor: activeStep === steps.length - 1 ? 'not-allowed' : 'pointer',
-          }}
-        >▶ Play All</button>
+        <span style={{ color: '#bb9af7', fontSize: '0.72rem', fontWeight: 600 }}>{step.label}</span>
       </div>
 
-      {/* Step description */}
-      <div style={{
-        padding: '8px 14px', borderBottom: '1px solid #2f3146',
-        display: 'flex', alignItems: 'center', gap: 10,
-      }}>
-        <span style={{
-          background: '#7aa2f733', color: '#7aa2f7', padding: '2px 8px',
-          borderRadius: 4, fontSize: '0.72rem', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
+      {/* Split: Code (left) | Memory (right) */}
+      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        {/* Left: Code with arrow */}
+        <div style={{
+          flex: 1, overflow: 'auto', borderRight: '1px solid #2f3146',
+          fontFamily: "'JetBrains Mono', monospace", fontSize: '0.78rem', lineHeight: 1.7,
+          minWidth: 0,
         }}>
-          Line {step.line}
-        </span>
-        <span style={{ color: '#c0caf5', fontSize: '0.78rem', fontWeight: 500 }}>
-          {step.label}
-        </span>
-        {step.codeLine && (
-          <span style={{
-            color: '#7982a9', fontSize: '0.72rem', fontFamily: "'JetBrains Mono', monospace",
-            marginLeft: 'auto', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-          }}>
-            {step.codeLine}
-          </span>
-        )}
-      </div>
+          {codeLines.map((line, idx) => {
+            const lineNum = idx + 1
+            const isCurrent = step.line === lineNum
 
-      {/* Variables table */}
-      {varKeys.length > 0 && (
-        <div style={{ padding: '8px 14px', borderBottom: '1px solid #2f3146' }}>
-          <div style={{ fontSize: '0.68rem', color: '#7982a9', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6, fontWeight: 700 }}>
-            Variables
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-            {varKeys.map(k => {
-              const val = step.vars[k]
-              const prev = activeStep > 0 ? steps[activeStep - 1]?.vars[k] : undefined
-              const changed = val !== prev && activeStep > 0
-              const isArr = Array.isArray(val)
-              return (
-                <div key={k} style={{
-                  background: changed ? '#7aa2f722' : '#16161e',
-                  border: `1px solid ${changed ? '#7aa2f766' : '#2f3146'}`,
-                  borderRadius: 6, padding: '6px 10px', minWidth: 60,
+            return (
+              <div
+                key={idx}
+                style={{
+                  display: 'flex', alignItems: 'stretch',
+                  background: isCurrent ? '#7aa2f722' : 'transparent',
+                  borderLeft: isCurrent ? '3px solid #7aa2f7' : '3px solid transparent',
+                  transition: 'background 0.2s',
+                }}
+              >
+                <div style={{
+                  width: 22, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  color: isCurrent ? '#7aa2f7' : 'transparent', fontSize: '0.7rem',
+                  fontWeight: 700, flexShrink: 0, transition: 'color 0.2s',
                 }}>
-                  <div style={{ fontSize: '0.68rem', color: '#bb9af7', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
-                    {k}
-                  </div>
-                  <div style={{
-                    fontSize: '0.82rem', color: isArr ? '#e0af68' : '#9ece6a',
-                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 600,
-                    marginTop: 2,
-                  }}>
-                    {isArr ? `[${val.join(', ')}]` : String(val ?? '?')}
-                  </div>
+                  {step.arrow}
+                </div>
+                <div style={{
+                  width: 30, textAlign: 'right', paddingRight: 8, color: isCurrent ? '#7aa2f7' : '#3b3f5c',
+                  userSelect: 'none', flexShrink: 0, fontSize: '0.7rem',
+                }}>
+                  {lineNum}
+                </div>
+                <div style={{
+                  flex: 1, paddingLeft: 4, paddingRight: 12,
+                  color: isCurrent ? '#c0caf5' : '#565f89',
+                  whiteSpace: 'pre', overflow: 'hidden',
+                  fontWeight: isCurrent ? 600 : 400,
+                }}>
+                  {line || ' '}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Right: Memory / Frame */}
+        <div style={{
+          width: 200, flexShrink: 0, overflow: 'auto', padding: '10px 12px',
+          background: '#16161e',
+        }}>
+          <div style={{
+            fontSize: '0.68rem', fontWeight: 700, color: '#7982a9',
+            textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 8,
+            display: 'flex', alignItems: 'center', gap: 6,
+          }}>
+            <span style={{ color: '#7aa2f7' }}>{'\u25A1'}</span> Global Frame
+          </div>
+
+          {varKeys.length === 0 && (
+            <div style={{ color: '#3b3f5c', fontSize: '0.75rem', fontStyle: 'italic' }}>
+              No variables yet
+            </div>
+          )}
+          {varKeys.map(k => {
+            const val = step.vars[k]
+            const prevVal = prevStep?.vars?.[k]
+            const changed = prevVal !== undefined && JSON.stringify(val) !== JSON.stringify(prevVal) && activeStep > 0
+            const isNew = prevVal === undefined && activeStep > 0
+            const isArr = Array.isArray(val)
+
+            return (
+              <div key={k} style={{
+                marginBottom: 8, borderRadius: 6, overflow: 'hidden',
+                border: `1px solid ${changed ? '#7aa2f7' : isNew ? '#9ece6a' : '#2f3146'}`,
+                background: '#1a1b26',
+                transition: 'border-color 0.3s',
+              }}>
+                <div style={{
+                  padding: '4px 8px', background: changed ? '#7aa2f722' : isNew ? '#9ece6a22' : '#16161e',
+                  borderBottom: '1px solid #2f3146',
+                  fontSize: '0.72rem', fontWeight: 700, color: '#bb9af7',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                }}>
+                  <span>{k}</span>
                   {changed && (
-                    <div style={{ fontSize: '0.6rem', color: '#7aa2f7', marginTop: 2 }}>
-                      changed
-                    </div>
+                    <span style={{ fontSize: '0.6rem', color: '#e0af68', fontWeight: 400 }}>changed</span>
                   )}
                 </div>
-              )
-            })}
-          </div>
-        </div>
-      )}
+                {isArr ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0 }}>
+                    {val.map((v, idx) => {
+                      const prevArr = Array.isArray(prevVal) ? prevVal : []
+                      const elemChanged = prevArr[idx] !== v
+                      return (
+                        <div key={idx} style={{
+                          flex: '0 0 auto', minWidth: 32, padding: '3px 6px',
+                          borderRight: idx < val.length - 1 ? '1px solid #2f3146' : 'none',
+                          textAlign: 'center',
+                        }}>
+                          <div style={{ fontSize: '0.55rem', color: '#3b3f5c' }}>[{idx}]</div>
+                          <div style={{
+                            fontSize: '0.78rem', fontWeight: 600,
+                            color: elemChanged ? '#e0af68' : '#9ece6a',
+                            fontFamily: "'JetBrains Mono', monospace",
+                          }}>
+                            {String(v)}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                ) : (
+                  <div style={{
+                    padding: '6px 8px', fontSize: '0.82rem', fontWeight: 600,
+                    color: changed ? '#e0af68' : '#9ece6a',
+                    fontFamily: "'JetBrains Mono', monospace",
+                  }}>
+                    {val === undefined ? '?' : typeof val === 'string' ? `"${val}"` : String(val)}
+                  </div>
+                )}
+              </div>
+            )
+          })}
 
-      {/* Timeline */}
-      <div style={{ padding: '8px 14px', overflow: 'auto', flex: 1 }}>
-        <div style={{ fontSize: '0.68rem', color: '#7982a9', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6, fontWeight: 700 }}>
-          Execution Timeline
+          {step.outputs?.length > 0 && (
+            <div style={{ marginTop: 8 }}>
+              <div style={{
+                fontSize: '0.68rem', fontWeight: 700, color: '#7982a9',
+                textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 4,
+                display: 'flex', alignItems: 'center', gap: 6,
+              }}>
+                <span style={{ color: '#9ece6a' }}>{'\u25B8'}</span> Output
+              </div>
+              <div style={{
+                background: '#1a1b26', border: '1px solid #2f3146', borderRadius: 6,
+                padding: '6px 8px', fontFamily: "'JetBrains Mono', monospace",
+                fontSize: '0.72rem', lineHeight: 1.6,
+              }}>
+                {step.outputs.map((o, i) => (
+                  <div key={i} style={{ color: '#9ece6a' }}>{o}</div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-        <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
-          {steps.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveStep(i)}
-              style={{
-                background: i === activeStep ? '#7aa2f7' : i < activeStep ? '#7aa2f733' : '#16161e',
-                color: i === activeStep ? '#fff' : '#7982a9',
-                border: `1px solid ${i === activeStep ? '#7aa2f7' : '#2f3146'}`,
-                borderRadius: 4, padding: '3px 8px', fontSize: '0.68rem',
-                cursor: 'pointer', fontFamily: "'JetBrains Mono', monospace",
-                fontWeight: i === activeStep ? 600 : 400,
-              }}
-              title={s.label}
-            >
-              {i + 1}
-            </button>
-          ))}
-        </div>
+      </div>
+
+      {/* Timeline scrubber */}
+      <div style={{
+        padding: '6px 12px', borderTop: '1px solid #2f3146', background: '#16161e',
+        display: 'flex', alignItems: 'center', gap: 0, overflow: 'auto',
+      }}>
+        <input
+          type="range"
+          min={0}
+          max={steps.length - 1}
+          value={activeStep}
+          onChange={(e) => { setActiveStep(parseInt(e.target.value)); setPlaying(false); if (timerRef.current) clearInterval(timerRef.current) }}
+          style={{
+            flex: 1, height: 4, appearance: 'none', background: '#2f3146',
+            borderRadius: 2, outline: 'none', cursor: 'pointer',
+          }}
+        />
       </div>
     </div>
   )

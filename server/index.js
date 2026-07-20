@@ -9642,6 +9642,37 @@ app.get('/api/emotions/history', async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// /playground — Code execution via Judge0 CE (public API, no auth)
+// ═══════════════════════════════════════════════════════════════════════════
+app.post('/api/playground/run', async (req, res) => {
+  try {
+    const { source_code, language_id, stdin } = req.body;
+    if (!source_code || !language_id) {
+      return res.status(400).json({ error: 'source_code and language_id required' });
+    }
+    const params = new URLSearchParams({
+      base64_encoded: 'false',
+      wait: 'true',
+    });
+    const r = await fetch(`https://ce.judge0.com/submissions?${params}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source_code, language_id, stdin: stdin || '' }),
+    });
+    if (!r.ok) {
+      const text = await r.text();
+      console.error('[playground] Judge0 error:', r.status, text);
+      return res.status(502).json({ error: 'Judge0 request failed', detail: text });
+    }
+    const data = await r.json();
+    res.json(data);
+  } catch (e) {
+    console.error('[playground] error:', e.message);
+    res.status(500).json({ error: 'Failed to execute code' });
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
 // /graph — Prerequisite DAG visualisation
 // ═══════════════════════════════════════════════════════════════════════════
 app.get('/graph', (_req, res) => {

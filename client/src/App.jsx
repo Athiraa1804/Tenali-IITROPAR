@@ -87,6 +87,7 @@ import ProctoredQuiz from './proctor/ProctoredQuiz'
 import useProctor from './proctor/useProctor'
 import ProctorDashboard from './proctor/ProctorDashboard'
 import ProctorPanel from './proctor/ProctorPanel'
+import PlaygroundApp from './PlaygroundApp'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -43223,6 +43224,18 @@ function App() {
     )
   }
 
+  // Route: /playground → Code Playground
+  if (pathname === '/playground') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <PlaygroundApp onBack={() => { window.location.href = '/' }} />
+      </>
+    )
+  }
+
   // Route: /supertables1 → Adaptive speed drill (2-phase)
   if (pathname === '/supertables1') {
     return (
@@ -44445,6 +44458,16 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
             ))}
 
             <div style={{ height: '1px', background: 'var(--clr-border)', margin: '4px 0' }} />
+
+            <button onClick={() => { setMenuOpen(false); window.location.href = '/playground'; }} style={{
+              display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
+              background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
+              fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'
+            }} onMouseEnter={e => e.target.style.background = 'var(--clr-hover-strong)'}
+               onMouseLeave={e => e.target.style.background = 'none'}>
+              <strong style={{ color: 'var(--clr-accent)' }}>💻 Code Playground</strong>
+              <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>Run code in 50+ languages</span>
+            </button>
 
             <button onClick={() => { setMenuOpen(false); window.location.href = window.location.pathname.replace(/\/$/, '') + '/language'; }} style={{
               display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',

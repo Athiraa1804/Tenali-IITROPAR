@@ -1,25 +1,94 @@
 ﻿import { useState, useEffect } from "react";
 const LEVELS = [
   {
-  id: 1,
-  title: "Math Decoder",
-  description: "Learn what common mathematical phrases really mean.",
+    id:1,
+    title: "See the Math",
+    questions: [
+  {
+    quiz: "⭐⭐⭐ + ⭐⭐ → ⭐⭐⭐⭐⭐\n\nWhat happened?",
+    options: [
+      "Two less ⭐",
+      "Double ⭐",
+      "Same ⭐",
+      "Two more ⭐"
+    ],
+    correct: "Two more ⭐",
+    explanation:
+      "Adding means we put groups together. ⭐⭐⭐ + ⭐⭐ gives two more stars."
+  },
+
+  {
+    quiz: "🍎🍎🍎🍎\n\n÷ 2 → 🍎🍎\n\nWhat happened?",
+    options: [
+      "Double",
+      "Half",
+      "More",
+      "Same"
+    ],
+    correct: "Half",
+    explanation:
+      "Dividing into 2 equal groups means half."
+  },
+
+  {
+    quiz: "🐟🐟🐟\n=\n🐟🐟🐟\n\nThese groups are...",
+    options: [
+      "More",
+      "Equal",
+      "Less",
+      "Double"
+    ],
+    correct: "Equal",
+    explanation:
+      "Both sides have the same number. Equal is written as =."
+  },
+
+  {
+    quiz: "⭐⭐⭐⭐\n>\n⭐⭐\nThis means...",
+    options: [
+      "Lesser than",
+      "Same",
+      "Greater than",
+      "Half"
+    ],
+    correct: "Greater than",
+    explanation:
+      "The > symbol means the left side has more."
+  },
+
+  {
+    quiz: "🍎🍎 × 2 → 🍎🍎 🍎🍎\n\nThis means...",
+    options: [
+      "Double",
+      "Half",
+      "Add 2",
+      "Remove 2"
+    ],
+    correct: "Double",
+    explanation:
+      "×2 means the amount becomes two times bigger."
+  }
+]
+},
+  {
+  id: 2,
+  title: "Crack the Code ",
   questions: [
     {
-      quiz: 'What does "twice as many" mean?',
+      quiz: "7 → 10\n\nDecode:\n",
       options: [
+        "3 less",
+        "3 more",
         "Double",
-        "Half",
-        "Two more",
-        "Exactly two"
+        "Half"
       ],
-      correct: "Double",
+      correct: "3 more",
       explanation:
-        '"Twice as many" means double the amount.'
+        '"3 more" means the number increased by 3.'
     },
 
     {
-      quiz: 'What does "at least 10" mean?',
+      quiz: "10  11  12 ...\n\nDecode:",
       options: [
         "Exactly 10",
         "10 or more",
@@ -32,20 +101,20 @@ const LEVELS = [
     },
 
     {
-      quiz: 'What does "fewer than" mean?',
+      quiz: "12  ?  7\n\nChoose the correct symbol:",
       options: [
-        "More than",
-        "Equal to",
-        "Less than",
-        "Twice as many"
+        "=",
+        "<",
+        ">",
+        "+"
       ],
-      correct: "Less than",
+      correct: ">",
       explanation:
-        '"Fewer than" simply means a smaller number.'
+        "12 is greater than 7, so we use the '>' symbol."
     },
 
     {
-      quiz: 'What does "between" mean?',
+      quiz: "5  •──── ❓ ────•  10\n\nDecode:",
       options: [
         "Before",
         "After",
@@ -58,11 +127,11 @@ const LEVELS = [
     },
 
     {
-      quiz: 'What does "at most 20" mean?',
+      quiz: "... 18  19  20\n\nDecode:",
       options: [
-        "20 or less",
         "20 or more",
         "Exactly 20",
+        "20 or less",
         "More than 20"
       ],
       correct: "20 or less",
@@ -72,61 +141,85 @@ const LEVELS = [
   ]
 },
   {
-    id: 2,
-    title: "Spot the Phrase",
-    questions: [
-      {
-        title: "Three Times As Many",
-        concept: 'The phrase "times as many" describes a multiplicative relationship.',
-        quiz: "Three times as many apples (A) as bananas (B). Which equation is correct?",
-        options: ["3A = B", "A = 3B", "A = B + 3", "B = A + 3"],
-        correct: "A = 3B",
-        explanation: "Three times as many apples means the number of apples equals three times the number of bananas."
-      },
-      {
-        title: "Five More Than",
-        concept: 'The phrase "more than" means add to the quantity that follows.',
-        quiz: 'Which expression represents "five more than x"?',
-        options: ["5x", "x + 5", "x - 5", "5 - x"],
-        correct: "x + 5",
-        explanation: '"Five more than x" means start with x and add 5.'
-      },
-      {
-        title: "Seven Less Than",
-        concept: 'The phrase "less than" often tricks students because order matters.',
-        quiz: 'Which expression represents "seven less than y"?',
-        options: ["y - 7", "7 - y", "7y", "y + 7"],
-        correct: "y - 7",
-        explanation: '"Seven less than y" means subtract 7 from y.'
-      },
-      {
-        title: "Twice a Number",
-        concept: '"Twice" means multiply by 2.',
-        quiz: 'Which expression represents "twice a number n"?',
-        options: ["2n", "n²", "n + 2", "2 + n"],
-        correct: "2n",
-        explanation: '"Twice" means two times the number.'
-      },
-      {
-        title: "The Sum Of",
-        concept: '"The sum of" always indicates addition.',
-        quiz: 'Which expression represents "the sum of x and 8"?',
-        options: ["x + 8", "8x", "x - 8", "x ÷ 8"],
-        correct: "x + 8",
-        explanation: 'The words "sum of" indicate addition.'
-      }
-    ]
-  },
+  id: 3,
+  title: "Spot the Phrase",
+  questions: [
+    {
+      quiz: "🍎 (A) are 3 × 🍌 (B).\n\nWhich equation is correct?",
+      options: [
+        "3A = B",
+        "A = B + 3",
+        "B = A + 3",
+         "A = 3B",
 
+      ],
+      correct: "A = 3B",
+      explanation:
+        '"Three times as many" means multiply bananas by 3 to get apples.'
+    },
+
+    {
+      quiz: "🍎 (A) are 5 more than 🍌 (B).\n\nWhich equation is correct?",
+      options: [
+        "A = 5B",
+        "A = B + 5",
+        "B = A + 5",
+        "A = B - 5"
+      ],
+      correct: "A = B + 5",
+      explanation:
+        '"5 more than" means add 5 to the second quantity.'
+    },
+
+    {
+      quiz: "🍎 (A) are 7 less than 🍌 (B).\n\nWhich equation is correct?",
+      options: [
+        "A = 7 - B",
+        "A = B - 7",
+        "A = 7B",
+        "B = A - 7"
+      ],
+      correct: "A = B - 7",
+      explanation:
+        '"7 less than" means subtract 7 from the second quantity.'
+    },
+
+    {
+      quiz: "🍎 (A) are half of 🍌 (B).\n\nWhich equation is correct?",
+      options: [
+        "A = B ÷ 2",
+        "A = 2B",
+        "B = A ÷ 2",
+        "A = B + 2"
+      ],
+      correct: "A = B ÷ 2",
+      explanation:
+        '"Half of" means divide by 2.'
+    },
+
+    {
+      quiz: "🍎 (A) and 8 make 🍌 (B).\n\nWhich equation is correct?",
+      options: [
+        "B = A + 8",
+        "A = B + 8",
+        "B = 8A",
+        "A = B - 8"
+      ],
+      correct: "B = A + 8",
+      explanation:
+        'Adding 8 to A gives B.'
+    }
+  ]
+},
   {
-    id: 3,
+    id: 4,
     title: "Order Matters",
     questions: [
       {
         title: "Three Less Than",
         concept: "The order of subtraction matters.",
         quiz: 'Which expression represents "three less than twice x"?',
-        options: ["2x - 3", "3 - 2x", "2(x - 3)", "3x - 2"],
+        options: ["3 - 2x", "2(x - 3)", "3x - 2","2x - 3"],
         correct: "2x - 3",
         explanation: 'Start with twice x, then subtract 3.'
       },
@@ -134,7 +227,7 @@ const LEVELS = [
         title: "Product Then Add",
         concept: "Identify multiplication before addition.",
         quiz: 'Which expression represents "four more than the product of a and b"?',
-        options: ["ab + 4", "(a + 4)b", "4ab", "a(b + 4)"],
+        options: ["(a + 4)b", "4ab","ab + 4", "a(b + 4)"],
         correct: "ab + 4",
         explanation: "Find the product first, then add four."
       },
@@ -150,7 +243,7 @@ const LEVELS = [
         title: "Half the Difference",
         concept: "Difference comes before division.",
         quiz: 'Which expression represents "half the difference between m and 6"?',
-        options: ["(m - 6)/2", "m - 3", "m/2 - 6", "(6 - m)/2"],
+        options: ["m - 3", "m/2 - 6","(m - 6)/2", "(6 - m)/2"],
         correct: "(m - 6)/2",
         explanation: "Subtract first, then divide by two."
       },
@@ -158,153 +251,199 @@ const LEVELS = [
         title: "Square of the Sum",
         concept: "The whole sum is squared.",
         quiz: 'Which expression represents "the square of the sum of x and 2"?',
-        options: ["(x + 2)²", "x² + 2", "x² + 4", "2x²"],
+        options: ["x² + 2","(x + 2)²", "x² + 4", "2x²"],
         correct: "(x + 2)²",
         explanation: "The parentheses are squared together."
       }
     ]
   },
 
-  {
-    id: 4,
-    title: "Mind the Boundaries",
-    questions: [
-      {
-        title: "Inclusive Counting",
-        concept: "Inclusive means count both ends.",
-        quiz: "How many integers are from 10 to 20 inclusive?",
-        options: ["9", "10", "11", "12"],
-        correct: "11",
-        explanation: "Count both 10 and 20."
-      },
-      {
-        title: "Exclusive Counting",
-        concept: "Exclusive excludes both ends.",
-        quiz: "How many integers are between 10 and 20 exclusively?",
-        options: ["8", "9", "10", "11"],
-        correct: "9",
-        explanation: "Only 11 through 19 are counted."
-      },
-      {
-        title: "Small Range",
-        concept: "Apply inclusive counting.",
-        quiz: "How many integers are from 5 to 9 inclusive?",
-        options: ["4", "5", "6", "7"],
-        correct: "5",
-        explanation: "5,6,7,8,9."
-      },
-      {
-        title: "Negative Numbers",
-        concept: "Inclusive counting also works across zero.",
-        quiz: "How many integers are from −2 to 2 inclusive?",
-        options: ["3", "4", "5", "6"],
-        correct: "5",
-        explanation: "-2,-1,0,1,2."
-      },
-      {
-        title: "Exclusive Across Zero",
-        concept: "Remove both endpoints.",
-        quiz: "How many integers lie between −2 and 2 exclusively?",
-        options: ["2", "3", "4", "5"],
-        correct: "3",
-        explanation: "-1,0,1."
-      }
-    ]
-  },
+   {
+  id: 5,
+  title: "Boundary Detective",
+  questions: [
+    {
+      title: "Inclusive Counting",
+      concept: "Inclusive means count both ends.",
+      quiz: "10 ●────────● 20\n\nHow many integers are from 10 to 20 inclusive?",
+      options: ["9", "10", "11", "12"],
+      correct: "11",
+      explanation:
+        "Inclusive means both 10 and 20 are counted, so there are 11 integers."
+    },
 
-  {
-    id: 5,
-    title: "Read Between the Lines",
-    questions: [
-      {
-        title: "Boys and Girls",
-        concept: "Interpret multiplicative wording.",
-        quiz: "There are three times as many boys as girls. If there are 24 boys, how many girls?",
-        options: ["6", "8", "12", "72"],
-        correct: "8",
-        explanation: "24 = 3 × girls."
-      },
-      {
-        title: "Cats and Dogs",
-        concept: "More than means addition.",
-        quiz: "There are 5 more cats than dogs. If there are 7 dogs, how many cats?",
-        options: ["12", "35", "2", "14"],
-        correct: "12",
-        explanation: "7 + 5 = 12."
-      },
-      {
-        title: "Teachers and Students",
-        concept: "Twice as many means multiply.",
-        quiz: "There are twice as many students as teachers. If there are 10 teachers, how many students?",
-        options: ["5", "10", "20", "30"],
-        correct: "20",
-        explanation: "2 × 10 = 20."
-      },
-      {
-        title: "Counting Numbers",
-        concept: "Apply inclusive counting.",
-        quiz: "How many integers are from 30 to 40 inclusive?",
-        options: ["9", "10", "11", "12"],
-        correct: "11",
-        explanation: "Include both endpoints."
-      },
-      {
-        title: "Substitute Carefully",
-        concept: "Translate before substituting.",
-        quiz: 'A number is "three less than twice x". If x = 6, what is the value?',
-        options: ["9", "12", "15", "18"],
-        correct: "9",
-        explanation: "2(6)-3 = 9."
-      }
-    ]
-  },
+    {
+      title: "Exclusive Counting",
+      concept: "Exclusive excludes both ends.",
+      quiz: "10 ○────────○ 20\n\nWhich list is correct?",
+      options: [
+        "11, 12, 13, 14, 15, 16, 17, 18, 19",
+        "10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20",
+        "12, 13, 14, 15, 16, 17, 18",
+        "10, 11, 12, 13, 14, 15, 16, 17, 18, 19"
+      ],
+      correct: "11, 12, 13, 14, 15, 16, 17, 18, 19",
+      explanation:
+        "Exclusive means we do not count 10 or 20."
+    },
 
+    {
+      title: "Which Ends Count?",
+      concept: "Read the boundary carefully.",
+      quiz: "5 ●──────● 9\n\nWhich numbers are counted?",
+      options: [
+        "Only 5",
+        "Both 5 and 9",
+        "Only 9",
+        "Neither 5 nor 9"
+      ],
+      correct: "Both 5 and 9",
+      explanation:
+        "Filled circles (●) show that both endpoints are included."
+    },
+
+    {
+      title: "Across Zero",
+      concept: "Inclusive counting also works across zero.",
+      quiz: "−2 ●────0────● 2\n\nHow many integers are from −2 to 2 inclusive?",
+      options: ["3", "4", "5", "6"],
+      correct: "5",
+      explanation:
+        "The integers are −2, −1, 0, 1 and 2."
+    },
+
+    {
+      title: "Spot the Boundary",
+      concept: "Exclusive means leave out the endpoints.",
+      quiz: "−2 ○────0────○ 2\n\nWhich numbers are NOT counted?",
+      options: [
+        "−2 and 2",
+        "−1 and 1",
+        "−2 and 1",
+        "−1 and 2"
+      ],
+      correct: "−2 and 2",
+      explanation:
+        "Open circles (○) mean the endpoints are excluded."
+    }
+  ]
+},
+
+{
+  id: 6,
+  title: "Read Between the Lines",
+  questions: [
+    {
+      quiz: "There are three times as many boys as girls.\nIf there are 24 boys, how many girls?",
+      options: ["6", "8", "12", "72"],
+      correct: "8",
+      explanation:
+        "Three times as many means Boys = 3 × Girls. So Girls = 24 ÷ 3 = 8."
+    },
+
+    {
+      quiz: "There are 5 fewer cats than dogs.\nIf there are 12 dogs, how many cats?",
+      options: ["7", "12", "17", "60"],
+      correct: "7",
+      explanation:
+        '"5 fewer than" means subtract 5 from the number of dogs.'
+    },
+
+    {
+      quiz: "There are twice as many students as teachers.\nIf there are 18 students, how many teachers?",
+      options: ["18", "36", "9","16"],
+      correct: "9",
+      explanation:
+        'Twice as many means Students = 2 × Teachers. So Teachers = 18 ÷ 2 = 9.'
+    },
+
+    {
+      quiz: "How many integers are from 30 to 40 inclusive?",
+      options: ["10", "11", "12", "13"],
+      correct: "11",
+      explanation:
+        'Inclusive means count both 30 and 40.'
+    },
+
+    {
+      quiz: 'A number is three less than twice x.\nIf x = 6, what is the value?',
+      options: ["9", "12", "15", "18"],
+      correct: "9",
+      explanation:
+        'Translate first: 2x − 3. Then substitute x = 6.'
+    }
+  ]
+},
   {
-    id: 6,
-    title: "Master Challenge",
-    questions: [
-      {
-        title: "Mixed 1",
-        concept: "Combine phrase interpretation.",
-        quiz: 'Which expression represents "five less than the sum of x and y"?',
-        options: ["x+y-5", "5-(x+y)", "x+(y-5)", "(x-5)+y"],
-        correct: "x+y-5",
-        explanation: "Find the sum first, then subtract five."
-      },
-      {
-        title: "Mixed 2",
-        concept: "Difference before multiplication.",
-        quiz: 'Which expression represents "twice the difference between m and 4"?',
-        options: ["2(m-4)", "2m-4", "m-8", "(4-m)2"],
-        correct: "2(m-4)",
-        explanation: "Subtract first, then multiply."
-      },
-      {
-        title: "Mixed 3",
-        concept: "Times as many.",
-        quiz: "There are four times as many red balls as blue balls. If there are 8 blue balls, how many red balls?",
-        options: ["16", "24", "32", "40"],
-        correct: "32",
-        explanation: "4 × 8 = 32."
-      },
-      {
-        title: "Mixed 4",
-        concept: "Inclusive counting.",
-        quiz: "How many integers are from -5 to 5 inclusive?",
-        options: ["9", "10", "11", "12"],
-        correct: "11",
-        explanation: "There are 11 integers."
-      },
-      {
-        title: "Mixed 5",
-        concept: "Translate carefully.",
-        quiz: 'Which expression represents "three more than half of x"?',
-        options: ["x/2 + 3", "3x/2", "(x+3)/2", "2x+3"],
-        correct: "x/2 + 3",
-        explanation: "Take half first, then add three."
-      }
-    ]
-  }
+  id: 7,
+  title: "Master Challenge",
+  questions: [
+    {
+      quiz: 'Which expression represents "five less than the sum of x and y"?',
+      options: [
+        "5 - (x + y)",
+        "x + (y - 5)",
+         "(x + y) - 5",
+        "(x - 5) + y"
+      ],
+      correct: "(x + y) - 5",
+      explanation:
+        'Find the sum first, then subtract 5.'
+    },
+
+    {
+      quiz: "There are three times as many apples as bananas.\nThere are 12 bananas.\n\nRiya says there are 15 apples.\nIs she correct?",
+      options: [
+        "No, there are 24 apples.",
+         "No, there are 36 apples.",
+        "Yes",
+        "No, there are 48 apples."
+      ],
+      correct: "No, there are 36 apples.",
+      explanation:
+        "Three times as many means 3 × 12 = 36."
+    },
+
+    {
+      quiz: 'A game has levels 5 to 12.\nYou must play every level "from 5 to 12 inclusive".\n\nHow many levels will you play?',
+      options: [
+        "7",
+        "8",
+        "9",
+        "12"
+      ],
+      correct: "8",
+      explanation:
+        "Inclusive means count both 5 and 12."
+    },
+
+    {
+      quiz: "A basket has 8 oranges.\nAnother basket has twice as many oranges.\nThen 3 more oranges are added.\n\nHow many oranges are in the second basket?",
+      options: [
+        "16",
+        "19",
+        "11",
+        "22"
+      ],
+      correct: "19",
+      explanation:
+        "Twice 8 is 16. Then add 3 to get 19."
+    },
+
+    {
+      quiz: 'A number is "three less than twice x".\nIf x = 8,\nwhat is the value?',
+      options: [
+        "13",
+        "16",
+        "19",
+        "21"
+      ],
+      correct: "13",
+      explanation:
+        "Translate first: 2x − 3. Then substitute x = 8."
+    }
+  ]
+},
 ];
 export default function ReadingTraps() {
   const [idx, setIdx] = useState(0);
@@ -614,6 +753,7 @@ if (currentScreen === "quiz") {
     lineHeight: "1.5",
     textAlign: "center",
     maxWidth: "700px",
+    whiteSpace: "pre-line",
   }}
 >
   {questions[idx].quiz}

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react'
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
 
 const CATEGORIES = [
   {
@@ -149,38 +149,6 @@ int main(void) {
     printf("2 + 2 = %d\\n", 2 + 2);
     return 0;
 }`,
-  48: `/* C (GCC 7) — Hello World */
-#include <stdio.h>
-
-int main(void) {
-    printf("Hello, World!\\n");
-    printf("2 + 2 = %d\\n", 2 + 2);
-    return 0;
-}`,
-  49: `/* C (GCC 8) — Hello World */
-#include <stdio.h>
-
-int main(void) {
-    printf("Hello, World!\\n");
-    printf("2 + 2 = %d\\n", 2 + 2);
-    return 0;
-}`,
-  50: `/* C (GCC 9) — Hello World */
-#include <stdio.h>
-
-int main(void) {
-    printf("Hello, World!\\n");
-    printf("2 + 2 = %d\\n", 2 + 2);
-    return 0;
-}`,
-  75: `/* C (Clang 7) — Hello World */
-#include <stdio.h>
-
-int main(void) {
-    printf("Hello, World!\\n");
-    printf("2 + 2 = %d\\n", 2 + 2);
-    return 0;
-}`,
   105: `// C++ (GCC 14) — Hello World
 #include <iostream>
 using namespace std;
@@ -188,42 +156,6 @@ using namespace std;
 int main() {
     string name = "World";
     cout << "Hello, " << name << "!" << endl;
-    cout << "2 + 2 = " << 2 + 2 << endl;
-    return 0;
-}`,
-  52: `// C++ (GCC 7) — Hello World
-#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, World!" << endl;
-    cout << "2 + 2 = " << 2 + 2 << endl;
-    return 0;
-}`,
-  53: `// C++ (GCC 8) — Hello World
-#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, World!" << endl;
-    cout << "2 + 2 = " << 2 + 2 << endl;
-    return 0;
-}`,
-  54: `// C++ (GCC 9) — Hello World
-#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, World!" << endl;
-    cout << "2 + 2 = " << 2 + 2 << endl;
-    return 0;
-}`,
-  76: `// C++ (Clang 7) — Hello World
-#include <iostream>
-using namespace std;
-
-int main() {
-    cout << "Hello, World!" << endl;
     cout << "2 + 2 = " << 2 + 2 << endl;
     return 0;
 }`,
@@ -511,6 +443,235 @@ function getLangName(id) {
   return found ? found.name : `Language #${id}`
 }
 
+const HTML_LANG_IDS = new Set([43])
+
+function isHtmlLang(id) { return HTML_LANG_IDS.has(id) }
+
+const PREVIEW_LANG_IDS = new Set([43, 97, 102, 93, 101, 94, 74])
+function isPreviewLang(id) { return PREVIEW_LANG_IDS.has(id) }
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Code Visualizer — traces variables, arrays, loops, and conditionals       */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+function generateVizSteps(code, langId) {
+  const lines = code.split('\n').filter(l => l.trim())
+  if (lines.length === 0) return []
+
+  const vars = {}
+  const steps = []
+  let lineIdx = 0
+
+  function snapshot(label) {
+    steps.push({
+      label,
+      line: lineIdx + 1,
+      codeLine: lines[lineIdx]?.trim() || '',
+      vars: JSON.parse(JSON.stringify(vars)),
+    })
+  }
+
+  function findBlock(startIdx) {
+    const braceMatch = lines[startIdx]?.match(/{\s*$/)
+    if (braceMatch) {
+      let depth = 1, i = startIdx + 1
+      while (i < lines.length && depth > 0) {
+        if (lines[i].includes('{')) depth++
+        if (lines[i].includes('}')) depth--
+        i++
+      }
+      return lines.slice(startIdx + 1, i - 1)
+    }
+    const indent = (lines[startIdx + 1] || '').match(/^(\s+)/)?.[1]?.length || 2
+    const body = []
+    for (let i = startIdx + 1; i < lines.length; i++) {
+      const lineIndent = (lines[i].match(/^(\s+)/)?.[1] || '').length
+      if (lines[i].trim() === '' || lineIndent >= indent) body.push(lines[i])
+      else break
+    }
+    return body
+  }
+
+  function parseVal(s) {
+    if (!s) return s
+    s = s.trim().replace(/;$/, '').replace(/,$/, '')
+    if (/^-?\d+$/.test(s)) return parseInt(s)
+    if (/^-?\d+\.\d+$/.test(s)) return parseFloat(s)
+    if (/^["'].*["']$/.test(s)) return s.slice(1, -1)
+    if (s === 'true') return true
+    if (s === 'false') return false
+    if (/^\[.*\]$/.test(s)) {
+      try { return JSON.parse(s) } catch { return s }
+    }
+    if (vars[s] !== undefined) return vars[s]
+    return s
+  }
+
+  function assignVar(name, val) {
+    const clean = val.trim().replace(/;$/, '').replace(/,$/, '')
+    if (/^\[/.test(clean)) {
+      try { vars[name] = JSON.parse(clean); return } catch {}
+    }
+    if (/^-?\d+(\.\d+)?$/.test(clean)) {
+      vars[name] = parseFloat(clean); return
+    }
+    if (/^["']/.test(clean)) {
+      vars[name] = clean.slice(1, -1); return
+    }
+    if (/^\w+\s*\+/.test(clean)) {
+      const parts = clean.split(/\s*\+\s*/)
+      let sum = 0, allNum = true
+      for (const p of parts) {
+        const v = vars[p] !== undefined ? vars[p] : (parseFloat(p))
+        if (isNaN(v)) { allNum = false; break }
+        sum += v
+      }
+      if (allNum) { vars[name] = sum; return }
+    }
+    if (/^\w+\s*\*/.test(clean)) {
+      const parts = clean.split(/\s*\*\s*/)
+      let prod = 1, allNum = true
+      for (const p of parts) {
+        const v = vars[p] !== undefined ? vars[p] : (parseFloat(p))
+        if (isNaN(v)) { allNum = false; break }
+        prod *= v
+      }
+      if (allNum) { vars[name] = prod; return }
+    }
+    if (vars[clean] !== undefined) { vars[name] = vars[clean]; return }
+    vars[name] = clean
+  }
+
+  snapshot('Start')
+
+  while (lineIdx < lines.length) {
+    const line = lines[lineIdx].trim()
+
+    const pyFor = line.match(/^for\s+(\w+)\s+in\s+range\((.+?)\)/)
+    const jsFor = line.match(/^for\s*\(\s*(?:let|var|const\s+)?(\w+)\s*=\s*(\d+)\s*;\s*\w+\s*([<>=!]+)\s*(\d+)\s*;.*?\)/)
+    const cFor = jsFor
+    const whileMatch = line.match(/^while\s*\((.+?)\)\s*\{?\s*$/)
+
+    if (pyFor) {
+      const v = pyFor[1]
+      const rangeArgs = pyFor[2].split(',').map(s => parseInt(s.trim()))
+      let start = 0, end, step = 1
+      if (rangeArgs.length === 1) { end = rangeArgs[0] }
+      else if (rangeArgs.length === 2) { start = rangeArgs[0]; end = rangeArgs[1] }
+      else { start = rangeArgs[0]; end = rangeArgs[1]; step = rangeArgs[2] }
+      const body = findBlock(lineIdx)
+      for (let i = start; step > 0 ? i < end : i > end; i += step) {
+        vars[v] = i
+        for (const bl of body) {
+          const trimmed = bl.trim()
+          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) assignVar(asgn[1], asgn[2])
+          const augAdd = trimmed.match(/^(\w+)\s*\+=\s*(.+)/)
+          if (augAdd && vars[augAdd[1]] !== undefined) {
+            const rv = parseVal(augAdd[2])
+            if (typeof vars[augAdd[1]] === 'number' && typeof rv === 'number')
+              vars[augAdd[1]] += rv
+          }
+        }
+        snapshot(`Loop ${v}=${i}`)
+      }
+      lineIdx += 1 + body.length
+    } else if (jsFor) {
+      const v = jsFor[1]
+      let val = parseInt(jsFor[2])
+      const end = parseInt(jsFor[4])
+      const op = jsFor[3]
+      const body = findBlock(lineIdx)
+      const check = (a, b) => {
+        if (op === '<') return a < b
+        if (op === '<=') return a <= b
+        if (op === '>') return a > b
+        if (op === '>=') return a >= b
+        if (op === '!==') return a !== b
+        if (op === '!=') return a !== b
+        return a < b
+      }
+      let safety = 0
+      while (check(val, end) && safety < 200) {
+        vars[v] = val
+        for (const bl of body) {
+          const trimmed = bl.trim()
+          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) assignVar(asgn[1], asgn[2])
+          const augAdd = trimmed.match(/^(\w+)\s*\+=\s*(.+)/)
+          if (augAdd && vars[augAdd[1]] !== undefined) {
+            const rv = parseVal(augAdd[2])
+            if (typeof vars[augAdd[1]] === 'number' && typeof rv === 'number')
+              vars[augAdd[1]] += rv
+          }
+          const inc = trimmed.match(/^(\w+)\+\+$/)
+          if (inc && typeof vars[inc[1]] === 'number') vars[inc[1]]++
+        }
+        snapshot(`Loop ${v}=${val}`)
+        val += (step => step || 1)(body.join('').match(/(\w+)\s*\+=\s*1/) ? 1 : 1)
+        const incInBody = body.join('').match(new RegExp(`${v}\\+\\+`))
+        if (incInBody) val = vars[v] !== undefined ? vars[v] + 1 : val
+        else {
+          const addMatch = body.join('').match(new RegExp(`${v}\\s*\\+=\\s*(\\d+)`))
+          val = vars[v] !== undefined ? vars[v] + (addMatch ? parseInt(addMatch[1]) : 1) : val
+        }
+        safety++
+      }
+      lineIdx += 1 + body.length
+    } else if (whileMatch) {
+      const body = findBlock(lineIdx)
+      let safety = 0
+      while (safety < 50) {
+        for (const bl of body) {
+          const trimmed = bl.trim()
+          const asgn = trimmed.match(/^(\w+)\s*=\s*(.+)/)
+          if (asgn) assignVar(asgn[1], asgn[2])
+          const inc = trimmed.match(/^(\w+)\+\+$/)
+          if (inc && typeof vars[inc[1]] === 'number') vars[inc[1]]++
+        }
+        snapshot(`While iter ${safety + 1}`)
+        safety++
+        let condTrue = true
+        const cond = whileMatch[1]
+        if (/\s*<\s*\d+/.test(cond)) {
+          const [lv, rv] = cond.split(/<\s*/)
+          const lval = vars[lv.trim()] ?? parseInt(lv)
+          condTrue = parseInt(lval) < parseInt(rv)
+        }
+        if (!condTrue) break
+      }
+      lineIdx += 1 + body.length
+    } else if (/^(if|else\s+if)\s*[\({]/.test(line)) {
+      const body = findBlock(lineIdx)
+      lineIdx += 1 + body.length
+      snapshot(`If branch`)
+    } else {
+      const asgn = line.match(/^(\w+)\s*=\s*(.+)/)
+      if (asgn) {
+        assignVar(asgn[1], asgn[2])
+        snapshot(`Assign ${asgn[1]}`)
+      } else {
+        const inc = line.match(/^(\w+)\+\+$/)
+        if (inc && typeof vars[inc[1]] === 'number') {
+          vars[inc[1]]++
+          snapshot(`Increment ${inc[1]}`)
+        }
+      }
+      lineIdx++
+    }
+  }
+
+  if (steps.length === 0) {
+    snapshot('End')
+  } else {
+    steps.push({ label: 'Done', line: lines.length, codeLine: '', vars: JSON.parse(JSON.stringify(vars)) })
+  }
+
+  return steps
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Main Component                                                            */
+/* ═══════════════════════════════════════════════════════════════════════════ */
 export default function PlaygroundApp({ onBack }) {
   const [langId, setLangId] = useState(92)
   const [code, setCode] = useState(getDefaultCode(92))
@@ -522,8 +683,16 @@ export default function PlaygroundApp({ onBack }) {
   const [activeTab, setActiveTab] = useState('output')
   const [copied, setCopied] = useState(null)
   const [showAllLangs, setShowAllLangs] = useState(false)
+  const [rightPanel, setRightPanel] = useState('terminal')
+  const [previewHtml, setPreviewHtml] = useState('')
+  const [consoleLogs, setConsoleLogs] = useState([])
   const lastRunTime = useRef(0)
   const codeRef = useRef(null)
+
+  const vizSteps = useMemo(() => {
+    if (rightPanel !== 'visualize') return []
+    return generateVizSteps(code, langId)
+  }, [code, langId, rightPanel])
 
   const handleLangChange = useCallback((newId) => {
     setLangId(newId)
@@ -532,6 +701,63 @@ export default function PlaygroundApp({ onBack }) {
     setError(null)
     setActiveTab('output')
     setShowAllLangs(false)
+  }, [])
+
+  const generatePreview = useCallback((codeStr, lang) => {
+    if (isHtmlLang(lang)) {
+      setPreviewHtml(codeStr)
+      setConsoleLogs([])
+      return
+    }
+    const html = `<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,sans-serif;padding:12px;background:#fff;color:#222}
+</style></head><body>
+<div id="app"></div>
+<script>
+const _logs=[],_errs=[];
+const _origConsole={...console};
+['log','warn','error','info'].forEach(m=>{
+  console[m]=(...a)=>{
+    _logs.push({type:m,msg:a.map(x=>typeof x==='object'?JSON.stringify(x,null,2):String(x)).join(' ')});
+    _origConsole[m](...a);
+  };
+});
+window.onerror=(m,s,l,c,e)=>{_errs.push(m);document.title='__ERROR__'+m;};
+const _origWrite=document.write.bind(document);
+document.write=(...a)=>{_logs.push({type:'html',msg:a.join('')});};
+window.prompt=(msg)=>{const v=prompt(msg);_logs.push({type:'input',msg:String(v)});return v;};
+try{
+${codeStr}
+}catch(e){_errs.push(e.message);document.title='__ERROR__'+e.message;}
+setTimeout(()=>{
+  try{
+    const fs=require('fs');
+    fs.writeFileSync('/dev/stdout',JSON.stringify({_logs,_errs,_html:document.documentElement.outerHTML}));
+  }catch(_){}
+  window.parent.postMessage({type:'pg_preview',logs:_logs,errs:_errs,html:document.documentElement.outerHTML},'*');
+},100);
+<\/script></body></html>`
+    setPreviewHtml(html)
+    setConsoleLogs([])
+  }, [])
+
+  useEffect(() => {
+    if (rightPanel !== 'preview' || !isPreviewLang(langId)) return
+    const t = setTimeout(() => generatePreview(code, langId), 500)
+    return () => clearTimeout(t)
+  }, [code, langId, rightPanel, generatePreview])
+
+  useEffect(() => {
+    function onMsg(e) {
+      if (e.data?.type === 'pg_preview') {
+        setPreviewHtml(e.data.html || '')
+        setConsoleLogs(e.data.logs || [])
+      }
+    }
+    window.addEventListener('message', onMsg)
+    return () => window.removeEventListener('message', onMsg)
   }, [])
 
   const handleRun = useCallback(async () => {
@@ -591,9 +817,8 @@ export default function PlaygroundApp({ onBack }) {
   const stdout = (output?.stdout || '').replace(/\r\n/g, '\n')
   const stderr = (output?.stderr || '').replace(/\r\n/g, '\n')
   const compileOut = (output?.compile_output || '').replace(/\r\n/g, '\n')
-
-  const hasOutput = stdout.trim() || stderr.trim() || compileOut.trim()
   const hasErrors = stderr.trim() || compileOut.trim()
+  const canPreview = isPreviewLang(langId)
 
   return (
     <div className="app-shell">
@@ -635,7 +860,6 @@ export default function PlaygroundApp({ onBack }) {
             </button>
           </div>
 
-          {/* Popular quick picks */}
           {!showAllLangs && (
             <div className="radio-group" style={{ justifyContent: 'flex-start', flexWrap: 'wrap', gap: 6 }}>
               {CATEGORIES[0].langs.map(l => (
@@ -651,7 +875,6 @@ export default function PlaygroundApp({ onBack }) {
             </div>
           )}
 
-          {/* All languages by category */}
           {showAllLangs && (
             <div style={{
               display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
@@ -683,7 +906,7 @@ export default function PlaygroundApp({ onBack }) {
           )}
         </div>
 
-        {/* Editor + Output */}
+        {/* Editor + Right Panel */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, alignItems: 'start' }}
           className="playground-grid"
         >
@@ -700,9 +923,7 @@ export default function PlaygroundApp({ onBack }) {
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
               }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{
-                    width: 10, height: 10, borderRadius: '50%', background: '#f7768e',
-                  }} />
+                  <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#f7768e' }} />
                   <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#e0af68' }} />
                   <span style={{ width: 10, height: 10, borderRadius: '50%', background: '#9ece6a' }} />
                   <span style={{ marginLeft: 6 }}>{getLangName(langId)}</span>
@@ -767,167 +988,95 @@ export default function PlaygroundApp({ onBack }) {
             </button>
           </div>
 
-          {/* Right: Output panel */}
+          {/* Right: Output / Preview / Visualize */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-            {/* Status bar */}
-            {statusInfo && (
+            {/* Panel mode tabs */}
+            <div style={{
+              display: 'flex', gap: 0, borderBottom: '1px solid var(--clr-border)', marginBottom: 0,
+            }}>
+              {[
+                { key: 'terminal', label: 'Output', icon: '▸' },
+                ...(canPreview ? [{ key: 'preview', label: 'Preview', icon: '◎' }] : []),
+                { key: 'visualize', label: 'Visualize', icon: '◈' },
+              ].map(t => (
+                <button
+                  key={t.key}
+                  onClick={() => setRightPanel(t.key)}
+                  style={{
+                    background: rightPanel === t.key ? 'var(--clr-surface)' : 'transparent',
+                    color: rightPanel === t.key ? 'var(--clr-text)' : 'var(--clr-text-soft)',
+                    border: 'none', borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0',
+                    padding: '8px 16px', fontSize: '0.82rem', fontWeight: 600,
+                    cursor: 'pointer',
+                    borderBottom: rightPanel === t.key ? '2px solid var(--clr-accent)' : '2px solid transparent',
+                  }}
+                >
+                  {t.icon} {t.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Terminal Panel */}
+            {rightPanel === 'terminal' && (
+              <TerminalPanel
+                output={output} error={error} running={running}
+                stdout={stdout} stderr={stderr} compileOut={compileOut}
+                statusInfo={statusInfo} activeTab={activeTab} setActiveTab={setActiveTab}
+                hasErrors={hasErrors} copied={copied} handleCopy={handleCopy}
+              />
+            )}
+
+            {/* Preview Panel */}
+            {rightPanel === 'preview' && (
               <div style={{
-                display: 'flex', alignItems: 'center', gap: 10,
-                padding: '10px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
-                background: `${statusInfo.color}15`, border: `1px solid ${statusInfo.color}40`,
-                color: statusInfo.color, fontWeight: 600, fontSize: '0.88rem',
+                background: '#fff', border: '1px solid var(--clr-border)',
+                borderRadius: '0 0 var(--radius) var(--radius)',
+                minHeight: 200, maxHeight: 420, overflow: 'hidden', display: 'flex', flexDirection: 'column',
               }}>
-                <span style={{
-                  width: 8, height: 8, borderRadius: '50%', background: statusInfo.color, flexShrink: 0,
-                }} />
-                {statusInfo.label}
-                {output?.time && (
-                  <span style={{ marginLeft: 'auto', fontSize: '0.78rem', fontWeight: 400, opacity: 0.8 }}>
-                    {output.time}s · {(output.memory / 1024).toFixed(1)} MB
-                  </span>
+                <div style={{
+                  background: '#1a1b26', padding: '6px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                }}>
+                  <span style={{ color: '#7982a9', fontSize: '0.72rem', fontWeight: 600 }}>LIVE PREVIEW</span>
+                  <div style={{ display: 'flex', gap: 4 }}>
+                    <button
+                      onClick={() => generatePreview(code, langId)}
+                      style={{
+                        background: 'transparent', color: '#7aa2f7', border: '1px solid #2f3146',
+                        borderRadius: 4, padding: '2px 8px', fontSize: '0.7rem', cursor: 'pointer',
+                      }}
+                    >Refresh</button>
+                  </div>
+                </div>
+                <iframe
+                  key={previewHtml.slice(0, 100)}
+                  srcDoc={previewHtml || '<html><body style="padding:20px;font-family:system-ui;color:#888;text-align:center">Type code to see live preview</body></html>'}
+                  sandbox="allow-scripts"
+                  style={{ flex: 1, width: '100%', minHeight: 300, border: 'none' }}
+                  title="Preview"
+                />
+                {consoleLogs.length > 0 && (
+                  <div style={{
+                    background: '#1a1b26', borderTop: '1px solid #2f3146',
+                    maxHeight: 100, overflow: 'auto', padding: '6px 12px',
+                  }}>
+                    {consoleLogs.map((l, i) => (
+                      <div key={i} style={{
+                        fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem', lineHeight: 1.5,
+                        color: l.type === 'error' ? '#f7768e' : l.type === 'warn' ? '#e0af68' : l.type === 'input' ? '#bb9af7' : '#9ece6a',
+                      }}>
+                        {l.type === 'error' ? '✗ ' : l.type === 'warn' ? '⚠ ' : l.type === 'input' ? '▸ ' : '  '}
+                        {l.msg}
+                      </div>
+                    ))}
+                  </div>
                 )}
               </div>
             )}
 
-            {/* Error banner */}
-            {error && (
-              <div style={{
-                padding: '10px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
-                background: 'rgba(247, 118, 142, 0.1)', border: '1px solid rgba(247, 118, 142, 0.3)',
-                color: 'var(--clr-wrong)', fontWeight: 500, fontSize: '0.85rem',
-              }}>
-                {error}
-              </div>
+            {/* Visualize Panel */}
+            {rightPanel === 'visualize' && (
+              <CodeVizPanel steps={vizSteps} code={code} />
             )}
-
-            {/* Tabs */}
-            <div style={{
-              display: 'flex', gap: 0, borderBottom: '1px solid var(--clr-border)',
-            }}>
-              {[
-                { key: 'output', label: 'Output', has: !!stdout.trim() },
-                { key: 'stderr', label: 'Errors', has: !!stderr.trim() },
-                { key: 'compiler', label: 'Compiler', has: !!compileOut.trim() },
-              ].map(t => (
-                <button
-                  key={t.key}
-                  onClick={() => setActiveTab(t.key)}
-                  style={{
-                    background: activeTab === t.key ? 'var(--clr-surface)' : 'transparent',
-                    color: activeTab === t.key ? 'var(--clr-text)' : 'var(--clr-text-soft)',
-                    border: 'none', borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0',
-                    padding: '8px 16px', fontSize: '0.82rem', fontWeight: 600,
-                    cursor: 'pointer',
-                    borderBottom: activeTab === t.key ? '2px solid var(--clr-accent)' : '2px solid transparent',
-                  }}
-                >
-                  {t.label}
-                  {t.has && (
-                    <span style={{
-                      display: 'inline-block', marginLeft: 6, width: 6, height: 6,
-                      borderRadius: '50%', background: t.key === 'output' ? 'var(--clr-correct)' : 'var(--clr-wrong)',
-                    }} />
-                  )}
-                </button>
-              ))}
-              <div style={{ flex: 1 }} />
-              {output && activeTab === 'output' && stdout.trim() && (
-                <button
-                  onClick={() => handleCopy(stdout, 'output')}
-                  className="back-button"
-                  style={{ fontSize: '0.75rem', padding: '4px 10px', margin: '4px 8px 4px 0', borderRadius: 6 }}
-                >
-                  {copied === 'output' ? 'Copied!' : 'Copy'}
-                </button>
-              )}
-            </div>
-
-            {/* Terminal output */}
-            <div style={{
-              background: '#1a1b26', border: '1px solid #2f3146',
-              borderTop: 'none', borderRadius: '0 0 var(--radius) var(--radius)',
-              minHeight: 200, maxHeight: 420, overflow: 'auto',
-            }}>
-              {!output && !error && !running && (
-                <div style={{
-                  color: '#7982a9', fontSize: '0.85rem', textAlign: 'center',
-                  padding: '48px 16px', fontFamily: "'JetBrains Mono', monospace",
-                }}>
-                  Click <strong style={{ color: '#7aa2f7' }}>Run Code</strong> to see output here
-                  <div style={{ marginTop: 8, fontSize: '0.75rem', opacity: 0.6 }}>
-                    Ctrl+Enter to run
-                  </div>
-                </div>
-              )}
-
-              {running && (
-                <div style={{
-                  color: '#7982a9', fontSize: '0.85rem', textAlign: 'center',
-                  padding: '48px 16px', fontFamily: "'JetBrains Mono', monospace",
-                }}>
-                  <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid #2f3146', borderTopColor: '#7aa2f7', borderRadius: '50%', animation: 'pgspin 0.6s linear infinite', verticalAlign: 'middle', marginRight: 8 }} />
-                  Executing...
-                </div>
-              )}
-
-              {/* Output tab — terminal style */}
-              {output && activeTab === 'output' && (
-                <div style={{
-                  padding: '14px 16px',
-                  fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6,
-                }}>
-                  {stdout.trim() ? (
-                    <pre style={{
-                      margin: 0, color: '#c0caf5', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-                    }}>{stdout}</pre>
-                  ) : !hasErrors ? (
-                    <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>
-                      Program ran successfully with no output
-                    </div>
-                  ) : (
-                    <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>
-                      No standard output
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Stderr tab */}
-              {output && activeTab === 'stderr' && (
-                <div style={{
-                  padding: '14px 16px',
-                  fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6,
-                }}>
-                  {stderr.trim() ? (
-                    <pre style={{
-                      margin: 0, color: '#f7768e', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-                    }}>{stderr}</pre>
-                  ) : (
-                    <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>
-                      No errors
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Compiler tab */}
-              {output && activeTab === 'compiler' && (
-                <div style={{
-                  padding: '14px 16px',
-                  fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6,
-                }}>
-                  {compileOut.trim() ? (
-                    <pre style={{
-                      margin: 0, color: '#e0af68', whiteSpace: 'pre-wrap', wordBreak: 'break-word',
-                    }}>{compileOut}</pre>
-                  ) : (
-                    <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>
-                      No compiler output
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
           </div>
         </div>
 
@@ -958,6 +1107,313 @@ export default function PlaygroundApp({ onBack }) {
   )
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Terminal Panel — output / errors / compiler tabs                         */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+function TerminalPanel({ output, error, running, stdout, stderr, compileOut, statusInfo, activeTab, setActiveTab, hasErrors, copied, handleCopy }) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {statusInfo && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10,
+          padding: '10px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
+          background: `${statusInfo.color}15`, border: `1px solid ${statusInfo.color}40`,
+          color: statusInfo.color, fontWeight: 600, fontSize: '0.88rem',
+        }}>
+          <span style={{ width: 8, height: 8, borderRadius: '50%', background: statusInfo.color, flexShrink: 0 }} />
+          {statusInfo.label}
+          {output?.time && (
+            <span style={{ marginLeft: 'auto', fontSize: '0.78rem', fontWeight: 400, opacity: 0.8 }}>
+              {output.time}s · {(output.memory / 1024).toFixed(1)} MB
+            </span>
+          )}
+        </div>
+      )}
+      {error && (
+        <div style={{
+          padding: '10px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
+          background: 'rgba(247, 118, 142, 0.1)', border: '1px solid rgba(247, 118, 142, 0.3)',
+          color: 'var(--clr-wrong)', fontWeight: 500, fontSize: '0.85rem',
+        }}>{error}</div>
+      )}
+      <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--clr-border)' }}>
+        {[
+          { key: 'output', label: 'Output', has: !!stdout.trim() },
+          { key: 'stderr', label: 'Errors', has: !!stderr.trim() },
+          { key: 'compiler', label: 'Compiler', has: !!compileOut.trim() },
+        ].map(t => (
+          <button
+            key={t.key}
+            onClick={() => setActiveTab(t.key)}
+            style={{
+              background: activeTab === t.key ? 'var(--clr-surface)' : 'transparent',
+              color: activeTab === t.key ? 'var(--clr-text)' : 'var(--clr-text-soft)',
+              border: 'none', borderRadius: 'var(--radius-sm) var(--radius-sm) 0 0',
+              padding: '8px 16px', fontSize: '0.82rem', fontWeight: 600,
+              cursor: 'pointer',
+              borderBottom: activeTab === t.key ? '2px solid var(--clr-accent)' : '2px solid transparent',
+            }}
+          >
+            {t.label}
+            {t.has && (
+              <span style={{
+                display: 'inline-block', marginLeft: 6, width: 6, height: 6,
+                borderRadius: '50%', background: t.key === 'output' ? 'var(--clr-correct)' : 'var(--clr-wrong)',
+              }} />
+            )}
+          </button>
+        ))}
+        <div style={{ flex: 1 }} />
+        {output && activeTab === 'output' && stdout.trim() && (
+          <button
+            onClick={() => handleCopy(stdout, 'output')}
+            className="back-button"
+            style={{ fontSize: '0.75rem', padding: '4px 10px', margin: '4px 8px 4px 0', borderRadius: 6 }}
+          >
+            {copied === 'output' ? 'Copied!' : 'Copy'}
+          </button>
+        )}
+      </div>
+      <div style={{
+        background: '#1a1b26', border: '1px solid #2f3146',
+        borderTop: 'none', borderRadius: '0 0 var(--radius) var(--radius)',
+        minHeight: 200, maxHeight: 420, overflow: 'auto',
+      }}>
+        {!output && !error && !running && (
+          <div style={{
+            color: '#7982a9', fontSize: '0.85rem', textAlign: 'center',
+            padding: '48px 16px', fontFamily: "'JetBrains Mono', monospace",
+          }}>
+            Click <strong style={{ color: '#7aa2f7' }}>Run Code</strong> to see output here
+            <div style={{ marginTop: 8, fontSize: '0.75rem', opacity: 0.6 }}>Ctrl+Enter to run</div>
+          </div>
+        )}
+        {running && (
+          <div style={{
+            color: '#7982a9', fontSize: '0.85rem', textAlign: 'center',
+            padding: '48px 16px', fontFamily: "'JetBrains Mono', monospace",
+          }}>
+            <span style={{ display: 'inline-block', width: 14, height: 14, border: '2px solid #2f3146', borderTopColor: '#7aa2f7', borderRadius: '50%', animation: 'pgspin 0.6s linear infinite', verticalAlign: 'middle', marginRight: 8 }} />
+            Executing...
+          </div>
+        )}
+        {output && activeTab === 'output' && (
+          <div style={{ padding: '14px 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6 }}>
+            {stdout.trim() ? (
+              <pre style={{ margin: 0, color: '#c0caf5', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{stdout}</pre>
+            ) : !hasErrors ? (
+              <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>Program ran successfully with no output</div>
+            ) : (
+              <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>No standard output</div>
+            )}
+          </div>
+        )}
+        {output && activeTab === 'stderr' && (
+          <div style={{ padding: '14px 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6 }}>
+            {stderr.trim() ? (
+              <pre style={{ margin: 0, color: '#f7768e', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{stderr}</pre>
+            ) : (
+              <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>No errors</div>
+            )}
+          </div>
+        )}
+        {output && activeTab === 'compiler' && (
+          <div style={{ padding: '14px 16px', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.84rem', lineHeight: 1.6 }}>
+            {compileOut.trim() ? (
+              <pre style={{ margin: 0, color: '#e0af68', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{compileOut}</pre>
+            ) : (
+              <div style={{ color: '#7982a9', textAlign: 'center', padding: '20px 0' }}>No compiler output</div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* Code Visualizer Panel — shows variables and execution steps              */
+/* ═══════════════════════════════════════════════════════════════════════════ */
+function CodeVizPanel({ steps, code }) {
+  const [activeStep, setActiveStep] = useState(0)
+
+  useEffect(() => {
+    setActiveStep(0)
+  }, [code])
+
+  if (steps.length === 0) {
+    return (
+      <div style={{
+        background: '#1a1b26', border: '1px solid #2f3146',
+        borderRadius: '0 0 var(--radius) var(--radius)',
+        minHeight: 200, maxHeight: 420, overflow: 'auto', padding: '48px 16px',
+        textAlign: 'center',
+      }}>
+        <div style={{ color: '#7982a9', fontFamily: "'JetBrains Mono', monospace", fontSize: '0.85rem' }}>
+          Write code with variables and loops to see the execution trace
+          <div style={{ marginTop: 8, fontSize: '0.75rem', opacity: 0.6 }}>
+            Supports: for/while loops, variable assignments, array operations
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const step = steps[activeStep] || steps[0]
+  const allVarKeys = new Set()
+  steps.forEach(s => Object.keys(s.vars).forEach(k => allVarKeys.add(k)))
+  const varKeys = [...allVarKeys]
+
+  return (
+    <div style={{
+      background: '#1a1b26', border: '1px solid #2f3146',
+      borderRadius: '0 0 var(--radius) var(--radius)',
+      minHeight: 200, maxHeight: 420, overflow: 'auto', display: 'flex', flexDirection: 'column',
+    }}>
+      {/* Step controls */}
+      <div style={{
+        padding: '8px 12px', borderBottom: '1px solid #2f3146',
+        display: 'flex', alignItems: 'center', gap: 8,
+      }}>
+        <button
+          onClick={() => setActiveStep(s => Math.max(0, s - 1))}
+          disabled={activeStep === 0}
+          style={{
+            background: 'transparent', color: activeStep === 0 ? '#3b3f5c' : '#7aa2f7',
+            border: '1px solid #2f3146', borderRadius: 4, padding: '3px 10px',
+            fontSize: '0.75rem', cursor: activeStep === 0 ? 'not-allowed' : 'pointer',
+          }}
+        >← Prev</button>
+        <span style={{ color: '#7982a9', fontSize: '0.75rem', fontFamily: "'JetBrains Mono', monospace" }}>
+          Step {activeStep + 1} / {steps.length}
+        </span>
+        <button
+          onClick={() => setActiveStep(s => Math.min(steps.length - 1, s + 1))}
+          disabled={activeStep === steps.length - 1}
+          style={{
+            background: 'transparent',
+            color: activeStep === steps.length - 1 ? '#3b3f5c' : '#7aa2f7',
+            border: '1px solid #2f3146', borderRadius: 4, padding: '3px 10px',
+            fontSize: '0.75rem',
+            cursor: activeStep === steps.length - 1 ? 'not-allowed' : 'pointer',
+          }}
+        >Next →</button>
+        <div style={{ flex: 1 }} />
+        <button
+          onClick={() => {
+            let i = activeStep
+            const timer = setInterval(() => {
+              i++
+              if (i >= steps.length) { clearInterval(timer); return }
+              setActiveStep(i)
+            }, 400)
+          }}
+          disabled={activeStep === steps.length - 1}
+          style={{
+            background: activeStep === steps.length - 1 ? '#3b3f5c' : '#7aa2f7',
+            color: '#fff', border: 'none', borderRadius: 4, padding: '3px 12px',
+            fontSize: '0.72rem', fontWeight: 600,
+            cursor: activeStep === steps.length - 1 ? 'not-allowed' : 'pointer',
+          }}
+        >▶ Play All</button>
+      </div>
+
+      {/* Step description */}
+      <div style={{
+        padding: '8px 14px', borderBottom: '1px solid #2f3146',
+        display: 'flex', alignItems: 'center', gap: 10,
+      }}>
+        <span style={{
+          background: '#7aa2f733', color: '#7aa2f7', padding: '2px 8px',
+          borderRadius: 4, fontSize: '0.72rem', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
+        }}>
+          Line {step.line}
+        </span>
+        <span style={{ color: '#c0caf5', fontSize: '0.78rem', fontWeight: 500 }}>
+          {step.label}
+        </span>
+        {step.codeLine && (
+          <span style={{
+            color: '#7982a9', fontSize: '0.72rem', fontFamily: "'JetBrains Mono', monospace",
+            marginLeft: 'auto', maxWidth: 200, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+          }}>
+            {step.codeLine}
+          </span>
+        )}
+      </div>
+
+      {/* Variables table */}
+      {varKeys.length > 0 && (
+        <div style={{ padding: '8px 14px', borderBottom: '1px solid #2f3146' }}>
+          <div style={{ fontSize: '0.68rem', color: '#7982a9', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6, fontWeight: 700 }}>
+            Variables
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+            {varKeys.map(k => {
+              const val = step.vars[k]
+              const prev = activeStep > 0 ? steps[activeStep - 1]?.vars[k] : undefined
+              const changed = val !== prev && activeStep > 0
+              const isArr = Array.isArray(val)
+              return (
+                <div key={k} style={{
+                  background: changed ? '#7aa2f722' : '#16161e',
+                  border: `1px solid ${changed ? '#7aa2f766' : '#2f3146'}`,
+                  borderRadius: 6, padding: '6px 10px', minWidth: 60,
+                }}>
+                  <div style={{ fontSize: '0.68rem', color: '#bb9af7', fontWeight: 600, fontFamily: "'JetBrains Mono', monospace" }}>
+                    {k}
+                  </div>
+                  <div style={{
+                    fontSize: '0.82rem', color: isArr ? '#e0af68' : '#9ece6a',
+                    fontFamily: "'JetBrains Mono', monospace", fontWeight: 600,
+                    marginTop: 2,
+                  }}>
+                    {isArr ? `[${val.join(', ')}]` : String(val ?? '?')}
+                  </div>
+                  {changed && (
+                    <div style={{ fontSize: '0.6rem', color: '#7aa2f7', marginTop: 2 }}>
+                      changed
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Timeline */}
+      <div style={{ padding: '8px 14px', overflow: 'auto', flex: 1 }}>
+        <div style={{ fontSize: '0.68rem', color: '#7982a9', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6, fontWeight: 700 }}>
+          Execution Timeline
+        </div>
+        <div style={{ display: 'flex', gap: 3, flexWrap: 'wrap' }}>
+          {steps.map((s, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveStep(i)}
+              style={{
+                background: i === activeStep ? '#7aa2f7' : i < activeStep ? '#7aa2f733' : '#16161e',
+                color: i === activeStep ? '#fff' : '#7982a9',
+                border: `1px solid ${i === activeStep ? '#7aa2f7' : '#2f3146'}`,
+                borderRadius: 4, padding: '3px 8px', fontSize: '0.68rem',
+                cursor: 'pointer', fontFamily: "'JetBrains Mono', monospace",
+                fontWeight: i === activeStep ? 600 : 400,
+              }}
+              title={s.label}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════ */
+/* History                                                                  */
+/* ═══════════════════════════════════════════════════════════════════════════ */
 function History({ output, langId, code, stdin, onLoad }) {
   const [history, setHistory] = useState([])
   const [viewing, setViewing] = useState(null)
@@ -1023,9 +1479,7 @@ function History({ output, langId, code, stdin, onLoad }) {
                   border: '1px solid var(--clr-border)', borderRadius: 4,
                   padding: '3px 8px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 500,
                 }}
-              >
-                View Code
-              </button>
+              >View Code</button>
               <button
                 onClick={() => onLoad(h)}
                 style={{
@@ -1033,21 +1487,17 @@ function History({ output, langId, code, stdin, onLoad }) {
                   border: '1px solid var(--clr-border)', borderRadius: 4,
                   padding: '3px 8px', fontSize: '0.72rem', cursor: 'pointer', fontWeight: 500,
                 }}
-              >
-                Load
-              </button>
+              >Load</button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* View Code Modal */}
       {viewing && (
         <div
           style={{
             position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)',
-            zIndex: 10000, display: 'flex', justifyContent: 'center', alignItems: 'center',
-            padding: 24,
+            zIndex: 10000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: 24,
           }}
           onClick={() => setViewing(null)}
         >
@@ -1055,8 +1505,7 @@ function History({ output, langId, code, stdin, onLoad }) {
             onClick={(e) => e.stopPropagation()}
             style={{
               background: '#1a1b26', border: '1px solid #2f3146', borderRadius: 'var(--radius)',
-              width: '100%', maxWidth: 720, maxHeight: '80vh', display: 'flex', flexDirection: 'column',
-              overflow: 'hidden',
+              width: '100%', maxWidth: 720, maxHeight: '80vh', display: 'flex', flexDirection: 'column', overflow: 'hidden',
             }}
           >
             <div style={{
@@ -1064,36 +1513,26 @@ function History({ output, langId, code, stdin, onLoad }) {
               display: 'flex', justifyContent: 'space-between', alignItems: 'center',
             }}>
               <div>
-                <span style={{ color: '#c0caf5', fontWeight: 600, fontSize: '0.9rem' }}>
-                  {viewing.lang}
-                </span>
+                <span style={{ color: '#c0caf5', fontWeight: 600, fontSize: '0.9rem' }}>{viewing.lang}</span>
                 <span style={{ color: '#7982a9', fontSize: '0.78rem', marginLeft: 10 }}>
-                  {viewing.status}
-                  {viewing.time && ` · ${viewing.time}s`}
+                  {viewing.status}{viewing.time && ` · ${viewing.time}s`}
                 </span>
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button
-                  onClick={() => {
-                    onLoad(viewing)
-                    setViewing(null)
-                  }}
+                  onClick={() => { onLoad(viewing); setViewing(null) }}
                   style={{
                     background: '#7aa2f7', color: '#fff', border: 'none', borderRadius: 6,
                     padding: '6px 14px', fontSize: '0.8rem', fontWeight: 600, cursor: 'pointer',
                   }}
-                >
-                  Load Code
-                </button>
+                >Load Code</button>
                 <button
                   onClick={() => setViewing(null)}
                   style={{
                     background: 'transparent', color: '#7982a9', border: '1px solid #2f3146',
                     borderRadius: 6, padding: '6px 12px', fontSize: '0.8rem', cursor: 'pointer',
                   }}
-                >
-                  Close
-                </button>
+                >Close</button>
               </div>
             </div>
             <div style={{ padding: '14px 16px', overflow: 'auto', flex: 1 }}>
@@ -1104,8 +1543,7 @@ function History({ output, langId, code, stdin, onLoad }) {
             </div>
             {viewing.stdout && (
               <div style={{
-                borderTop: '1px solid #2f3146', padding: '10px 16px',
-                fontSize: '0.78rem', color: '#7982a9',
+                borderTop: '1px solid #2f3146', padding: '10px 16px', fontSize: '0.78rem', color: '#7982a9',
               }}>
                 <span style={{ fontWeight: 600 }}>Output:</span>{' '}
                 <span style={{ color: '#9ece6a', fontFamily: "'JetBrains Mono', monospace" }}>

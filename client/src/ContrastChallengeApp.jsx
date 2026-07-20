@@ -5,7 +5,7 @@
  * side-by-side comparison of concept pairs.
  */
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 // Hardcoded list of all contrast pairs (replaces server JSON + API)
 const CONTRAST_PAIRS = [
@@ -1590,7 +1590,7 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <p style={{ fontSize: '1.3rem', fontWeight: '600', marginBottom: '8px' }}>
-            {subStep === 'r1' ? 'The owner wants to cover the garden floor with green grass.' : 'The owner wants to build a fence around the garden boundary.'}
+            {subStep === 'r1' ? 'The owner wants to cover the garden with green grass.' : 'The owner wants to build a fence around the garden boundary.'}
           </p>
           <p style={{ color: 'var(--clr-text-soft)', fontSize: '1.02rem', marginBottom: '24px' }}>
             Hover and click the part of the garden that should be measured.

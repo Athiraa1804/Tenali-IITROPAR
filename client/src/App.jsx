@@ -43951,6 +43951,321 @@ function App() {
     )
   }
 
+  // ========== MATH RIDDLES APP ==========
+  function RiddleApp({ onBack }) {
+    const [stage, setStage] = useState('setup')
+    const [difficulty, setDifficulty] = useState(2)
+    const [question, setQuestion] = useState(null)
+    const [answer, setAnswer] = useState('')
+    const [selectedOption, setSelectedOption] = useState(null)
+    const [feedback, setFeedback] = useState('')
+    const [isCorrect, setIsCorrect] = useState(null)
+    const [revealed, setRevealed] = useState(false)
+    const [hintUsed, setHintUsed] = useState(false)
+    const [hintText, setHintText] = useState('')
+    const [score, setScore] = useState(0)
+    const [total, setTotal] = useState(0)
+    const [wrongAttempts, setWrongAttempts] = useState(0)
+    const [questionNumber, setQuestionNumber] = useState(0)
+    const [totalQuestions, setTotalQuestions] = useState(15)
+    const [results, setResults] = useState([])
+    const [loading, setLoading] = useState(false)
+    const submittedRef = useRef(false)
+
+    const fetchQuestion = async () => {
+      setLoading(true)
+      try {
+        const r = await fetch(`/riddle-api/question?difficulty=${difficulty}`)
+        const data = await r.json()
+        setQuestion(data)
+        setAnswer('')
+        setSelectedOption(null)
+        setFeedback('')
+        setIsCorrect(null)
+        setRevealed(false)
+        setHintUsed(false)
+        setHintText('')
+        submittedRef.current = false
+      } catch (e) { console.error('Failed to fetch riddle:', e) }
+      setLoading(false)
+    }
+
+    const startGame = () => {
+      setStage('playing')
+      setScore(0); setTotal(0); setWrongAttempts(0)
+      setQuestionNumber(1); setResults([])
+      fetchQuestion()
+    }
+
+    const advance = () => {
+      if (questionNumber >= totalQuestions) { setStage('finished'); return }
+      setQuestionNumber(n => n + 1)
+      fetchQuestion()
+    }
+
+    const handleSubmit = async () => {
+      if (!question || revealed || submittedRef.current) return
+      const userAnswer = question.type === 'image-option' ? selectedOption : answer.trim()
+      if (!userAnswer) return
+      submittedRef.current = true
+
+      try {
+        const r = await fetch('/riddle-api/check', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: question.id, answer: userAnswer })
+        })
+        const data = await r.json()
+        setIsCorrect(data.correct); setRevealed(true)
+        setTotal(t => t + 1)
+        if (data.correct) { setScore(s => s + 1); setFeedback('Correct! Well done!') }
+        else {
+          setWrongAttempts(w => w + 1)
+          setFeedback(`Not quite. The answer was ${data.correctAnswer}`)
+        }
+        setResults(prev => [...prev, { prompt: question.title || 'Riddle', userAnswer, correctAnswer: data.correctAnswer, correct: data.correct }])
+      } catch (e) { submittedRef.current = false; console.error('Check failed:', e) }
+    }
+
+    const handleSolve = () => {
+      if (!question || revealed) return
+      submittedRef.current = true
+      setIsCorrect(false); setRevealed(true)
+      setHintUsed(true)
+      setFeedback('Solved — here\'s the hint!')
+      setHintText(question.hint || 'No hint available.')
+      setResults(prev => [...prev, { prompt: question.title || 'Riddle', userAnswer: '(solved)', correctAnswer: question.answer, correct: false }])
+    }
+
+    const handleHint = () => {
+      if (!question) return
+      setHintUsed(true)
+      setHintText(question.hint || 'No hint available.')
+    }
+
+    const handleKeyDown = (e) => { if (e.key === 'Enter') { e.preventDefault(); if (!revealed) handleSubmit(); else advance() } }
+
+    const numpadPress = (key) => {
+      if (revealed) return
+      if (key === '⌫') setAnswer(a => a.slice(0, -1))
+      else if (key === '±') setAnswer(a => a.startsWith('-') ? a.slice(1) : '-' + a)
+      else setAnswer(a => a + key)
+    }
+
+    const stars = hintUsed ? (wrongAttempts <= 1 ? 2 : 1) : (wrongAttempts === 0 ? 3 : wrongAttempts <= 1 ? 2 : 1)
+    const pct = total > 0 ? Math.round((score / total) * 100) : 0
+
+    return (
+      <div className="app-shell">
+        <div className="card" style={{ maxWidth: 560, width: '100%', margin: '0 auto', padding: '24px 20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+            <button className="back-button" onClick={onBack}>&larr;</button>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', margin: 0, flex: 1, textAlign: 'center', color: 'var(--clr-text)' }}>Math Riddles</h2>
+            <div style={{ width: 40 }} />
+          </div>
+
+          {stage === 'setup' && (
+            <div className="welcome-box">
+              <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--clr-text)', marginBottom: '8px' }}>Math Riddles</h2>
+              <p className="welcome-text">Find hidden rules, solve number sequences, crack logic puzzles!</p>
+              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', margin: '12px 0' }}>
+                {[{ v: 1, l: 'Easy' }, { v: 2, l: 'Medium' }, { v: 3, l: 'Hard' }, { v: 5, l: 'All' }].map(d => (
+                  <button key={d.v} className={`radio-pill${difficulty === d.v ? ' active' : ''}`} onClick={() => setDifficulty(d.v)}>{d.l}</button>
+                ))}
+              </div>
+              <div className="question-count-row" style={{ marginTop: '12px' }}>
+                <label className="question-count-label">How many riddles? (max 44)</label>
+                <input className="answer-input question-count-input" type="text" value={totalQuestions} onChange={e => { const v = e.target.value; if (v === '' || (/^\d+$/.test(v) && Number(v) <= 44 && Number(v) >= 1)) setTotalQuestions(Number(v) || 15) }} />
+              </div>
+              <div className="button-row"><button onClick={startGame}>Start Riddles</button></div>
+            </div>
+          )}
+
+          {stage === 'playing' && (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
+                <div className="progress-pill center">Riddle {questionNumber}/{totalQuestions}</div>
+                <div className="score-pill">⭐ {score}/{total}</div>
+              </div>
+
+              {loading && <div style={{ textAlign: 'center', padding: '24px', color: 'var(--clr-text-soft)' }}>Loading riddle…</div>}
+
+              {!loading && question && (
+                <>
+                  {/* Title */}
+                  {question.title && <h3 style={{ fontFamily: 'var(--font-display)', textAlign: 'center', fontSize: '1.3rem', color: 'var(--clr-text)', margin: '0 0 12px' }}>{question.title}</h3>}
+
+                  {/* Find Rule: Equation Table */}
+                  {question.type === 'find-rule' && question.equations && (
+                    <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)', padding: '16px 20px', margin: '0 auto 16px', maxWidth: 320 }}>
+                      {question.equations.map((eq, i) => (
+                        <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: i < question.equations.length - 1 ? '1px solid var(--clr-border)' : 'none', fontSize: '1.1rem' }}>
+                          <span style={{ color: 'var(--clr-text)' }}>{eq.input}</span>
+                          <span style={{ color: 'var(--clr-accent)', fontWeight: 600 }}>→</span>
+                          <span style={{ color: 'var(--clr-text)' }}>{eq.output}</span>
+                        </div>
+                      ))}
+                      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', fontSize: '1.1rem', borderTop: '2px solid var(--clr-accent)', marginTop: '4px' }}>
+                        <span style={{ color: 'var(--clr-text)' }}>{question.question}</span>
+                        <span style={{ color: 'var(--clr-accent)', fontWeight: 600 }}>→</span>
+                        <span style={{ color: 'var(--clr-accent)', fontWeight: 700, fontStyle: 'italic' }}>?</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Sequence Type */}
+                  {question.type === 'sequence' && question.sequence && (
+                    <div style={{ textAlign: 'center', margin: '0 auto 16px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', margin: '0 0 8px' }}>
+                        {question.sequence.map((n, i) => (
+                          <span key={i} style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 48, height: 48, borderRadius: 'var(--radius)', background: 'var(--clr-surface)', border: '1px solid var(--clr-border)', fontSize: '1.1rem', fontWeight: 600, color: 'var(--clr-text)' }}>{n}</span>
+                        ))}
+                        <span style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 48, height: 48, borderRadius: 'var(--radius)', background: 'var(--clr-accent-soft)', border: '2px dashed var(--clr-accent)', fontSize: '1.2rem', fontWeight: 700, color: 'var(--clr-accent)' }}>?</span>
+                      </div>
+                      <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: 0 }}>{question.question}</p>
+                    </div>
+                  )}
+
+                  {/* Logic Type */}
+                  {question.type === 'logic' && (
+                    <div className="question-box" style={{ textAlign: 'center', margin: '0 auto 16px', maxWidth: 480, padding: '20px', background: 'var(--clr-surface)', borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)' }}>
+                      <p style={{ fontSize: '1.1rem', lineHeight: 1.6, color: 'var(--clr-text)', margin: 0 }}>{question.question}</p>
+                    </div>
+                  )}
+
+                  {/* Image Types */}
+                  {(question.type === 'image-numpad' || question.type === 'image-option') && question.image && (
+                    <div style={{ textAlign: 'center', margin: '0 auto 16px' }}>
+                      <img src={question.image} alt="Riddle" style={{ maxWidth: '100%', maxHeight: 300, borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)' }} />
+                    </div>
+                  )}
+
+                  {/* Answer Input */}
+                  {!revealed && question.type !== 'image-option' && (
+                    <div style={{ textAlign: 'center', margin: '0 0 12px' }}>
+                      <input
+                        className="answer-input"
+                        type="text"
+                        value={answer}
+                        onChange={e => setAnswer(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        placeholder="Your answer"
+                        autoFocus
+                        style={{ maxWidth: 200, textAlign: 'center', fontSize: '1.3rem' }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Option Buttons for image-option type */}
+                  {!revealed && question.type === 'image-option' && question.options && (
+                    <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', flexWrap: 'wrap', margin: '0 0 12px' }}>
+                      {question.options.map((opt, i) => (
+                        <button
+                          key={i}
+                          onClick={() => setSelectedOption(opt)}
+                          style={{
+                            width: question.optionImages ? 80 : 56,
+                            height: question.optionImages ? 80 : 56,
+                            borderRadius: 'var(--radius)',
+                            border: selectedOption === opt ? '2px solid var(--clr-accent)' : '1.5px solid var(--clr-border)',
+                            background: selectedOption === opt ? 'var(--clr-accent-soft)' : 'var(--clr-input)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: question.optionImages ? '0' : '1.2rem',
+                            fontWeight: 600,
+                            color: 'var(--clr-text)',
+                            transition: 'all 0.15s',
+                            overflow: 'hidden'
+                          }}
+                        >
+                          {question.optionImages && question.optionImages[i] ? (
+                            <img src={question.optionImages[i]} alt={opt} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                          ) : opt}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* Numpad */}
+                  {!revealed && (question.type !== 'image-option') && (
+                    <div className="numpad" style={{ maxWidth: 280, margin: '0 auto 12px' }}>
+                      {[['7','8','9'],['4','5','6'],['1','2','3']].map((row, ri) => (
+                        <div key={ri} className="numpad-row">
+                          {row.map(k => <button key={k} className="numpad-key" onClick={() => numpadPress(k)}>{k}</button>)}
+                        </div>
+                      ))}
+                      <div className="numpad-row">
+                        <button className="numpad-key numpad-special" onClick={() => numpadPress('±')}>±</button>
+                        <button className="numpad-key" onClick={() => numpadPress('0')}>0</button>
+                        <button className="numpad-key numpad-special" onClick={() => numpadPress('⌫')}>⌫</button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Feedback */}
+                  {revealed && (
+                    <div className={`feedback ${isCorrect ? 'correct' : 'wrong'}`} style={{ marginBottom: '12px' }}>{feedback}</div>
+                  )}
+
+                  {/* Hint */}
+                  {hintText && (
+                    <div className="feedback solve" style={{ marginBottom: '12px', textAlign: 'center' }}>💡 {hintText}</div>
+                  )}
+
+                  {/* Buttons */}
+                  <div className="button-row">
+                    {!revealed ? (
+                      <>
+                        <button onClick={handleSubmit} disabled={question.type === 'image-option' ? !selectedOption : !answer.trim()}>Submit</button>
+                        <button onClick={handleSolve} style={{ background: 'transparent', border: '1px solid var(--clr-accent)', color: 'var(--clr-accent)' }}>Solve</button>
+                        {!hintUsed && <button onClick={handleHint} style={{ background: 'transparent', border: '1px solid var(--clr-text-soft)', color: 'var(--clr-text-soft)' }}>💡 Hint</button>}
+                      </>
+                    ) : (
+                      <button onClick={advance}>{questionNumber >= totalQuestions ? 'Finish' : 'Next Riddle'}</button>
+                    )}
+                  </div>
+
+                  {/* Results so far */}
+                  {results.length > 0 && (
+                    <div style={{ marginTop: '16px' }}>
+                      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.82rem' }}>
+                        <thead><tr style={{ color: 'var(--clr-text-soft)' }}><th style={{ textAlign: 'left', padding: '4px 8px' }}>#</th><th style={{ textAlign: 'left', padding: '4px 8px' }}>Riddle</th><th style={{ textAlign: 'center', padding: '4px 8px' }}>Your Answer</th><th style={{ textAlign: 'center', padding: '4px 8px' }}>Correct?</th></tr></thead>
+                        <tbody>
+                          {results.map((r, i) => (
+                            <tr key={i} style={{ borderTop: '1px solid var(--clr-border)' }}>
+                              <td style={{ padding: '4px 8px', color: 'var(--clr-text-soft)' }}>{i + 1}</td>
+                              <td style={{ padding: '4px 8px', color: 'var(--clr-text)' }}>{r.prompt}</td>
+                              <td style={{ padding: '4px 8px', textAlign: 'center', color: 'var(--clr-text)' }}>{r.userAnswer}</td>
+                              <td style={{ padding: '4px 8px', textAlign: 'center', color: r.correct ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>{r.correct ? '✓' : '✗'}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </>
+              )}
+            </>
+          )}
+
+          {stage === 'finished' && (
+            <div className="welcome-box">
+              <div style={{ fontSize: '2rem', marginBottom: '8px' }}>{'⭐'.repeat(stars)}</div>
+              <p className="final-score">{score}/{total} Riddles Solved!</p>
+              <p className="welcome-text">Accuracy: {pct}% · Hints used: {hintUsed ? 'Yes' : 'No'}</p>
+              <div className="button-row">
+                <button onClick={() => { setStage('setup') }}>Play Again</button>
+                <button onClick={onBack} style={{ background: 'transparent', border: '1px solid var(--clr-accent)', color: 'var(--clr-accent)' }}>Back to Home</button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    )
+  }
+
   // ========== ROUTING: MODE-BASED (HOME MENU + QUIZZES) ==========
   // Map quiz mode keys to their component classes
   const modeMap = {
@@ -44052,6 +44367,7 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
+    riddle: RiddleApp,              // Math Riddles
   }
 
   // Get the component to render (or null if mode not set)
@@ -44288,6 +44604,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'qformula', name: 'Quadratics (Formula)', subtitle: 'Find roots of ax² + bx + c = 0', color: 'purple' },
     { key: 'ratio', name: 'Ratio', subtitle: 'Ratio & proportion', color: 'green' },
     { key: 'remfactor', name: 'Remainder Theorem', subtitle: 'Remainder & factor theorem', color: 'blue' },
+    { key: 'riddle', name: 'Math Riddles', subtitle: 'Find the hidden rule & solve puzzles!', color: 'orange' },
     { key: 'rounding', name: 'Rounding', subtitle: 'D.P., sig. figs, estimation', color: 'blue' },
     { key: 'section', name: 'Section Formula', subtitle: 'Midpoint, section, centroid', color: 'green' },
     { key: 'sequences', name: 'Sequences', subtitle: 'Arithmetic & geometric sequences', color: 'purple' },

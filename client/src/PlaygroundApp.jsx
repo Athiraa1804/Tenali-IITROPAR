@@ -814,20 +814,15 @@ const _origConsole={...console};
     _origConsole[m](...a);
   };
 });
-window.onerror=(m,s,l,c,e)=>{_errs.push(m);document.title='__ERROR__'+m;};
+window.onerror=(m,s,l,c,e)=>{_errs.push(m);};
 const _origWrite=document.write.bind(document);
 document.write=(...a)=>{_logs.push({type:'html',msg:a.join('')});};
-window.prompt=(msg)=>{const v=prompt(msg);_logs.push({type:'input',msg:String(v)});return v;};
 try{
 ${codeStr}
-}catch(e){_errs.push(e.message);document.title='__ERROR__'+e.message;}
+}catch(e){_errs.push(e.message);}
 setTimeout(()=>{
-  try{
-    const fs=require('fs');
-    fs.writeFileSync('/dev/stdout',JSON.stringify({_logs,_errs,_html:document.documentElement.outerHTML}));
-  }catch(_){}
-  window.parent.postMessage({type:'pg_preview',logs:_logs,errs:_errs,html:document.documentElement.outerHTML},'*');
-},100);
+  window.parent.postMessage({type:'pg_preview',logs:_logs,errs:_errs},'*');
+},150);
 <\/script></body></html>`
     setPreviewHtml(html)
     setConsoleLogs([])
@@ -842,7 +837,6 @@ setTimeout(()=>{
   useEffect(() => {
     function onMsg(e) {
       if (e.data?.type === 'pg_preview') {
-        setPreviewHtml(e.data.html || '')
         setConsoleLogs(e.data.logs || [])
       }
     }
@@ -1138,7 +1132,7 @@ setTimeout(()=>{
                   </div>
                 </div>
                 <iframe
-                  key={previewHtml.slice(0, 100)}
+                  key={langId}
                   srcDoc={previewHtml || '<html><body style="padding:20px;font-family:system-ui;color:#888;text-align:center">Type code to see live preview</body></html>'}
                   sandbox="allow-scripts"
                   style={{ flex: 1, width: '100%', minHeight: 300, border: 'none' }}

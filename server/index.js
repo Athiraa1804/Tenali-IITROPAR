@@ -9680,6 +9680,28 @@ app.post('/api/playground/run', async (req, res) => {
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
+// /riddle-api — Math Riddles
+// ═══════════════════════════════════════════════════════════════════════════
+const riddles = JSON.parse(fs.readFileSync(path.join(__dirname, 'riddles', 'riddles.json'), 'utf8'));
+app.use('/riddles/images', express.static(path.join(__dirname, 'riddles', 'images')));
+
+app.get('/riddle-api/question', (req, res) => {
+  const difficulty = parseInt(req.query.difficulty) || 1;
+  const pool = riddles.filter(r => r.difficulty <= Math.min(difficulty + 1, 5));
+  const q = pool[Math.floor(Math.random() * pool.length)];
+  const { hint, ...publicData } = q;
+  res.json(publicData);
+});
+
+app.post('/riddle-api/check', (req, res) => {
+  const { id, answer } = req.body;
+  const riddle = riddles.find(r => r.id === id);
+  if (!riddle) return res.status(400).json({ error: 'Riddle not found' });
+  const correct = String(answer).trim() === String(riddle.answer).trim();
+  res.json({ correct, correctAnswer: riddle.answer, hint: riddle.hint });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
 // /graph — Prerequisite DAG visualisation
 // ═══════════════════════════════════════════════════════════════════════════
 app.get('/graph', (_req, res) => {

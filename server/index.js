@@ -9646,7 +9646,7 @@ app.get('/api/emotions/history', async (req, res) => {
 // ═══════════════════════════════════════════════════════════════════════════
 app.post('/api/playground/run', async (req, res) => {
   try {
-    const { source_code, language_id, stdin } = req.body;
+    const { source_code, language_id, stdin, cpu_time_limit, memory_limit } = req.body;
     if (!source_code || !language_id) {
       return res.status(400).json({ error: 'source_code and language_id required' });
     }
@@ -9654,10 +9654,17 @@ app.post('/api/playground/run', async (req, res) => {
       base64_encoded: 'false',
       wait: 'true',
     });
+    const body = {
+      source_code,
+      language_id,
+      stdin: stdin || '',
+      cpu_time_limit: cpu_time_limit || 10,
+      memory_limit: memory_limit || 256,
+    };
     const r = await fetch(`https://ce.judge0.com/submissions?${params}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ source_code, language_id, stdin: stdin || '' }),
+      body: JSON.stringify(body),
     });
     if (!r.ok) {
       const text = await r.text();

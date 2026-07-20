@@ -42774,6 +42774,19 @@ function App() {
     )
   }
 
+  if (pathname === '/riddle') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <div className="app-shell"><div className="card">
+          <RiddleApp onBack={() => { window.location.href = '/' }} />
+        </div></div>
+      </>
+    )
+  }
+
   // Route: /tatsavit0 → legacy 9-level progressive math drill (kept for reference)
   if (pathname === '/tatsavit0') {
     return (
@@ -44056,8 +44069,7 @@ function App() {
     const pct = total > 0 ? Math.round((score / total) * 100) : 0
 
     return (
-      <div className="app-shell">
-        <div className="card" style={{ maxWidth: 560, width: '100%', margin: '0 auto', padding: '24px 20px' }}>
+      <>
           <div style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
             <button className="back-button" onClick={onBack}>&larr;</button>
             <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.5rem', margin: 0, flex: 1, textAlign: 'center', color: 'var(--clr-text)' }}>Math Riddles</h2>
@@ -44261,8 +44273,7 @@ function App() {
               </div>
             </div>
           )}
-        </div>
-      </div>
+      </>
     )
   }
 

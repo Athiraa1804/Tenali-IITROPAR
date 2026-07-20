@@ -53,6 +53,7 @@ const ProctorEventSchema = new mongoose.Schema({
   severity:   { type: Number, default: 1 }, // penalty points
   evidence:   { type: String }, // base64 screenshot or audio clip
   metadata:   { type: mongoose.Schema.Types.Mixed }, // extra context
+  transcript: { type: String }, // speech-to-text transcript for voice events
   timestamp:  { type: Date, default: Date.now },
 }, { timestamps: true });
 

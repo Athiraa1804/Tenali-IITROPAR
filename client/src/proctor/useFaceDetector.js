@@ -10,8 +10,8 @@
 
 import { useEffect, useRef, useCallback, useState } from 'react'
 
-const CHECK_INTERVAL_MS = 2000
-const GRACE_MS = 15000
+const CHECK_INTERVAL_MS = 1000
+const GRACE_MS = 12000
 
 let faceapi = null
 let modelsLoaded = false
@@ -22,13 +22,14 @@ async function loadModels() {
   modelsLoading = true
   try {
     faceapi = await import('face-api.js')
-    const modelUrl = `${import.meta.env?.VITE_API_BASE_URL || ''}/models`
+    const modelUrl = `${window.location.origin}/models`
     await Promise.all([
       faceapi.nets.tinyFaceDetector.loadFromUri(modelUrl),
     ])
     modelsLoaded = true
     return true
-  } catch {
+  } catch (err) {
+    console.error('[faceDetector] model load failed:', err)
     modelsLoaded = false
     return false
   } finally {
@@ -96,8 +97,8 @@ export default function useFaceDetector({ videoRef, enabled = false, onAnomaly, 
           })
         }
       }
-    } catch {
-      // Detection failed silently — video frame may be unavailable
+    } catch (err) {
+      console.warn('[faceDetector] detection error:', err?.message || err)
     }
   }, [enabled, modelsReady, videoRef])
 

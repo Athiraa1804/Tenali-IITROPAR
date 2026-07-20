@@ -31,11 +31,11 @@ function addToPending(event) {
   savePendingEvents(pending)
 }
 
-export async function reportProctorEvent({ sessionId, type, severity = 1, evidence, metadata, sessionStatus }) {
+export async function reportProctorEvent({ sessionId, type, severity = 1, evidence, metadata, transcript, sessionStatus }) {
   const token = getToken();
   if (!sessionId) return null;
 
-  const body = { sessionId, type, severity, evidence, metadata, sessionStatus };
+  const body = { sessionId, type, severity, evidence, metadata, transcript, sessionStatus };
 
   const headers = { 'Content-Type': 'application/json' };
   if (token) headers['Authorization'] = `Bearer ${token}`;

@@ -9458,7 +9458,7 @@ app.post('/api/proctor/start', async (req, res) => {
 // Log a proctor event (anomaly) — public
 app.post('/api/proctor/event', async (req, res) => {
   try {
-    const { sessionId, type, severity, evidence, metadata, userId, username } = req.body;
+    const { sessionId, type, severity, evidence, metadata, transcript, userId, username } = req.body;
     if (!sessionId || !type) return res.status(400).json({ error: 'sessionId and type required' });
     const event = await ProctorEvent.create({
       sessionId,
@@ -9468,6 +9468,7 @@ app.post('/api/proctor/event', async (req, res) => {
       severity: severity || 1,
       evidence: evidence || undefined,
       metadata: metadata || undefined,
+      transcript: transcript || metadata?.transcript || undefined,
     });
     await ProctorSession.findByIdAndUpdate(sessionId, {
       $inc: { totalPenalty: severity || 1 },

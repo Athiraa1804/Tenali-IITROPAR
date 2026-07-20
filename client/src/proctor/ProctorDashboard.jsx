@@ -296,9 +296,17 @@ const AnomalyCard = memo(function AnomalyCard({ ev, onScreenshot, isExpanded, on
             {timeAgo(ev.timestamp)}
           </span>
         </div>
-        {isExpanded && ev.metadata && (
+        {isExpanded && (
           <div className="proctor-anomaly-card-expanded-meta">
-            <pre>{JSON.stringify(ev.metadata, null, 2)}</pre>
+            {ev.transcript || ev.metadata?.transcript ? (
+              <div className="proctor-transcript-block">
+                <strong>Transcript:</strong>
+                <p style={{ margin: '4px 0 0', fontStyle: 'italic' }}>"{ev.transcript || ev.metadata.transcript}"</p>
+              </div>
+            ) : null}
+            {ev.metadata && (
+              <pre>{JSON.stringify(ev.metadata, null, 2)}</pre>
+            )}
           </div>
         )}
       </div>

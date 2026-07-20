@@ -61,6 +61,7 @@ function Toast({ anomaly, onDismiss }) {
         <div className="proctor-toast-message">
           Severity: {SEVERITY_LABELS[anomaly.severity] || 'Low'}
           {anomaly.screenshot ? ' · Screenshot captured' : ''}
+          {anomaly.metadata?.transcript ? ` · "${anomaly.metadata.transcript}"` : ''}
         </div>
       </div>
       <button className="proctor-toast-close" onClick={onDismiss}>✕</button>
@@ -286,6 +287,11 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
                     }}>
                       <span>{ANOMALY_ICONS[a.type] || '⚠️'}</span>
                       <span style={{ flex: 1 }}>{ANOMALY_LABELS[a.type] || a.type.replace(/_/g, ' ')}</span>
+                      {a.metadata?.transcript && (
+                        <span style={{ fontSize: '0.5rem', opacity: 0.8, fontStyle: 'italic' }}>
+                          "{a.metadata.transcript}"
+                        </span>
+                      )}
                       <span style={{ fontSize: '0.5rem', opacity: 0.7 }}>
                         {new Date(a.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                       </span>

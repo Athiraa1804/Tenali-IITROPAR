@@ -28,6 +28,7 @@ import useVoiceDetection from './useVoiceDetection'
 import useMotionDetector from './useMotionDetector'
 import useFaceDetector from './useFaceDetector'
 import useScreenActivity from './useScreenActivity'
+import useSpeechTranscript from './useSpeechTranscript'
 import { reportProctorEvent, captureScreenshot } from './proctorEvents'
 
 const GRACE_PERIOD_MS = 10000
@@ -85,7 +86,7 @@ export default function ProctorPanel() {
       setPenaltyType(evt.type)
     }
 
-    reportProctorEvent({ sessionId, type: evt.type, severity: severity || evt.severity || 1, evidence: screenshot })
+    reportProctorEvent({ sessionId, type: evt.type, severity: severity || evt.severity || 1, evidence: screenshot, metadata: evt.metadata })
   }, [camera.videoRef, sessionId, addAnomaly, addPenalty])
 
   const throttledReport = useCallback((evt, severity) => {
@@ -158,17 +159,23 @@ export default function ProctorPanel() {
     }, [throttledReport, markAnomalyActive, markAnomalyCleared]),
   })
 
+  const { getTranscript, clearTranscript } = useSpeechTranscript({
+    enabled: enabled && anomalyDetectionReady,
+  })
+
   useVoiceDetection({
     enabled: enabled && anomalyDetectionReady,
     streamRef: camera.stream,
     onAnomaly: useCallback((isSpeaking) => {
       if (isSpeaking) {
+        const spokenText = getTranscript()
         markAnomalyActive('voice_detected')
-        throttledReport({ type: 'voice_detected', severity: 1 }, 1)
+        throttledReport({ type: 'voice_detected', severity: 1, metadata: { transcript: spokenText || '' } }, 1)
+        clearTranscript()
       } else {
         markAnomalyCleared('voice_detected')
       }
-    }, [throttledReport, markAnomalyActive, markAnomalyCleared]),
+    }, [throttledReport, markAnomalyActive, markAnomalyCleared, getTranscript, clearTranscript]),
   })
 
   useMotionDetector({

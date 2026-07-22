@@ -88,6 +88,9 @@ import useProctor from './proctor/useProctor'
 import ProctorDashboard from './proctor/ProctorDashboard'
 import ProctorPanel from './proctor/ProctorPanel'
 import PlaygroundApp from './PlaygroundApp'
+import LocalCompilerApp from './LocalCompilerApp'
+import BattleApp from './BattleApp'
+import SudokuApp from './SudokuApp'
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -43249,6 +43252,43 @@ function App() {
     )
   }
 
+  // Route: /battle → Battle Arena
+  if (pathname === '/battle') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <BattleApp onBack={() => { window.location.href = '/' }} />
+      </>
+    )
+  }
+
+  // Route: /sudoku → Sudoku Puzzle
+  if (pathname === '/sudoku') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <SudokuApp onBack={() => { window.location.href = '/' }} />
+      </>
+    )
+  }
+
+  // Route: /local-compiler → Local Compiler (direct subprocess execution)
+  // Also supports /playground2 for backward compatibility
+  if (pathname === '/local-compiler' || pathname === '/playground2') {
+    return (
+      <>
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '\u2600\uFE0F' : '\uD83C\uDF19'}
+        </button>
+        <LocalCompilerApp onBack={() => { window.location.href = '/' }} />
+      </>
+    )
+  }
+
   // Route: /supertables1 → Adaptive speed drill (2-phase)
   if (pathname === '/supertables1') {
     return (
@@ -43968,6 +44008,9 @@ function App() {
   function RiddleApp({ onBack }) {
     const [stage, setStage] = useState('setup')
     const [difficulty, setDifficulty] = useState(2)
+    const [selectedType, setSelectedType] = useState(null)
+    const [riddleType, setRiddleType] = useState(null)
+    const [maxForType, setMaxForType] = useState(44)
     const [question, setQuestion] = useState(null)
     const [answer, setAnswer] = useState('')
     const [selectedOption, setSelectedOption] = useState(null)
@@ -43976,6 +44019,7 @@ function App() {
     const [revealed, setRevealed] = useState(false)
     const [hintUsed, setHintUsed] = useState(false)
     const [hintText, setHintText] = useState('')
+    const [solutionSteps, setSolutionSteps] = useState(null)
     const [score, setScore] = useState(0)
     const [total, setTotal] = useState(0)
     const [wrongAttempts, setWrongAttempts] = useState(0)
@@ -43984,12 +44028,17 @@ function App() {
     const [results, setResults] = useState([])
     const [loading, setLoading] = useState(false)
     const submittedRef = useRef(false)
+    const usedIdsRef = useRef([])
 
-    const fetchQuestion = async () => {
+    const fetchQuestion = async (typeOverride) => {
+      const type = typeOverride !== undefined ? typeOverride : riddleType
       setLoading(true)
       try {
-        const r = await fetch(`/riddle-api/question?difficulty=${difficulty}`)
+        const typeParam = type ? `&type=${encodeURIComponent(type)}` : ''
+        const usedParam = usedIdsRef.current.length ? `&used=${encodeURIComponent(JSON.stringify(usedIdsRef.current))}` : ''
+        const r = await fetch(`/riddle-api/question?difficulty=${difficulty}${typeParam}${usedParam}`)
         const data = await r.json()
+        if (data.id != null) usedIdsRef.current = [...usedIdsRef.current, data.id]
         setQuestion(data)
         setAnswer('')
         setSelectedOption(null)
@@ -43998,16 +44047,42 @@ function App() {
         setRevealed(false)
         setHintUsed(false)
         setHintText('')
+        setSolutionSteps(null)
         submittedRef.current = false
       } catch (e) { console.error('Failed to fetch riddle:', e) }
       setLoading(false)
     }
 
     const startGame = () => {
+      let n = Number(totalQuestions)
+      if (!Number.isFinite(n) || n < 1) n = Math.min(15, maxForType)
+      if (n > maxForType) n = maxForType
+      setTotalQuestions(n)
       setStage('playing')
       setScore(0); setTotal(0); setWrongAttempts(0)
       setQuestionNumber(1); setResults([])
+      usedIdsRef.current = []
       fetchQuestion()
+    }
+
+    const startGameWithType = (type) => {
+      setRiddleType(type)
+      startGame()
+      fetchQuestion(type)
+    }
+
+    const selectType = async (type) => {
+      setSelectedType(type)
+      try {
+        const r = await fetch(`/riddle-api/count?type=${encodeURIComponent(type)}`)
+        const data = await r.json()
+        const max = data.count || 44
+        setMaxForType(max)
+        setTotalQuestions(prev => {
+          const n = Number(prev)
+          return (Number.isFinite(n) && n >= 1 && n <= max) ? n : Math.min(15, max)
+        })
+      } catch (e) { setMaxForType(44) }
     }
 
     const advance = () => {
@@ -44036,17 +44111,33 @@ function App() {
           setWrongAttempts(w => w + 1)
           setFeedback(`Not quite. The answer was ${data.correctAnswer}`)
         }
+        fetchSolution()
         setResults(prev => [...prev, { prompt: question.title || 'Riddle', userAnswer, correctAnswer: data.correctAnswer, correct: data.correct }])
       } catch (e) { submittedRef.current = false; console.error('Check failed:', e) }
     }
 
-    const handleSolve = () => {
+    const fetchSolution = async () => {
+      if (!question) return
+      try {
+        const r = await fetch('/riddle-api/solution', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: question.id })
+        })
+        const data = await r.json()
+        setSolutionSteps(data.steps || [])
+      } catch (e) {
+        setSolutionSteps(null)
+      }
+    }
+
+    const handleSolve = async () => {
       if (!question || revealed) return
       submittedRef.current = true
       setIsCorrect(false); setRevealed(true)
       setHintUsed(true)
-      setFeedback('Solved — here\'s the hint!')
-      setHintText(question.hint || 'No hint available.')
+      setFeedback('Solved — here\'s the step-by-step solution!')
+      fetchSolution()
       setResults(prev => [...prev, { prompt: question.title || 'Riddle', userAnswer: '(solved)', correctAnswer: question.answer, correct: false }])
     }
 
@@ -44079,17 +44170,81 @@ function App() {
           {stage === 'setup' && (
             <div className="welcome-box">
               <h2 style={{ fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--clr-text)', marginBottom: '8px' }}>Math Riddles</h2>
-              <p className="welcome-text">Find hidden rules, solve number sequences, crack logic puzzles!</p>
-              <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', margin: '12px 0' }}>
-                {[{ v: 1, l: 'Easy' }, { v: 2, l: 'Medium' }, { v: 3, l: 'Hard' }, { v: 5, l: 'All' }].map(d => (
-                  <button key={d.v} className={`radio-pill${difficulty === d.v ? ' active' : ''}`} onClick={() => setDifficulty(d.v)}>{d.l}</button>
+              <p className="welcome-text">Pick a riddle type to begin!</p>
+
+              {/* Flashcards for each riddle type */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', margin: '16px 0' }}>
+                {[
+                  {
+                    type: 'find-rule',
+                    icon: '🔍',
+                    label: 'Find the Rule',
+                    color: 'var(--clr-accent)',
+                    desc: 'Study input → output pairs, spot the hidden formula, then apply it to a new input.',
+                    example: '3 → 8, 7 → 12  ⇒  9 → ?'
+                  },
+                  {
+                    type: 'sequence',
+                    icon: '🔢',
+                    label: 'Number Sequence',
+                    color: '#7c5cff',
+                    desc: 'Look at the pattern in a list of numbers and predict what comes next.',
+                    example: '2, 4, 8, 16, ?'
+                  },
+                  {
+                    type: 'logic',
+                    icon: '🧩',
+                    label: 'Logic Puzzle',
+                    color: '#ff8a5c',
+                    desc: 'Read a word problem, reason it through step by step to reach the answer.',
+                    example: 'If all Bloops are Razzies…'
+                  },
+                  {
+                    type: 'image',
+                    icon: '🖼️',
+                    label: 'Visual Puzzle',
+                    color: '#2bbf9c',
+                    desc: 'Decode shapes, patterns and images — pick the option that completes the picture.',
+                    example: 'Which piece fits the gap?'
+                  }
+                ].map((fc, i) => (
+                  <div key={i} onClick={() => selectType(fc.type)}
+                    style={{ background: selectedType === fc.type ? 'var(--clr-accent-soft)' : 'var(--clr-surface)', border: selectedType === fc.type ? `2px solid ${fc.color}` : '1px solid var(--clr-border)', borderTop: `3px solid ${fc.color}`, borderRadius: 'var(--radius)', padding: '14px 16px', textAlign: 'left', cursor: 'pointer', transition: 'transform 0.12s, box-shadow 0.12s' }}
+                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 6px 18px rgba(0,0,0,0.25)' }}
+                    onMouseLeave={e => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
+                      <span style={{ fontSize: '1.4rem' }}>{fc.icon}</span>
+                      <span style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', color: fc.color, fontWeight: 700 }}>{fc.label}</span>
+                    </div>
+                    <p style={{ fontSize: '0.85rem', lineHeight: 1.45, color: 'var(--clr-text-soft)', margin: '0 0 8px' }}>{fc.desc}</p>
+                    <div style={{ fontSize: '0.82rem', fontStyle: 'italic', color: 'var(--clr-text)', background: 'var(--clr-input)', borderRadius: '8px', padding: '6px 8px' }}>{fc.example}</div>
+                    <div style={{ marginTop: '10px', fontSize: '0.78rem', fontWeight: 600, color: fc.color }}>{selectedType === fc.type ? '✓ Selected' : '▶ Select →'}</div>
+                  </div>
                 ))}
               </div>
-              <div className="question-count-row" style={{ marginTop: '12px' }}>
-                <label className="question-count-label">How many riddles? (max 44)</label>
-                <input className="answer-input question-count-input" type="text" value={totalQuestions} onChange={e => { const v = e.target.value; if (v === '' || (/^\d+$/.test(v) && Number(v) <= 44 && Number(v) >= 1)) setTotalQuestions(Number(v) || 15) }} />
-              </div>
-              <div className="button-row"><button onClick={startGame}>Start Riddles</button></div>
+
+              {/* Options appear only after a type is selected */}
+              {selectedType && (
+                <div style={{ marginTop: '8px' }}>
+                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap', margin: '12px 0' }}>
+                    {[{ v: 1, l: 'Easy' }, { v: 2, l: 'Medium' }, { v: 3, l: 'Hard' }, { v: 5, l: 'All' }].map(d => (
+                      <button key={d.v} className={`radio-pill${difficulty === d.v ? ' active' : ''}`} onClick={() => setDifficulty(d.v)}>{d.l}</button>
+                    ))}
+                  </div>
+                  <div className="question-count-row" style={{ marginTop: '12px' }}>
+                    <label className="question-count-label">How many riddles? (max {maxForType})</label>
+                    <input className="answer-input question-count-input" type="text" value={totalQuestions} onChange={e => {
+                      const v = e.target.value
+                      if (v === '') { setTotalQuestions(''); return }
+                      if (/^\d+$/.test(v)) { const n = Number(v); if (n >= 1 && n <= maxForType) setTotalQuestions(n); }
+                    }} onBlur={() => { if (totalQuestions === '' || Number(totalQuestions) < 1) setTotalQuestions(Math.min(15, maxForType)) }} />
+                  </div>
+                  <div className="button-row">
+                    <button onClick={() => startGameWithType(selectedType)}>Start Riddles</button>
+                    <button onClick={() => { setSelectedType(null); setRiddleType(null); setMaxForType(44); startGame() }} style={{ background: 'transparent', border: '1px solid var(--clr-text-soft)', color: 'var(--clr-text-soft)' }}>Mixed</button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -44097,6 +44252,7 @@ function App() {
             <>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '12px' }}>
                 <div className="progress-pill center">Riddle {questionNumber}/{totalQuestions}</div>
+                {riddleType && <div className="progress-pill center" style={{ textTransform: 'capitalize' }}>{riddleType === 'image' ? 'Visual Puzzle' : riddleType.replace('-', ' ')}</div>}
                 <div className="score-pill">⭐ {score}/{total}</div>
               </div>
 
@@ -44148,7 +44304,7 @@ function App() {
                   {/* Image Types */}
                   {(question.type === 'image-numpad' || question.type === 'image-option') && question.image && (
                     <div style={{ textAlign: 'center', margin: '0 auto 16px' }}>
-                      <img src={question.image} alt="Riddle" style={{ maxWidth: '100%', maxHeight: 300, borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)' }} />
+                      <img src={question.image} alt="Riddle" style={{ maxWidth: '100%', maxHeight: 280, width: 'auto', height: 'auto', objectFit: 'contain', borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)', background: 'var(--clr-input)' }} />
                     </div>
                   )}
 
@@ -44176,8 +44332,8 @@ function App() {
                           key={i}
                           onClick={() => setSelectedOption(opt)}
                           style={{
-                            width: question.optionImages ? 80 : 56,
-                            height: question.optionImages ? 80 : 56,
+                            width: 64,
+                            height: 64,
                             borderRadius: 'var(--radius)',
                             border: selectedOption === opt ? '2px solid var(--clr-accent)' : '1.5px solid var(--clr-border)',
                             background: selectedOption === opt ? 'var(--clr-accent-soft)' : 'var(--clr-input)',
@@ -44193,7 +44349,7 @@ function App() {
                           }}
                         >
                           {question.optionImages && question.optionImages[i] ? (
-                            <img src={question.optionImages[i]} alt={opt} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            <img src={question.optionImages[i]} alt={opt} style={{ width: '100%', height: '100%', objectFit: 'contain', padding: '4px' }} />
                           ) : opt}
                         </button>
                       ))}
@@ -44224,6 +44380,19 @@ function App() {
                   {/* Hint */}
                   {hintText && (
                     <div className="feedback solve" style={{ marginBottom: '12px', textAlign: 'center' }}>💡 {hintText}</div>
+                  )}
+
+                  {/* Step-by-step solution (deep) */}
+                  {solutionSteps && solutionSteps.length > 0 && (
+                    <div style={{ background: 'var(--clr-surface)', border: '1px solid var(--clr-accent)', borderRadius: 'var(--radius)', padding: '14px 18px', margin: '0 auto 14px', maxWidth: 460, textAlign: 'left' }}>
+                      <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.05rem', color: 'var(--clr-accent)', fontWeight: 700, marginBottom: '8px', textAlign: 'center' }}>🔦 Step-by-Step Solution</div>
+                      {solutionSteps.map((step, i) => (
+                        <div key={i} style={{ display: 'flex', gap: '10px', padding: '6px 0', borderBottom: i < solutionSteps.length - 1 ? '1px solid var(--clr-border)' : 'none', fontSize: '0.92rem', lineHeight: 1.5, color: 'var(--clr-text)' }}>
+                          <span style={{ flexShrink: 0, width: 22, height: 22, borderRadius: '50%', background: 'var(--clr-accent)', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.78rem', fontWeight: 700 }}>{i + 1}</span>
+                          <span>{step}</span>
+                        </div>
+                      ))}
+                    </div>
                   )}
 
                   {/* Buttons */}
@@ -44268,7 +44437,7 @@ function App() {
               <p className="final-score">{score}/{total} Riddles Solved!</p>
               <p className="welcome-text">Accuracy: {pct}% · Hints used: {hintUsed ? 'Yes' : 'No'}</p>
               <div className="button-row">
-                <button onClick={() => { setStage('setup') }}>Play Again</button>
+                <button onClick={() => { setStage('setup'); setRiddleType(null) }}>Play Again</button>
                 <button onClick={onBack} style={{ background: 'transparent', border: '1px solid var(--clr-accent)', color: 'var(--clr-accent)' }}>Back to Home</button>
               </div>
             </div>
@@ -44287,6 +44456,8 @@ function App() {
     'visual-math-lab-redux': VisualMathLabRedux,
     'mensuration-lab': MensurationLabApp,
     'basic-arith-lab': BasicArithmeticLabApp,
+    battle: BattleApp,          // Live fastest-finger duels
+    sudoku: SudokuApp,          // 9x9 Sudoku puzzle
 
     'comic-addition': ComicAdditionApp,
     gk: GKApp,                    // General Knowledge
@@ -44557,6 +44728,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
 
   // All regular quiz apps sorted alphabetically by name
   const regularApps = [
+    { key: 'battle', name: '⚔️ Battle Arena', subtitle: 'Live fastest-finger duels', color: 'red' },
     { key: 'detective', name: '🔍 Detective Agency', subtitle: 'Solve math mysteries and crack cases!', color: 'indigo' },
     { key: 'comic-addition', name: 'Comic Addition', subtitle: 'Story Mode', color: 'purple' },
     { key: 'addition', name: 'Addition', subtitle: '20-question addition practice', color: 'blue' },
@@ -44615,7 +44787,6 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'qformula', name: 'Quadratics (Formula)', subtitle: 'Find roots of ax² + bx + c = 0', color: 'purple' },
     { key: 'ratio', name: 'Ratio', subtitle: 'Ratio & proportion', color: 'green' },
     { key: 'remfactor', name: 'Remainder Theorem', subtitle: 'Remainder & factor theorem', color: 'blue' },
-    { key: 'riddle', name: 'Math Riddles', subtitle: 'Find the hidden rule & solve puzzles!', color: 'orange' },
     { key: 'rounding', name: 'Rounding', subtitle: 'D.P., sig. figs, estimation', color: 'blue' },
     { key: 'section', name: 'Section Formula', subtitle: 'Midpoint, section, centroid', color: 'green' },
     { key: 'sequences', name: 'Sequences', subtitle: 'Arithmetic & geometric sequences', color: 'purple' },
@@ -44628,6 +44799,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'sqrt', name: 'Square Root', subtitle: 'Nearest-integer square root drill', color: 'green' },
     { key: 'stdform', name: 'Standard Form', subtitle: 'Scientific notation operations', color: 'purple' },
     { key: 'stats', name: 'Statistics', subtitle: 'Mean, median, mode, range', color: 'blue' },
+    { key: 'sudoku', name: 'Sudoku', subtitle: '9x9 number puzzle — fill every row, column & box', color: 'teal' },
     { key: 'surds', name: 'Surds', subtitle: 'Simplify, add, multiply, rationalise', color: 'green' },
     { key: 'tatsavit', name: 'Tatsavit', subtitle: 'Algebra simplification drill', color: 'blue' },
     { key: 'transform', name: 'Transformations', subtitle: 'Reflect, rotate, translate, enlarge', color: 'purple' },
@@ -44771,6 +44943,16 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
                onMouseLeave={e => e.target.style.background = 'none'}>
               <strong style={{ color: 'var(--clr-accent)' }}>🎯 Goal Practice</strong>
               <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>Practice with targets & limits</span>
+            </button>
+
+            <button onClick={() => { setMenuOpen(false); onSelect('riddle') }} style={{
+              display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
+              background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
+              fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'
+            }} onMouseEnter={e => e.target.style.background = 'var(--clr-hover-strong)'}
+               onMouseLeave={e => e.target.style.background = 'none'}>
+              <strong style={{ color: 'var(--clr-accent)' }}>🧩 Math Riddles</strong>
+              <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>Find the hidden rule & solve puzzles!</span>
             </button>
 
             {featuredApps.map(app => (

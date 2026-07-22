@@ -450,6 +450,27 @@ function isHtmlLang(id) { return HTML_LANG_IDS.has(id) }
 const PREVIEW_LANG_IDS = new Set([43, 97, 102, 93, 101, 94, 74])
 function isPreviewLang(id) { return PREVIEW_LANG_IDS.has(id) }
 
+const TS_LANG_IDS = new Set([74, 94, 101])
+function isTypeScript(id) { return TS_LANG_IDS.has(id) }
+
+// Judge0's TypeScript runner compiles with `tsc` in a bare Node environment:
+// no npm packages are installed and there is no DOM library. Detect the
+// patterns that will produce a confusing "Compilation Error" or runtime error.
+const TS_IMPORT_RE = /\bimport\s.+?(from\s+['"][^'"]+['"]|['"][^'"]+['"])/m
+const TS_BROWSER_GLOBALS = ['document', 'window', 'localStorage', 'sessionStorage', 'navigator', 'alert', 'confirm', 'location', 'documentElement']
+function detectTsIssues(code) {
+  const issues = []
+  if (TS_IMPORT_RE.test(code)) {
+    issues.push('`import` statements — npm packages are not installed on the Judge0 runner, so they fail with "Cannot find module".')
+  }
+  const foundGlobals = TS_BROWSER_GLOBALS.filter(g => new RegExp('\\b' + g + '\\b').test(code))
+  if (foundGlobals.length) {
+    issues.push('browser globals (' + foundGlobals.join(', ') + ') — these are not defined in the Node runtime and will throw a runtime error.')
+  }
+  if (!issues.length) return null
+  return 'This TypeScript runs on Judge0 (bare Node, no DOM, no npm). It will likely fail:\n• ' + issues.join('\n• ')
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Code Visualizer — line-by-line execution trace like Python Tutor          */
 /* ═══════════════════════════════════════════════════════════════════════════ */
@@ -776,8 +797,14 @@ export default function PlaygroundApp({ onBack }) {
   const [rightPanel, setRightPanel] = useState('terminal')
   const [previewHtml, setPreviewHtml] = useState('')
   const [consoleLogs, setConsoleLogs] = useState([])
+  const [tsWarning, setTsWarning] = useState(null)
   const lastRunTime = useRef(0)
   const codeRef = useRef(null)
+
+  useEffect(() => {
+    if (!isTypeScript(langId)) { setTsWarning(null); return }
+    setTsWarning(detectTsIssues(code))
+  }, [code, langId])
 
   const vizSteps = useMemo(() => {
     if (rightPanel !== 'visualize') return []
@@ -1107,6 +1134,7 @@ setTimeout(()=>{
                 stdout={stdout} stderr={stderr} compileOut={compileOut}
                 statusInfo={statusInfo} activeTab={activeTab} setActiveTab={setActiveTab}
                 hasErrors={hasErrors} copied={copied} handleCopy={handleCopy}
+                tsWarning={tsWarning}
               />
             )}
 
@@ -1194,9 +1222,18 @@ setTimeout(()=>{
 /* ═══════════════════════════════════════════════════════════════════════════ */
 /* Terminal Panel — output / errors / compiler tabs                         */
 /* ═══════════════════════════════════════════════════════════════════════════ */
-function TerminalPanel({ output, error, running, stdout, stderr, compileOut, statusInfo, activeTab, setActiveTab, hasErrors, copied, handleCopy }) {
+function TerminalPanel({ output, error, running, stdout, stderr, compileOut, statusInfo, activeTab, setActiveTab, hasErrors, copied, handleCopy, tsWarning }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      {tsWarning && (
+        <div style={{
+          padding: '10px 16px', marginBottom: 8, borderRadius: 'var(--radius-sm)',
+          background: 'rgba(224, 175, 104, 0.12)', border: '1px solid rgba(224, 175, 104, 0.35)',
+          color: '#e0af68', fontWeight: 500, fontSize: '0.84rem', whiteSpace: 'pre-wrap', lineHeight: 1.5,
+        }}>
+          {tsWarning}
+        </div>
+      )}
       {statusInfo && (
         <div style={{
           display: 'flex', alignItems: 'center', gap: 10,

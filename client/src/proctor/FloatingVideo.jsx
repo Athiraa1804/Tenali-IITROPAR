@@ -43,6 +43,21 @@ const ANOMALY_LABELS = {
   ejected: 'Session Ejected',
 }
 
+const MOOD_ICONS = {
+  happy: '😄', surprised: '😲', neutral: '😐',
+  sad: '😢', angry: '😠', fearful: '😨', disgusted: '🤢',
+}
+
+const MOOD_COLORS = {
+  happy: '#22c55e', surprised: '#a855f7', neutral: '#94a3b8',
+  sad: '#3b82f6', angry: '#ef4444', fearful: '#f97316', disgusted: '#84cc16',
+}
+
+const MOOD_LABELS = {
+  happy: 'Happy', surprised: 'Surprised', neutral: 'Neutral',
+  sad: 'Sad', angry: 'Angry', fearful: 'Fearful', disgusted: 'Disgusted',
+}
+
 function Toast({ anomaly, onDismiss }) {
   const sev = SEVERITY_COLORS[anomaly.severity] || SEVERITY_COLORS[1]
   const icon = ANOMALY_ICONS[anomaly.type] || '⚠️'
@@ -84,7 +99,33 @@ function FaceBadge({ faceCount }) {
   )
 }
 
-export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore, anomalies, isAnomalyDetected, penaltyType, faceCount = 1 }) {
+function MoodBadge({ emotion }) {
+  if (!emotion || !MOOD_ICONS[emotion]) {
+    return (
+      <span style={{
+        display: 'inline-flex', alignItems: 'center', gap: 3,
+        padding: '1px 6px', borderRadius: 999, fontSize: '0.55rem',
+        background: '#94a3b822', color: '#94a3b8', border: '1px solid #94a3b844',
+        fontWeight: 700,
+      }}>
+        💭 …
+      </span>
+    )
+  }
+  const color = MOOD_COLORS[emotion]
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', gap: 3,
+      padding: '1px 6px', borderRadius: 999, fontSize: '0.55rem',
+      background: `${color}22`, color, border: `1px solid ${color}44`,
+      fontWeight: 700,
+    }}>
+      {MOOD_ICONS[emotion]} {MOOD_LABELS[emotion]}
+    </span>
+  )
+}
+
+export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore, anomalies, isAnomalyDetected, penaltyType, faceCount = 1, emotion, struggling = false, onDismissStruggling }) {
   const [isCollapsed, setIsCollapsed] = useState(false)
   const [isPoppedOut, setIsPoppedOut] = useState(false)
   const [position, setPosition] = useState({ x: 20, y: 20 })
@@ -93,10 +134,12 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
   const [showRedBanner, setShowRedBanner] = useState(false)
   const [showOverlay, setShowOverlay] = useState(false)
   const [toasts, setToasts] = useState([])
+  const [showStruggling, setShowStruggling] = useState(false)
   const prevAnomalyCountRef = useRef(0)
   const bannerShowRef = useRef(null)
   const bannerHideRef = useRef(null)
   const overlayTimerRef = useRef(null)
+  const struggleTimerRef = useRef(null)
   const { pipActive, pipSupported, togglePip } = usePipWindow({ videoRef, enabled: isRunning })
 
   const recentAnomalies = anomalies.slice(-5)
@@ -113,7 +156,26 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
     }
   }, [anomalies])
 
+  // Struggling nudge — show soft wellness hint when emotion detection flags
+  // persistent negative affect. No penalty, not an anomaly. Auto-dismisses.
   /* eslint-disable react-hooks/set-state-in-effect */
+  useEffect(() => {
+    try {
+      const dismissed = Number(sessionStorage.getItem('tenali_struggling_dismissed') || 0)
+      if (struggling && Date.now() - dismissed > 120000) {
+        setShowStruggling(true)
+        clearTimeout(struggleTimerRef.current)
+        struggleTimerRef.current = setTimeout(() => setShowStruggling(false), 15000)
+      } else if (!struggling) {
+        setShowStruggling(false)
+      }
+    } catch {
+      /* sessionStorage unavailable */
+    }
+    return () => clearTimeout(struggleTimerRef.current)
+  }, [struggling])
+  /* eslint-enable react-hooks/set-state-in-effect */
+
   useEffect(() => {
     const showRef = bannerShowRef.current
     const hideRef = bannerHideRef.current
@@ -180,6 +242,28 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
           <Toast key={t._toastId} anomaly={t} onDismiss={() => removeToast(t._toastId)} />
         ))}
       </div>
+
+      {/* Struggling nudge — soft wellness hint (no penalty/anomaly) */}
+      {showStruggling && (
+        <div style={{
+          position: 'fixed', top: 12, left: '50%', transform: 'translateX(-50%)',
+          zIndex: 100002, maxWidth: 420, width: '90%',
+          background: 'linear-gradient(135deg, #0ea5e9, #6366f1)', color: 'white',
+          padding: '12px 16px', borderRadius: 12, boxShadow: '0 8px 30px rgba(99,102,241,0.4)',
+          display: 'flex', alignItems: 'center', gap: 10, fontSize: '0.85rem', fontWeight: 600,
+          animation: 'proctor-slide-down 0.3s ease',
+        }}>
+          <span style={{ fontSize: '1.3rem' }}>💙</span>
+          <span style={{ flex: 1 }}>
+            Take a breath — this looks tough. It's okay to struggle. Want a quick break or tip?
+          </span>
+          <button onClick={() => { setShowStruggling(false); onDismissStruggling?.() }}
+            style={{ background: 'rgba(255,255,255,0.25)', border: 'none', color: 'white',
+              borderRadius: 6, padding: '4px 10px', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700, flexShrink: 0 }}>
+            Dismiss
+          </button>
+        </div>
+      )}
 
       {/* Red warning banner */}
       {showRedBanner && (
@@ -312,6 +396,7 @@ export default function FloatingVideo({ videoRef, isRunning, error, penaltyScore
               <span style={{ width: 5, height: 5, borderRadius: '50%', background: isRunning ? '#22c55e' : '#555', boxShadow: isRunning ? '0 0 4px #22c55e' : 'none' }} />
               <span>{isRunning ? 'Monitoring Active' : 'Starting...'}</span>
               <FaceBadge faceCount={faceCount} />
+              {emotion && <MoodBadge emotion={emotion} />}
             </div>
           )}
         </div>

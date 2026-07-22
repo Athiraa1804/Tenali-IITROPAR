@@ -27,6 +27,7 @@ import useBlurDetector from './useBlurDetector'
 import useVoiceDetection from './useVoiceDetection'
 import useMotionDetector from './useMotionDetector'
 import useFaceDetector from './useFaceDetector'
+import useEmotionDetection from './useEmotionDetection'
 import useScreenActivity from './useScreenActivity'
 import useSpeechTranscript from './useSpeechTranscript'
 import { reportProctorEvent, captureScreenshot } from './proctorEvents'
@@ -205,6 +206,29 @@ export default function ProctorPanel() {
     }, [markAnomalyCleared]),
   })
 
+  // Emotion detection (Phase 1: real-time webcam emotion recognition)
+  const { emotion, struggling } = useEmotionDetection({
+    videoRef: camera.videoRef,
+    enabled: enabled && anomalyDetectionReady,
+    onEmotion: useCallback((payload) => {
+      try {
+        const KEY = 'tenali_emotion_timeline'
+        const existing = JSON.parse(sessionStorage.getItem(KEY) || '[]')
+        const last = existing[existing.length - 1]
+        if (!last || payload.timestamp - last.timestamp > 2400) {
+          existing.push({
+            emotion: payload.emotion,
+            confidence: payload.confidence,
+            timestamp: payload.timestamp,
+          })
+          if (existing.length > 200) existing.splice(0, existing.length - 200)
+          sessionStorage.setItem(KEY, JSON.stringify(existing))
+        }
+      } catch {
+        /* sessionStorage unavailable */
+      }
+    }, []),
+  })
   useScreenActivity({
     enabled: enabled && anomalyDetectionReady,
     onIdle: useCallback((evt) => {
@@ -228,6 +252,11 @@ export default function ProctorPanel() {
       isAnomalyDetected={isAnomalyDetected}
       penaltyType={penaltyType}
       faceCount={faceCount}
+      emotion={emotion}
+      struggling={struggling}
+      onDismissStruggling={() => {
+        try { sessionStorage.setItem('tenali_struggling_dismissed', String(Date.now())) } catch {}
+      }}
     />
   )
 }

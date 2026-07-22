@@ -35,6 +35,7 @@ export default function ProctoredQuiz({ children, quizType, onBack, autoStartCon
   const [quizScore, setQuizScore] = useState(0)
   const [quizTotal, setQuizTotal] = useState(0)
   const [restartKey, setRestartKey] = useState(0)
+  const [emotionTimeline, setEmotionTimeline] = useState([])
   const prevAnomalyCount = useRef(0)
 
   // For autoStartConsent mode (/linear route), proctoring is mandatory
@@ -92,6 +93,12 @@ export default function ProctoredQuiz({ children, quizType, onBack, autoStartCon
       if (sessionId) {
         endProctorSession(sessionId)
       }
+      // Read the emotion timeline captured during the quiz
+      try {
+        const tl = JSON.parse(sessionStorage.getItem('tenali_emotion_timeline') || '[]')
+        setEmotionTimeline(tl)
+        sessionStorage.removeItem('tenali_emotion_timeline')
+      } catch {}
       setShowEmotion(true)
     }
   }, [quizFinished, phase, sessionId, setShowEmotion])
@@ -172,6 +179,7 @@ export default function ProctoredQuiz({ children, quizType, onBack, autoStartCon
       {showEmotion && !showReport && (
         <EmotionPicker
           quizType={quizType}
+          emotionTimeline={emotionTimeline}
           onSubmit={() => { setShowEmotion(false); setShowReport(true) }}
           onSkip={() => { setShowEmotion(false); setShowReport(true) }}
         />

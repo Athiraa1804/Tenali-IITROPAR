@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 // Helper to get random even numbers
 const randEven = (min, max) => {
   let r = Math.floor(Math.random() * (max - min + 1)) + min;
@@ -38,6 +38,7 @@ export default function CoordGeomDiscoveryApp({ onBack }) {
 
   useEffect(() => {
     generateMission();
+     
   }, []);
 
   const midpoint = {
@@ -71,7 +72,7 @@ export default function CoordGeomDiscoveryApp({ onBack }) {
     }
   };
 
-  const handlePointerUp = (e) => {
+  const handlePointerUp = (_e) => {
     if (!isDragging) return;
     setIsDragging(false);
     

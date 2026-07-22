@@ -1836,6 +1836,7 @@ function GGBEmbed({ missionId }) {
 
     const timer = setTimeout(tryInject, 400);
     return () => { cancelled = true; clearTimeout(timer); el.innerHTML = ''; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [missionId]);
 
   useEffect(() => {

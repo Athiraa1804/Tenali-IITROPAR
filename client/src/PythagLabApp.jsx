@@ -103,9 +103,11 @@ export default function PythagLabApp({ onBack }) {
   // Set default hint for active level
   useEffect(() => {
     if (phase === 'game') {
+       
       loadLevelHint(currentLevel);
       setShowHint(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, currentLevel, difficulty]);
 
   const getLevelQuestion = (lvl) => {

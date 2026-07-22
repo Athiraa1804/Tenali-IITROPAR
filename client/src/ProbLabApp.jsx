@@ -92,6 +92,7 @@ export default function ProbLabApp({ onBack }) {
         setTimer(t => t + 1);
       }, 1000);
     } else {
+       
       setTimer(0);
     }
     return () => clearInterval(interval);
@@ -140,8 +141,10 @@ export default function ProbLabApp({ onBack }) {
   // Loaded level configuration
   useEffect(() => {
     if (phase === 'game') {
+       
       loadLevelConfig(currentLevel);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase, currentLevel, difficulty]);
 
   const getLevelQuestion = (lvl) => {

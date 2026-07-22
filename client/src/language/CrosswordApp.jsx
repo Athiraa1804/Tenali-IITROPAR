@@ -320,7 +320,7 @@ function getLevelStars(levelId) {
 }
 
 function setLevelStars(levelId, stars) {
-  try { localStorage.setItem(`tenali_cw_stars_${levelId}`, String(stars)); } catch {}
+  try { localStorage.setItem(`tenali_cw_stars_${levelId}`, String(stars)); } catch { /* ignored */ }
 }
 
 export default function CrosswordApp({ onBack }) {
@@ -348,7 +348,7 @@ export default function CrosswordApp({ onBack }) {
     try {
       const saved = Number(localStorage.getItem('tenali_crossword_xp') || 0);
       setTotalXp(saved);
-    } catch {}
+    } catch { /* ignored */ }
   }, []);
 
   function showToast(msg, type = 'info') {
@@ -631,7 +631,7 @@ export default function CrosswordApp({ onBack }) {
         setLevelXp(x => x + xpGained);
         const newTotal = totalXp + xpGained;
         setTotalXp(newTotal);
-        try { localStorage.setItem('tenali_crossword_xp', String(newTotal)); } catch {}
+        try { localStorage.setItem('tenali_crossword_xp', String(newTotal)); } catch { /* ignored */ }
 
         showToast(`Solved: ${w.word}! +${xpGained} XP`, 'correct');
 

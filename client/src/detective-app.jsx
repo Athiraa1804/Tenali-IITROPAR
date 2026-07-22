@@ -37,7 +37,7 @@ function playTone(freq, duration, type = 'sine', volume = 0.3) {
     gain.connect(ctx.destination);
     osc.start();
     osc.stop(ctx.currentTime + duration);
-  } catch {}
+  } catch { /* ignored */ }
 }
 
 function playStarSound(starCount) {
@@ -75,7 +75,7 @@ function loadDetectiveProgress() {
   try {
     const raw = localStorage.getItem(DETECTIVE_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* ignored */ }
   return { xp: 0, casesSolved: 0, cases: {}, usedCaseIds: [], age: 8 };
 }
 
@@ -98,10 +98,6 @@ const AGE_TOPIC_MAP = {
   'shapes': 5,
   'patterns': 5,
   'comparisons': 5,
-  // Age 6+ — Class 1: +/- concepts, intro to multiply, basic shapes & measurement
-  'addition': 6,
-  'multiply': 6,
-  'triangles': 6,
   // Age 8+ — Class 3: numbers to 10,000, fractions, measurement, perimeter & area
   'fractionadd': 8,
   'mensur': 8,
@@ -198,7 +194,7 @@ function filterCasesByAge(cases, age) {
 }
 
 function saveDetectiveProgress(data) {
-  try { localStorage.setItem(DETECTIVE_STORAGE_KEY, JSON.stringify(data)); } catch {}
+  try { localStorage.setItem(DETECTIVE_STORAGE_KEY, JSON.stringify(data)); } catch { /* ignored */ }
 }
 
 function getDetectiveRank(xp) {
@@ -558,7 +554,7 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
   const [revealed, setRevealed] = useState(false);
   const [completed, setCompleted] = useState(false);
   const [hintLevel, setHintLevel] = useState(0); // how many hints revealed (per-stage)
-  const [hintUsed, setHintUsed] = useState(false); // was a hint shown? (per-stage)
+  const [_hintUsed, setHintUsed] = useState(false); // was a hint shown? (per-stage)
   const [totalHintsUsed, setTotalHintsUsed] = useState(0); // cumulative hints across ALL stages
   const inputRef = useRef(null);
   const celebrationRef = useRef(null);
@@ -968,7 +964,7 @@ const ACHIEVEMENTS = [
   { id: 'veteran',       title: 'Veteran',           icon: '🎖️', desc: 'Solve 10 cases', check: (p) => p.casesSolved >= 10 },
   { id: 'diamond',       title: 'Diamond Detective', icon: '💎', desc: 'Get 3 stars on 5 cases', check: (p) => Object.values(p.cases || {}).filter(c => c.stars === 3).length >= 5 },
   { id: 'scholar',       title: 'Scholar',           icon: '📚', desc: 'Solve cases from 10 topics', check: (p) => { const topics = new Set(Object.values(p.cases || {}).map(c => c.topic)); return topics.size >= 10; } },
-  { id: 'completionist', title: 'Completionist',     icon: '🏆', desc: 'Solve all cases', check: (p) => false },
+  { id: 'completionist', title: 'Completionist',     icon: '🏆', desc: 'Solve all cases', check: () => false },
 ];
 
 const ACHIEVEMENT_STORAGE_KEY = 'tenali-detective-achievements';
@@ -978,15 +974,15 @@ function loadAchievements() {
   try {
     const raw = localStorage.getItem(ACHIEVEMENT_STORAGE_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* ignored */ }
   return {};
 }
 
 function saveAchievements(data) {
-  try { localStorage.setItem(ACHIEVEMENT_STORAGE_KEY, JSON.stringify(data)); } catch {}
+  try { localStorage.setItem(ACHIEVEMENT_STORAGE_KEY, JSON.stringify(data)); } catch { /* ignored */ }
 }
 
-function checkAndAwardAchievements(progress) {
+function _checkAndAwardAchievements(progress) {
   const unlocked = loadAchievements();
   const newlyUnlocked = [];
   for (const a of ACHIEVEMENTS) {
@@ -1004,9 +1000,9 @@ function checkAndAwardAchievements(progress) {
   return newlyUnlocked;
 }
 
-function DetectiveAchievements({ onBack, progress }) {
-  const [unlocked, setUnlocked] = useState(loadAchievements);
-  const [dismissedNotif, setDismissedNotif] = useState(null);
+function DetectiveAchievements({ onBack }) {
+  const [unlocked, _setUnlocked] = useState(loadAchievements);
+  const [_dismissedNotif, _setDismissedNotif] = useState(null);
 
   const earnedCount = Object.keys(unlocked).length;
   const totalCount = ACHIEVEMENTS.length;
@@ -1130,12 +1126,12 @@ function loadLeaderboard() {
   try {
     const raw = localStorage.getItem(LEADERBOARD_KEY);
     if (raw) return JSON.parse(raw);
-  } catch {}
+  } catch { /* ignored */ }
   return { bestScores: [], byCase: {} };
 }
 
 function saveLeaderboard(data) {
-  try { localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(data)); } catch {}
+  try { localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(data)); } catch { /* ignored */ }
 }
 
 function updateLeaderboard(caseId, stars, xp, hintLevel, topic) {
@@ -1155,8 +1151,8 @@ function updateLeaderboard(caseId, stars, xp, hintLevel, topic) {
   saveLeaderboard(data);
 }
 
-function DetectiveLeaderboard({ onBack, progress, totalCases, caseLookup }) {
-  const [leaderData, setLeaderData] = useState(loadLeaderboard);
+function DetectiveLeaderboard({ onBack, totalCases, caseLookup }) {
+  const [leaderData, _setLeaderData] = useState(loadLeaderboard);
   const [sortBy, setSortBy] = useState('stars'); // 'stars' | 'xp' | 'recent'
 
   let entries = Object.entries(leaderData.byCase);
@@ -1343,7 +1339,7 @@ export default function EnhancedMathDetectiveApp({ onBack }) {
     : 100;
 
   // Track used case IDs per topic for deduplication
-  const usedCaseIds = progress.usedCaseIds || [];
+  const _usedCaseIds = progress.usedCaseIds || [];
   // Ensure totalStars is initialized
   if (!progress.totalStars) progress.totalStars = 0;
 
@@ -1477,7 +1473,7 @@ export default function EnhancedMathDetectiveApp({ onBack }) {
       const reset = { xp: 0, casesSolved: 0, cases: {}, usedCaseIds: [] };
       saveDetectiveProgress(reset);
       // Also clear leaderboard
-      try { localStorage.removeItem(LEADERBOARD_KEY); } catch {}
+      try { localStorage.removeItem(LEADERBOARD_KEY); } catch { /* ignored */ }
       setProgress(reset);
       setScreen('dashboard');
       setActiveCaseId(null);

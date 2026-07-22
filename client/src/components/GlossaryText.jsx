@@ -209,7 +209,7 @@ export default function GlossaryText({ text }) {
 
   return (
     <>
-      {segments.map((seg, i) => {
+      {segments.map((seg) => {
         if (seg.type === 'text') return seg.value || null
         return (
           <GlossaryTooltip

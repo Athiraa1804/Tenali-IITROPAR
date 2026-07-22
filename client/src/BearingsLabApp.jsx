@@ -195,8 +195,10 @@ export default function BearingsLabApp({ onBack }) {
   // Reset/Initialize Level States
   useEffect(() => {
     if (phase === 'game') {
+       
       initMission(1);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [phase]);
 
   // Handle Steering Wheel Turn Math

@@ -10,7 +10,7 @@
  * It imports stories from detective-stories.js and adds hint & deduplication features.
  */
 
-import { useEffect, useState, useRef, useMemo } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { ALL_DETECTIVE_STORIES } from './detective-stories'
 
 // ─── Sound Effects (Web Audio API) ──────────────────────────────────────
@@ -561,34 +561,11 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
 
   useEffect(() => { setTimeout(() => inputRef.current?.focus(), 100); }, [stageIndex]);
 
-  const stage = caseData.stages[stageIndex];
-  if (!stage) return null;
-
-  const hints = stage.hints || [];
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (revealed || !answer.trim()) return;
-    const correct = checkDetectiveAnswer(stage.answer, answer);
-    setRevealed(true);
-    setFeedback({ correct, correctAnswer: stage.answer });
-  };
-
-  const handleHint = () => {
-    if (hintLevel < hints.length) {
-      setHintLevel(h => h + 1);
-      setTotalHintsUsed(t => t + 1);
-      setHintUsed(true);
-    }
-  };
-
   const handleNext = () => {
     if (!feedback) return;
     if (feedback.correct) {
       if (stageIndex + 1 >= caseData.stages.length) {
         setCompleted(true);
-        // Calculate stars based on TOTAL hints used across ALL stages
-        // 0 hints = 3 stars, 1-2 hints = 2 stars, 3+ hints = 1 star
         const stars = totalHintsUsed === 0 ? 3 : totalHintsUsed <= 2 ? 2 : 1;
         onComplete(caseData.id, true, { hintUsed: totalHintsUsed > 0, stars, hintLevel: totalHintsUsed, totalHintsUsed });
       } else {
@@ -599,11 +576,8 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
         setRevealed(false);
         setHintLevel(0);
         setHintUsed(false);
-        // totalHintsUsed is NOT reset — it accumulates across stages
       }
     } else {
-      // Wrong answer — retry the current stage
-      // Remove this stage's hint clicks from total so retry is fair
       setTotalHintsUsed(t => Math.max(0, t - hintLevel));
       setAnswer('');
       setFeedback(null);
@@ -613,12 +587,6 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
     }
   };
 
-  const handleSkip = () => {
-    if (revealed) return;
-    setRevealed(true);
-    setFeedback({ correct: false, correctAnswer: stage.answer });
-  };
-
   useEffect(() => {
     if (!revealed) return;
     const handleKey = (e) => {
@@ -626,31 +594,15 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
     };
     window.addEventListener('keydown', handleKey);
     return () => window.removeEventListener('keydown', handleKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revealed, feedback, stageIndex]);
-
-  // ─── Star rating helper ────────────────────────────────────────────────
-  function renderStars(hintLevel) {
-    const starCount = hintLevel === 0 ? 3 : hintLevel === 1 ? 2 : 1;
-    const stars = [];
-    for (let i = 0; i < 3; i++) {
-      stars.push(
-        <span key={i} className={i < starCount ? 'mda-star' : ''} style={{ fontSize: '1.8rem', opacity: i < starCount ? 1 : 0.25, animationDelay: `${i * 0.15}s` }}>
-          {i < starCount ? '⭐' : '☆'}
-        </span>
-      );
-    }
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.3rem', margin: '0.2rem 0 0.5rem' }}>
-        {stars}
-      </div>
-    );
-  }
 
   // Play sound on correct stage answer
   useEffect(() => {
     if (revealed && feedback?.correct && stageIndex < caseData.stages.length - 1) {
       playCorrectSound();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [revealed, stageIndex]);
 
   // ─── Confetti effect ──────────────────────────────────────────────────
@@ -701,6 +653,51 @@ function DetectiveCaseView({ caseData, initialStage, onComplete, onBack }) {
     animate();
     return () => { if (frame) cancelAnimationFrame(frame); };
   }, [completed]);
+
+  const stage = caseData.stages[stageIndex];
+  if (!stage) return null;
+
+  const hints = stage.hints || [];
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (revealed || !answer.trim()) return;
+    const correct = checkDetectiveAnswer(stage.answer, answer);
+    setRevealed(true);
+    setFeedback({ correct, correctAnswer: stage.answer });
+  };
+
+  const handleHint = () => {
+    if (hintLevel < hints.length) {
+      setHintLevel(h => h + 1);
+      setTotalHintsUsed(t => t + 1);
+      setHintUsed(true);
+    }
+  };
+
+  const handleSkip = () => {
+    if (revealed) return;
+    setRevealed(true);
+    setFeedback({ correct: false, correctAnswer: stage.answer });
+  };
+
+  // ─── Star rating helper ────────────────────────────────────────────────
+  function renderStars(hintLevel) {
+    const starCount = hintLevel === 0 ? 3 : hintLevel === 1 ? 2 : 1;
+    const stars = [];
+    for (let i = 0; i < 3; i++) {
+      stars.push(
+        <span key={i} className={i < starCount ? 'mda-star' : ''} style={{ fontSize: '1.8rem', opacity: i < starCount ? 1 : 0.25, animationDelay: `${i * 0.15}s` }}>
+          {i < starCount ? '⭐' : '☆'}
+        </span>
+      );
+    }
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '0.3rem', margin: '0.2rem 0 0.5rem' }}>
+        {stars}
+      </div>
+    );
+  }
 
   if (completed) {
     const starCount = totalHintsUsed === 0 ? 3 : totalHintsUsed <= 2 ? 2 : 1;
@@ -1075,7 +1072,6 @@ function DetectiveAchievements({ onBack }) {
 // ─── Achievement Notification ─────────────────────────────────────────
 
 function AchievementNotification({ achievements, onDismiss }) {
-  if (!achievements || achievements.length === 0) return null;
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
@@ -1088,7 +1084,10 @@ function AchievementNotification({ achievements, onDismiss }) {
       const timer = setTimeout(() => onDismiss(), 500);
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
+
+  if (!achievements || achievements.length === 0) return null;
 
   return (
     <div style={{
@@ -1260,7 +1259,7 @@ function DetectiveLeaderboard({ onBack, totalCases, caseLookup }) {
 
 // ─── Floating Background Particles ───────────────────────────────────
 function DetectiveParticles() {
-  const particles = useMemo(() => {
+  const [particles] = useState(() => {
     const emojis = ['🔍', '🔎', '⭐', '🕵️', '🔦', '📜', '🧩', '💡', '📋', '🔐', '🎯', '📝'];
     return Array.from({ length: 18 }, (_, i) => ({
       id: i,
@@ -1270,7 +1269,7 @@ function DetectiveParticles() {
       duration: 12 + Math.random() * 18,
       delay: Math.random() * 20,
     }));
-  }, []);
+  });
 
   return (
     <div className="mda-particles-container" aria-hidden="true">
@@ -1341,7 +1340,7 @@ export default function EnhancedMathDetectiveApp({ onBack }) {
   // Track used case IDs per topic for deduplication
   const _usedCaseIds = progress.usedCaseIds || [];
   // Ensure totalStars is initialized
-  if (!progress.totalStars) progress.totalStars = 0;
+  const _totalStars = progress.totalStars || 0;
 
   // Determine initial screen
   useEffect(() => {
@@ -1357,6 +1356,7 @@ export default function EnhancedMathDetectiveApp({ onBack }) {
     } else {
       setScreen('library');
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Case deduplication: pick a case that hasn't been used for the same topic

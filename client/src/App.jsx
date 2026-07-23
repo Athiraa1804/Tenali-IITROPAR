@@ -95,6 +95,20 @@ import GeometryApp from './GeometryApp';
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
 
+// Base path the app is mounted at (e.g. '/summership' in production, '' at root).
+// Derived from Vite's build-time base so path routing + internal navigation work
+// whether the app is served from the domain root or a sub-path.
+const BASE = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+// Prefix an absolute in-app path with BASE for navigation (keeps us inside the sub-path).
+const withBase = (p) => BASE + p;
+// Strip BASE off window.location.pathname so route matching can use root-relative paths.
+const stripBase = (pn) => {
+  let x = (pn || '/').replace(/\/+$/, '').toLowerCase();
+  const b = BASE.toLowerCase();
+  if (b && (x === b || x.startsWith(b + '/'))) x = x.slice(b.length);
+  return x || '/';
+};
+
 // Global fetch interceptor to automatically attach authorization header
 const originalFetch = window.fetch;
 window.fetch = function (url, options) {
@@ -190,7 +204,7 @@ function AuthMenu({ t = (s) => s }) {
   // Hide hamburger menu in visual learning to prevent navigation away
   const params = new URLSearchParams(window.location.search)
   const mode = params.get('mode')
-  const pathname = window.location.pathname.replace(/\/$/, '').toLowerCase()
+  const pathname = stripBase(window.location.pathname)
   const isVisualLearning =
     pathname === '/geocraft' ||
     pathname === '/visual-math-lab-redux' ||
@@ -225,7 +239,7 @@ function AuthMenu({ t = (s) => s }) {
       if (isVisualLearning) {
         window.location.reload()
       } else {
-        window.location.href = '/tenth'
+        window.location.href = withBase('/tenth')
       }
     } catch (err) {
       setError(err.message || 'login failed')
@@ -282,7 +296,7 @@ function AuthMenu({ t = (s) => s }) {
                   <>
                     <button
                       type="button"
-                      onClick={() => { window.location.href = '/'; setOpen(false) }}
+                      onClick={() => { window.location.href = withBase('/'); setOpen(false) }}
                       style={{ width: '100%', textAlign: 'left', padding: '8px 12px', borderRadius: 6, background: 'transparent', border: 'none', color: 'var(--clr-text)', cursor: 'pointer', fontSize: '0.95rem' }}
                       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
@@ -292,7 +306,7 @@ function AuthMenu({ t = (s) => s }) {
 
                     <button
                       type="button"
-                      onClick={() => { window.location.href = '/profile'; setOpen(false) }}
+                      onClick={() => { window.location.href = withBase('/profile'); setOpen(false) }}
                       style={{ width: '100%', textAlign: 'left', padding: '8px 12px', borderRadius: 6, background: 'transparent', border: 'none', color: 'var(--clr-text)', cursor: 'pointer', fontSize: '0.95rem' }}
                       onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.06)' }}
                       onMouseLeave={e => { e.currentTarget.style.background = 'transparent' }}
@@ -41111,7 +41125,7 @@ function TenthApp({ onBack }) {
         </p>
       )}
 
-      <a href="/gym" style={{
+      <a href={withBase('/gym')} style={{
         display: 'block', textDecoration: 'none', color: 'var(--clr-text)',
         padding: '20px 24px', marginBottom: 28, borderRadius: 14,
         background: 'linear-gradient(135deg, rgba(46,160,67,0.18), rgba(108,206,255,0.12))',
@@ -41155,7 +41169,7 @@ function TenthApp({ onBack }) {
             {u.chapters.map((c) => (
               <a
                 key={c.n}
-                href={`/chapter${c.n}`}
+                href={withBase(`/chapter${c.n}`)}
                 style={{
                   display: 'block', textDecoration: 'none', color: 'var(--clr-text)',
                   padding: '14px 16px', borderRadius: 10,
@@ -42789,7 +42803,7 @@ function App() {
 
   // ========== ROUTING: URL-BASED (STUDENT PAGES) ==========
   // Check if current URL matches a specific student page
-  const pathname = window.location.pathname.replace(/\/$/, '').toLowerCase()
+  const pathname = stripBase(window.location.pathname)
 
 
 
@@ -42803,7 +42817,7 @@ function App() {
         <div className="card">
           <AuthGate>
             <div style={{ position: 'relative' }}>
-              <ProfileShowcase completedTopics={completedTopics} onSelectTopic={(topicKey) => { window.location.href = `/?mode=${topicKey}` }} />
+              <ProfileShowcase completedTopics={completedTopics} onSelectTopic={(topicKey) => { window.location.href = withBase(`/?mode=${topicKey}`) }} />
             </div>
           </AuthGate>
         </div>
@@ -42879,7 +42893,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <TatsavitLineApp onBack={() => { window.location.href = '/' }} />
+        <TatsavitLineApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -42891,7 +42905,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <TatsavitApp onBack={() => { window.location.href = '/' }} />
+        <TatsavitApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -42904,7 +42918,7 @@ function App() {
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <div className="card">
-          <LanguageDashboard onBack={() => { window.location.href = '/' }} />
+          <LanguageDashboard onBack={() => { window.location.href = withBase('/') }} />
         </div>
       </div>
     )
@@ -42917,7 +42931,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><TenthApp onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><TenthApp onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -42931,7 +42945,7 @@ function App() {
         </button>
         <div className="app-shell">
           <div className="card">
-            <GeometryApp onBack={() => { window.location.href = '/' }} />
+            <GeometryApp onBack={() => { window.location.href = withBase('/') }} />
           </div>
         </div>
       </>
@@ -42942,37 +42956,37 @@ function App() {
     return (<>
       <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>{theme === 'dark' ? '☀️' : '🌙'}</button>
       <div className="app-shell"><div className="card">
-        <GymApp onBack={() => { window.location.href = '/tenth' }} />
+        <GymApp onBack={() => { window.location.href = withBase('/tenth') }} />
       </div></div>
     </>)
   }
-  if (pathname === '/bridge1') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge1App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge2') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge2App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge3') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge3App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge4') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge4App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge5') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge5App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge6') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge6App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge7') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge7App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge8') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge8App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge9') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge9App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge10') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge10App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge11') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge11App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge12') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge12App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge13') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge13App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge14') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge14App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge15') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge15App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge16') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge16App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge17') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge17App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge18') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge18App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge19') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge19App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge20') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge20App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge21') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge21App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge22') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge22App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge23') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge23App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge24') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge24App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge25') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge25App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge26') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge26App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
-  if (pathname === '/bridge27') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge27App onBack={() => { window.location.href = '/chapter5' }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge1') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge1App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge2') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge2App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge3') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge3App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge4') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge4App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge5') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge5App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge6') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge6App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge7') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge7App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge8') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge8App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge9') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge9App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge10') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge10App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge11') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge11App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge12') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge12App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge13') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge13App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge14') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge14App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge15') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge15App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge16') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge16App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge17') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge17App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge18') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge18App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge19') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge19App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge20') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge20App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge21') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge21App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge22') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge22App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge23') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge23App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge24') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge24App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge25') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge25App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge26') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge26App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
+  if (pathname === '/bridge27') return (<><button className="theme-toggle" onClick={toggleTheme}>{theme === 'dark' ? '☀️' : '🌙'}</button><div className="app-shell"><div className="card"><AuthGate><Bridge27App onBack={() => { window.location.href = withBase('/chapter5') }} /></AuthGate></div></div></>)
 
   // Route: /linearalgebra → Linear Algebra Module 1 (Interactive Learning)
   if (pathname === '/linearalgebra' || pathname === '/la') {
@@ -42982,7 +42996,7 @@ function App() {
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <div className="app-shell"><div className="card">
-          <LinearAlgebraApp onBack={() => { window.location.href = '/' }} />
+          <LinearAlgebraApp onBack={() => { window.location.href = withBase('/') }} />
         </div></div>
       </>
     )
@@ -42995,7 +43009,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter1App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter1App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43007,7 +43021,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter2App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter2App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43019,7 +43033,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter3App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter3App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43031,7 +43045,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter4App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter4App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43043,7 +43057,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter5App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter5App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43055,7 +43069,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter6App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter6App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43067,7 +43081,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter7App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter7App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43079,7 +43093,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter8App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter8App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43091,7 +43105,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter9App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter9App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43103,7 +43117,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter10App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter10App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43115,7 +43129,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter11App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter11App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43127,7 +43141,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter12App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter12App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43139,7 +43153,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter13App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter13App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43151,7 +43165,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter14App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter14App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43163,7 +43177,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter15App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter15App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43175,7 +43189,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter16App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter16App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43187,7 +43201,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter17App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter17App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43199,7 +43213,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter18App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter18App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43211,7 +43225,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter19App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter19App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43223,7 +43237,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter20App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter20App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43235,7 +43249,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter21App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter21App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43247,7 +43261,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter22App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter22App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43259,7 +43273,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter23App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter23App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43271,7 +43285,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <AuthGate><Chapter24App onBack={() => { window.location.href = '/' }} /></AuthGate>
+        <AuthGate><Chapter24App onBack={() => { window.location.href = withBase('/') }} /></AuthGate>
       </>
     )
   }
@@ -43283,7 +43297,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <Tatsavit1App onBack={() => { window.location.href = '/' }} />
+        <Tatsavit1App onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -43295,7 +43309,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <RiyaApp onBack={() => { window.location.href = '/' }} />
+        <RiyaApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -43330,7 +43344,7 @@ function App() {
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <div className="app-shell">
-          <Vachana onBack={() => { window.location.href = '/' }} />
+          <Vachana onBack={() => { window.location.href = withBase('/') }} />
         </div>
       </>
     )

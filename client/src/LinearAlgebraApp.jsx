@@ -56,6 +56,12 @@ const MISSIONS = [
       { emoji: '⚗️', title: 'Chemical Engineering Stoichiometry', equation: 'H2 = 3 × N2', type: 'mcq', concept: 'Constant Ratio Constraints', story: 'In an industrial ammonia synthesis plant, Nitrogen (N2) and Hydrogen (H2) react in a fixed 1:3 stoichiometric ratio (H2 = 3 N2). Which equation defines the operational trajectory line on which all hourly mass flow data points (N2, H2) must lie on a 2D graph?', question: 'Which equation defines the trajectory line for all data points?', options: ['H2 = 3 N2', 'N2 = 3 H2', 'H2 = N2 + 3', 'H2 = 3 N2 + 1'], answer: 'H2 = 3 N2', explanation: 'For zero reactants, zero product is formed (0,0). For every 1 unit of N2, 3 units of H2 are consumed. Thus, the relationship is y = 3x, or H2 = 3 N2.' },
       { emoji: '🖥️', title: 'Computer Graphics Aspect Ratio Scaling', equation: 'W = m × H', type: 'numerical', concept: 'Slope of a Proportional Line', story: 'A game graphics engine scales texture dimensions while maintaining a fixed 16:9 aspect ratio. The relationship between Width (W) and Height (H) is given by W = m · H. What is the value of the slope m rounded to 2 decimal places?', question: 'What is the value of the slope m (rounded to 2 decimal places)?', answer: '1.78', explanation: 'The ratio of Width to Height is 16 / 9 ≈ 1.7777.... Rounding to 2 decimal places gives 1.78. Plotting Width vs Height yields a line W = 1.78 H passing through (0,0).' },
       { emoji: '🔌', title: 'EV Charging & Renewable Energy Output', equation: 'E = rate × t', type: 'mcq', concept: 'Physical Meaning of the Origin (0,0)', story: 'A solar EV charging station charges two batteries simultaneously. Station A delivers energy at 50 kWh/hr, while Station B delivers energy at 25 kWh/hr. If we plot total energy delivered (EB, EA) over time, why MUST the resulting line pass through the origin (0,0)?', question: 'Why MUST the resulting line pass through the origin (0,0)?', options: ['Because Station A always charges at a constant rate of 0 kWh', 'Because at time t = 0 hours, both stations have delivered exactly 0 kWh of energy', 'Because the slope of the charging curve is zero', 'Because Station B charges twice as fast as Station A'], answer: 'Because at time t = 0 hours, both stations have delivered exactly 0 kWh of energy', explanation: 'At initial state t = 0, no energy has been transferred, yielding (0,0). Any direct proportional relationship where output depends on elapsed time starts at (0,0).' },
+      { emoji: '🍳', title: 'Recipe Scaling (Flour & Sugar)', equation: 'y = 2x', type: 'mcq', concept: 'Direct Proportionality', story: 'A recipe needs flour and sugar in the ratio 2:1 (flour = 2 × sugar). If you plot cups-of-sugar (x) vs cups-of-flour (y) for different batch sizes, how does the graph look?', question: 'How does the graph of sugar vs flour look?', options: ['A straight line through the origin', 'A curve', 'A circle', 'Randomly scattered points'], answer: 'A straight line through the origin', explanation: 'Flour = 2×Sugar is exactly the same structure as R=2L. Zero sugar means zero flour needed (origin included), and the ratio stays fixed for any batch size, so all (sugar, flour) points lie on one straight line through the origin.' },
+      { emoji: '🚗', title: 'Car Distance vs Time', equation: 'y = 60x', type: 'mcq', concept: 'Constant Speed Proportionality', story: 'A car travels at a constant 60 km/h. If you plot distance traveled (y) vs time elapsed (x), what does the graph look like?', question: 'What does the distance vs time graph look like?', options: ['A straight line through the origin with slope 60', 'A curve that flattens over time', 'A straight line that does NOT pass through the origin', 'A parabola'], answer: 'A straight line through the origin with slope 60', explanation: 'Distance = speed × time = 60×time is a direct proportionality: at time=0, distance=0 (origin included), and the constant speed acts exactly like our constant 2 in R=2L.' },
+      { emoji: '💰', title: 'Simple Interest vs Principal', equation: 'y = 0.15x', type: 'mcq', concept: 'Fixed Rate Proportionality', story: 'Simple interest is calculated as Interest = 0.15 × Principal (rate × time = 15% fixed). If you plot interest earned (y) vs principal invested (x) across different depositors, what does the graph look like?', question: 'What does the interest vs principal graph look like?', options: ['A straight line through the origin', 'An exponential curve', 'A straight line NOT through the origin', 'A circle'], answer: 'A straight line through the origin', explanation: 'With rate and time held constant, Interest is a fixed multiple of Principal — exactly the R=2L pattern. A depositor with ₹0 principal earns ₹0 interest, so the origin is included.' },
+      { emoji: '💱', title: 'Currency Exchange (USD to INR)', equation: 'y = 83x', type: 'mcq', concept: 'Exchange Rate as Slope', story: 'If 1 US Dollar always converts to ₹83, and you plot Rupees (y) vs Dollars (x) for various transaction amounts, what does the graph look like?', question: 'What does the currency conversion graph look like?', options: ['A straight line through the origin, slope = 83', 'A random scatter of points', 'A step function', 'A hyperbola'], answer: 'A straight line through the origin, slope = 83', explanation: 'Rupees = 83 × Dollars is direct proportionality with a fixed exchange rate, mirroring R=2L where 83 plays the role of 2. Converting $0 always gives ₹0, keeping the origin on the line.' },
+      { emoji: '🏭', title: 'Factory Material Cost (No Fixed Cost)', equation: 'y = 10x', type: 'mcq', concept: 'Zero Intercept Proportionality', story: 'A factory\'s raw material cost is ₹10 per unit produced, with NO fixed setup cost. If you plot total material cost (y) vs units produced (x), what does the graph look like?', question: 'What does the cost vs units graph look like?', options: ['A straight line through the origin', 'A line with a positive y-intercept', 'A curve that bends upward sharply', 'Cannot be determined'], answer: 'A straight line through the origin', explanation: "'No fixed cost' means producing 0 units costs ₹0 — this is the origin condition. Since cost per unit is constant, total cost = 10 × units is a direct proportionality, exactly like R=2L." },
+      { emoji: '🚕', title: 'Taxi Fare with Base Charge', equation: 'y = 10x + 50', type: 'mcq', concept: 'Non-Origin Linear Relationship', story: 'A taxi charges a FIXED base fare of ₹50 PLUS ₹10 per km. If you plot total fare (y) vs distance traveled (x), what does the graph look like?', question: 'What does the taxi fare graph look like?', options: ['A straight line that does NOT pass through the origin', 'A straight line through the origin', 'A curve', 'A circle'], answer: 'A straight line that does NOT pass through the origin', explanation: 'Fare = 10×distance + 50. At distance=0, fare=50≠0 — the base fare shifts the line up and off the origin, even though the line is still perfectly straight. This is a deliberate contrast case to sharpen the distinction.' },
     ],
     solveExplanation: 'Ram = 2xLakshman. Points are (2L,L)=L(2,1). Scalar multiples lie on a line through the origin.'
   },
@@ -2244,6 +2250,33 @@ function generateMqExplanation(q) {
   else if (t === 'm23_3dot') { step('Compute', `Dot = ${d.a*d.d+d.b*d.e+d.c*d.f}.`); step('Answer', `= ${d.a*d.d+d.b*d.e+d.c*d.f}`); }
   else if (t === 'm23_check2') { step('Compute', `= ${d.x+2*d.y+3*d.z}.`); step('Answer', `= ${d.x+2*d.y+3*d.z}`); }
   else if (t === 'm23_3planes') { step('Concept', `Each equation removes 1 dimension.`); step('Answer', `${ans}`); }
+  else if (t.startsWith('mcq_')) {
+    // JSON-based MCQ questions: use the explanation field directly
+    const explanation = q.explanation || '';
+    if (explanation) {
+      // Split explanation into step-by-step parts if it contains "Step N:" patterns
+      const steps = explanation.split(/(?=Step \d+:)/i).filter(Boolean);
+      if (steps.length > 1) {
+        steps.forEach((stepText, idx) => {
+          const match = stepText.match(/^(Step \d+:\s*)(.*)/i);
+          if (match) {
+            step(match[1].trim(), match[2].trim());
+          } else {
+            step(`Step ${idx + 1}`, stepText.trim());
+          }
+        });
+      } else {
+        // No step pattern — break into logical sentences
+        const sentences = explanation.split(/(?<=[.!?])\s+/).filter(Boolean);
+        sentences.forEach((sentence, idx) => {
+          const labels = ['Concept', 'Reasoning', 'Conclusion', 'Answer'];
+          step(labels[Math.min(idx, labels.length - 1)], sentence.trim());
+        });
+      }
+    } else {
+      step('Answer', ans);
+    }
+  }
   else { _genericExplanation(t, d, s, step, ans); }
   return s;
   } catch {
@@ -3131,10 +3164,26 @@ function LinearAlgebraApp({ onBack }) {
                 </div>
               )}
               {rlFeedback && rlFeedback.startsWith('✓') && rl.explanation && (
-                <div className="rl-done" style={{ whiteSpace: 'pre-line' }}>{rl.explanation}</div>
+                <div className="rl-done">
+                  {rl.explanation.split(/(?=Step \d+:)/i).filter(Boolean).map((stepText, idx) => {
+                    const match = stepText.match(/^(Step \d+:\s*)(.*)/i);
+                    if (match) {
+                      return <div key={idx} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginBottom: 4 }}><span style={{ fontWeight: 700, color: 'var(--la-accent)', minWidth: 55, flexShrink: 0 }}>{match[1].trim()}</span><span>{match[2].trim()}</span></div>;
+                    }
+                    return <div key={idx}>{stepText.trim()}</div>;
+                  })}
+                </div>
               )}
               {rlFeedback && rlFeedback.startsWith('✗') && (
-                <div className="rl-hint">Hint: {rl.explanation || 'Look at the graph above and think about what changes in this scenario!'}</div>
+                <div className="rl-hint">
+                  <strong>Hint:</strong> {rl.explanation ? rl.explanation.split(/(?=Step \d+:)/i).filter(Boolean).map((stepText, idx) => {
+                    const match = stepText.match(/^(Step \d+:\s*)(.*)/i);
+                    if (match) {
+                      return <div key={idx} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', marginTop: 4 }}><span style={{ fontWeight: 700, color: 'var(--la-accent)', minWidth: 55, flexShrink: 0 }}>{match[1].trim()}</span><span>{match[2].trim()}</span></div>;
+                    }
+                    return <div key={idx}>{stepText.trim()}</div>;
+                  }) : 'Look at the graph above and think about what changes in this scenario!'}
+                </div>
               )}
             </div>
           </div>

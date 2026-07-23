@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback, Fragment } from 'react
 import geometryData from './geometry.json';
 
 // Local helper component to avoid circular dependencies
-function QuizLayout({ title, subtitle, onBack, children }) {
+function QuizLayout({ title, subtitle: _subtitle, onBack, children }) {
   return (
     <>
       <div className="header-row">
@@ -123,6 +123,7 @@ export default function GeometryApp({ onBack }) {
       }
     }
     
+     
     setPoints(initialPoints)
     setSegments([])
     setLines([])
@@ -140,6 +141,7 @@ export default function GeometryApp({ onBack }) {
     } else {
       setActiveTool('point')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentChapterId, currentActivityIndex])
 
   const isChapterCompleted = (chId) => {
@@ -775,7 +777,7 @@ export default function GeometryApp({ onBack }) {
         setCompletedActivities(nextCompleted)
         try {
           localStorage.setItem('tenali-geometry-completed', JSON.stringify(nextCompleted))
-        } catch {}
+        } catch { /* ignored */ }
       }
     }
   }

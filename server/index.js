@@ -323,7 +323,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -392,7 +392,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -1343,6 +1343,29 @@ function loadConcepts() {
 // Load all vocabulary questions at server startup
 const vocabQuestions = loadVocab();
 const conceptQuestions = loadConcepts();
+
+/**
+ * Load linear algebra mission quiz questions from JSON files.
+ * Each file is named m{module}q{missionId}.json (e.g. m1q1.json)
+ * and contains MCQs by difficulty + real-life applications.
+ */
+const laQuestionsDir = path.join(__dirname, '..', 'linearalgebra', 'questions');
+const laMissionQuestions = {};
+(function loadLAMissionQuestions() {
+  try {
+    const files = fs.readdirSync(laQuestionsDir).filter(f => f.endsWith('.json'));
+    for (const file of files) {
+      const data = JSON.parse(fs.readFileSync(path.join(laQuestionsDir, file), 'utf8'));
+      const mid = data.missionId || data.mission_id;
+      if (mid) {
+        laMissionQuestions[mid] = data;
+      }
+    }
+    console.log(`Loaded LA mission questions for missions: ${Object.keys(laMissionQuestions).join(', ')}`);
+  } catch (e) {
+    // Directory may not exist yet — that's fine
+  }
+})();
 
 /**
  * GET /vocab-api/question
@@ -9406,7 +9429,7 @@ async function getUserFromReq(req) {
   if (!m) return null;
   try {
     const jwt = require('jsonwebtoken');
-    const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+    const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
     const payload = jwt.verify(m[1], JWT_SECRET);
     if (payload && payload.username) {
       const mongoose = require('mongoose');
@@ -11540,6 +11563,29 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
   const seen = new Set(seenStr.split(',').filter(Boolean));
   const id = Date.now();
   try {
+    // If we have JSON-based questions for this mission, serve from JSON
+    const jsonData = laMissionQuestions[missionId];
+    if (jsonData && jsonData.mcqs && jsonData.mcqs[difficulty]) {
+      const pool = jsonData.mcqs[difficulty];
+      // Filter out seen question IDs (client sends type like 'mcq_M1Q1E1', strip prefix for matching)
+      const seenIds = new Set([...seen].map(s => s.replace(/^mcq_/, '')));
+      const unseen = pool.filter(q => !seenIds.has(q.id));
+      const questions = unseen.length > 0 ? unseen : pool;
+      const q = questions[Math.floor(Math.random() * questions.length)];
+      return res.json({
+        id,
+        missionId,
+        difficulty,
+        type: 'mcq_' + q.id,
+        answerType: 'mcq',
+        prompt: q.question,
+        choices: q.options,
+        answer: q.correct_option,
+        display: q.correct_option,
+        explanation: q.explanation,
+      });
+    }
+    // Fallback to algorithmic generation
     const q = MQ(missionId, difficulty, seen);
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
@@ -11555,7 +11601,10 @@ app.post('/la-mission-quiz-api/check', (req, res) => {
   const n = norm(raw);
   let correct = false;
 
-  if (answerType === 'scalar') {
+  if (answerType === 'mcq') {
+    // MCQ: exact text match against the correct option
+    correct = n === norm(expected);
+  } else if (answerType === 'scalar') {
     const parseNum = (s) => {
       s = s.replace(/\s+/g, '').replace(/\u2212/g, '-');
       if (s.includes('/')) {

@@ -20,8 +20,16 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tenali';
-const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
 const JWT_TTL = process.env.JWT_TTL || '14d';
+
+if (!process.env.JWT_SECRET) {
+  console.warn('[auth] JWT_SECRET not set in environment - using auto-generated secret');
+}
+
+if (process.env.NODE_ENV !== 'production' && !process.env.JWT_SECRET) {
+  console.warn('[auth] Using auto-generated JWT_SECRET in non-production environment');
+}
 
 // ─── Mongoose schema ─────────────────────────────────────────────────────────
 

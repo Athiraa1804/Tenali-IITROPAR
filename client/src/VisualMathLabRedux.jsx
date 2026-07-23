@@ -58,10 +58,14 @@ const BG_SYMS = ['×','÷','+','=','%','π','√','∑','3','5','9'];
 const FloatingBg = memo(function FloatingBg() {
   const itemsRef = useRef(null);
   if (itemsRef.current === null) {
-    itemsRef.current = Array.from({ length: 16 }, (_, i) => ({
+    const seeds = Array.from({ length: 16 }, (_, i) => i);
+    itemsRef.current = seeds.map((i, idx) => ({
       id: i, sym: BG_SYMS[i % BG_SYMS.length],
-      x: Math.random() * 100, y: Math.random() * 100,
-      size: 11 + Math.random() * 18, delay: Math.random() * 8, dur: 12 + Math.random() * 10,
+      x: (Math.floor(Math.random() * 100) + idx) % 100,
+      y: (Math.floor(Math.random() * 100) + idx * 3) % 100,
+      size: 11 + Math.floor(Math.random() * 18), 
+      delay: Math.random() * 8, 
+      dur: 12 + Math.floor(Math.random() * 10),
     }));
   }
   const items = itemsRef.current;

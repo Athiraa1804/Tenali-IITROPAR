@@ -45,6 +45,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const wordCreator = require('./wordCreator');
@@ -55,10 +56,44 @@ const PORT = process.env.PORT || 4000;
 const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
 const questionsDir = path.join(__dirname, '..', 'chitragupta', 'questions');
 
-// CORS: Enable cross-origin requests for client communication
-app.use(cors());
+// Behind nginx: trust the first proxy hop so rate limiting keys off the real
+// client IP (X-Forwarded-For) instead of 127.0.0.1.
+app.set('trust proxy', 1);
+
+// CORS: allow only trusted frontend origins (the app is same-origin; extra
+// origins configurable via CORS_ORIGINS, comma-separated).
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS ||
+  'https://tenali.fun,http://localhost:5173,http://127.0.0.1:5173')
+  .split(',').map(o => o.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, cb) {
+    // Allow non-browser requests (no Origin header) and allowlisted origins.
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    return cb(null, false);
+  }
+}));
 // JSON parsing: Handle application/json request bodies
 app.use(express.json());
+
+// Rate limiting. 'trust proxy' above makes the per-IP key correct behind nginx.
+// Strict on login (anti-brute-force); looser on the rest of /api. The quiz
+// question/check endpoints use the /<type>-api/* prefix, so they are NOT limited.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 10,                // max attempts per IP per window
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many attempts. Please try again in a few minutes.' },
+});
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,      // 1 minute
+  limit: 300,               // generous; app-data endpoints only
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+app.use('/api/auth/login', authLimiter);
+app.use('/api/', apiLimiter);
+
 // Static file serving: Serve built React/Vue client
 app.use(express.static(clientDistPath));
 
@@ -324,6 +359,7 @@ app.use(async (req, res, next) => {
   if (m) {
     try {
       const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -393,6 +429,7 @@ app.use(async (req, res, next) => {
   if (m) {
     try {
       const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -9430,6 +9467,7 @@ async function getUserFromReq(req) {
   try {
     const jwt = require('jsonwebtoken');
     const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
+    const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
     const payload = jwt.verify(m[1], JWT_SECRET);
     if (payload && payload.username) {
       const mongoose = require('mongoose');

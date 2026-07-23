@@ -10,7 +10,8 @@
  *
  * Configuration (env):
  *   MONGO_URI         default mongodb://127.0.0.1:27017/tenali
- *   JWT_SECRET        default 'tenali-dev-secret-change-me'
+ *   JWT_SECRET        REQUIRED in production (server refuses to start without it);
+ *                     dev-only fallback is the public default, used with a warning
  *   JWT_TTL           default '14d'
  *   TENALI_SEED_USERS comma-separated "username:password" pairs to seed (no default)
  */
@@ -22,6 +23,19 @@ const jwt = require('jsonwebtoken');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tenali';
 const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
+const DEFAULT_DEV_SECRET = 'tenali-dev-secret-change-me';
+const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_DEV_SECRET;
+
+// Fail fast: never run in production on the built-in default secret — it is
+// public (in this repo), so anyone could forge valid tokens. In development we
+// fall back to the default but warn loudly.
+if (process.env.NODE_ENV === 'production' &&
+    (!process.env.JWT_SECRET || process.env.JWT_SECRET === DEFAULT_DEV_SECRET)) {
+  throw new Error('JWT_SECRET must be set to a strong, non-default value in production — refusing to start.');
+}
+if (JWT_SECRET === DEFAULT_DEV_SECRET) {
+  console.warn('[auth] WARNING: using the built-in development JWT secret. Set JWT_SECRET before deploying.');
+}
 const JWT_TTL = process.env.JWT_TTL || '14d';
 
 if (!process.env.JWT_SECRET) {
@@ -251,4 +265,4 @@ router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = { connectMongo, seedUsers, router, requireAuth, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };
+module.exports = { connectMongo, seedUsers, router, requireAuth, JWT_SECRET, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };

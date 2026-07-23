@@ -358,7 +358,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -427,7 +427,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -9441,7 +9441,7 @@ async function getUserFromReq(req) {
   if (!m) return null;
   try {
     const jwt = require('jsonwebtoken');
-    const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+    const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
     const payload = jwt.verify(m[1], JWT_SECRET);
     if (payload && payload.username) {
       const mongoose = require('mongoose');

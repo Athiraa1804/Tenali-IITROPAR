@@ -9,9 +9,10 @@
  *   - requireAuth (middleware): blocks if no/invalid Bearer token.
  *
  * Configuration (env):
- *   MONGO_URI  default mongodb://127.0.0.1:27017/tenali
- *   JWT_SECRET default 'tenali-dev-secret-change-me'
- *   JWT_TTL    default '14d'
+ *   MONGO_URI         default mongodb://127.0.0.1:27017/tenali
+ *   JWT_SECRET        default 'tenali-dev-secret-change-me'
+ *   JWT_TTL           default '14d'
+ *   TENALI_SEED_USERS comma-separated "username:password" pairs to seed (no default)
  */
 
 const express = require('express');
@@ -152,10 +153,24 @@ async function connectMongo(uri = MONGO_URI) {
   console.log(`[auth] Mongo connected: ${uri.replace(/\/\/.*@/, '//***@')}`);
 }
 
-const SEED_USERS = [
-  { username: 'sudarshan', password: 'sherlockholmes' },
-  { username: 'tatsavit',  password: 'taittiriya' },
-];
+// Seed users come from the TENALI_SEED_USERS env var as a comma-separated list of
+// "username:password" pairs (e.g. "alice:pw1,bob:pw2"), so credentials are never
+// committed to source. If unset, no users are seeded — existing DB users still log in.
+const SEED_USERS = (process.env.TENALI_SEED_USERS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .map((pair) => {
+    const i = pair.indexOf(':');
+    return i === -1
+      ? null
+      : { username: pair.slice(0, i).trim(), password: pair.slice(i + 1) };
+  })
+  .filter((u) => u && u.username && u.password);
+
+if (SEED_USERS.length === 0) {
+  console.warn('[auth] No TENALI_SEED_USERS configured — relying on existing DB users only.');
+}
 
 // In-memory fallback used when MongoDB is unavailable.
 // Keyed by lowercase username → bcrypt hash (populated at startup).

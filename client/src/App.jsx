@@ -490,7 +490,10 @@ export function useTimer() {
   // Goal mode ('standard' | 'speed' | 'perfect' | 'revision')
   const [mode, setMode]           = useState('standard')
   // Reference to the timestamp when timer started (using Date.now())
-  const startRef    = useRef(Date.now())
+  const startRef    = useRef(typeof window !== 'undefined' ? Date.now() : 0)
+  
+  // Helper to extract current timestamp
+  const getTimestamp = () => Date.now()
   const intervalRef = useRef(null)
   const limitRef    = useRef(0)
   const onTORef     = useRef(null) // timeout callback ref (avoids stale closure)

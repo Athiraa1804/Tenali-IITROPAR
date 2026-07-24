@@ -234,6 +234,8 @@ export default function BattleApp({ onBack, initialTopic }) {
   const [roundWinner, setRoundWinner] = useState(null)
   const [roundPlayers, setRoundPlayers] = useState([])
   const [opponentAnswered, setOpponentAnswered] = useState(false)
+  const [answered, setAnswered] = useState(false)
+  const [answeredTime, setAnsweredTime] = useState(0)
   const [timeLeft, setTimeLeft] = useState(0)
   const [error, setError] = useState('')
   const [moduleSearch, setModuleSearch] = useState('')
@@ -252,6 +254,15 @@ export default function BattleApp({ onBack, initialTopic }) {
   const [incomingReaction, setIncomingReaction] = useState(null)
   const [opponentAnsweredCount, setOpponentAnsweredCount] = useState(0)
   const [totalPlayers, setTotalPlayers] = useState(2)
+  const [sudokuPuzzle, setSudokuPuzzle] = useState(null)
+  const [sudokuGrid, setSudokuGrid] = useState(null)
+  const [sudokuRaceActive, setSudokuRaceActive] = useState(false)
+  const [sudokuOpponentFinished, setSudokuOpponentFinished] = useState(false)
+  const [sudokuRaceStart, setSudokuRaceStart] = useState(0)
+  const [sudokuMyTime, setSudokuMyTime] = useState(null)
+  const [sudokuWrongCount, setSudokuWrongCount] = useState(0)
+  const [sudokuSelectedCell, setSudokuSelectedCell] = useState(null)
+  const [isSudokuTopic, setIsSudokuTopic] = useState(false)
 
   useEffect(() => {
     socket.on('connect', () => {
@@ -259,6 +270,10 @@ export default function BattleApp({ onBack, initialTopic }) {
       socket.emit('getOpenRooms')
     })
     socket.on('openRooms', (rooms) => setOpenRooms(rooms))
+    if (socket.connected) {
+      setMyId(socket.id)
+      socket.emit('getOpenRooms')
+    }
     return () => { socket.off('connect'); socket.off('openRooms') }
   }, [])
 
@@ -302,6 +317,8 @@ export default function BattleApp({ onBack, initialTopic }) {
       if (streaks) setStreaks(streaks)
       setQuestion({ prompt, options, type })
       setAnswer('')
+      setAnswered(false)
+      setAnsweredTime(0)
       setOpponentAnswered(false)
       setOpponentAnsweredCount(0)
       setRoundWinner(null)
@@ -356,10 +373,37 @@ export default function BattleApp({ onBack, initialTopic }) {
     socket.on('openRooms', (rooms) => setOpenRooms(rooms))
     socket.on('error', (msg) => setError(msg))
 
+    socket.on('sudokuRaceStart', ({ puzzle, raceStart }) => {
+      setSudokuPuzzle(puzzle)
+      setSudokuGrid(puzzle.map(row => [...row]))
+      setSudokuRaceActive(true)
+      setSudokuRaceStart(raceStart)
+      setSudokuMyTime(null)
+      setSudokuWrongCount(0)
+      setSudokuSelectedCell(null)
+      setSudokuOpponentFinished(false)
+      setPhase('sudokuRace')
+    })
+
+    socket.on('opponentFinished', ({ playerId, time }) => {
+      setSudokuOpponentFinished(true)
+    })
+
+    socket.on('cellResult', ({ correct, wrongCount }) => {
+      setSudokuWrongCount(wrongCount || 0)
+    })
+
+    socket.on('sudokuForcedEnd', ({ reason }) => {
+      setSudokuRaceActive(false)
+      if (reason === 'tooManyWrong') setError('Too many wrong answers! Race ended.')
+    })
+
     return () => {
       socket.off('roomUpdate'); socket.off('matchStart'); socket.off('roundStart')
       socket.off('roundResult'); socket.off('matchEnd'); socket.off('opponentAnswered')
       socket.off('opponentLeft'); socket.off('openRooms'); socket.off('error')
+      socket.off('sudokuRaceStart'); socket.off('opponentFinished')
+      socket.off('cellResult'); socket.off('sudokuForcedEnd')
       clearInterval(timerRef.current)
     }
   }, [myId, players])
@@ -373,12 +417,20 @@ export default function BattleApp({ onBack, initialTopic }) {
     setScores([])
     setRoundWinner(null)
     setRoundPlayers([])
+    setSudokuPuzzle(null)
+    setSudokuGrid(null)
+    setSudokuRaceActive(false)
+    setSudokuWrongCount(0)
+    setSudokuSelectedCell(null)
+    setSudokuOpponentFinished(false)
+    setSudokuMyTime(null)
     clearInterval(timerRef.current)
     setTimeout(() => socket.emit('getOpenRooms'), 100)
   }, [])
 
   const handleCreate = useCallback(() => {
     setError('')
+    setIsSudokuTopic(topic === 'sudoku')
     socket.emit('createRoom', { name: name.trim() || 'Player', topic, numQuestions }, ({ ok, code, players: p, error: e }) => {
       if (!ok) { setError(e); return }
       setRoomCode(code); setPlayers(p); setMyId(socket.id); setPhase('waiting')
@@ -397,12 +449,44 @@ export default function BattleApp({ onBack, initialTopic }) {
 
   const handleReady = useCallback(() => socket.emit('ready'), [])
   const handleSubmit = useCallback(() => {
-    if (!answer.trim()) return
+    if (!answer.trim() || answered) return
     socket.emit('submitAnswer', { answer: answer.trim() })
+    setAnswered(true)
+    setAnsweredTime(15 - timeLeft)
     setAnswer('')
-  }, [answer])
+  }, [answer, answered, timeLeft])
   const handleLeave = useCallback(() => { socket.emit('leave'); resetToLobby() }, [resetToLobby])
   const handleKeyDown = useCallback((e) => { if (e.key === 'Enter' && phase === 'playing' && question) handleSubmit() }, [phase, question, handleSubmit])
+
+  const handleSudokuCellEdit = useCallback((r, c, val) => {
+    if (!sudokuPuzzle || sudokuPuzzle[r][c] !== 0) return
+    const num = Number(val)
+    if (isNaN(num) || num < 1 || num > 9) return
+    setSudokuGrid(prev => {
+      const next = prev.map(row => [...row])
+      next[r][c] = num
+      return next
+    })
+    socket.emit('submitCell', { r, c, val: num })
+  }, [sudokuPuzzle])
+
+  const handleSudokuNumberSelect = useCallback((num) => {
+    if (!sudokuSelectedCell || !sudokuRaceActive || sudokuWrongCount >= 5) return
+    const { r, c } = sudokuSelectedCell
+    if (sudokuPuzzle?.[r]?.[c] !== 0) return
+    setSudokuGrid(prev => {
+      const next = prev.map(row => [...row])
+      next[r][c] = num
+      return next
+    })
+    socket.emit('submitCell', { r, c, val: num })
+    setSudokuSelectedCell(null)
+  }, [sudokuSelectedCell, sudokuPuzzle, sudokuRaceActive, sudokuWrongCount])
+
+  const handleSudokuComplete = useCallback(() => {
+    setSudokuMyTime(Date.now() - sudokuRaceStart)
+    socket.emit('sudokuComplete')
+  }, [sudokuRaceStart])
 
   const topicInfo = ALL_MODULES.find(t => t.key === topic) || TOPICS.find(t => t.key === topic) || TOPICS[0]
   const myFinalScore = finalScores.find(s => s.id === myId)?.score || 0
@@ -532,6 +616,7 @@ export default function BattleApp({ onBack, initialTopic }) {
           </div>
         </div>
 
+        {topic !== 'sudoku' && (
         <div style={{ marginBottom: 18 }}>
           <label style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Number of Questions</label>
           <div style={{ display: 'flex', gap: 6, marginTop: 5 }}>
@@ -544,9 +629,10 @@ export default function BattleApp({ onBack, initialTopic }) {
             ))}
           </div>
         </div>
+        )}
 
         <button onClick={handleCreate} style={{ width: '100%', padding: '12px', borderRadius: 'var(--radius)', border: 'none', background: topicInfo.color || 'var(--clr-accent)', color: '#fff', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer', marginBottom: 14 }}>
-          Create {topicInfo.name || topicInfo.label} Room ({numQuestions}Q)
+          {topic === 'sudoku' ? `Open ${topicInfo.name || topicInfo.label} Race` : `Create ${topicInfo.name || topicInfo.label} Room (${numQuestions}Q)`}
         </button>
 
         {(openRooms[topic] || []).length > 0 && (
@@ -688,15 +774,20 @@ export default function BattleApp({ onBack, initialTopic }) {
         {question?.type === 'mcq' ? (
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 14 }}>
             {question.options.map((opt, i) => (
-              <button key={i} onClick={() => { setAnswer(String(i)); setTimeout(handleSubmit, 50) }} style={{
-                padding: '13px 10px', borderRadius: 'var(--radius)', border: '2px solid var(--clr-border)',
-                background: 'var(--clr-surface)', color: 'var(--clr-text)', fontWeight: 600, fontSize: '0.92rem',
-                cursor: 'pointer', transition: 'all 0.15s', textAlign: 'center',
-              }} onMouseEnter={e => e.target.style.borderColor = topicInfo.color}
-                 onMouseLeave={e => e.target.style.borderColor = 'var(--clr-border)'}>
+              <button key={i} onClick={() => { if (!answered) { setAnswer(String(i)); setTimeout(handleSubmit, 50) } }} style={{
+                padding: '13px 10px', borderRadius: 'var(--radius)', border: answered ? '2px solid var(--clr-text-soft)' : '2px solid var(--clr-border)',
+                background: answered ? 'var(--clr-surface)' : 'var(--clr-surface)', color: 'var(--clr-text)', fontWeight: 600, fontSize: '0.92rem',
+                cursor: answered ? 'default' : 'pointer', transition: 'all 0.15s', textAlign: 'center', opacity: answered ? 0.6 : 1,
+              }} onMouseEnter={e => { if (!answered) e.target.style.borderColor = topicInfo.color }}
+                 onMouseLeave={e => { if (!answered) e.target.style.borderColor = 'var(--clr-border)' }}>
                 {opt}
               </button>
             ))}
+          </div>
+        ) : answered ? (
+          <div style={{ textAlign: 'center', padding: '14px 20px', marginBottom: 14, background: 'rgba(92,184,122,0.1)', border: '2px solid #5cb87a', borderRadius: 'var(--radius)' }}>
+            <div style={{ fontSize: '1rem', fontWeight: 700, color: '#5cb87a' }}>✓ Answered in {answeredTime}s</div>
+            <div style={{ fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: 4 }}>Waiting for opponent...</div>
           </div>
         ) : (
           <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
@@ -712,6 +803,89 @@ export default function BattleApp({ onBack, initialTopic }) {
       </div>
     </div>
   )
+
+  if (phase === 'sudokuRace' && sudokuGrid) {
+    return (
+      <div className="app-shell">
+        <div className="card is-wide" style={{ padding: '20px 24px', maxWidth: 520, margin: '0 auto' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#1abc9c' }}>🔢 Sudoku Race</span>
+            <span style={{ fontSize: '0.72rem', fontFamily: 'monospace', fontWeight: 700, letterSpacing: '0.15em', color: 'var(--clr-text-soft)', background: 'var(--clr-surface)', padding: '2px 8px', borderRadius: 6 }}>{roomCode}</span>
+          </div>
+
+          {sudokuOpponentFinished && (
+            <div style={{ textAlign: 'center', padding: '8px 12px', marginBottom: 10, background: 'rgba(232,185,49,0.12)', border: '1px solid #e8b931', borderRadius: 8, fontSize: '0.82rem', fontWeight: 600, color: '#e8b931' }}>
+              Opponent finished! Hurry up!
+            </div>
+          )}
+
+          {sudokuWrongCount >= 5 ? (
+            <div style={{ textAlign: 'center', padding: '20px', background: 'rgba(247,118,142,0.1)', border: '1px solid rgba(247,118,142,0.3)', borderRadius: 10, marginBottom: 14 }}>
+              <div style={{ fontSize: '1.1rem', fontWeight: 700, color: '#f7768e', marginBottom: 6 }}>Too many wrong answers!</div>
+              <div style={{ fontSize: '0.82rem', color: 'var(--clr-text-soft)' }}>You made 5+ mistakes. Race ended.</div>
+            </div>
+          ) : (
+            <>
+              <div style={{ textAlign: 'center', marginBottom: 10 }}>
+                <span style={{ fontSize: '0.78rem', color: 'var(--clr-text-soft)' }}>Wrong answers: </span>
+                <span style={{ fontSize: '0.85rem', fontWeight: 700, color: sudokuWrongCount >= 3 ? '#f7768e' : 'var(--clr-text)' }}>{sudokuWrongCount}/5</span>
+                {sudokuWrongCount >= 3 && <span style={{ fontSize: '0.7rem', color: '#f7768e', marginLeft: 6 }}>⚠ Careful!</span>}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 1fr)', gap: 0, border: '2px solid var(--clr-text)', borderRadius: 4, overflow: 'hidden', marginBottom: 8 }}>
+                {sudokuGrid.map((row, r) => row.map((val, c) => {
+                  const isPuzzle = sudokuPuzzle?.[r]?.[c] !== 0
+                  const isSelected = sudokuSelectedCell?.r === r && sudokuSelectedCell?.c === c
+                  const thickR = c % 3 === 2 && c < 8
+                  const thickB = r % 3 === 2 && r < 8
+                  return (
+                    <div key={`${r}-${c}`} onClick={() => {
+                      if (!isPuzzle && val === 0 && sudokuRaceActive && sudokuWrongCount < 5) {
+                        setSudokuSelectedCell(isSelected ? null : { r, c })
+                      }
+                    }} style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      aspectRatio: '1', fontSize: 'clamp(0.6rem, 1.8vw, 0.85rem)', fontFamily: 'monospace',
+                      fontWeight: isPuzzle ? 700 : 500,
+                      background: isSelected ? '#1abc9c33' : isPuzzle ? 'var(--clr-surface)' : val !== 0 ? 'rgba(26,188,156,0.12)' : 'rgba(255,255,255,0.5)',
+                      color: isPuzzle ? 'var(--clr-text)' : '#1abc9c',
+                      borderRight: thickR ? '2px solid var(--clr-text)' : '1px solid var(--clr-border)',
+                      borderBottom: thickB ? '2px solid var(--clr-text)' : '1px solid var(--clr-border)',
+                      cursor: !isPuzzle && val === 0 && sudokuRaceActive && sudokuWrongCount < 5 ? 'pointer' : 'default',
+                    }}>{val !== 0 ? val : ''}</div>
+                  )
+                }))}
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(9, 1fr)', gap: 4, marginBottom: 8 }}>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(n => (
+                  <button key={n} onClick={() => handleSudokuNumberSelect(n)} disabled={!sudokuSelectedCell} style={{
+                    padding: '8px 0', borderRadius: 6, border: '1px solid var(--clr-border)',
+                    background: sudokuSelectedCell ? '#1abc9c' : 'var(--clr-surface)',
+                    color: sudokuSelectedCell ? '#fff' : 'var(--clr-text-soft)',
+                    fontWeight: 700, fontSize: '1rem', cursor: sudokuSelectedCell ? 'pointer' : 'default', opacity: sudokuSelectedCell ? 1 : 0.5,
+                  }}>{n}</button>
+                ))}
+              </div>
+
+              {sudokuSelectedCell && (
+                <div style={{ textAlign: 'center', fontSize: '0.72rem', color: '#1abc9c', marginBottom: 8 }}>
+                  Cell selected — tap a number above to fill
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button onClick={() => {
+                  if (window.confirm('Are you sure you want to give up?')) handleSudokuComplete()
+                }} style={{ flex: 1, padding: '10px', borderRadius: 'var(--radius)', border: '1px solid var(--clr-border)', background: 'transparent', color: 'var(--clr-text-soft)', fontWeight: 600, fontSize: '0.88rem', cursor: 'pointer' }}>Give Up</button>
+                <button onClick={handleSudokuComplete} style={{ flex: 2, padding: '10px', borderRadius: 'var(--radius)', border: 'none', background: '#1abc9c', color: '#fff', fontWeight: 700, fontSize: '0.95rem', cursor: 'pointer' }}>I'm Done!</button>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    )
+  }
 
   if (phase === 'roundResult') {
     const me = roundPlayers.find(p => p.id === myId)

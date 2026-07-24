@@ -54,7 +54,8 @@ const UserSchema = new mongoose.Schema({
   ],
   gradeLevel: { type: String, default: 'Grade 3' },
   coinBalance: { type: Number, default: 0 },
-  xpScore: { type: Number, default: 0 }
+  xpScore: { type: Number, default: 0 },
+  role: { type: String, default: 'user', enum: ['user', 'admin'] }
 });
 
 const ProgressSchema = new mongoose.Schema({
@@ -155,6 +156,7 @@ async function connectMongo(uri = MONGO_URI) {
 const SEED_USERS = [
   { username: 'sudarshan', password: 'sherlockholmes' },
   { username: 'tatsavit',  password: 'taittiriya' },
+  { username: 'admin',     password: 'tenaliadmin', role: 'admin' },
 ];
 
 // In-memory fallback used when MongoDB is unavailable.
@@ -168,9 +170,15 @@ async function seedUsers() {
 
     if (!connected) continue;
     const existing = await User.findOne({ username: u.username.toLowerCase() });
-    if (existing) continue;
-    await User.create({ username: u.username.toLowerCase(), passwordHash: hash });
-    console.log(`[auth] seeded user: ${u.username}`);
+    if (existing) {
+      if (u.role && existing.role !== u.role) {
+        existing.role = u.role;
+        await existing.save();
+      }
+      continue;
+    }
+    await User.create({ username: u.username.toLowerCase(), passwordHash: hash, role: u.role || 'user' });
+    console.log(`[auth] seeded user: ${u.username}${u.role ? ' (' + u.role + ')' : ''}`);
   }
 }
 
@@ -178,7 +186,7 @@ async function seedUsers() {
 
 function signToken(user) {
   return jwt.sign(
-    { sub: user._id ? user._id.toString() : user.username, username: user.username },
+    { sub: user._id ? user._id.toString() : user.username, username: user.username, role: user.role || 'user' },
     JWT_SECRET,
     { expiresIn: JWT_TTL }
   );
@@ -190,11 +198,16 @@ function requireAuth(req, res, next) {
   if (!m) return res.status(401).json({ error: 'missing token' });
   try {
     const payload = jwt.verify(m[1], JWT_SECRET);
-    req.user = { id: payload.sub, username: payload.username };
+    req.user = { id: payload.sub, username: payload.username, role: payload.role || 'user' };
     next();
   } catch (_e) {
     return res.status(401).json({ error: 'invalid or expired token' });
   }
+}
+
+function requireAdmin(req, res, next) {
+  if (!req.user || req.user.role !== 'admin') return res.status(403).json({ error: 'admin access required' });
+  next();
 }
 
 // ─── Router ──────────────────────────────────────────────────────────────────
@@ -212,7 +225,7 @@ router.post('/login', async (req, res) => {
     const ok = await bcrypt.compare(password, user.passwordHash);
     if (!ok) return res.status(401).json({ error: 'invalid credentials' });
     const token = signToken(user);
-    return res.json({ token, user: { username: user.username } });
+    return res.json({ token, user: { username: user.username, role: user.role || 'user' } });
   }
 
   // Fallback: check against in-memory seed users when MongoDB is unavailable.
@@ -220,12 +233,14 @@ router.post('/login', async (req, res) => {
   if (!hash) return res.status(401).json({ error: 'invalid credentials' });
   const ok = await bcrypt.compare(password, hash);
   if (!ok) return res.status(401).json({ error: 'invalid credentials' });
-  const token = signToken({ username });
-  res.json({ token, user: { username } });
+  const seedUser = SEED_USERS.find(u => u.username.toLowerCase() === username);
+  const role = seedUser?.role || 'user';
+  const token = signToken({ username, role });
+  res.json({ token, user: { username, role } });
 });
 
 router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = { connectMongo, seedUsers, router, requireAuth, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };
+module.exports = { connectMongo, seedUsers, router, requireAuth, requireAdmin, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };

@@ -66,7 +66,8 @@ function loadCache(key, fallback) {
 }
 
 function makeHeaders() {
-  return { 'Content-Type': 'application/json' }
+  const token = localStorage.getItem('tenali-auth-token') || '';
+  return { 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) }
 }
 
 function formatDateTime(iso) {
@@ -347,6 +348,11 @@ export default function ProctorDashboard({ onBack }) {
     if (!silent) setRefreshing(true)
     try {
       const r = await fetch(`${API}/api/proctor/sessions`, { headers: makeHeaders() })
+      if (r.status === 401 || r.status === 403) {
+        setError('Admin login required. Please log in with an admin account.')
+        setRefreshing(false)
+        return
+      }
       if (!r.ok) throw new Error(`HTTP ${r.status}`)
       const d = await r.json()
       const sessionsData = d.sessions || []

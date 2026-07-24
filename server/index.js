@@ -45,6 +45,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -56,10 +57,44 @@ const PORT = process.env.PORT || 4000;
 const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
 const questionsDir = path.join(__dirname, '..', 'chitragupta', 'questions');
 
-// CORS: Enable cross-origin requests for client communication
-app.use(cors());
+// Behind nginx: trust the first proxy hop so rate limiting keys off the real
+// client IP (X-Forwarded-For) instead of 127.0.0.1.
+app.set('trust proxy', 1);
+
+// CORS: allow only trusted frontend origins (the app is same-origin; extra
+// origins configurable via CORS_ORIGINS, comma-separated).
+const ALLOWED_ORIGINS = (process.env.CORS_ORIGINS ||
+  'https://tenali.fun,http://localhost:5173,http://127.0.0.1:5173')
+  .split(',').map(o => o.trim()).filter(Boolean);
+app.use(cors({
+  origin(origin, cb) {
+    // Allow non-browser requests (no Origin header) and allowlisted origins.
+    if (!origin || ALLOWED_ORIGINS.includes(origin)) return cb(null, true);
+    return cb(null, false);
+  }
+}));
 // JSON parsing: Handle application/json request bodies
 app.use(express.json());
+
+// Rate limiting. 'trust proxy' above makes the per-IP key correct behind nginx.
+// Strict on login (anti-brute-force); looser on the rest of /api. The quiz
+// question/check endpoints use the /<type>-api/* prefix, so they are NOT limited.
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 10,                // max attempts per IP per window
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+  message: { error: 'Too many attempts. Please try again in a few minutes.' },
+});
+const apiLimiter = rateLimit({
+  windowMs: 60 * 1000,      // 1 minute
+  limit: 300,               // generous; app-data endpoints only
+  standardHeaders: 'draft-7',
+  legacyHeaders: false,
+});
+app.use('/api/auth/login', authLimiter);
+app.use('/api/', apiLimiter);
+
 // Static file serving: Serve built React/Vue client
 app.use(express.static(clientDistPath));
 
@@ -324,7 +359,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -393,7 +428,7 @@ app.use(async (req, res, next) => {
   const m = /^Bearer\s+(.+)$/i.exec(authHeader);
   if (m) {
     try {
-      const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+      const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
@@ -1498,6 +1533,29 @@ function loadConcepts() {
 // Load all vocabulary questions at server startup
 const vocabQuestions = loadVocab();
 const conceptQuestions = loadConcepts();
+
+/**
+ * Load linear algebra mission quiz questions from JSON files.
+ * Each file is named m{module}q{missionId}.json (e.g. m1q1.json)
+ * and contains MCQs by difficulty + real-life applications.
+ */
+const laQuestionsDir = path.join(__dirname, '..', 'linearalgebra', 'questions');
+const laMissionQuestions = {};
+(function loadLAMissionQuestions() {
+  try {
+    const files = fs.readdirSync(laQuestionsDir).filter(f => f.endsWith('.json'));
+    for (const file of files) {
+      const data = JSON.parse(fs.readFileSync(path.join(laQuestionsDir, file), 'utf8'));
+      const mid = data.missionId || data.mission_id;
+      if (mid) {
+        laMissionQuestions[mid] = data;
+      }
+    }
+    console.log(`Loaded LA mission questions for missions: ${Object.keys(laMissionQuestions).join(', ')}`);
+  } catch (e) {
+    // Directory may not exist yet — that's fine
+  }
+})();
 
 /**
  * GET /vocab-api/question
@@ -10070,7 +10128,7 @@ async function getUserFromReq(req) {
   if (!m) return null;
   try {
     const jwt = require('jsonwebtoken');
-    const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+    const JWT_SECRET = auth.JWT_SECRET; // single source of truth (server/auth.js)
     const payload = jwt.verify(m[1], JWT_SECRET);
     if (payload && payload.username) {
       const mongoose = require('mongoose');
@@ -10998,11 +11056,16 @@ const MQ = (() => {
         () => { const m=ri(2,5),x=ri(1,8); return {type:'m1_yval',answerType:'scalar',prompt:'If y = '+m+'x, what is y when x = '+x+'?',answer:String(m*x),display:String(m*x),data:{m,x}}; },
         () => { const m=ri(2,6); return {type:'m1_ratio',answerType:'scalar',prompt:'If y = '+m+'x, what is the ratio y:x?',answer:m+':1',display:m+':1',data:{m}}; },
         () => { const k=ri(2,5),b=ri(1,8),c=k*b; return {type:'m1_findk',answerType:'scalar',prompt:'A = '+c+' when B = '+b+'. If A = kB, find k.',answer:String(k),display:String(k),data:{k,b,c}}; },
+        () => { return {type:'m1_app_trading',answerType:'scalar',prompt:'Two crypto trading bots: Bot Alpha profit is always exactly 3× Bot Beta profit (A = 3B). If you plot their weekly profits (Bk, Ak) on a graph, what shape do the data points form?',answer:'A straight line passing through the origin (0,0) with a slope of 3',display:'A straight line through the origin with slope 3',choices:['A horizontal line given by y = 3','A straight line passing through the origin (0,0) with a slope of 3','A parabola opening upwards starting at (1, 3)','A circle centered at (0,0) with radius 3'],data:{}}; },
+        () => { return {type:'m1_app_stoich',answerType:'scalar',prompt:'In an ammonia plant, N2 and H2 react in a fixed 1:3 ratio (H2 = 3N2). Which equation defines the line on which all data points (N2, H2) must lie?',answer:'H2 = 3 N2',display:'H2 = 3 N2',choices:['H2 = 3 N2','N2 = 3 H2','H2 = N2 + 3','H2 = 3 N2 + 1'],data:{}}; },
+        () => { return {type:'m1_app_ev',answerType:'scalar',prompt:'A solar EV charging station: Station A delivers 50 kWh/hr, Station B delivers 25 kWh/hr. Plotting total energy (EB, EA) over time, why MUST the line pass through the origin?',answer:'Because at time t = 0 hours, both stations have delivered exactly 0 kWh of energy',display:'At t=0, both stations have delivered 0 kWh',choices:['Because Station A always charges at a constant rate of 0 kWh','Because at time t = 0 hours, both stations have delivered exactly 0 kWh of energy','Because the slope of the charging curve is zero','Because Station B charges twice as fast as Station A'],data:{}}; },
       ],
       medium: [
         () => { const m=ri(2,5),x=ri(1,6); return {type:'m1_eval',answerType:'scalar',prompt:'Ram saves '+m+'x what Lakshman saves. If Lakshman saves '+x+', what does Ram save?',answer:String(m*x),display:String(m*x),data:{m,x}}; },
         () => { const m1=ri(2,4),m2=m1*ri(2,3); return {type:'m1_compare',answerType:'scalar',prompt:'Two proportional relationships: y='+m1+'x and y='+m2+'x. What is the ratio of their slopes?',answer:String(m2/m1),display:String(m2/m1),data:{m1,m2}}; },
         () => { const m=ri(2,5),x=ri(1,10); return {type:'m1_origin',answerType:'scalar',prompt:'For y = '+m+'x, what is y when x = 0? Does it pass through origin?',answer:'0',display:'0 (yes, origin)',data:{m,x}}; },
+        () => { return {type:'m1_app_gear',answerType:'scalar',prompt:'A dual-motor rover uses a gearbox where Motor 1 rotates at 2.5× the speed of Motor 2 (M1 = 2.5 · M2). If Motor 2 has completed 18 full revolutions, how many has Motor 1 completed?',answer:'45',display:'45',data:{}}; },
+        () => { return {type:'m1_app_aspect',answerType:'scalar',prompt:'A game engine scales textures maintaining 16:9 aspect ratio: W = m · H. What is the slope m rounded to 2 decimal places?',answer:'1.78',display:'1.78',data:{}}; },
       ],
       hard: [
         () => { const m=ri(2,4),x1=ri(1,5),x2=x1+ri(1,3); const y1=m*x1,y2=m*x2; return {type:'m1_slope',answerType:'scalar',prompt:'Points ('+x1+','+y1+') and ('+x2+','+y2+') are from y='+m+'x. What is the slope?',answer:String(m),display:String(m),data:{m,x1,x2,y1,y2}}; },
@@ -11016,11 +11079,15 @@ const MQ = (() => {
         () => { const y1=ri(1,5); return {type:'m2_slope',answerType:'scalar',prompt:'Slope between (1,0) and (2,'+y1+')?',answer:String(y1),display:String(y1),data:{x1:2,y1}}; },
         () => { return {type:'m2_collinear',answerType:'scalar',prompt:'Are (2,1), (3,2), (4,3) collinear? (1=yes,0=no)',answer:'1',display:'Yes',data:{}}; },
         () => { return {type:'m2_next',answerType:'scalar',prompt:'Next point in pattern (2,1), (3,2), (4,3)?',answer:'(5,4)',display:'(5,4)',data:{}}; },
+        () => { return {type:'m2_app_cnc',answerType:'scalar',prompt:'CNC laser cutter drills Hole A at (3,2), Hole B at (5,4), Hole C at (7,6). Are they collinear, and what is the slope?',answer:'Yes, the slope is 1',display:'Yes, slope = 1',choices:['Yes, the slope is 1','Yes, the slope is 2','No, they form a curve','Yes, the slope is 0.5'],data:{}}; },
+        () => { return {type:'m2_app_raycast',answerType:'scalar',prompt:'A game engine highlights pixels at (2,1), (3,2), (4,3). What is the equation of the continuous line through these points?',answer:'y = x - 1',display:'y = x - 1',choices:['y = x + 1','y = x - 1','y = 2x - 1','y = x'],data:{}}; },
       ],
       medium: [
         () => { const a=ri(1,3),b=ri(1,5); return {type:'m2_equation',answerType:'scalar',prompt:'Line through (2,1) and (3,2): what is y when x='+(a+5)+'?',answer:String(a+4),display:String(a+4),data:{a,b}}; },
         () => { const m=ri(1,4),x1=ri(1,3),y1=m*x1-1; return {type:'m2_slope2',answerType:'scalar',prompt:'Slope through ('+x1+','+y1+') and ('+(x1+1)+','+(y1+m)+')?',answer:String(m),display:String(m),data:{m,x1,y1}}; },
         () => { const x=ri(2,6); return {type:'m2_check',answerType:'scalar',prompt:'Is point ('+x+','+(x-1)+') on line y = x - 1? (1=yes,0=no)',answer:'1',display:'Yes',data:{x}}; },
+        () => { return {type:'m2_app_drone',answerType:'scalar',prompt:'A drone maps drops at (3,1), (4,3), (5,5). These lie on y = mx + c. What is the y-intercept c?',answer:'-5',display:'-5',data:{}}; },
+        () => { return {type:'m2_app_rivet',answerType:'scalar',prompt:'Rivets at (2,4), (4,7), (6,10). At what y-coordinate is Rivet 5 (x=10)?',answer:'16',display:'16',data:{}}; },
       ],
       hard: [
         () => { const x1=ri(1,3),y1=ri(1,3),x2=x1+ri(1,3),y2=y1+ri(1,3); const x3=x2+ri(1,3),y3=y2+ri(1,3); const collinear=((y2-y1)*(x3-x2)===(y3-y2)*(x2-x1)); return {type:'m2_area',answerType:'scalar',prompt:'Area of triangle with vertices ('+x1+','+y1+'), ('+x2+','+y2+'), ('+x3+','+y3+')? (if collinear, 0)',answer:String(Math.abs((x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))/2)),display:String(Math.abs((x1*(y2-y3)+x2*(y3-y1)+x3*(y1-y2))/2)),data:{x1,y1,x2,y2,x3,y3}}; },
@@ -11034,11 +11101,16 @@ const MQ = (() => {
         () => { const a=ri(1,8); return {type:'m3_through',answerType:'scalar',prompt:'Does y = '+a+'x pass through origin? (1=yes,0=no)',answer:'1',display:'Yes',data:{a}}; },
         () => { const a=ri(1,5),x=ri(1,5); return {type:'m3_yval',answerType:'scalar',prompt:'y = '+a+'x. When x = '+x+', y = ?',answer:String(a*x),display:String(a*x),data:{a,x}}; },
         () => { return {type:'m3_not',answerType:'scalar',prompt:'Does y = 2x + 1 pass through origin? (1=yes,0=no)',answer:'0',display:'No',data:{}}; },
+        () => { return {type:'m3_app_bandwidth',answerType:'scalar',prompt:'Three servers: A follows y=x, B follows y=2x, C follows y=10x (data in GB vs hours). What does Server C\'s steeper line represent?',answer:'Server C transfers data at a much faster rate (higher bandwidth).',display:'Higher bandwidth',choices:['Server C has a higher network latency.','Server C transfers data at a much faster rate (higher bandwidth).','Server C started transferring data earlier than the others.','Server C has reached its maximum data capacity.'],data:{}}; },
+        () => { return {type:'m3_app_vehicle',answerType:'scalar',prompt:'Three drones: fastest follows y=10x, slowest follows y=x. How many meters ahead is the fastest at 5 seconds?',answer:'45',display:'45',data:{}}; },
+        () => { return {type:'m3_app_currency',answerType:'scalar',prompt:'Currency conversion: P follows y=x, Q follows y=2x, R follows y=10x (x=USD, y=foreign). Which is mathematically true?',answer:'1 USD buys 10 units of Currency R, meaning Currency R is actually weaker per unit than USD.',display:'Currency R is weaker per unit',choices:['Currency R is the strongest currency because it has the steepest line.','1 USD buys 10 units of Currency R, meaning Currency R is actually weaker per unit than USD.','Currency P fluctuates the least over time.','Currency Q has a constant inflation rate of 2%.'],data:{}}; },
       ],
       medium: [
         () => { const a=ri(1,6); return {type:'m3_neg',answerType:'scalar',prompt:'Does y = -'+a+'x pass through origin? (1=yes,0=no)',answer:'1',display:'Yes',data:{a}}; },
         () => { const a=ri(1,5),b=ri(-3,3); return {type:'m3_intercept',answerType:'scalar',prompt:'y = '+a+'x + '+b+' passes through origin only if b = ?',answer:'0',display:'0',data:{a,b}}; },
         () => { const a=ri(2,5); return {type:'m3_scalar',answerType:'scalar',prompt:'For y='+a+'x, is (3,'+(3*a)+') a scalar multiple of (1,'+a+')? (1=yes,0=no)',answer:'1',display:'Yes',data:{a}}; },
+        () => { return {type:'m3_app_factory',answerType:'scalar',prompt:'A factory\'s new machine produces 120 units in 12 hours (from origin). What is the slope of its line?',answer:'10',display:'10',data:{}}; },
+        () => { return {type:'m3_app_pharma',answerType:'scalar',prompt:'Three solutions plotted as y=x, y=2x, y=10x (active ingredient vs water). How do you identify the most concentrated from the graph?',answer:'The most concentrated solution has the line that rises the fastest (steepest).',display:'Steepest line = most concentrated',choices:['The most concentrated solution has the line that is closest to the x-axis.','The most concentrated solution has the line that rises the fastest (steepest).','The most concentrated solution is the one that crosses the y-intercept at the highest point.','Concentration cannot be determined visually from these lines alone.'],data:{}}; },
       ],
       hard: [
         () => { const a1=ri(1,5),a2=ri(1,5); return {type:'m3_intersect',answerType:'scalar',prompt:'y='+a1+'x and y='+a2+'x intersect at which point?',answer:'(0,0)',display:'(0,0)',data:{a1,a2}}; },
@@ -11052,11 +11124,14 @@ const MQ = (() => {
         () => { const m=ri(2,5),b=ri(1,8); return {type:'m4_yint',answerType:'scalar',prompt:'What is the y-intercept of y = '+m+'x + '+b+'?',answer:String(b),display:String(b),data:{m,b}}; },
         () => { const m=ri(2,4),b=ri(1,5); return {type:'m4_atzero',answerType:'scalar',prompt:'y = '+m+'x + '+b+'. What is y when x = 0?',answer:String(b),display:String(b),data:{m,b}}; },
         () => { const m=ri(1,5); return {type:'m4_shift',answerType:'scalar',prompt:'y = '+m+'x + 3 shifts the line y = '+m+'x up by how many units?',answer:'3',display:'3',data:{m}}; },
+        () => { return {type:'m4_app_cloud',answerType:'scalar',prompt:'Platform A: y=0.05x (per-GB storage). Platform B: y=0.02x+10 ($10 monthly fee). Why does Platform B\'s line not pass through origin?',answer:'Because there is a baseline cost of $10 even if absolutely zero data is stored.',display:'Baseline $10 fee at zero usage',choices:['Because the competitor charges a lower rate per GB.','Because there is a baseline cost of $10 even if absolutely zero data is stored.','Because the slope of the competitor\'s line is less than 1.','Because cloud storage cannot theoretically be zero.'],data:{}}; },
       ],
       medium: [
         () => { const m=ri(2,5),b=ri(1,5),x=ri(1,5); return {type:'m4_eval',answerType:'scalar',prompt:'y = '+m+'x + '+b+'. What is y when x = '+x+'?',answer:String(m*x+b),display:String(m*x+b),data:{m,b,x}}; },
         () => { const b=ri(1,6); return {type:'m4_cross',answerType:'scalar',prompt:'Where does y = 3x + '+b+' cross the y-axis?',answer:'(0,'+b+')',display:'(0,'+b+')',data:{b}}; },
         () => { const m=ri(2,5); return {type:'m4_noshift',answerType:'scalar',prompt:'y = '+m+'x + 0 passes through which special point?',answer:'(0,0)',display:'(0,0) - origin',data:{m}}; },
+        () => { return {type:'m4_app_balloon',answerType:'scalar',prompt:'A weather balloon follows y = 5x + c. If the y-intercept is exactly 150, what was the launch altitude in meters?',answer:'150',display:'150',data:{}}; },
+        () => { return {type:'m4_app_rideshare',answerType:'scalar',prompt:'Ride-share fare: y = 2.5x + 3.5. What is the cost if passenger cancels at 0 miles?',answer:'3.5',display:'3.5',data:{}}; },
       ],
       hard: [
         () => { const m=ri(2,4),b1=ri(1,5),b2=b1+ri(1,4); return {type:'m4_parallel',answerType:'scalar',prompt:'y='+m+'x+'+b1+' and y='+m+'x+'+b2+' are parallel. Distance between intercepts?',answer:String(b2-b1),display:String(b2-b1),data:{m,b1,b2}}; },
@@ -11070,11 +11145,13 @@ const MQ = (() => {
         () => { const m=ri(1,6); return {type:'m5_steep',answerType:'scalar',prompt:'Which is steeper: y='+m+'x or y='+(m+2)+'x?',answer:String(m+2),display:'y='+(m+2)+'x',data:{m}}; },
         () => { const b=ri(-5,5); return {type:'m5_intercept',answerType:'scalar',prompt:'Setting a=0, b='+b+' gives horizontal line at y = ?',answer:String(b),display:String(b),data:{b}}; },
         () => { return {type:'m5_zero',answerType:'scalar',prompt:'a=0, b=0 gives y = ? What kind of line?',answer:'0',display:'0 (x-axis)',data:{}}; },
+        () => { return {type:'m5_app_thermo',answerType:'scalar',prompt:'Temperature scales: K = C + 273.15. Why doesn\'t the Celsius-Kelvin line pass through (0,0)?',answer:'Because zero degrees Celsius does not represent an absolute absence of heat energy.',display:'0°C ≠ absolute zero',choices:['Because temperature scales do not follow linear relationships.','Because zero degrees Celsius does not represent an absolute absence of heat energy.','Because the slope of the line is 273.15.','Because Kelvin can be negative while Celsius cannot.'],data:{}}; },
       ],
       medium: [
         () => { const m=ri(1,5),b=ri(-3,3),x=ri(1,5); return {type:'m5_both',answerType:'scalar',prompt:'Line: slope='+m+', intercept='+b+'. What is y at x='+x+'?',answer:String(m*x+b),display:String(m*x+b),data:{m,b,x}}; },
         () => { const m1=ri(1,5),m2=m1+2; return {type:'m5_angle',answerType:'scalar',prompt:'Slope '+m1+' vs slope '+m2+': which makes a larger angle with x-axis?',answer:String(m2),display:'slope '+m2,data:{m1,m2}}; },
         () => { const m=ri(1,5); return {type:'m5_negative',answerType:'scalar',prompt:'Negative slope means the line goes _____ as x increases.',answer:'down',display:'Down',data:{m}}; },
+        () => { return {type:'m5_app_mlbias',answerType:'scalar',prompt:'Neuron: Output = (Weight × Input) + Bias. If Bias is set to 0, what happens to the line?',answer:'The line shifts to pass perfectly through the origin (0,0).',display:'Passes through origin',choices:['The line becomes completely horizontal.','The line becomes completely vertical.','The line shifts to pass perfectly through the origin (0,0).','The line becomes a parabola.'],data:{}}; },
       ],
       hard: [
         () => { const m1=ri(1,4),m2=-1/m1; return {type:'m5_perp',answerType:'scalar',prompt:'Slope perpendicular to '+rnd2(m1)+' is '+rnd2(m2)+'? Product = ?',answer:'-1',display:'-1',data:{m1,m2}}; },
@@ -12170,7 +12247,7 @@ const MQ = (() => {
         q.choices = ['Yes', 'No'];
         q.prompt = q.prompt.replace(/\(1=yes,0=no\)/g, '').replace(/\s+/g, ' ').trim();
         q._yesno = true;
-      } else {
+      } else if (!q.choices || q.choices.length === 0) {
         q.choices = generateChoices(q.answer, q.prompt);
       }
     }
@@ -12185,6 +12262,29 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
   const seen = new Set(seenStr.split(',').filter(Boolean));
   const id = Date.now();
   try {
+    // If we have JSON-based questions for this mission, serve from JSON
+    const jsonData = laMissionQuestions[missionId];
+    if (jsonData && jsonData.mcqs && jsonData.mcqs[difficulty]) {
+      const pool = jsonData.mcqs[difficulty];
+      // Filter out seen question IDs (client sends type like 'mcq_M1Q1E1', strip prefix for matching)
+      const seenIds = new Set([...seen].map(s => s.replace(/^mcq_/, '')));
+      const unseen = pool.filter(q => !seenIds.has(q.id));
+      const questions = unseen.length > 0 ? unseen : pool;
+      const q = questions[Math.floor(Math.random() * questions.length)];
+      return res.json({
+        id,
+        missionId,
+        difficulty,
+        type: 'mcq_' + q.id,
+        answerType: 'mcq',
+        prompt: q.question,
+        choices: q.options,
+        answer: q.correct_option,
+        display: q.correct_option,
+        explanation: q.explanation,
+      });
+    }
+    // Fallback to algorithmic generation
     const q = MQ(missionId, difficulty, seen);
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
@@ -12200,7 +12300,10 @@ app.post('/la-mission-quiz-api/check', (req, res) => {
   const n = norm(raw);
   let correct = false;
 
-  if (answerType === 'scalar') {
+  if (answerType === 'mcq') {
+    // MCQ: exact text match against the correct option
+    correct = n === norm(expected);
+  } else if (answerType === 'scalar') {
     const parseNum = (s) => {
       s = s.replace(/\s+/g, '').replace(/\u2212/g, '-');
       if (s.includes('/')) {

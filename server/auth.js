@@ -9,9 +9,11 @@
  *   - requireAuth (middleware): blocks if no/invalid Bearer token.
  *
  * Configuration (env):
- *   MONGO_URI  default mongodb://127.0.0.1:27017/tenali
- *   JWT_SECRET default 'tenali-dev-secret-change-me'
- *   JWT_TTL    default '14d'
+ *   MONGO_URI         default mongodb://127.0.0.1:27017/tenali
+ *   JWT_SECRET        REQUIRED in production (server refuses to start without it);
+ *                     dev-only fallback is the public default, used with a warning
+ *   JWT_TTL           default '14d'
+ *   TENALI_SEED_USERS comma-separated "username:password" pairs to seed (no default)
  */
 
 const express = require('express');
@@ -20,8 +22,20 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tenali';
-const JWT_SECRET = process.env.JWT_SECRET || 'tenali-dev-secret-change-me';
+const DEFAULT_DEV_SECRET = 'tenali-dev-secret-change-me';
+const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_DEV_SECRET;
 const JWT_TTL = process.env.JWT_TTL || '14d';
+
+// Fail fast: never run in production on the built-in default secret — it is
+// public (in this repo), so anyone could forge valid tokens. In development we
+// fall back to the default but warn loudly.
+if (process.env.NODE_ENV === 'production' &&
+    (!process.env.JWT_SECRET || process.env.JWT_SECRET === DEFAULT_DEV_SECRET)) {
+  throw new Error('JWT_SECRET must be set to a strong, non-default value in production — refusing to start.');
+}
+if (JWT_SECRET === DEFAULT_DEV_SECRET) {
+  console.warn('[auth] WARNING: using the built-in development JWT secret. Set JWT_SECRET before deploying.');
+}
 
 // ─── Mongoose schema ─────────────────────────────────────────────────────────
 
@@ -153,11 +167,30 @@ async function connectMongo(uri = MONGO_URI) {
   console.log(`[auth] Mongo connected: ${uri.replace(/\/\/.*@/, '//***@')}`);
 }
 
+// Seed users come from the TENALI_SEED_USERS env var as a comma-separated list of
+// "username:password" pairs (e.g. "alice:pw1,bob:pw2"), so credentials are never
+// committed to source. If unset, no users are seeded — existing DB users still log in.
+const ENV_SEED_USERS = (process.env.TENALI_SEED_USERS || '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean)
+  .map((pair) => {
+    const i = pair.indexOf(':');
+    return i === -1
+      ? null
+      : { username: pair.slice(0, i).trim(), password: pair.slice(i + 1) };
+  })
+  .filter((u) => u && u.username && u.password);
+
+// Always include the admin account for proctor dashboard access
 const SEED_USERS = [
-  { username: 'sudarshan', password: 'sherlockholmes' },
-  { username: 'tatsavit',  password: 'taittiriya' },
-  { username: 'admin',     password: 'tenaliadmin', role: 'admin' },
+  ...ENV_SEED_USERS,
+  { username: 'admin', password: 'tenaliadmin', role: 'admin' },
 ];
+
+if (ENV_SEED_USERS.length === 0) {
+  console.warn('[auth] No TENALI_SEED_USERS configured — relying on admin seed + existing DB users.');
+}
 
 // In-memory fallback used when MongoDB is unavailable.
 // Keyed by lowercase username → bcrypt hash (populated at startup).
@@ -243,4 +276,4 @@ router.get('/me', requireAuth, (req, res) => {
   res.json({ user: req.user });
 });
 
-module.exports = { connectMongo, seedUsers, router, requireAuth, requireAdmin, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };
+module.exports = { connectMongo, seedUsers, router, requireAuth, requireAdmin, JWT_SECRET, User, Progress, StudentAttemptLog, UserStats, UserMilestone, UserTopicProgress, UserCollectionProgress };

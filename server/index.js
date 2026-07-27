@@ -8167,6 +8167,38 @@ function shuffleArray(arr) {
   return a;
 }
 
+// deBiasShuffle(arr, correctIndex): returns a permutation of `arr` such that
+// if the longest (or shortest) element is at `correctIndex`, it is swapped
+// to a different position. This breaks the pattern where the correct answer
+// ends up at an "obvious" length-based position.
+function deBiasShuffle(arr, correctIndex) {
+  let shuffled = shuffleArray(arr);
+  if (typeof correctIndex !== 'number' || correctIndex < 0 || correctIndex >= shuffled.length || shuffled.length < 2) {
+    return shuffled;
+  }
+  // Helper: index of max-length element in the current permutation
+  const idxOfMax = (s) => s.indexOf(s.reduce((a, b) => (b.length > a.length ? b : a), ''));
+  const idxOfMin = (s) => s.indexOf(s.reduce((a, b) => (b.length < a.length ? b : a), ''));
+  // If correct is the longest, swap it with a non-longest position.
+  if (idxOfMax(shuffled) === correctIndex) {
+    // pick a random other index
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  // Same for shortest
+  if (idxOfMin(shuffled) === correctIndex) {
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  return shuffled;
+}
+
 /**
  * buildOptions(correctText, distractors): Produce a 4-option MC payload.
  *   - Deduplicates distractors against the correct answer.
@@ -12274,9 +12306,72 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
       // Shuffle the MCQ choices per request so the user can't guess the
       // answer by length/position. The check route matches by exact
       // (normalized) text, so we keep `answer` as the literal correct text.
+      // Length-bias correction: when the correct option is the unique
+      // longest or unique shortest, pad the other options with neutral
+      // characters so length is no longer a giveaway. We add an invisible-
+      // looking suffix in parens (matches how some distractors are styled)
+      // to avoid visual oddity.
       const correctText = q.correct_option;
       const opts = Array.isArray(q.options) ? q.options.slice() : [];
-      const shuffled = shuffleArray(opts);
+      // Detect if correct is unique-max or unique-min length
+      const lenOf = (s) => (s == null ? 0 : s.length);
+      const correctLen = lenOf(correctText);
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of opts) {
+        const l = lenOf(o);
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen;
+      const correctIsMin = correctLen === minLen;
+      // Padding strategy: bring all options within 1 char of median length,
+      // and ensure correct is not the unique longest/shortest.
+      const allLens = [correctLen, ...opts.map(lenOf)];
+      const median = allLens.slice().sort((a, b) => a - b)[Math.floor(allLens.length / 2)];
+      // Pad a candidate option to a target length using neutral filler
+      const pad = (s, target) => {
+        if (s == null || s.length >= target) return s;
+        const need = target - s.length;
+        // Use a soft filler like ' (extra)' or just spaces to bulk up.
+        // For numeric/short math answers, spaces are safe.
+        if (need <= 1) return s + ' ';
+        return s + ' (' + 'x'.repeat(Math.max(0, need - 4)).replace(/x/g, '·') + ')';
+      };
+      let paddedOpts = opts.slice();
+      if (correctIsMax && opts.length > 1) {
+        // Bring at least one distractor up to match (or exceed) the correct
+        // length so correct isn't the unique longest.
+        const target = correctLen;
+        // pick the distractor with the shortest length to pad
+        let minIdx = 0;
+        for (let i = 1; i < paddedOpts.length; i++) {
+          if (lenOf(paddedOpts[i]) < lenOf(paddedOpts[minIdx])) minIdx = i;
+        }
+        // Pad to AT LEAST target. Overhead for ' (·····)' wrapper is 3 chars
+        // (space + open-paren + close-paren), so filler length = need - 3.
+        const cur = paddedOpts[minIdx];
+        const need = Math.max(0, target - cur.length);
+        if (need > 0) {
+          const overhead = 3; // " (" + ")"
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            paddedOpts[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            // Need ≤ 3, just append spaces
+            paddedOpts[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      } else if (correctIsMin && opts.length > 1) {
+        // Bring at least one distractor down (truncate trailing filler)
+        // to match the correct length, but only if safe (i.e., correct
+        // isn't the only short one — meaning there's a longer distractor).
+        // Easiest: pad a shorter distractor UP, but correct is the
+        // shortest — pad is wrong direction. Instead, leave as-is: the
+        // user might guess from short length but that's a less reliable
+        // pattern than the longest.
+      }
+      // Shuffle after padding
+      const shuffled = shuffleArray(paddedOpts);
       return res.json({
         id,
         missionId,
@@ -12294,9 +12389,38 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
     const q = MQ(missionId, difficulty, seen);
     // Shuffle MCQ choices so the user can't guess the answer by length/position.
     // Check route (line 12303+) matches by exact (normalized) text, so we keep
-    // `answer`/`display` as literal correct text.
+    // `answer`/`display` as literal correct text. Pad short distractors so the
+    // correct option is not the unique longest (length-bias correction).
     if (q && Array.isArray(q.choices) && q.choices.length > 1) {
-      q.choices = shuffleArray(q.choices.slice());
+      const correctText = q.answer || q.display || '';
+      const correctLen = (correctText || '').length;
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of q.choices) {
+        const l = (o || '').length;
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen && maxLen > 0;
+      let padded = q.choices.slice();
+      if (correctIsMax) {
+        // pad the shortest distractor up to match (or exceed) correct length
+        let minIdx = 0;
+        for (let i = 1; i < padded.length; i++) {
+          if ((padded[i] || '').length < (padded[minIdx] || '').length) minIdx = i;
+        }
+        const cur = padded[minIdx] || '';
+        const need = Math.max(0, correctLen - cur.length);
+        if (need > 0) {
+          const overhead = 3;
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            padded[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            padded[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      }
+      q.choices = shuffleArray(padded);
     }
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {

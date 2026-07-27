@@ -44144,6 +44144,7 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
+    matrixmystics: MatrixMysticsApp,  // Matrix Mystics — comprehensive linear algebra MCQ test bank
     trackProgress: null,
   }
 
@@ -44419,6 +44420,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'lineqgym', name: 'LinearEquations-Gym', subtitle: 'Solve linear equations (MCQ)', color: 'blue' },
     { key: 'indicesgym', name: 'Indices-Gym', subtitle: 'Index laws (MCQ)', color: 'green' },
     { key: 'polygym', name: 'Polynomials Gym', subtitle: 'Arithmetic → monomial algebra (MCQ)', color: 'blue' },
+    { key: 'matrixmystics', name: 'Matrix Mystics', subtitle: 'Linear Algebra — 6 modules, 53 topics (MCQ)', color: 'violet' },
   ]
 
   // Combined list for search filtering
@@ -54343,6 +54345,25 @@ const PolyGymApp = makeMCQuizApp({
     extrahard: 'Extra Hard — squaring & collect like terms',
   },
   tip: 'Every multiplication reduces to two single-digit numbers. Watch the signs and the powers.',
+})
+
+// ───────────────────────────────────────────────────────────────────────────
+// MATRIX MYSTICS — comprehensive linear algebra MCQ test bank
+// 6 modules, 53 topics, 1855+ questions across easy/medium/hard + real app.
+// ───────────────────────────────────────────────────────────────────────────
+
+const MatrixMysticsApp = makeMCQuizApp({
+  title: 'Matrix Mystics',
+  subtitle: 'Linear Algebra — 6 modules, 53 topics',
+  apiPath: 'matrixmystics-api',
+  adaptiveOnly: true,
+  diffLabels: {
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    extrahard: 'Extra Hard',
+  },
+  tip: 'All questions are MCQ. Read carefully — options are similar length to test real understanding.',
 })
 
 // ───────────────────────────────────────────────────────────────────────────

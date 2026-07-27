@@ -11705,14 +11705,9 @@ const labRoutes = require('./labRoutes');
 app.use('/api', labRoutes);
 
 /**
- * CATCH-ALL ROUTE
- * ═══════════════════════════════════════════════════════════════════════════
- * Serves the React/Vue SPA index.html for all unmatched routes
- * Enables client-side routing to work properly
+ * CATCH-ALL ROUTE — moved to bottom of file (after all API routes)
+ * to avoid shadowing /<type>-api endpoints added later.
  */
-app.get(/.*/, (_req, res) => {
-  res.sendFile(path.join(clientDistPath, 'index.html'));
-});
 
 /**
  * POST /curiosity-api/variation
@@ -12360,6 +12355,172 @@ app.post('/curiosity-api/variation', (req, res) => {
     console.error('[curiosity-api] error:', err && err.stack ? err.stack : err);
     return res.status(500).json({ error: 'internal error' });
   }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// MATRIX MYSTICS TEST QUESTIONS (matrixmystics-api)
+// ───────────────────────────────────────────────────────────────────────────
+// Comprehensive MCQ test bank covering 6 modules, 53 topics.
+// Each topic has 10 Easy + 10 Medium + 10 Hard + 5 Real-Application questions.
+// Questions are loaded from JSON files in linearalgebra/matrixmystics/.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// fs and path already required at top of file
+
+// Flat bank: topicKey -> { module, topicId, title, mcqs, real_life_application }
+const mmQuestionBank = {};
+// Module index: moduleNumber -> [topicKey]
+const mmModules = {};
+
+function loadMatrixMysticsBank() {
+  const dir = path.join(__dirname, '..', 'linearalgebra', 'matrixmystics');
+  try {
+    const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+    let totalTopics = 0;
+    for (const file of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+        const mod = data.module || 0;
+        if (!mmModules[mod]) mmModules[mod] = [];
+        // Each file has { module, topics: [{ topicId, title, mcqs, real_life_application, ... }] }
+        const topics = Array.isArray(data.topics) ? data.topics : [];
+        for (const topic of topics) {
+          if (!topic.topicId) continue;
+          const topicKey = `${file.replace('.json', '')}_${topic.topicId}`;
+          mmQuestionBank[topicKey] = {
+            module: mod,
+            topicId: topic.topicId,
+            title: topic.title || '',
+            mcqs: topic.mcqs || {},
+            real_life_application: topic.real_life_application || [],
+          };
+          mmModules[mod].push(topicKey);
+          totalTopics++;
+        }
+      } catch (e) {
+        console.error(`[matrixmystics] Failed to load ${file}:`, e.message);
+      }
+    }
+    console.log(`[matrixmystics] Loaded ${Object.keys(mmQuestionBank).length} topics across ${Object.keys(mmModules).length} modules (${totalTopics} topic entries)`);
+  } catch (e) {
+    console.error('[matrixmystics] Failed to read directory:', e.message);
+  }
+}
+
+loadMatrixMysticsBank();
+
+app.get('/matrixmystics-api/question', (req, res) => {
+  try {
+    const difficulty = req.query.difficulty || 'easy';
+    const module = req.query.module ? Number(req.query.module) : null;
+    const topic = req.query.topic || null;
+    const diffKey = difficulty === 'extrahard' ? 'hard' : difficulty;
+
+    // Collect questions matching the filter
+    const candidates = [];
+    const keysToSearch = module && mmModules[module] ? mmModules[module] : Object.keys(mmQuestionBank);
+
+    for (const key of keysToSearch) {
+      const data = mmQuestionBank[key];
+      if (!data) continue;
+      if (topic && data.topicId !== topic) continue;
+      const pool = data.mcqs && data.mcqs[diffKey];
+      if (pool && pool.length > 0) {
+        for (const q of pool) {
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+      // Also include real_life_application at hard/extrahard tiers
+      if ((diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
+        for (const q of data.real_life_application) {
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+    }
+
+    if (candidates.length === 0) {
+      return res.status(404).json({ error: 'No questions found for the given filters' });
+    }
+
+    const q = candidates[Math.floor(Math.random() * candidates.length)];
+
+    // Build 4-option shuffled MCQ
+    let options = Array.isArray(q.options) ? q.options : [];
+    if (options.length >= 4) {
+      const shuffled = shuffleArray(options.map((text, i) => ({ text, idx: i })));
+      const labels = ['A', 'B', 'C', 'D'];
+      options = shuffled.slice(0, 4).map((o, i) => ({ option: labels[i], text: String(o.text) }));
+      const correctIdx = shuffled.findIndex(o => String(o.text) === String(q.correct_option));
+      const correctOption = labels[correctIdx >= 0 ? correctIdx : 0];
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    // Fallback: build options from correct + remaining distractors
+    if (q.correct_option) {
+      const { options: opts, correctOption } = buildOptions(q.correct_option, options.filter(o => o !== q.correct_option));
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options: opts,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    return res.status(500).json({ error: 'Question format error' });
+  } catch (err) {
+    console.error('[matrixmystics-api] error:', err);
+    return res.status(500).json({ error: 'internal error' });
+  }
+});
+
+app.post('/matrixmystics-api/check', express.json(), (req, res) => {
+  if (req.body && req.body.correctOption !== undefined) return mcCheck(req, res);
+  return res.status(400).json({ error: 'Missing correctOption in payload' });
+});
+
+app.get('/matrixmystics-api/stats', (req, res) => {
+  const stats = { totalTopics: Object.keys(mmQuestionBank).length, modules: {} };
+  for (const [mod, keys] of Object.entries(mmModules)) {
+    let total = 0;
+    for (const key of keys) {
+      const data = mmQuestionBank[key];
+      const m = data.mcqs || {};
+      total += (m.easy || []).length;
+      total += (m.medium || []).length;
+      total += (m.hard || []).length;
+      total += (data.real_life_application || []).length;
+    }
+    stats.modules[mod] = { topics: keys.length, questions: total };
+  }
+  res.json(stats);
+});
+
+/**
+ * CATCH-ALL ROUTE
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Serves the React/Vue SPA index.html for all unmatched routes.
+ * MUST be the last route — registered after all API endpoints so it does
+ * not shadow /<type>-api routes.
+ */
+app.get(/.*/, (_req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
 });
 
 /**

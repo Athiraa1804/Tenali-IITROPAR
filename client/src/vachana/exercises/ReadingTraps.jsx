@@ -18,7 +18,7 @@ const LEVELS = [
   },
 
   {
-    quiz: "🍎🍎🍎🍎\n\n÷ 2 → 🍎🍎\n\nWhat happened?",
+    quiz: "🍎🍎🍎🍎\t÷ 2 → 🍎🍎\n\nWhat happened?",
     options: [
       "Double",
       "Half",
@@ -31,7 +31,7 @@ const LEVELS = [
   },
 
   {
-    quiz: "🐟🐟🐟\n=\n🐟🐟🐟\n\nThese groups are...",
+    quiz: "🐟🐟🐟\t=\t🐟🐟🐟\n\nThese groups are...",
     options: [
       "More",
       "Equal",
@@ -44,7 +44,7 @@ const LEVELS = [
   },
 
   {
-    quiz: "⭐⭐⭐⭐\n>\n⭐⭐\nThis means...",
+    quiz: "⭐⭐⭐⭐>⭐⭐\nThis means...",
     options: [
       "Lesser than",
       "Same",
@@ -75,7 +75,7 @@ const LEVELS = [
   title: "Crack the Code ",
   questions: [
     {
-      quiz: "7 → 10\n\nDecode:\n",
+      quiz: "7 → 10\n\nWhat does this mean?\n",
       options: [
         "3 less",
         "3 more",
@@ -88,7 +88,7 @@ const LEVELS = [
     },
 
     {
-      quiz: "10  11  12 ...\n\nDecode:",
+      quiz: "10  11  12 . . .\n\nWhat does this mean?",
       options: [
         "Exactly 10",
         "10 or more",

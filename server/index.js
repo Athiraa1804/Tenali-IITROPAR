@@ -12411,24 +12411,42 @@ app.get('/matrixmystics-api/question', (req, res) => {
     const difficulty = req.query.difficulty || 'easy';
     const module = req.query.module ? Number(req.query.module) : null;
     const topic = req.query.topic || null;
+    const phase = req.query.phase || null; // 'realapp' to restrict to real_life_application tier
+    const seenParam = req.query.seen ? new Set(String(req.query.seen).split(',').filter(Boolean)) : null;
     const diffKey = difficulty === 'extrahard' ? 'hard' : difficulty;
 
     // Collect questions matching the filter
     const candidates = [];
     const keysToSearch = module && mmModules[module] ? mmModules[module] : Object.keys(mmQuestionBank);
 
+    const seenSet = seenParam;
+
     for (const key of keysToSearch) {
       const data = mmQuestionBank[key];
       if (!data) continue;
       if (topic && data.topicId !== topic) continue;
+      if (phase === 'realapp') {
+        // Real-life application pool only (used by Phase 2 of LA mission quiz)
+        const pool = data.real_life_application || [];
+        if (pool.length > 0) {
+          for (const q of pool) {
+            if (seenSet && seenSet.has(q.id)) continue;
+            candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+          }
+        }
+        continue;
+      }
       const pool = data.mcqs && data.mcqs[diffKey];
       if (pool && pool.length > 0) {
         for (const q of pool) {
+          if (seenSet && seenSet.has(q.id)) continue;
           candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
         }
       }
-      // Also include real_life_application at hard/extrahard tiers
-      if ((diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
+      // Also include real_life_application at hard/extrahard tiers when not
+      // explicitly requesting Phase 2 — keeps backward compatibility for any
+      // existing matrixmystics-api callers.
+      if (phase !== 'realapp' && (diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
         for (const q of data.real_life_application) {
           candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
         }

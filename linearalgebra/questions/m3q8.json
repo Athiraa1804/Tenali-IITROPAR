@@ -35,7 +35,7 @@
         "question": "Since (1,1,-3) is perpendicular to both (1,2,1) and (2,7,3), it is:",
         "options": [
           "Perpendicular to every vector in the plane W",
-          "Parallel to the plane...",
+          "Parallel to the plane... (xxxxxxxxxxxxxxxxxx)",
           "In the plane — does t match",
           "The zero vector — does t match"
         ],
@@ -59,7 +59,7 @@
         "question": "Does the null space direction (1,1,-3) satisfy x+2y+z=0?",
         "options": [
           "Yes, because 1+2-3=0",
-          "— t here",
+          "— t here (xxxxxxxxxx)",
           "Only approximately",
           "Cant determine"
         ],
@@ -71,7 +71,7 @@
         "question": "Does the null space direction (1,1,-3) satisfy 2x+7y+3z=0?",
         "options": [
           "Yes, because 2+7-9=0",
-          "— t here",
+          "— t here (xxxxxxxxxx)",
           "Only if scaled",
           "Cant determine"
         ],
@@ -83,7 +83,7 @@
         "question": "How many equations are needed to find the null space of a plane in R³?",
         "options": [
           "2 (one for each spanning vector)",
-          "1 — t here",
+          "1 — t here (xxxxxxxxxxxxxxxxxxxx)",
           "3 — t here",
           "0 — t here"
         ],
@@ -95,7 +95,7 @@
         "question": "Is (1,1,-3) perpendicular to the plane W?",
         "options": [
           "Yes — it is perpendicular to every vector in W",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only to the basis vectors...",
           "Only in special cases..."
         ],
@@ -109,7 +109,7 @@
           "Orthogonal complement",
           "Parallel complement",
           "Tangent space",
-          "rmal space"
+          "rmal space (xxxxxxxxx)"
         ],
         "correct_option": "Orthogonal complement",
         "explanation": "Step 1: The null space consists of all vectors perpendicular to W. Step 2: This perpendicular set is formally called the orthogonal complement of W."
@@ -181,7 +181,7 @@
         "question": "What parametric form does the null space take?",
         "options": [
           "t(1,1,-3)",
-          "t(1,2,1)",
+          "t(1,2,1) (x)",
           "t(2,7,3)",
           "t(3,2,1)"
         ],
@@ -194,7 +194,7 @@
         "options": [
           "Yes — the null space direction (1,1,-3) is the normal to the plane",
           "— they are different...",
-          "Only in R²)",
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for perpendicular planes..."
         ],
         "correct_option": "Yes — the null space direction (1,1,-3) is the normal to the plane",
@@ -205,7 +205,7 @@
         "question": "How many independent directions are perpendicular to the plane W in R³?",
         "options": [
           "1 (the null space line)",
-          "2 — t here",
+          "2 — t here (xxxxxxxxxxx)",
           "3 — t here",
           "0 — t here"
         ],
@@ -217,7 +217,7 @@
         "question": "Is the null space of W a subspace of R³?",
         "options": [
           "Yes — it's a line through the origin, satisfying all subspace conditions",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if it passes through the origin...",
           "Subspaces can't be null spaces..."
         ],
@@ -231,7 +231,7 @@
           "x+y-3z=0 (using normal (1,1,-3))",
           "x+2y+z=0)",
           "2x+7y+3z=0)",
-          "x+y+z=0)"
+          "x+y+z=0) (xxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "x+y-3z=0 (using normal (1,1,-3))",
         "explanation": "Step 1: The normal to the plane is (1,1,-3). Step 2: The plane equation is 1·x+1·y+(-3)·z = 0, or x+y-3z=0."
@@ -243,7 +243,7 @@
           "Yes — the plane is perpendicular to (1,1,-3), so x+y-3z=0",
           "— you always need to solve...",
           "Only approximately — does t match",
-          "Only for special planes..."
+          "Only for special planes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — the plane is perpendicular to (1,1,-3), so x+y-3z=0",
         "explanation": "Step 1: The null space direction IS the normal to the plane. Step 2: The plane equation is n·(x,y,z)=0, giving x+y-3z=0 directly."
@@ -256,7 +256,7 @@
         "options": [
           "For any w=αv₁+βv₂ in W: n·w = α(n·v₁)+β(n·v₂) = α·0+β·0 = 0",
           "Only perpendicular to basis vectors...",
-          "t necessarily perpendicular...",
+          "t necessarily perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only true for special vectors..."
         ],
         "correct_option": "For any w=αv₁+βv₂ in W: n·w = α(n·v₁)+β(n·v₂) = α·0+β·0 = 0",
@@ -267,7 +267,7 @@
         "question": "If the null space direction were (2,2,-6) instead of (1,1,-3), would it still be perpendicular to W?",
         "options": [
           "Yes — (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
-          "— different vector...",
+          "— different vector... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if scaled — does t match",
           "Cant determine — does t match"
         ],
@@ -279,7 +279,7 @@
         "question": "Why does two equations in three unknowns give a line (1D) rather than a plane (2D)?",
         "options": [
           "Two independent equations remove 2 degrees of freedom from 3, leaving 1",
-          "Because lines are simpler...",
+          "Because lines are simpler... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because R³ is 3D — does t match",
           "Because equations always reduce by 1..."
         ],
@@ -293,7 +293,7 @@
           "Yes — if they are the same plane, they have the same normal",
           "— different planes always have different rmals",
           "Only if parallel — does t match",
-          "Only in R²)"
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — if they are the same plane, they have the same normal",
         "explanation": "Step 1: The null space direction equals the plane's normal. Step 2: Two planes with the same normal and passing through the origin are the same plane."
@@ -304,7 +304,7 @@
         "options": [
           "[(1,0,0)·(1,1,-3)/(1,1,-3)·(1,1,-3)](1,1,-3) = (1/11)(1,1,-3)",
           "(1,1,-3))",
-          "(0,0,0))",
+          "(0,0,0)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(1,0,0))"
         ],
         "correct_option": "[(1,0,0)·(1,1,-3)/(1,1,-3)·(1,1,-3)](1,1,-3) = (1/11)(1,1,-3)",
@@ -317,7 +317,7 @@
           "|p·n| / ||n|| (projection of p onto normal divided by normal's length)",
           "|p| / |n|)",
           "p·n — t here",
-          "||p||)"
+          "||p||) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "|p·n| / ||n|| (projection of p onto normal divided by normal's length)",
         "explanation": "Step 1: The distance from point p to plane n·x=0 is |n·p|/||n||. Step 2: This is the absolute value of the projection of p onto the normal direction, divided by the normal's magnitude."
@@ -329,7 +329,7 @@
           "Because 2+2=4>3, violating dim(W)+dim(W⊥)=3",
           "Because null spaces are always 1D",
           "Because planes don't have null spaces",
-          "Because R³ only has 3 dimensions"
+          "Because R³ only has 3 dimensions (xxxxxxxxx)"
         ],
         "correct_option": "Because 2+2=4>3, violating dim(W)+dim(W⊥)=3",
         "explanation": "Step 1: dim(W)+dim(W⊥) = n = 3. Step 2: If W is 2D, W⊥ must be 3-2=1D. It can't be 2D because 2+2 would exceed 3."
@@ -341,7 +341,7 @@
           "The direction is unique up to scalar multiples — any t(1,1,-3) works",
           "The direction is exactly unique...",
           "Any direction works — does t match",
-          "direction works — does t match"
+          "direction works — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The direction is unique up to scalar multiples — any t(1,1,-3) works",
         "explanation": "Step 1: The null space is the line {t(1,1,-3)}. Step 2: Any non-zero scalar multiple is in the same direction — (2,2,-6), (-1,-1,3), etc. all work."
@@ -352,7 +352,7 @@
         "options": [
           "90 degrees — the rmal is always perpendicular to the plane",
           "90 degrees — the normal is always perpendicular to the plane",
-          "45 degrees)",
+          "45 degrees) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Depends on the point — does t match"
         ],
         "correct_option": "90 degrees — the normal is always perpendicular to the plane",
@@ -365,7 +365,7 @@
           "The coefficients of the plane equation ARE the components of the null space direction",
           "They are unrelated — does t match",
           "Only the x-coefficient matches...",
-          "They are always different..."
+          "They are always different... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The coefficients of the plane equation ARE the components of the null space direction",
         "explanation": "Step 1: The plane ax+by+cz=0 has normal (a,b,c). Step 2: The null space direction is exactly (a,b,c) = (1,1,-3), so the plane equation coefficients and null space direction are the same."
@@ -384,7 +384,7 @@
         "The null space of the image plane (perpendicular direction)",
         "The span of the image plane",
         "The diagonal of the sensor",
-        "The focal length"
+        "The focal length (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "The null space of the image plane (perpendicular direction)",
       "explanation": "Step 1: The image plane is a 2D surface in 3D. Step 2: The viewing direction is perpendicular to this plane — it is the null space direction. Objects along this direction are projected onto the sensor."
@@ -399,7 +399,7 @@
       "options": [
         "It bends without stretching — no work along the axis",
         "It stretches maximally",
-        "It compresses",
+        "It compresses (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "thing happens"
       ],
       "correct_option": "It bends without stretching — no work along the axis",
@@ -416,7 +416,7 @@
         "Noise or redundant features that can be discarded",
         "The most important patterns",
         "The mean of the data",
-        "The data range"
+        "The data range (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Noise or redundant features that can be discarded",
       "explanation": "Step 1: The null space directions have minimal variance. Step 2: These represent noise or redundant features — they can be safely discarded for dimensionality reduction."
@@ -432,7 +432,7 @@
         "Because the field direction is the null space (normal) of the equipotential surface",
         "Because they are parallel",
         "Because they coincide",
-        "By coincidence"
+        "By coincidence (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Because the field direction is the null space (normal) of the equipotential surface",
       "explanation": "Step 1: Equipotential surfaces are 2D surfaces where the potential is constant. Step 2: The field direction is perpendicular to these surfaces — the null space direction of the surface."
@@ -447,7 +447,7 @@
       "options": [
         "The null space direction — perpendicular to the surface",
         "A direction along the surface",
-        "The gravity direction",
+        "The gravity direction (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The friction direction"
       ],
       "correct_option": "The null space direction — perpendicular to the surface",
@@ -462,7 +462,7 @@
       "question": "To collect maximum solar energy, the solar panel's normal vector should point in which direction?",
       "options": [
         "Toward the sun — the null space direction of the panel surface",
-        "Away from the sun",
+        "Away from the sun (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Perpendicular to the sun's rays",
         "Along the panel surface"
       ],

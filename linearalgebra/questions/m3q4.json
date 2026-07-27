@@ -35,7 +35,7 @@
         "question": "Is (1,-2,1) in the null space of A = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
           "Yes, because A*(1,-2,1) = (0,0,0)",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxx)",
           "Only partially — does t match",
           "Cant determine — does t match"
         ],
@@ -134,7 +134,7 @@
         "options": [
           "Only the first two (since Row3 is redundant)",
           "All three rows — does t match",
-          "Only Row3)",
+          "Only Row3) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only Row1)"
         ],
         "correct_option": "Only the first two (since Row3 is redundant)",
@@ -219,7 +219,7 @@
           "Either no solution or infinitely many solutions",
           "Exactly one solution — does t match",
           "solution at all — does t match",
-          "Exactly two solutions..."
+          "Exactly two solutions... (xxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Either no solution or infinitely many solutions",
         "explanation": "Step 1: A singular matrix has a non-trivial null space. Step 2: If Ax=b has a solution x₀, you can add any null space vector n to get another solution x₀+n, giving infinitely many. Step 3: If no solution exists (b is not in the column space), there are zero solutions. Step 4: This dichotomy — either no solutions or infinitely many — is a fundamental property of singular systems and explains why we can have 'free variables' in underdetermined systems."
@@ -229,7 +229,7 @@
         "question": "What is the rank-nullity theorem applied to A = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
           "rank(2) + nullity(1) = 3 (number of columns)",
-          "rank(3) + nullity(0) = 3...",
+          "rank(3) + nullity(0) = 3... (xxxxxxxxxxxxxxx)",
           "rank(1) + nullity(2) = 3...",
           "rank(0) + nullity(3) = 3..."
         ],
@@ -255,7 +255,7 @@
         "question": "Prove that if x is in the null space of A, then cx is also in the null space for any scalar c.",
         "options": [
           "A(cx) = c(Ax) = c·0 = 0, so cx is in the null space",
-          "Only if c=1 — does t match",
+          "Only if c=1 — does t match (xxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for positive c — does t match",
           "t always true — does t match"
         ],
@@ -269,7 +269,7 @@
           "A(x₁+x₂) = Ax₁+Ax₂ = 0+0 = 0 by linearity",
           "Only if x₁=x₂ — does t match",
           "t necessarily — does t match",
-          "Only in R²)"
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "A(x₁+x₂) = Ax₁+Ax₂ = 0+0 = 0 by linearity",
         "explanation": "Step 1: A(x₁+x₂) = Ax₁ + Ax₂ by the distributive property of matrix multiplication. Step 2: Since Ax₁=0 and Ax₂=0, the sum is 0+0=0, so x₁+x₂ also satisfies A(x₁+x₂)=0. Step 3: This closure under addition is the second requirement for the null space to be a subspace — combining this with scalar closure and the zero vector gives a complete vector subspace. Step 4: These three properties (zero vector, addition closure, scalar closure) are the standard subspace test, and the null space passes all of them."
@@ -280,7 +280,7 @@
         "options": [
           "Row1·(1,-2,1) = 0, Row2·(1,-2,1) = 0, Row3·(1,-2,1) = 0 — all zero",
           "Only Row1 is perpendicular...",
-          "ne are perpendicular...",
+          "ne are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only Row3 is perpendicular..."
         ],
         "correct_option": "Row1·(1,-2,1) = 0, Row2·(1,-2,1) = 0, Row3·(1,-2,1) = 0 — all zero",
@@ -291,7 +291,7 @@
         "question": "If A has rank 2 in R³, what can you say about the geometric relationship between the row space and null space?",
         "options": [
           "They are perpendicular complements: row space is a plane, null space is a line perpendicular to it",
-          "They are parallel — does t match",
+          "They are parallel — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "They are identical — does t match",
           "They don't intersect — does t match"
         ],
@@ -315,7 +315,7 @@
         "question": "Can a 3×3 matrix with nullity 2 exist? If so, what is its rank?",
         "options": [
           "Yes, with rank 1",
-          "impossible",
+          "impossible (xxxx)",
           "with rank 3",
           "with rank 0"
         ],
@@ -327,7 +327,7 @@
         "question": "Why does the null space of A = [[1,2,3],[4,5,6],[7,8,9]] equal the null space of [[1,2,3],[4,5,6]] (the first two rows only)?",
         "options": [
           "Because Row3 is a linear combination of Rows 1 and 2, so it adds no new constraints",
-          "Because Row3 is always redundant...",
+          "Because Row3 is always redundant... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because 3×3 matrices always have this property...",
           "Because the null space igres row operations..."
         ],
@@ -353,7 +353,7 @@
           "Yes — if Ax=0, then A²x = A(Ax) = A(0) = 0",
           "always smaller — does t match",
           "Always the same size — does t match",
-          "Depends on A — does t match"
+          "Depends on A — does t match (xxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — if Ax=0, then A²x = A(Ax) = A(0) = 0",
         "explanation": "Step 1: If x is in the null space of A, then Ax=0. Step 2: Then A²x = A(Ax) = A(0) = 0, so x is also in the null space of A². Thus null(A) ⊆ null(A²). Step 3: The null space can only grow or stay the same when you apply the matrix again — it never shrinks. Step 4: This chain of inclusions null(A) ⊆ null(A²) ⊆ null(A³) ⊆ ... eventually stabilizes and is key to understanding the Jordan canonical form and nilpotent matrices."
@@ -364,7 +364,7 @@
         "options": [
           "It is the direction perpendicular to the plane spanned by the rows of A",
           "It is the direction of the rows...",
-          "It is the diagonal of A...",
+          "It is the diagonal of A... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It is the direction of steepest ascent..."
         ],
         "correct_option": "It is the direction perpendicular to the plane spanned by the rows of A",
@@ -384,7 +384,7 @@
         "Fine details that can be safely discarded",
         "The most important features",
         "The image resolution",
-        "The colour palette"
+        "The colour palette (xxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Fine details that can be safely discarded",
       "explanation": "Step 1: The compression matrix maps image data to a compressed representation. Step 2: Components in its null space produce zero output — they are the information that gets lost during compression. Step 3: This connects to null spaces in data science: discarding null space components is how JPEG and other algorithms achieve compression without visibly degrading the image. Step 4: The art of compression is choosing which information to put in the null space (and discard) and which to keep in the range."
@@ -414,7 +414,7 @@
       "question": "What do the zero-energy modes in the null space of a stiffness matrix represent?",
       "options": [
         "Rigid body modes that require no energy to excite",
-        "The strongest vibration modes",
+        "The strongest vibration modes (xxxxxxxxxxxxxxxxxx)",
         "Modes that destroy the structure",
         "The natural frequency of the bridge"
       ],
@@ -431,7 +431,7 @@
       "options": [
         "Some messages would be encrypted to all zeros and lost forever",
         "The encryption would be too slow",
-        "The key would be too long",
+        "The key would be too long (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The messages would be too short"
       ],
       "correct_option": "Some messages would be encrypted to all zeros and lost forever",
@@ -446,7 +446,7 @@
       "question": "What do null space vectors in web page ranking represent?",
       "options": [
         "Pages that are disconnected from the main web",
-        "The most popular pages",
+        "The most popular pages (xxxxxxxxxxxxxxxxxxxxx)",
         "Pages with the most links",
         "Pages that load the fastest"
       ],
@@ -464,7 +464,7 @@
         "Parameters that don't affect training predictions",
         "The most important features",
         "The model's accuracy",
-        "The training speed"
+        "The training speed (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Parameters that don't affect training predictions",
       "explanation": "Step 1: Null space parameters satisfy Ax=0, meaning they produce zero output for the training data. Step 2: They don't change training predictions but may affect how the model generalizes to unseen data. Step 3: This is a frontier topic in deep learning: understanding the null space of the data matrix helps explain why overparameterized models can still generalize well. Step 4: The null space represents the flexibility in the model that is not constrained by the training data, which is both a source of generalization power and potential overfitting."

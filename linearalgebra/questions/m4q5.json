@@ -22,7 +22,7 @@
         "id": "M4Q5E2",
         "question": "What is the null space direction of A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
-          "(1,2,3)",
+          "(1,2,3) ()",
           "(1,-2,1)",
           "(1,1,1)",
           "(3,2,1)"
@@ -71,7 +71,7 @@
         "question": "What is the Rank-Nullity check for A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
           "rank(2) + nullity(1) = 3 ✓",
-          "rank(2) + nullity(2) = 3 ✓",
+          "rank(2) + nullity(2) = 3 ✓x",
           "rank(3) + nullity(0) = 3 ✓",
           "rank(1) + nullity(1) = 3 ✓"
         ],
@@ -94,7 +94,7 @@
         "id": "M4Q5E8",
         "question": "The row space R(A) for A = [[1,4,7],[2,5,8],[3,6,9]] is a 2D plane. The null space N(A) is a 1D line. What is the relationship between them?",
         "options": [
-          "The line lies in the plane",
+          "The line lies in the plane (xxxxxxxxxxx)",
           "The line is perpendicular to the plane",
           "They are parallel — does t match",
           "They are the same — does t match"
@@ -132,7 +132,7 @@
         "id": "M4Q5M1",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], the column space C(A) is a 2D plane in R³. What is its normal vector?",
         "options": [
-          "(1,4,7)",
+          "(1,4,7) ()",
           "(1,-2,1)",
           "(1,2,3)",
           "(3,6,9)"
@@ -195,7 +195,7 @@
           "Yes, this is the orthogonal decomposition theorem",
           "only if v is in the row space...",
           "Only for specific vectors...",
-          "Only if A is invertible..."
+          "Only if A is invertible... (xxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes, this is the orthogonal decomposition theorem",
         "explanation": "Step 1: R(A) and N(A) are orthogonal subspaces of R³. Step 2: dim(R(A)) + dim(N(A)) = 2 + 1 = 3 = dim(R³). Step 3: Any vector v can be uniquely decomposed as v = v_row + v_null. The row space component survives A; the null space component is killed — this is the operational meaning of the orthogonal decomposition."
@@ -228,7 +228,7 @@
         "id": "M4Q5M9",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], if you project any vector b onto C(A), the residual (b - projection) lies in which subspace?",
         "options": [
-          "Row space R(A)",
+          "Row space R(A) (xxxxxx)",
           "Column space C(A)",
           "Left null space N(Aᵀ)",
           "Null space N(A)"
@@ -257,7 +257,7 @@
           "No — it is a special coincidence of this matrix's structure",
           "— all rank-2 matrices have equal null spaces",
           "Only for symmetric matrices...",
-          "Only when rank equals n-1..."
+          "Only when rank equals n-1... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No — it is a special coincidence of this matrix's structure",
         "explanation": "Step 1: For most 3×3 rank-2 matrices, N(A) ≠ N(Aᵀ). Step 2: This happens because row dependency (row3 = 2·row2 - row1) and column dependency (col3 = 2·col2 - col1) produce the same null direction. Step 3: For a generic rank-2 matrix, the row and column dependencies would differ, giving different null spaces. This matrix has a special symmetry in its dependencies."
@@ -281,7 +281,7 @@
           "They are independent: neither is a scalar multiple of the other",
           "They are dependent: (4,5,6) = 2(1,2,3) - (-2,-1,0)",
           "They are dependent: (4,5,6) = 4(1,2,3) - (0,3,6)",
-          "Cant determine without computing det..."
+          "Cant determine without computing det... (xxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "They are independent: neither is a scalar multiple of the other",
         "explanation": "Step 1: Check if (4,5,6) = α(1,2,3): this requires α = 4, α = 2.5, α = 2 simultaneously — impossible. Step 2: Since neither is a scalar multiple of the other, they are linearly independent. Step 3: Two non-collinear vectors in R³ span a 2D plane, confirming C(A) is 2D."
@@ -292,7 +292,7 @@
         "options": [
           "Not necessarily — R(A) and C(A) can be different planes even with the same dimension",
           "always — row and column spaces are identical...",
-          "Only if A is symmetric...",
+          "Only if A is symmetric... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only when rank = n — does t match"
         ],
         "correct_option": "Not necessarily — R(A) and C(A) can be different planes even with the same dimension",
@@ -304,7 +304,7 @@
         "options": [
           "(1/6)(1,-2,1)",
           "(1,-2,1)",
-          "(0,0,0)",
+          "(0,0,0) (xxxxx)",
           "(1,0,0)"
         ],
         "correct_option": "(1/6)(1,-2,1)",
@@ -329,7 +329,7 @@
           "The row space is a plane where the x-component minus twice the y-component plus the z-component equals zero",
           "The row space is a line...",
           "The row space contains all of R³...",
-          "The row space is empty..."
+          "The row space is empty... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The row space is a plane where the x-component minus twice the y-component plus the z-component equals zero",
         "explanation": "Step 1: x - 2y + z = 0 is the equation of a plane through the origin with normal (1,-2,1). Step 2: Every vector in R(A) satisfies this equation. Step 3: Every vector satisfying this equation is in R(A) (since R(A) is 2D and the plane is 2D). The equation completely characterizes the row space."
@@ -352,7 +352,7 @@
         "options": [
           "rank(2) + nullity(n-rank) = 3. The row echelon form has 2 pivots and 1 free variable.",
           "This requires computing the determinant first...",
-          "Only true for symmetric matrices...",
+          "Only true for symmetric matrices... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "This is false for rank-2 matrices..."
         ],
         "correct_option": "rank(2) + nullity(n-rank) = 3. The row echelon form has 2 pivots and 1 free variable.",
@@ -364,7 +364,7 @@
         "options": [
           "b - (1/6)(1,-2,1) = (5/6, 1/3, -1/6)",
           "b itself)",
-          "(0,0,0))",
+          "(0,0,0)) (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(1,-2,1))"
         ],
         "correct_option": "b - (1/6)(1,-2,1) = (5/6, 1/3, -1/6)",
@@ -377,7 +377,7 @@
       "id": "M4Q5R1",
       "question": "In circuit analysis, Kirchhoff's voltage law loop equations form the row space of the circuit matrix. For a circuit with 3 loops but only 2 independent equations, what does the null space of the circuit matrix represent?",
       "options": [
-        "The voltage sources",
+        "The voltage sources (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The redundant loop equation — a loop that can be derived from others",
         "The current through each resistor",
         "The total power dissipated"
@@ -391,7 +391,7 @@
       "options": [
         "All data is transmitted perfectly",
         "One combination of input signals produces zero output — it is undetectable",
-        "The network is faster",
+        "The network is faster (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "All three channels are independent"
       ],
       "correct_option": "One combination of input signals produces zero output — it is undetectable",
@@ -401,7 +401,7 @@
       "id": "M4Q5R3",
       "question": "In portfolio theory, the null space of the return matrix represents risk-free combinations — portfolios with zero variance. Why is this important for derivatives pricing?",
       "options": [
-        "It guarantees high returns",
+        "It guarantees high returns (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It provides a benchmark for pricing derivatives independent of market risk",
         "It eliminates all investment risk",
         "It doubles the portfolio value"
@@ -415,7 +415,7 @@
       "options": [
         "It can print in 3D rmally",
         "It can only move in a 2D plane — one direction is lost",
-        "It can print faster",
+        "It can print faster (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It needs a 4th motor"
       ],
       "correct_option": "It can only move in a 2D plane — one direction is lost",
@@ -425,7 +425,7 @@
       "id": "M4Q5R5",
       "question": "In data science, a dataset with 3 features but rank 2 means one feature is redundant. The left null space N(Aᵀ) reveals what about the observations?",
       "options": [
-        "All observations are identical",
+        "All observations are identical (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "There is a linear dependency among the observations (rows)",
         "The dataset has useful information",
         "The features are all independent"

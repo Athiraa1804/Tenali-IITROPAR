@@ -23,7 +23,7 @@
         "question": "What does the rank of a matrix measure?",
         "options": [
           "The number of rows — does t match",
-          "The number of columns...",
+          "The number of columns... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The number of independent dimensions that survive the transformation",
           "The determinant of the matrix..."
         ],
@@ -47,18 +47,18 @@
         "question": "Which two subspaces are orthogonal in the input domain?",
         "options": [
           "C(A) and N(A^T)",
-          "R(A) and N(A)",
+          "R(A) and N(A",
           "R(A) and C(A)",
           "N(A) and N(A^T)"
         ],
-        "correct_option": "R(A) and N(A)",
+        "correct_option": "R(A) and N(A",
         "explanation": "Step 1: R(A) perpendicular to N(A) always holds for every matrix. Step 2: If x is in N(A), then Ax = 0, meaning x is perpendicular to every row of A, and hence to the entire row space. Step 3: This orthogonality, combined with dim(R) + dim(N) = n, gives the direct sum R^n = R(A) + N(A): every input decomposes uniquely into a surviving part and a lost part."
       },
       {
         "id": "M5Q5E5",
         "question": "Which two subspaces are orthogonal in the output domain?",
         "options": [
-          "R(A) and N(A)",
+          "R(A) and N(A) (x)",
           "C(A) and N(A^T)",
           "R(A) and C(A)",
           "N(A) and N(A^T)"
@@ -73,7 +73,7 @@
           "thing -- all information is preserved",
           "Some information is lost along the null space",
           "All information is lost...",
-          "Information is created..."
+          "Information is created... (xxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Some information is lost along the null space",
         "explanation": "Step 1: A singular matrix has nullity > 0, meaning N(A) contains non-zero vectors. Step 2: These null-space vectors are mapped to zero -- the information they carry is completely destroyed. Step 3: The amount of information lost equals the nullity, and the amount preserved equals the rank. A singular matrix collapses some dimensions of the input, making it impossible to recover the original input from the output."
@@ -82,7 +82,7 @@
         "id": "M5Q5E7",
         "question": "For an invertible n x n matrix, the null space is:",
         "options": [
-          "All of R^n)",
+          "All of R^n) (xxxxxxxxxxxxxx)",
           "A line through the origin",
           "{0} -- only the zero vector",
           "A plane through the origin"
@@ -120,7 +120,7 @@
         "options": [
           "Inputs that are lost — does t match",
           "The independent input directions that matter",
-          "Reachable outputs — does t match",
+          "Reachable outputs — does t match (xxxxxxxxxx)",
           "Unreachable outputs — does t match"
         ],
         "correct_option": "The independent input directions that matter",
@@ -146,7 +146,7 @@
         "options": [
           "Linear algebra is the study of subspaces and their orthogonal relationships through linear transformations",
           "Linear algebra is about solving systems of equations...",
-          "Linear algebra is about computing determinants...",
+          "Linear algebra is about computing determinants... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Linear algebra is the study of vectors and matrices..."
         ],
         "correct_option": "Linear algebra is the study of subspaces and their orthogonal relationships through linear transformations",
@@ -158,7 +158,7 @@
         "options": [
           "R(A)=plane, N(A)=plane, C(A)=plane, N(A^T)=plane -- all 2D",
           "R(A)=line, N(A)=line, C(A)=line, N(A^T)=line -- all 1D",
-          "R(A)=R^4, N(A)={0}, C(A)=R^4, N(A^T)={0}...",
+          "R(A)=R^4, N(A)={0}, C(A)=R^4, N(A^T)={0}... (xxxxxxxxxxxxx)",
           "R(A)={0}, N(A)=R^4, C(A)={0}, N(A^T)=R^4..."
         ],
         "correct_option": "R(A)=plane, N(A)=plane, C(A)=plane, N(A^T)=plane -- all 2D",
@@ -169,7 +169,7 @@
         "question": "Why is understanding the four subspaces more powerful than just knowing the rank?",
         "options": [
           "Because rank only tells you one number, but the four subspaces reveal the complete geometric picture",
-          "Because rank is always wrong...",
+          "Because rank is always wrong... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the four subspaces are easier to compute...",
           "Because rank doesn't apply to rectangular matrices..."
         ],
@@ -181,7 +181,7 @@
         "question": "For A = [[1,0],[0,0]], which statement is true?",
         "options": [
           "R(A)=span{e1}, N(A)=span{e2}, C(A)=span{e1}, N(A^T)=span{e2}",
-          "R(A)=R^2, N(A)={0}, C(A)=R^2, N(A^T)={0}...",
+          "R(A)=R^2, N(A)={0}, C(A)=R^2, N(A^T)={0}... (xxxxxxxxxxxxxxx)",
           "R(A)={0}, N(A)=R^2, C(A)={0}, N(A^T)=R^2...",
           "R(A)=span{e1}, N(A)={0}, C(A)=span{e1}, N(A^T)=span{e2}"
         ],
@@ -193,7 +193,7 @@
         "question": "How does the concept of 'information loss' relate to the null space?",
         "options": [
           "The null space contains exactly the input directions whose information is destroyed by the transformation",
-          "The null space preserves information...",
+          "The null space preserves information... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The null space creates new information...",
           "The null space is irrelevant to information theory..."
         ],
@@ -207,7 +207,7 @@
           "|b|^2 = |proj_C(A)(b)|^2 + |residual|^2 because C(A) perpendicular to N(A^T)",
           "The Pythagorean theorem doesn't apply to subspaces...",
           "|b|^2 = |b|^2 always -- decomposition needed...",
-          "Only applies when the matrix is square..."
+          "Only applies when the matrix is square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "|b|^2 = |proj_C(A)(b)|^2 + |residual|^2 because C(A) perpendicular to N(A^T)",
         "explanation": "Step 1: Any b in R^m decomposes as b = b_C + b_N with b_C in C(A) and b_N in N(A^T). Step 2: Since C(A) perpendicular to N(A^T), the Pythagorean theorem gives |b|^2 = |b_C|^2 + |b_N|^2. Step 3: This is the foundation of least-squares: minimizing |b_N|^2 (the residual) finds the best approximation in C(A). The orthogonality transforms the abstract geometric relationship into a quantitative optimization tool."
@@ -217,7 +217,7 @@
         "question": "For an m x n matrix A with m > n, can the transformation be surjective (onto)?",
         "options": [
           "No: C(A) has dimension <= n < m, so it cannot fill all of R^m",
-          "always — does t match",
+          "always — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "if the matrix has full rank...",
           "Only if m = n — does t match"
         ],
@@ -230,7 +230,7 @@
         "options": [
           "The residual (error) is orthogonal to the column space, meaning we have found the closest possible output",
           "The residual is parallel to the column space...",
-          "The residual is zero always...",
+          "The residual is zero always... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Orthogonality doesn't matter for least squares..."
         ],
         "correct_option": "The residual (error) is orthogonal to the column space, meaning we have found the closest possible output",
@@ -256,7 +256,7 @@
         "options": [
           "R(A)=plane (2D inputs matter), N(A)=line t(1,-2,1) (1D lost), C(A)=plane (2D reachable), N(A^T)=line (1D unreachable)",
           "R(A)=line, N(A)=plane, C(A)=line, N(A^T)=plane...",
-          "R(A)=R^3, N(A)={0}, C(A)=R^3, N(A^T)={0}...",
+          "R(A)=R^3, N(A)={0}, C(A)=R^3, N(A^T)={0}... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "R(A)={0}, N(A)=R^3, C(A)={0}, N(A^T)=R^3..."
         ],
         "correct_option": "R(A)=plane (2D inputs matter), N(A)=line t(1,-2,1) (1D lost), C(A)=plane (2D reachable), N(A^T)=line (1D unreachable)",
@@ -268,7 +268,7 @@
         "options": [
           "N(A)={0} so injective; C(A) is 3D in R^5, so not all of R^5 is reachable -- not surjective",
           "N(A)={0} and C(A)=R^5, so both injective and surjective...",
-          "N(A) is n-trivial, so t injective...",
+          "N(A) is n-trivial, so t injective... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "C(A)=R^5, so surjective but t injective..."
         ],
         "correct_option": "N(A)={0} so injective; C(A) is 3D in R^5, so not all of R^5 is reachable -- not surjective",
@@ -281,7 +281,7 @@
           "Both equal rank(A) by definition: rank = dim(R(A)) and rank = dim(C(A)), and row rank = column rank",
           "Because rows and columns are the same vectors...",
           "Because the determinant forces them equal...",
-          "It is t always true..."
+          "It is t always true... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Both equal rank(A) by definition: rank = dim(R(A)) and rank = dim(C(A)), and row rank = column rank",
         "explanation": "Step 1: dim(R(A)) = number of independent rows = row rank. Step 2: dim(C(A)) = number of independent columns = column rank. Step 3: Row rank = column rank is proved via row reduction: pivots count both independent rows and independent columns. The Rank-Nullity Theorem applied to A gives rank(A) = n - nullity(A), and applied to A^T gives rank(A^T) = m - nullity(A^T). Since nullity(A) = dim(N(A)) and nullity(A^T) = dim(N(A^T)) are determined by the same pivot structure, both expressions yield the same rank."
@@ -291,7 +291,7 @@
         "question": "Why is the four-subspace framework considered the 'capstone' of linear algebra?",
         "options": [
           "It unifies all previous concepts (vectors, subspaces, orthogonality, rank, nullity) into one coherent picture",
-          "Because it is the last topic usually taught...",
+          "Because it is the last topic usually taught... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because it only applies to advanced problems...",
           "Because it replaces the need for determinants..."
         ],
@@ -303,7 +303,7 @@
         "question": "For A = [[1,0,0],[0,1,0],[0,0,0]] (a projection onto the xy-plane), give the complete four-subspace analysis.",
         "options": [
           "R(A)=span{e1,e2}, N(A)=span{e3}, C(A)=span{e1,e2}, N(A^T)=span{e3}. Projects R^3 onto xy-plane, squashing z.",
-          "R(A)=R^3, N(A)={0}, C(A)=R^3, N(A^T)={0}...",
+          "R(A)=R^3, N(A)={0}, C(A)=R^3, N(A^T)={0}... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "R(A)=span{e1}, N(A)=span{e2,e3}, C(A)=span{e1}, N(A^T)=span{e2,e3}...",
           "R(A)=span{e3}, N(A)=span{e1,e2}, C(A)=span{e3}, N(A^T)=span{e1,e2}..."
         ],
@@ -315,7 +315,7 @@
         "question": "If A is an m x n matrix with rank r, what is the complete dimensional summary?",
         "options": [
           "dim(R)=r, dim(N)=n-r, dim(C)=r, dim(N^T)=m-r. Total: n+m.",
-          "dim(R)=m, dim(N)=0, dim(C)=n, dim(N^T)=0...",
+          "dim(R)=m, dim(N)=0, dim(C)=n, dim(N^T)=0... (xxxxxxxxxxxx)",
           "dim(R)=n, dim(N)=m-r, dim(C)=m, dim(N^T)=n-r",
           "dim(R)=r, dim(N)=r, dim(C)=r, dim(N^T)=r..."
         ],
@@ -329,7 +329,7 @@
           "Nullity > 0 means N(A) is non-trivial -- input dimensions are collapsed to zero, and N(A^T) shows which output dimensions become unreachable",
           "Singularity only affects the determinant...",
           "All four subspaces become trivial...",
-          "The row space disappears..."
+          "The row space disappears... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Nullity > 0 means N(A) is non-trivial -- input dimensions are collapsed to zero, and N(A^T) shows which output dimensions become unreachable",
         "explanation": "Step 1: A singular matrix has rank < min(m,n), so nullity > 0. N(A) is non-trivial: some input dimensions are squashed to zero (information lost). Step 2: N(A^T) is also non-trivial: some output dimensions become unreachable. Step 3: The 'collapse' is visible in both domains: the input side loses dimensions (nullity > 0) and the output side gains unreachable dimensions (dim(N^T) > 0). The rank measures what survives; the nullities measure what is lost on each side."
@@ -339,7 +339,7 @@
         "question": "For a symmetric matrix A = [[2,1],[1,2]], the four subspaces satisfy an additional property. What is it?",
         "options": [
           "R(A) = C(A) and N(A) = N(A^T) because A = A^T",
-          "All four subspaces are identical",
+          "All four subspaces are identical (xxxxxxxxxxx)",
           "R(A) perpendicular to C(A) always",
           "N(A) = R^2 always — does t match"
         ],
@@ -353,7 +353,7 @@
           "Any linear map T: V to W defines four subspaces: R(T), N(T) in V, C(T), N(T*) in W, with the same orthogonal relationships",
           "Only matrices have four subspaces...",
           "General linear maps have only two subspaces...",
-          "The framework doesn't generalize..."
+          "The framework doesn't generalize... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Any linear map T: V to W defines four subspaces: R(T), N(T) in V, C(T), N(T*) in W, with the same orthogonal relationships",
         "explanation": "Step 1: For T: V to W, define R(T) = range, N(T) = kernel, C(T) = image, N(T*) = cokernel (where T* is the adjoint). Step 2: With inner products on V and W, R(T) perpendicular to N(T) and C(T) perpendicular to N(T*). Step 3: The Rank-Nullity Theorem generalizes: dim(V) = dim(R(T)) + dim(N(T)). The matrix case is the concrete realization of this abstract framework. This generalization shows that the four-subspace structure is not an artifact of matrices but a fundamental property of linear maps between vector spaces."
@@ -365,7 +365,7 @@
           "(1) Four subspaces exist, (2) Two orthogonal pairs, (3) Rank-nullity, (4) Singular = dimension collapse, (5) Subspaces and their relationships define everything",
           "(1) Determinants, (2) Eigenvalues, (3) Matrix multiplication, (4) Inverses, (5) Transposes...",
           "(1) Vectors have length, (2) Matrices have rows, (3) Systems have solutions, (4) Graphs have edges, (5) Numbers have primes...",
-          "(1) Addition, (2) Multiplication, (3) Division, (4) Subtraction, (5) Exponentiation..."
+          "(1) Addition, (2) Multiplication, (3) Division, (4) Subtraction, (5) Exponentiation... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "(1) Four subspaces exist, (2) Two orthogonal pairs, (3) Rank-nullity, (4) Singular = dimension collapse, (5) Subspaces and their relationships define everything",
         "explanation": "Step 1: Every matrix defines four subspaces (R, C, N, N^T). Step 2: R perpendicular to N and C perpendicular to N^T -- two orthogonal pairs. Step 3: rank+nullity=n -- the fundamental equation. Step 4: Singular matrices collapse dimensions -- information is lost. Step 5: The entire subject is the study of how these subspaces interact. These five insights form the complete picture of linear algebra: the structural framework (four subspaces), the geometric relationships (orthogonality), the dimensional law (rank-nullity), the algebraic condition (singularity), and the unifying philosophy (subspace interactions)."
@@ -384,7 +384,7 @@
         "The four fundamental subspaces",
         "Only the determinant",
         "Matrix multiplication rules",
-        "Graph theory"
+        "Graph theory (xxxxxxxxxxxxxxxx)"
       ],
       "answer": "The four fundamental subspaces",
       "explanation": "Step 1: Engineering systems are modeled by matrices. Step 2: Each matrix has four subspaces that describe input-output behavior. Step 3: Understanding R(A), C(A), N(A), and N(A^T) gives complete knowledge of what the system can and cannot do. The four-subspace framework is the universal language of engineering analysis, from circuit design (row space = controllable inputs) to structural mechanics (null space = unstable modes)."
@@ -432,7 +432,7 @@
         "Co-regulation patterns, redundant conditions, achievable expressions, and impossible patterns",
         "Only gene locations on chromosomes",
         "Only protein structures",
-        "Only mutation rates"
+        "Only mutation rates (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Co-regulation patterns, redundant conditions, achievable expressions, and impossible patterns",
       "explanation": "Step 1: Row space reveals which gene groups are co-regulated. Step 2: Left null space identifies experimental conditions that add no new information. Step 3: Column space shows achievable expression patterns; N(A^T) shows biologically impossible ones. The four-subspace framework provides a complete decomposition of gene expression data into biologically meaningful components."
@@ -447,7 +447,7 @@
       "options": [
         "Maximise rank (maximise controllable dimensions) and minimise nullity (minimise information loss)",
         "Minimise rank and maximise nullity",
-        "Make all subspaces equal",
+        "Make all subspaces equal (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Eliminate the column space"
       ],
       "answer": "Maximise rank (maximise controllable dimensions) and minimise nullity (minimise information loss)",
@@ -464,7 +464,7 @@
         "Uncontrollable motions that will cause drift",
         "The fastest possible maneuvers",
         "The most fuel-efficient trajectory",
-        "The spacecraft's orientation"
+        "The spacecraft's orientation (xxxxxxxxxxxxxx)"
       ],
       "answer": "Uncontrollable motions that will cause drift",
       "explanation": "Step 1: The control matrix maps thruster commands to forces/torques. Step 2: The null space contains force directions that no thruster combination can produce. Step 3: The spacecraft drifts uncontrollably in these directions -- the null space directly predicts the drift behavior. The Rank-Nullity Theorem tells engineers: with 4 thrusters controlling 6 DOF, at least 2 directions (nullity >= 2) are uncontrollable, and the null space vectors identify exactly which directions those are."

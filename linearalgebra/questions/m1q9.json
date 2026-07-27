@@ -13,7 +13,7 @@
           "a² - 10 = 54",
           "a² + 10 = 54",
           "2a - 10 = 54",
-          "a - 10 = 54"
+          "a - 10 = 54 (x)"
         ],
         "correct_option": "a² - 10 = 54",
         "explanation": "Step 1: f(a) = a² - 10 = 54. Step 2: This is the equation we need to solve. Step 3: Setting the function equal to 54 and solving for a gives us the input values that produce 54."
@@ -37,7 +37,7 @@
           "8 and -8",
           "8 only",
           "-8 only",
-          "64"
+          "64 (xxxx)"
         ],
         "correct_option": "8 and -8",
         "explanation": "Step 1: a² = 64 means a = √64 or a = -√64. Step 2: a = 8 or a = -8. Step 3: Both are valid because squaring either gives 64."
@@ -46,12 +46,12 @@
         "id": "M1Q9E4",
         "question": "Does f(8) = f(-8) for f(x) = x² - 10?",
         "options": [
-          "Yes, both equal 54",
+          "both equal 54",
           "they give different values",
           "Only for positive values",
           "Cant be determined"
         ],
-        "correct_option": "Yes, both equal 54",
+        "correct_option": "both equal 54",
         "explanation": "Step 1: f(8) = 64 - 10 = 54. Step 2: f(-8) = 64 - 10 = 54. Step 3: Both inputs produce the same output — the parabola is symmetric."
       },
       {
@@ -61,7 +61,7 @@
           "Because squaring both +8 and -8 gives the same result (64)",
           "Because the equation is linear...",
           "Because 54 is a special number...",
-          "Because the slope is positive..."
+          "Because the slope is positive... (xxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because squaring both +8 and -8 gives the same result (64)",
         "explanation": "Step 1: 8² = 64 and (-8)² = 64. Step 2: Squaring erases the sign, so both ±8 satisfy a² = 64. Step 3: This is a fundamental property of quadratic equations — they can have two solutions."
@@ -71,7 +71,7 @@
         "question": "How many times does the horizontal line y = 54 intersect the parabola y = x² - 10?",
         "options": [
           "Exactly twice (at x = 8 and x = -8)",
-          "Once)",
+          "Once) (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Never)",
           "Infinitely many times"
         ],
@@ -83,7 +83,7 @@
         "question": "Can a linear equation like 3x + 2 = 17 have two solutions?",
         "options": [
           "No — a linear equation has at most one solution",
-          "always two — does t match",
+          "always two — does t match (xxxxxxxxxxxxxxxxxxxx)",
           "Only if the slope is zero...",
           "Only for negative coefficients..."
         ],
@@ -97,7 +97,7 @@
           "x = 0 (the y-axis)",
           "x = 10",
           "x = -10",
-          "x = 5"
+          "x = 5 (xxxxxxxxxxx)"
         ],
         "correct_option": "x = 0 (the y-axis)",
         "explanation": "Step 1: The vertex of y = x² - 10 is at (0, -10). Step 2: The axis of symmetry passes through the vertex vertically. Step 3: x = 0 is the axis — points x = 8 and x = -8 are mirror images across it."
@@ -109,7 +109,7 @@
           "No, because f(8) = f(-8) = 54 — two inputs give the same output",
           "every output has exactly one input...",
           "Only for positive x — does t match",
-          "It depends on the value of 54..."
+          "It depends on the value of 54... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No, because f(8) = f(-8) = 54 — two inputs give the same output",
         "explanation": "Step 1: f(8) = 54 and f(-8) = 54. Step 2: Two different inputs produce the same output. Step 3: This violates the one-to-one (injective) condition, so f is NOT one-to-one."
@@ -119,7 +119,7 @@
         "question": "Does f(x) = x² - 10 have an inverse function over all real numbers?",
         "options": [
           "No, because f is not one-to-one over all reals",
-          "the inverse is √(x+10)...",
+          "the inverse is √(x+10)... (xxxxxxxxxxxxxxxxxxx)",
           "every function has an inverse",
           "Only for x > 0 — does t match"
         ],
@@ -135,7 +135,7 @@
           "f(-8) = 54 (symmetric point across y-axis)",
           "f(8) = -54)",
           "f(-8) = -54 — does t match",
-          "f(54) = 8)"
+          "f(54) = 8) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "f(-8) = 54 (symmetric point across y-axis)",
         "explanation": "Step 1: The parabola is symmetric about x = 0. Step 2: x = 8 and x = -8 are equidistant from the axis of symmetry. Step 3: Symmetric points have the same y-value, so f(-8) = f(8) = 54."
@@ -158,7 +158,7 @@
         "options": [
           "Because (-x)² = x², so f(-x) = f(x) for all x",
           "Because the vertex is at the origin",
-          "Because the coefficient of x² is 1",
+          "Because the coefficient of x² is 1 (xxxxxxxxx)",
           "Because it passes through (0, -10)"
         ],
         "correct_option": "Because (-x)² = x², so f(-x) = f(x) for all x",
@@ -170,7 +170,7 @@
         "options": [
           "Yes, at exactly one point: the vertex (0, -10)",
           "At two points — does t match",
-          "Never)",
+          "Never) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "At infinitely many points..."
         ],
         "correct_option": "Yes, at exactly one point: the vertex (0, -10)",
@@ -182,7 +182,7 @@
         "options": [
           "The ball is at 54 m twice — once going up, once coming down",
           "The ball is at two different heights at the same time",
-          "The ball never reaches 54 m...",
+          "The ball never reaches 54 m... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "There is an error in the calculation..."
         ],
         "correct_option": "The ball is at 54 m twice — once going up, once coming down",
@@ -193,7 +193,7 @@
         "question": "If f(x) = x² - 10, and we restrict the domain to x ≥ 0, is the restricted function one-to-one?",
         "options": [
           "Yes — on x ≥ 0, the function is strictly increasing, so each output comes from exactly one input",
-          "it's still t one-to-one...",
+          "it's still t one-to-one... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for x > 10 — does t match",
           "Only if the range is restricted too..."
         ],
@@ -205,7 +205,7 @@
         "question": "What is the maximum height of the parabola y = -(x-3)² + 20?",
         "options": [
           "20 (at x = 3)",
-          "3",
+          "3 (xxxxxxxxxx)",
           "-20",
           "23"
         ],
@@ -217,7 +217,7 @@
         "question": "If a quadratic equation has discriminant b² - 4ac > 0, how many real solutions does it have?",
         "options": [
           "Two distinct real solutions",
-          "One solution",
+          "One solution (xxxxxxxxxxxxx)",
           "real solutions",
           "Infinitely many"
         ],
@@ -243,7 +243,7 @@
           "The horizontal line y = 54 cuts through the parabola at two symmetric locations",
           "The line is tangent to the parabola...",
           "The parabola has two vertices...",
-          "The two curves are parallel..."
+          "The two curves are parallel... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The horizontal line y = 54 cuts through the parabola at two symmetric locations",
         "explanation": "Step 1: y = 54 is a horizontal line above the vertex. Step 2: The upward-opening parabola crosses this line on both sides of the axis of symmetry. Step 3: The two intersection points are mirror images, at x = 8 and x = -8."
@@ -256,7 +256,7 @@
         "options": [
           "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to non-negative inputs)",
           "Domain: all reals, Range: all reals...",
-          "Domain: x > 0, Range: x > 10...",
+          "Domain: x > 0, Range: x > 10... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The restricted inverse doesn't exist..."
         ],
         "correct_option": "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to non-negative inputs)",
@@ -267,7 +267,7 @@
         "question": "In terms of linear algebra, why does the quadratic f(x) = x² - 10 fail the invertibility test that linear functions like g(x) = 3x + 2 pass?",
         "options": [
           "Because f is non-linear (degree 2), so its derivative changes sign, making it non-monotonic — unlike linear functions which are always monotonic",
-          "Because f has a negative constant...",
+          "Because f has a negative constant... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the coefficient of x² is 1...",
           "Because f passes through negative values..."
         ],
@@ -280,7 +280,7 @@
         "options": [
           "Exactly 2: x = 8 and x = -8 (both real)",
           "Exactly 1: x = 8 — does t match",
-          "Exactly 0)",
+          "Exactly 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Infinitely many — does t match"
         ],
         "correct_option": "Exactly 2: x = 8 and x = -8 (both real)",
@@ -292,7 +292,7 @@
         "options": [
           "The x-intercepts of the parabola — points where the function maps to zero",
           "The y-intercept — does t match",
-          "The vertex of the parabola...",
+          "The vertex of the parabola... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The axis of symmetry — does t match"
         ],
         "correct_option": "The x-intercepts of the parabola — points where the function maps to zero",
@@ -303,7 +303,7 @@
         "question": "For a quadratic y = ax² + bx + c with a > 0, under what condition does the horizontal line y = k intersect the parabola at two points?",
         "options": [
           "When k is strictly greater than the minimum value (vertex y-coordinate)",
-          "When k = 0)",
+          "When k = 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "For all values of k — does t match",
           "When k < 0)"
         ],
@@ -316,7 +316,7 @@
         "options": [
           "f: ℝ → [-10, ∞) and g: [0,∞) → [-10, ∞) — same range, different domains",
           "Different ranges — does t match",
-          "f has range — does t match",
+          "f has range — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "g has a larger range — does t match"
         ],
         "correct_option": "f: ℝ → [-10, ∞) and g: [0,∞) → [-10, ∞) — same range, different domains",
@@ -328,7 +328,7 @@
         "options": [
           "x = √k and x = -√k, symmetric about x = 0",
           "x = k and x = -k — does t match",
-          "x = √k only — does t match",
+          "x = √k only — does t match (xxxxxxxxxxxxx)",
           "x = k² and x = -k² — does t match"
         ],
         "correct_option": "x = √k and x = -√k, symmetric about x = 0",
@@ -339,7 +339,7 @@
         "question": "In a quadratic regression model y = ax² + bx + c fitting real data, having two x-values for the same y-value means:",
         "options": [
           "The model predicts the same outcome at two different input values — a non-unique mapping",
-          "The model is always linear...",
+          "The model is always linear... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The data is perfectly symmetric...",
           "The model has real solutions..."
         ],
@@ -353,7 +353,7 @@
           "Yes — the sum of two degree-≤2 polynomials is still degree ≤ 2",
           "— adding two quadratics can give degree 4...",
           "Only if both have the same a value...",
-          "Only for c = 0 — does t match"
+          "Only for c = 0 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — the sum of two degree-≤2 polynomials is still degree ≤ 2",
         "explanation": "Step 1: (a₁x² + b₁x + c₁) + (a₂x² + b₂x + c₂) = (a₁+a₂)x² + (b₁+b₂)x + (c₁+c₂). Step 2: The sum is still degree ≤ 2. Step 3: V is closed under addition (and scalar multiplication), making it a 3-dimensional vector space."
@@ -363,7 +363,7 @@
         "question": "Why can't a parabola y = x² - 10 be a level set of a linear function?",
         "options": [
           "Because linear functions have straight level sets (lines), not curved parabolas",
-          "Because the constant is -10...",
+          "Because the constant is -10... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the coefficient is 1...",
           "Because it passes through negative values..."
         ],
@@ -383,7 +383,7 @@
       "question": "Why can two different positions give the same signal strength in this quadratic model?",
       "options": [
         "Because the quadratic is symmetric — equal distances from the minimum produce equal outputs",
-        "Because signals weaken with distance",
+        "Because signals weaken with distance (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Because radio waves reflect off surfaces",
         "Because the transmitter has two antennas"
       ],
@@ -400,7 +400,7 @@
       "question": "When a projectile reaches the same height twice, what does having two solutions tell us about the ball's motion?",
       "options": [
         "The ball passes through that height going up, then again coming down",
-        "The ball stops at that height",
+        "The ball stops at that height (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "There is an error in the calculation",
         "The ball is at two different heights simultaneously"
       ],
@@ -419,7 +419,7 @@
         "The profit function is symmetric about x = 50 (the vertex)",
         "The company should always produce 20 units",
         "The profit is always zero",
-        "The function is linear"
+        "The function is linear (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "The profit function is symmetric about x = 50 (the vertex)",
       "explanation": "Step 1: P(20) = -400 + 2000 = 1600. Step 2: P(80) = -6400 + 8000 = 1600. Step 3: Both give 1600 — they are symmetric about the vertex at x = 50, where maximum profit occurs."
@@ -434,7 +434,7 @@
       "question": "At what water depth are both swimmers standing, given they are at x = 4 and x = -4?",
       "options": [
         "0 metres (at the equilibrium level)",
-        "8 metres",
+        "8 metres (xxxxxxxxxxxxxxxxxxxxxxxxx)",
         "-8 metres",
         "4 metres"
       ],

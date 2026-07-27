@@ -13,7 +13,7 @@
           "3 (Park, Apartment, Restaurant)",
           "2 — t here",
           "4 — t here",
-          "1000)"
+          "1000) (xxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "3 (Park, Apartment, Restaurant)",
         "explanation": "Step 1: The three locations are Park, Apartment, and Restaurant. Step 2: Each person is in exactly one state at any time. Step 3: The transition matrix is 3×3, reflecting the three states — each entry represents a probability of moving between two specific locations."
@@ -35,7 +35,7 @@
         "question": "In the transition matrix [[0.5,0.5,0.1],[0.3,0.1,0.8],[0.2,0.4,0.1]], what does the entry 0.8 represent?",
         "options": [
           "Probability of moving from Restaurant to Apartment",
-          "Probability of staying in Park...",
+          "Probability of staying in Park... (xxxxxxxxxxxxxxxx)",
           "Probability of moving from Park to Restaurant",
           "Probability of staying in Apartment"
         ],
@@ -47,7 +47,7 @@
         "question": "What is 0.5 + 0.3 + 0.2?",
         "options": [
           "1.0",
-          "0.9",
+          "0.9x",
           "1.1",
           "0.8"
         ],
@@ -71,7 +71,7 @@
         "question": "After step 1, how many people are in Apartment?",
         "options": [
           "300",
-          "500",
+          "500x",
           "200",
           "100"
         ],
@@ -83,7 +83,7 @@
         "question": "What is 500 + 300 + 200?",
         "options": [
           "1000",
-          "800",
+          "800 ()",
           "1200",
           "900"
         ],
@@ -95,7 +95,7 @@
         "question": "The steady state has ~402 in Park, ~353 in Apartment, ~246 in Restaurant. What is 402 + 353 + 246?",
         "options": [
           "1001 (approximately 1000)",
-          "1000)",
+          "1000) (xxxxxxxxxxxxxxxxxxx)",
           "999 — t here",
           "800 — t here"
         ],
@@ -107,7 +107,7 @@
         "question": "What does the steady state tell us about the long-run distribution?",
         "options": [
           "About 40% in Park, 35% in Apartment, 25% in Restaurant",
-          "Everyone ends up in Park...",
+          "Everyone ends up in Park... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Everyone ends up in Restaurant...",
           "The distribution keeps changing forever"
         ],
@@ -135,7 +135,7 @@
           "Because every person leaving a location must go to some location — probabilities of all destinations sum to 100%",
           "Because the matrix must be symmetric...",
           "Because the determinant must be 1...",
-          "Because there are 3 states..."
+          "Because there are 3 states... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because every person leaving a location must go to some location — probabilities of all destinations sum to 100%",
         "explanation": "Step 1: Each column represents all possible destinations from one location. Step 2: Everyone leaving Park must go to Park, Apartment, or Restaurant. Step 3: The column-sum constraint is the law of total probability — it ensures population conservation and is what makes the matrix a valid transition operator for the Markov chain."
@@ -146,7 +146,7 @@
         "options": [
           "Solve Mv = v with the constraint that entries sum to the total population",
           "Just multiply M by [1,1,1]...",
-          "Take the determinant of M...",
+          "Take the determinant of M... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Find the trace of M — does t match"
         ],
         "correct_option": "Solve Mv = v with the constraint that entries sum to the total population",
@@ -158,7 +158,7 @@
         "options": [
           "Yes — the steady state is independent of the starting distribution",
           "— different starting points give different steady states",
-          "Only if the chain is symmetric...",
+          "Only if the chain is symmetric... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if you multiply more times..."
         ],
         "correct_option": "Yes — the steady state is independent of the starting distribution",
@@ -181,7 +181,7 @@
         "question": "If the Restaurant→Apartment probability increases from 0.8 to 0.95, what happens to the steady-state Restaurant population?",
         "options": [
           "It decreases — more people leave Restaurant each step",
-          "It increases — does t match",
+          "It increases — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It stays the same — does t match",
           "The chain longer converges..."
         ],
@@ -193,7 +193,7 @@
         "question": "After step 1 with [1000,0,0], what is the Apartment population?",
         "options": [
           "300",
-          "500",
+          "500x",
           "200",
           "100"
         ],
@@ -205,7 +205,7 @@
         "question": "What is the Restaurant population after step 1?",
         "options": [
           "200",
-          "300",
+          "300x",
           "500",
           "100"
         ],
@@ -219,7 +219,7 @@
           "We'd multiply M × v (column vector) instead of v × M (row vector)",
           "thing would change — does t match",
           "The steady state would be different...",
-          "The matrix would be singular..."
+          "The matrix would be singular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "We'd multiply M × v (column vector) instead of v × M (row vector)",
         "explanation": "Step 1: Column-stochastic: v_new = v_old × M (row vector on left). Step 2: Row-stochastic: v_new = M × v_old (column vector on right). Step 3: The convention determines left vs. right multiplication — mixing them up is a common error that produces incorrect results. Both conventions are valid; you just need to be consistent."
@@ -229,7 +229,7 @@
         "question": "How many independent equations does Mv = v provide for a 3×3 stochastic matrix?",
         "options": [
           "2 (the third is dependent on the other two)",
-          "3 — t here",
+          "3 — t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "1 — t here",
           "9 — t here"
         ],
@@ -241,7 +241,7 @@
         "question": "What does it mean for a 3-state Markov chain to be 'ergodic'?",
         "options": [
           "It is irreducible (all states communicate) and aperiodic (no fixed cycling pattern)",
-          "It has exactly 3 states...",
+          "It has exactly 3 states... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The matrix is symmetric...",
           "The steady state is always uniform..."
         ],
@@ -255,7 +255,7 @@
         "question": "For a column-stochastic matrix M, the steady state satisfies Mv = v. How many free variables does the system (M - I)v = 0 have?",
         "options": [
           "1 (the null space is 1-dimensional)",
-          "2 — t here",
+          "2 — t here (xxxxxxxxxxxxxxxxxxxxxxxx)",
           "3 — t here",
           "0 — t here"
         ],
@@ -267,7 +267,7 @@
         "question": "What are the eigenvalues of a 3×3 column-stochastic matrix?",
         "options": [
           "One eigenvalue is 1, the other two have magnitude ≤ 1",
-          "All three eigenvalues are 1...",
+          "All three eigenvalues are 1... (xxxxxxxxxxxxxxxxxxxxxx)",
           "The eigenvalues are 0.5, 0.3, 0.2...",
           "The eigenvalues must all be positive..."
         ],
@@ -279,7 +279,7 @@
         "question": "For the matrix [[0.5,0.5,0.1],[0.3,0.1,0.8],[0.2,0.4,0.1]], what is the trace?",
         "options": [
           "0.7",
-          "1.0",
+          "1.0x",
           "0.5",
           "1.5"
         ],
@@ -292,7 +292,7 @@
         "options": [
           "Because the null space of (M-I) is 1-dimensional, requiring one constraint to pin down the unique vector",
           "Because there are 3 states...",
-          "Because the matrix is 3×3...",
+          "Because the matrix is 3×3... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because we need 3 equations for 3 unkwns..."
         ],
         "correct_option": "Because the null space of (M-I) is 1-dimensional, requiring one constraint to pin down the unique vector",
@@ -303,7 +303,7 @@
         "question": "If the transition matrix were [[0.33,0.33,0.34],[0.33,0.33,0.34],[0.34,0.34,0.32]], what would the steady state be?",
         "options": [
           "Approximately [333, 333, 334] — nearly uniform",
-          "[1000, 0, 0] — does t match",
+          "[1000, 0, 0] — does t match (xxxxxxxxxxxxxxxxxx)",
           "[0, 0, 1000] — does t match",
           "[500, 500, 0] — does t match"
         ],
@@ -317,7 +317,7 @@
           "0.055",
           "0.7",
           "1.0",
-          "0"
+          "0 (xxx)"
         ],
         "correct_option": "0.055",
         "explanation": "Step 1: Expanding along the first row: det = 0.5(0.1×0.1 - 0.8×0.4) - 0.5(0.3×0.1 - 0.8×0.2) + 0.1(0.3×0.4 - 0.1×0.2). Step 2: = 0.5(0.01-0.32) - 0.5(0.03-0.16) + 0.1(0.12-0.02) = 0.5(-0.31) - 0.5(-0.13) + 0.1(0.10). Step 3: = -0.155 + 0.065 + 0.010 = -0.080. The determinant equals the product of eigenvalues — its small magnitude indicates the matrix is close to singular, meaning the chain converges relatively slowly."
@@ -328,7 +328,7 @@
         "options": [
           "Park is the most 'central' location — more people flow into it than out, relative to other locations",
           "Park has the highest transition probability...",
-          "Park is the largest location...",
+          "Park is the largest location... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "People prefer Park for aesthetic reasons..."
         ],
         "correct_option": "Park is the most 'central' location — more people flow into it than out, relative to other locations",
@@ -339,7 +339,7 @@
         "question": "For a 3-state chain, what is the dimension of the subspace spanned by the steady-state vector?",
         "options": [
           "1 (a line through the origin in R³)",
-          "2 (a plane) — does t match",
+          "2 (a plane) — does t match (xxxxxxxx)",
           "3 (all of R³) — does t match",
           "0 (just the origin) — does t match"
         ],
@@ -353,7 +353,7 @@
           "It depends on the second-largest eigenvalue magnitude — could be faster or slower",
           "3-state chains always converge faster...",
           "3-state chains always converge slower...",
-          "Convergence speed is always the same..."
+          "Convergence speed is always the same... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "It depends on the second-largest eigenvalue magnitude — could be faster or slower",
         "explanation": "Step 1: Convergence speed is determined by |λ₂| (the second-largest eigenvalue in magnitude). Step 2: A 3-state chain can have |λ₂| smaller or larger than a 2-state chain's. Step 3: The spectral gap (1 - |λ₂|) determines speed — larger gap means faster convergence. State count alone doesn't determine convergence rate; the transition structure does."
@@ -365,7 +365,7 @@
           "More states require solving larger linear systems — the normal equations grow with the number of states",
           "More states always make the steady state uniform...",
           "The number of states doesn't affect computation...",
-          "More states always converge faster..."
+          "More states always converge faster... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "More states require solving larger linear systems — the normal equations grow with the number of states",
         "explanation": "Step 1: A k-state chain requires solving (M-I)v = 0 with normalisation. Step 2: This is a k×k system with k-1 independent equations. Step 3: Computational complexity grows with k — a 100-state chain needs a 100×100 system. However, the sparsity structure of real-world transition matrices often allows efficient solutions, connecting to the scalability challenges of large Markov models."

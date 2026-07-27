@@ -10,7 +10,7 @@
         "id": "M1Q1E1",
         "question": "If Lakshman saves ₹50 in week 1, how much does Ram save that week?",
         "options": [
-          "₹25",
+          "₹25 ()",
           "₹50",
           "₹100",
           "₹150"
@@ -48,7 +48,7 @@
         "options": [
           "Yes, because L=0 gives R=0",
           "it misses the origin",
-          "Only in even weeks",
+          "Only in even weeks (xxxxxxx)",
           "Cant be determined"
         ],
         "correct_option": "Yes, because L=0 gives R=0",
@@ -70,7 +70,7 @@
         "id": "M1Q1E6",
         "question": "If Lakshman's total savings after 4 weeks is ₹80, what is Ram's total savings?",
         "options": [
-          "₹40",
+          "₹40 ()",
           "₹80",
           "₹160",
           "₹200"
@@ -108,7 +108,7 @@
         "options": [
           "Yes, since equal weekly addition gives constant slope",
           "cumulative totals always curve upward",
-          "Only for Ram, t Lakshman...",
+          "Only for Ram, t Lakshman... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Cant say without more data..."
         ],
         "correct_option": "Yes, since equal weekly addition gives constant slope",
@@ -159,7 +159,7 @@
           "The ratio of Ram's savings to Lakshman's savings",
           "Their combined total savings...",
           "The difference between their savings",
-          "The week number — does t match"
+          "The week number — does t match (xxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The ratio of Ram's savings to Lakshman's savings",
         "explanation": "Slope = rise/run = R/L. Since R/L is constant at 2 for every point, the slope literally encodes 'Ram always has twice what Lakshman has.' This is the ratio between them. More deeply: the slope is the coordinate of every vector on the line when expressed in the basis direction (1, 2). In Mission 11, we will learn that this direction vector (1, 2) spans the entire subspace."
@@ -206,7 +206,7 @@
         "options": [
           "Yes, because summing '2×(weekly amount)' over weeks gives 2×(sum of weekly amounts)",
           "only single-week amounts satisfy it, t totals...",
-          "Only true for week 1 — does t match",
+          "Only true for week 1 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Cant be determined without exact amounts..."
         ],
         "correct_option": "Yes, because summing '2×(weekly amount)' over weeks gives 2×(sum of weekly amounts)",
@@ -231,7 +231,7 @@
           "Because before any saving starts, both have saved ₹0 — the point (0,0) is physically meaningful",
           "All straight lines pass through the origin...",
           "Because the slope happens to be positive...",
-          "There's real reason, it's a coincidence..."
+          "There's real reason, it's a coincidence... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because before any saving starts, both have saved ₹0 — the point (0,0) is physically meaningful",
         "explanation": "At 'week zero' before they begin, both have zero savings: L = 0, R = 0. This isn't a coincidence of the algebra — it reflects that a direct proportionality has no fixed starting offset. Physical meaning: the origin (0,0) is the only point where both variables are simultaneously zero. This is why lines through the origin are subspaces (Mission 3): they contain the zero vector by construction."
@@ -256,7 +256,7 @@
         "options": [
           "Yes, it's still a line, but it does NOT pass through the origin",
           "a line, and it still passes through the origin",
-          "it's longer a line at all...",
+          "it's longer a line at all... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Cant be determined without more weeks of data..."
         ],
         "correct_option": "Yes, it's still a line, but it does NOT pass through the origin",
@@ -279,7 +279,7 @@
         "question": "Why is {(L,R): R=2L} called a subspace, while {(L,R): R=2L+5} is NOT?",
         "options": [
           "A subspace must contain the origin (zero vector), and R=2L+5 fails this at L=0",
-          "Subspaces must always be curves...",
+          "Subspaces must always be curves... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "There is real difference between them...",
           "Subspaces must be finite sets of points..."
         ],
@@ -292,7 +292,7 @@
         "options": [
           "Yes: since R₁=2L₁ and R₂=2L₂, adding gives R₁+R₂ = 2(L₁+L₂)",
           "sums of valid points can leave the line...",
-          "Only if L₁=L₂ — does t match",
+          "Only if L₁=L₂ — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Cant say without actual numbers..."
         ],
         "correct_option": "Yes: since R₁=2L₁ and R₂=2L₂, adding gives R₁+R₂ = 2(L₁+L₂)",
@@ -305,7 +305,7 @@
           "Yes: α(L,R) = (αL, αR), and αR = 2(αL) still holds",
           "only positive α work...",
           "Only α=1 works — does t match",
-          "Cant say)"
+          "Cant say) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes: α(L,R) = (αL, αR), and αR = 2(αL) still holds",
         "explanation": "Given R = 2L, multiply both sides by α: αR = 2(αL). The scaled point (αL, αR) still satisfies the same rule. This holds for every real α — including negative and fractional values. This is the homogeneity property: T(cv) = cT(v). Combined with closure under addition (H4), these two properties are precisely the conditions that define a subspace."
@@ -329,7 +329,7 @@
           "1-dimensional, since T=3L is also fully determined by L",
           "2-dimensional, since T introduces a new free direction",
           "3-dimensional, filling all of ℝ³...",
-          "It isn't a subspace at all..."
+          "It isn't a subspace at all... (xxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "1-dimensional, since T=3L is also fully determined by L",
         "explanation": "Since R = 2L and T = R + L = 3L, both coordinates are completely determined once L is chosen. Still one free parameter (L), so the set is a single line in R³ — still 1-dimensional, just embedded in a bigger space. This illustrates that dimension is about the number of independent directions, not the ambient space. A line in R³ has dimension 1, the same as a line in R²."
@@ -339,7 +339,7 @@
         "question": "For the general family R = kL (constant k > 0), as k increases, what happens to the line's angle with the L-axis?",
         "options": [
           "It increases, approaching (but never reaching) 90°",
-          "It decreases toward 0°...",
+          "It decreases toward 0°... (xxxxxxxxxxxxxxxxxxxxxxxx)",
           "It stays exactly the same...",
           "It becomes negative — does t match"
         ],
@@ -353,7 +353,7 @@
           "A line through the origin with negative slope, passing through quadrants II and IV",
           "A line through quadrants I and III only...",
           "valid line exists — does t match",
-          "A parabola opening downward..."
+          "A parabola opening downward... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "A line through the origin with negative slope, passing through quadrants II and IV",
         "explanation": "A negative slope means as L increases, R decreases (goes negative). The line still passes through the origin, but runs through quadrants II and IV instead of I and III. Physically, negative money doesn't make literal sense here, but mathematically the line y = -2x is still a valid 1D subspace — it satisfies all three subspace conditions (zero vector, closure under addition, closure under scalar multiplication)."
@@ -364,7 +364,7 @@
         "options": [
           "A ray starting at the origin, extending only through the first quadrant",
           "The complete infinite line in both directions...",
-          "A single isolated point...",
+          "A single isolated point... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A circle centered at the origin..."
         ],
         "correct_option": "A ray starting at the origin, extending only through the first quadrant",
@@ -378,7 +378,7 @@
       "question": "A recipe needs flour and sugar in the ratio 2:1 (flour = 2 × sugar). If you plot cups-of-sugar (x) vs cups-of-flour (y) for different batch sizes, the graph is:",
       "options": [
         "A straight line through the origin",
-        "A curve",
+        "A curve (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "A circle",
         "Randomly scattered points"
       ],
@@ -416,7 +416,7 @@
         "A straight line through the origin, slope = exchange rate",
         "A random scatter of points",
         "A step function",
-        "A hyperbola"
+        "A hyperbola (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "A straight line through the origin, slope = exchange rate",
       "explanation": "Rupees = X × Dollars is direct proportionality with a fixed exchange rate X, mirroring R=2L where X plays the role of 2. Converting $0 always gives ₹0, keeping the origin on the line."
@@ -428,7 +428,7 @@
         "A straight line through the origin",
         "A line with a positive y-intercept",
         "A curve that bends upward sharply",
-        "Cant be determined"
+        "Cant be determined (xxxxxxxxxxxxxxx)"
       ],
       "correct_option": "A straight line through the origin",
       "explanation": "'No fixed cost' means producing 0 units costs ₹0 — this is the origin condition. Since cost per unit is constant, total cost = (cost per unit) × units is a direct proportionality, exactly like R=2L."
@@ -439,7 +439,7 @@
       "options": [
         "A straight line that does NOT pass through the origin",
         "A straight line through the origin",
-        "A curve",
+        "A curve (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "A circle"
       ],
       "correct_option": "A straight line that does NOT pass through the origin",

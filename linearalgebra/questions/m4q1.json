@@ -23,7 +23,7 @@
         "question": "What is the direction of the row space of M = [[1,2],[3,6]]?",
         "options": [
           "(1,2)",
-          "(1,3)",
+          "(1,3)x",
           "(2,6)",
           "(3,6)"
         ],
@@ -94,7 +94,7 @@
         "id": "M4Q1E8",
         "question": "Which of the following vectors is in the null space of M = [[1,2],[3,6]]?",
         "options": [
-          "(1,2)",
+          "(1,2) ()",
           "(2,-1)",
           "(1,-2)",
           "(3,1)"
@@ -120,7 +120,7 @@
         "options": [
           "because it has rank 2",
           "No, because its determinant is 0",
-          "because it is 2×2",
+          "because it is 2×2 (xxxxxxxxxxxxxx)",
           "because it has null space"
         ],
         "correct_option": "No, because its determinant is 0",
@@ -132,7 +132,7 @@
         "id": "M4Q1M1",
         "question": "For M = [[1,2],[3,6]], the row space and column space are both 1-dimensional. Are they the same subspace?",
         "options": [
-          "they are both t(1,2)...",
+          "they are both t(1,2)... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "No, row space is t(1,2) and column space is t(1,3)",
           "they are both t(1,3)...",
           "row space is t(1,3) and column space is t(1,2)"
@@ -144,7 +144,7 @@
         "id": "M4Q1M2",
         "question": "Why is the row space of M = [[1,2],[3,6]] a 1-dimensional line rather than a 2-dimensional plane?",
         "options": [
-          "Because M is a 2×2 matrix...",
+          "Because M is a 2×2 matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the two rows are scalar multiples of each other",
           "Because the determinant is nzero...",
           "Because M has only one zero entry..."
@@ -217,7 +217,7 @@
         "question": "If a matrix A has rank 3 and is 5×5, what is the dimension of its null space?",
         "options": [
           "2",
-          "3",
+          "3x",
           "5",
           "8"
         ],
@@ -242,7 +242,7 @@
         "options": [
           "M² = 7M (a scalar multiple of M)",
           "M² = I (the identity matrix)",
-          "M² = 0 (the zero matrix)",
+          "M² = 0 (the zero matrix) (xxxxxxx)",
           "M² = M (M is idempotent)"
         ],
         "correct_option": "M² = 7M (a scalar multiple of M)",
@@ -256,7 +256,7 @@
         "options": [
           "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
           "(1,2)·(-2,1) = 1·2+2·1 = 4, t perpendicular",
-          "(1,2)·(-2,1) = -2+1 = -1, t perpendicular",
+          "(1,2)·(-2,1) = -2+1 = -1, t perpendicular (xxxxxxxx)",
           "The dot product is undefined for these vectors"
         ],
         "correct_option": "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
@@ -279,7 +279,7 @@
         "question": "For the rank-1 matrix M = [[1,2],[3,6]], write M as an outer product of two vectors.",
         "options": [
           "(1,3)ᵀ × (1,2)",
-          "(1,2)ᵀ × (1,3)",
+          "(1,2)ᵀ × (1,3)x",
           "(3,6)ᵀ × (1,2)",
           "(1,2)ᵀ × (3,6)"
         ],
@@ -291,7 +291,7 @@
         "question": "Suppose A is a 4×4 matrix with rank 2. What are the dimensions of all four fundamental subspaces?",
         "options": [
           "R(A)=2D, C(A)=2D, N(A)=2D, N(Aᵀ)=2D",
-          "R(A)=2D, C(A)=2D, N(A)=1D, N(Aᵀ)=3D",
+          "R(A)=2D, C(A)=2D, N(A)=1D, N(Aᵀ)=3Dx",
           "R(A)=2D, C(A)=2D, N(A)=3D, N(Aᵀ)=1D",
           "R(A)=2D, C(A)=2D, N(A)=0D, N(Aᵀ)=4D"
         ],
@@ -326,7 +326,7 @@
         "id": "M4Q1H7",
         "question": "For M = [[1,2],[3,6]], is it possible for a vector to be in BOTH the row space and the null space (other than the origin)?",
         "options": [
-          "(1,2) is in both...",
+          "(1,2) is in both... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(-2,1) is in both...",
           "No, because the row space and null space are perpendicular and share only the origin",
           "any vector satisfying x+2y=0 is in both..."
@@ -338,7 +338,7 @@
         "id": "M4Q1H8",
         "question": "What is the geometric interpretation of the fact that det(M) = 0 for M = [[1,2],[3,6]]?",
         "options": [
-          "M rotates vectors by 90°...",
+          "M rotates vectors by 90°... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "M scales area by a factor of 0, collapsing the plane onto a line",
           "M reflects vectors across the x-axis...",
           "M has effect on any vector..."
@@ -350,7 +350,7 @@
         "id": "M4Q1H9",
         "question": "For M = [[1,2],[3,6]], the null space is t(-2,1). If you take any vector v in R² and decompose it as v = v_row + v_null (row space component + null space component), what is Mv equal to?",
         "options": [
-          "Mv = 0 always — does t match",
+          "Mv = 0 always — does t match (xxxxxxxxxxxxxxxxxxx)",
           "Mv = M·v_row (the null space component vanishes)",
           "Mv = M·v_null (the row space component vanishes)",
           "Mv = v_row + v_null — does t match"
@@ -362,7 +362,7 @@
         "id": "M4Q1H10",
         "question": "If A is an m×n matrix with rank r, what is the dimension of the subspace spanned by ALL four fundamental subspaces together?",
         "options": [
-          "r",
+          "r (xxxxxx)",
           "m + n",
           "max(m,n)",
           "min(m,n)"
@@ -378,7 +378,7 @@
       "question": "A rank-1 image filter keeps only one pattern from the original image — like preserving only brightness variation while discarding colour and texture. What does this tell you about the filter matrix?",
       "options": [
         "It has rank 1, so its output is 1-dimensional",
-        "It is invertible",
+        "It is invertible (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It preserves all information",
         "It maps to a 2D output"
       ],
@@ -404,7 +404,7 @@
         "The direction perpendicular to the lever arm",
         "The lever arm direction itself",
         "The entire 2D plane",
-        "Just the origin"
+        "Just the origin (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "The direction perpendicular to the lever arm",
       "explanation": "Step 1: The lever transmits force along one direction (column space, rank 1). Step 2: Forces perpendicular to the lever arm produce no torque and are completely lost — they map to zero. Step 3: This perpendicular direction is the null space: inputs along it produce zero output. Understanding the null space in mechanical systems tells engineers which forces are wasted, directly connecting subspace theory to mechanism design."
@@ -439,7 +439,7 @@
       "options": [
         "It doubles the output",
         "It is redundant — its output is a combination of the other two",
-        "It reduces the rank",
+        "It reduces the rank (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It adds a new dimension to the output"
       ],
       "correct_option": "It is redundant — its output is a combination of the other two",

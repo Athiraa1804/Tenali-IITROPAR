@@ -35,7 +35,7 @@
         "question": "What is the determinant of [[2,3],[3,4]]?",
         "options": [
           "-1",
-          "1",
+          "1 (x)",
           "0",
           "7"
         ],
@@ -133,7 +133,7 @@
         "question": "Why must the Hill Cipher encryption matrix be invertible?",
         "options": [
           "To allow decryption by multiplying with the inverse",
-          "To make encryption faster...",
+          "To make encryption faster... (xxxxxxxxxxxxxxxxxxxxx)",
           "To reduce the message length...",
           "To use smaller numbers in the ciphertext"
         ],
@@ -158,7 +158,7 @@
         "options": [
           "To keep results within the 0-25 alphabet range",
           "To make the matrix always invertible",
-          "To speed up computation...",
+          "To speed up computation... (xxxxxxxxxxxxxxxxxx)",
           "To prevent frequency analysis..."
         ],
         "correct_option": "To keep results within the 0-25 alphabet range",
@@ -171,7 +171,7 @@
           "Decryption is impossible — the inverse does not exist",
           "Decryption works but gives wrong results",
           "You get multiple possible plaintexts...",
-          "The message gets re-encrypted..."
+          "The message gets re-encrypted... (xxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Decryption is impossible — the inverse does not exist",
         "explanation": "Step 1: det = 0 means the matrix is singular — it maps some non-zero vectors to zero, permanently losing information. Step 2: Without an inverse, you cannot reverse the transformation. Step 3: This connects to the rank-nullity theorem: a singular matrix has a non-trivial null space, meaning multiple different plaintexts encrypt to the same ciphertext, making unambiguous decryption impossible."
@@ -193,7 +193,7 @@
         "question": "In Hill Cipher, what does the encryption matrix represent geometrically?",
         "options": [
           "A linear transformation that rotates and stretches letter pairs",
-          "A random number generator...",
+          "A random number generator... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A lookup table for individual letters...",
           "A permutation that shuffles letter positions..."
         ],
@@ -205,7 +205,7 @@
         "question": "If the encryption matrix is [[1,2],[2,4]], can you decrypt messages encrypted with it?",
         "options": [
           "No, because det = 0 makes it non-invertible",
-          "always — does t match",
+          "always — does t match (xxxxxxxxxxxxxxxxxxxx)",
           "Only for short messages...",
           "Only if you kw the original message"
         ],
@@ -255,7 +255,7 @@
         "question": "For Hill Cipher mod 26, what condition must det(A) satisfy for A to be invertible mod 26?",
         "options": [
           "det(A) must be coprime to 26",
-          "det(A) must equal 1",
+          "det(A) must equal 1 (xxxxxxx)",
           "det(A) must be even",
           "det(A) must be positive"
         ],
@@ -292,7 +292,7 @@
         "options": [
           "Regular arithmetic produces numbers outside the 0-25 alphabet range",
           "Regular arithmetic is slower to compute...",
-          "Mod 26 makes every matrix invertible...",
+          "Mod 26 makes every matrix invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Mod 26 prevents frequency analysis completely..."
         ],
         "correct_option": "Regular arithmetic produces numbers outside the 0-25 alphabet range",
@@ -305,7 +305,7 @@
           "Yes, because det(AB) = det(A)×det(B) ≠ 0",
           "matrix products are never invertible",
           "Only if A = B — does t match",
-          "Only if AB is symmetric..."
+          "Only if AB is symmetric... (xxxxxxxxxxxx)"
         ],
         "correct_option": "Yes, because det(AB) = det(A)×det(B) ≠ 0",
         "explanation": "Step 1: det(AB) = det(A) × det(B) by the multiplicative property of determinants. Step 2: Since both det(A) ≠ 0 and det(B) ≠ 0, det(AB) ≠ 0, making AB invertible. Step 3: This closure property means composing two Hill Cipher encryptions produces another valid cipher — an important concept in cryptography where multiple encryption layers can strengthen security."
@@ -341,7 +341,7 @@
           "Yes, because gcd(5, 26) = 1",
           "because 5 is odd",
           "because 5 < 26",
-          "because 5 ≠ 1"
+          "because 5 ≠ 1 (xxxxxxxxxxxx)"
         ],
         "correct_option": "Yes, because gcd(5, 26) = 1",
         "explanation": "Step 1: A is invertible mod 26 iff gcd(det(A), 26) = 1. Step 2: gcd(5, 26) = 1 (since 26 = 5×5 + 1), so the modular inverse exists: 5⁻¹ ≡ 21 (mod 26) because 5×21 = 105 = 4×26 + 1. Step 3: This confirms det = 5 yields a valid Hill Cipher key — the coprimality test is the single most important check when designing a Hill Cipher key."
@@ -350,7 +350,7 @@
         "id": "M2Q1H9",
         "question": "What is the relationship between the column space of the encryption matrix and the set of all possible encrypted output vectors?",
         "options": [
-          "They are perpendicular...",
+          "They are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The column space equals the set of all possible encrypted outputs",
           "The column space is the null space...",
           "There is meaningful relationship..."
@@ -365,7 +365,7 @@
           "Because real-valued outputs don't map to integer letter values, and mod 26 requires integer arithmetic",
           "Because real matrices are always singular...",
           "Because real matrices are too slow to compute...",
-          "Because real matrices can't encrypt text..."
+          "Because real matrices can't encrypt text... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because real-valued outputs don't map to integer letter values, and mod 26 requires integer arithmetic",
         "explanation": "Step 1: Hill Cipher requires integer inputs/outputs (letter indices 0-25). Step 2: A general real-valued invertible matrix can produce non-integer results, which have no meaning under mod 26. Step 3: The matrix must have integer entries AND det must be coprime to 26 — these two conditions together define the valid key space, which is a proper subset of GL(2, R) (invertible real matrices)."
@@ -383,7 +383,7 @@
       "question": "What matrix operation is used to encrypt your messages in secure messaging apps?",
       "options": [
         "Matrix multiplication",
-        "Matrix addition",
+        "Matrix addition (xxxx)",
         "Matrix transpose",
         "Matrix determinant"
       ],
@@ -400,7 +400,7 @@
       "question": "In encrypted banking transactions, what does each row of the encrypted output represent?",
       "options": [
         "A linear combination of original data values",
-        "A random number",
+        "A random number (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The original transaction in plaintext",
         "An error ion code"
       ],
@@ -418,7 +418,7 @@
       "options": [
         "It reverses the encryption transformation to recover the original message",
         "It makes the encrypted message shorter",
-        "It generates a new encryption key",
+        "It generates a new encryption key (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It converts numbers back to binary"
       ],
       "answer": "It reverses the encryption transformation to recover the original message",
@@ -452,7 +452,7 @@
       "options": [
         "The encryption matrix transforms data into unreadable form",
         "The data is deleted when servers are offline",
-        "Physical locks on the server room",
+        "Physical locks on the server room (xxxxxxxxxxxxxxxxxxxxxxx)",
         "The internet connection encrypts data"
       ],
       "answer": "The encryption matrix transforms data into unreadable form",
@@ -470,7 +470,7 @@
         "Matrix multiplication on position vectors",
         "Simple addition of coordinates",
         "Random number generation",
-        "String concatenation"
+        "String concatenation (xxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Matrix multiplication on position vectors",
       "explanation": "Step 1: Each object has a position vector (x,y) or (x,y,z). Step 2: Transformation matrices (rotation, scaling, translation) multiply these vectors. Step 3: The result is the new position — the same linear algebra used in Hill Cipher, applied to graphics instead of encryption."

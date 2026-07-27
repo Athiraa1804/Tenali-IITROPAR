@@ -11,7 +11,7 @@
         "question": "What is B*(10,0) for B = [[1,2],[2,4]]?",
         "options": [
           "(10,20)",
-          "(4,8)",
+          "(4,8) (x)",
           "(20,10)",
           "(10,10)"
         ],
@@ -23,7 +23,7 @@
         "question": "What is B*(62,0) for B = [[1,2],[2,4]]?",
         "options": [
           "(62,124)",
-          "(4,8)",
+          "(4,8) (x)",
           "(124,62)",
           "(62,62)"
         ],
@@ -35,7 +35,7 @@
         "question": "What is B*(1800,0) for B = [[1,2],[2,4]]?",
         "options": [
           "(1800,3600)",
-          "(4,8)",
+          "(4,8) (xxxx)",
           "(3600,1800)",
           "(1800,1800)"
         ],
@@ -61,7 +61,7 @@
           "The line maps to (k, 2k)",
           "The line maps to (2k, k)",
           "The line maps to (k, k)",
-          "The line maps to (0,0)"
+          "The line maps to (0,0) (x)"
         ],
         "correct_option": "The line maps to (k, 2k)",
         "explanation": "Step 1: On 2y+x=k, x+2y=k. Step 2: B*(x,y) = (k, 2k) — a point on the range line t(1,2)."
@@ -71,7 +71,7 @@
         "question": "Do different values of k give different output points?",
         "options": [
           "Yes — (k₁, 2k₁) ≠ (k₂, 2k₂) when k₁ ≠ k₂",
-          "— all map to the same point",
+          "— all map to the same point (xxxxxxxxxxx)",
           "Only for positive k — does t match",
           "Only for integers — does t match"
         ],
@@ -83,7 +83,7 @@
         "question": "What is the output of B*(5,0)?",
         "options": [
           "(5,10)",
-          "(4,8)",
+          "(4,8) (x)",
           "(10,5)",
           "(5,5)"
         ],
@@ -95,7 +95,7 @@
         "question": "Do all the output points (k, 2k) lie on the same line?",
         "options": [
           "Yes — they all lie on the line t(1,2)",
-          "— they're scattered",
+          "— they're scattered (xxxxxxxxxxxxxxxx)",
           "Only for even k — does t match",
           "Only near the origin — does t match"
         ],
@@ -121,7 +121,7 @@
           "Yes — each line maps to a unique point, and each point comes from exactly one line",
           "— multiple lines map to one point...",
           "Only for positive k — does t match",
-          "Cant determine — does t match"
+          "Cant determine — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — each line maps to a unique point, and each point comes from exactly one line",
         "explanation": "Step 1: Different k values give different output points. Step 2: Each output (k,2k) comes from exactly the line 2y+x=k."
@@ -135,7 +135,7 @@
           "Which parallel line (value of k) the input was on",
           "The exact input point...",
           "The direction of the input...",
-          "thing)"
+          "thing) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Which parallel line (value of k) the input was on",
         "explanation": "Step 1: The output (k, 2k) encodes k, which identifies the input line. Step 2: But the specific point on the line is lost."
@@ -145,7 +145,7 @@
         "question": "Why does B preserve the information about which line (k value) but not which point on the line?",
         "options": [
           "Because B is rank 1 — it preserves the range direction but loses the null space direction",
-          "Because B is invertible...",
+          "Because B is invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the lines are special...",
           "Because k is an integer..."
         ],
@@ -158,7 +158,7 @@
         "options": [
           "(k, 2k) = k(1,2), so it's a point on the range line scaled by k",
           "(k, 2k) is perpendicular to the range...",
-          "Unrelated)",
+          "Unrelated) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(k, 2k) is off the range line..."
         ],
         "correct_option": "(k, 2k) = k(1,2), so it's a point on the range line scaled by k",
@@ -169,7 +169,7 @@
         "question": "If line 2y+x=10 maps to (10,20) and line 2y+x=62 maps to (62,124), can we tell from the outputs which input was 'larger'?",
         "options": [
           "Yes — (62,124) has larger components, so k=62 > k=10",
-          "— outputs are random...",
+          "— outputs are random... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only by checking the inputs...",
           "They're equal — does t match"
         ],
@@ -194,7 +194,7 @@
         "options": [
           "Yes — all preimage lines have direction (2,-1), parallel to the null space",
           "— they have different directions...",
-          "Only for adjacent k values...",
+          "Only for adjacent k values... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Cant determine — does t match"
         ],
         "correct_option": "Yes — all preimage lines have direction (2,-1), parallel to the null space",
@@ -206,7 +206,7 @@
         "options": [
           "It would map to (-4, -8), still on the range line t(1,2)",
           "It wouldn't map anywhere...",
-          "It would map to (4,8)...",
+          "It would map to (4,8)... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It would be undefined..."
         ],
         "correct_option": "It would map to (-4, -8), still on the range line t(1,2)",
@@ -217,7 +217,7 @@
         "question": "Does the mapping k → (k, 2k) preserve the ordering of k values?",
         "options": [
           "Yes — larger k gives a point further from the origin in the (1,2) direction",
-          "— ordering is lost...",
+          "— ordering is lost... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for positive k — does t match",
           "Only for integers — does t match"
         ],
@@ -229,7 +229,7 @@
         "question": "How many output points are there on the range line?",
         "options": [
           "Infinitely many — one for each k ∈ R",
-          "Exactly 3)",
+          "Exactly 3) (xxxxxxxxxxxxxxxxxxxxxxxx)",
           "Exactly 4)",
           "Finitely many — does t match"
         ],
@@ -243,7 +243,7 @@
           "Each k maps to (k, 2k) — the output is always (k, 2k) for line 2y+x=k",
           "They all map to the same point...",
           "There is pattern — does t match",
-          "The outputs are random..."
+          "The outputs are random... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Each k maps to (k, 2k) — the output is always (k, 2k) for line 2y+x=k",
         "explanation": "Step 1: For line 2y+x=k, B*(x,y) = (k, 2k). Step 2: This is a universal rule — every parallel line maps to its corresponding point on the range."
@@ -255,7 +255,7 @@
         "question": "Why does B map each line 2y+x=k to a DISTINCT point rather than mapping all lines to the same point?",
         "options": [
           "Because different k values give different outputs (k,2k) — the k is preserved",
-          "Because B is invertible...",
+          "Because B is invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the lines are perpendicular...",
           "By coincidence — does t match"
         ],
@@ -268,7 +268,7 @@
         "options": [
           "Each preimage line 2y+x=k collapses to a point (k,2k) on the range line, filling it completely",
           "The whole plane maps to one point...",
-          "Lines map to lines — does t match",
+          "Lines map to lines — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "thing is collapsed — does t match"
         ],
         "correct_option": "Each preimage line 2y+x=k collapses to a point (k,2k) on the range line, filling it completely",
@@ -279,7 +279,7 @@
         "question": "Does the range line t(1,2) contain any points that are NOT outputs of B?",
         "options": [
           "No — for any (a,2a) on the range, choose (a,0) and B*(a,0) = (a,2a)",
-          "— the origin is missing...",
+          "— the origin is missing... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only positive points are outputs...",
           "Only integer points — does t match"
         ],
@@ -291,7 +291,7 @@
         "question": "How does the number of preimage lines relate to the dimension of the null space?",
         "options": [
           "Each preimage line is a coset of the 1D null space — infinitely many cosets cover R²",
-          "They're unrelated — does t match",
+          "They're unrelated — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "More null space means fewer lines...",
           "There's only one preimage line..."
         ],
@@ -303,7 +303,7 @@
         "question": "If we knew only the output (k, 2k), could we determine the exact input (x,y)?",
         "options": [
           "No — we know k = x+2y, but there are infinitely many (x,y) pairs with this sum",
-          "uniquely — does t match",
+          "uniquely — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only approximately — does t match",
           "Only for k > 0 — does t match"
         ],
@@ -316,7 +316,7 @@
         "options": [
           "The range line is perpendicular to all preimage lines",
           "They are parallel — does t match",
-          "They are the same line...",
+          "They are the same line... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "relationship — does t match"
         ],
         "correct_option": "The range line is perpendicular to all preimage lines",
@@ -327,7 +327,7 @@
         "question": "Why is B able to distinguish which preimage line the input is on but not where on that line?",
         "options": [
           "Because B preserves the range direction component (k) but annihilates the null space component",
-          "Because B is the identity...",
+          "Because B is the identity... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the lines are special...",
           "Because det=0 — does t match"
         ],
@@ -339,7 +339,7 @@
         "question": "If the null space direction were (1,1) instead of (2,-1), would the preimage lines still be parallel?",
         "options": [
           "Yes — all cosets of any subspace are parallel to each other",
-          "— they would intersect...",
+          "— they would intersect... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for special cases...",
           "Depends on B — does t match"
         ],
@@ -352,7 +352,7 @@
         "options": [
           "Same as B — once collapsed, further applications don't change the output",
           "Collapse further to the origin...",
-          "Un-collapse the lines...",
+          "Un-collapse the lines... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Map to a different line..."
         ],
         "correct_option": "Same as B — once collapsed, further applications don't change the output",
@@ -363,7 +363,7 @@
         "question": "What is the significance of having a one-to-one correspondence between preimage lines and output points?",
         "options": [
           "It means B preserves the 'coarse' structure (which line) while losing 'fine' structure (where on the line)",
-          "It means B is invertible...",
+          "It means B is invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It means B preserves all information...",
           "It means B is the identity..."
         ],
@@ -384,7 +384,7 @@
         "A preimage line collapsing to a distinct output point",
         "A single data point",
         "The entire tax system",
-        "A random mapping"
+        "A random mapping (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "A preimage line collapsing to a distinct output point",
       "explanation": "Step 1: Each income bracket is a range of incomes (a preimage). Step 2: All incomes in the bracket map to the same tax amount (output point) — just like parallel lines collapsing to distinct points."
@@ -415,7 +415,7 @@
       "options": [
         "A distinct score (output point)",
         "The same score as all bands",
-        "score",
+        "score (xxxxxxxxxxxxxxxxxxxxxxxx)",
         "A random score"
       ],
       "correct_option": "A distinct score (output point)",
@@ -432,7 +432,7 @@
         "Each tier (preimage) maps to a distinct billing amount (output point)",
         "All usage costs the same",
         "Usage is continuous with tiers",
-        "Billing is random"
+        "Billing is random (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Each tier (preimage) maps to a distinct billing amount (output point)",
       "explanation": "Step 1: Each data range is a preimage set. Step 2: All usage amounts in a range produce the same bill — like a singular transformation collapsing a range to a point."
@@ -447,7 +447,7 @@
       "options": [
         "Detailed ratings within a range collapse to the same bonus — information is lost",
         "Each rating gets a unique bonus",
-        "information is lost",
+        "information is lost (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The ratings are preserved exactly"
       ],
       "correct_option": "Detailed ratings within a range collapse to the same bonus — information is lost",
@@ -463,7 +463,7 @@
       "options": [
         "The alert level (which range) is preserved, but the exact temperature is lost",
         "Everything is preserved",
-        "thing is preserved",
+        "thing is preserved (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The exact temperature is preserved but the alert is lost"
       ],
       "correct_option": "The alert level (which range) is preserved, but the exact temperature is lost",

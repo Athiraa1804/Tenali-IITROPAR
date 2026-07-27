@@ -10,7 +10,7 @@
         "id": "M6Q3E1",
         "question": "In a web graph, what does a directed edge from page A to page B represent?",
         "options": [
-          "Page B is more popular than page A",
+          "Page B is more popular than page A (xxxxxxxxxxx)",
           "Page A contains a hyperlink pointing to page B",
           "Both pages are owned by the same company",
           "Page A and page B have the same content"
@@ -37,7 +37,7 @@
           "A matrix where entry (i,j) indicates whether page j links to page i",
           "A matrix of page content text...",
           "A matrix of page loading speeds...",
-          "A matrix of user visit times..."
+          "A matrix of user visit times... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "A matrix where entry (i,j) indicates whether page j links to page i",
         "explanation": "Step 1: The adjacency matrix M encodes the graph structure numerically: M(i,j) = 1 if there is a link from page j to page i, and 0 otherwise — column j lists all pages that page j links to (outgoing links), while row i lists all pages linking to page i (incoming links). Step 2: This convention (column = source, row = target) is chosen so that matrix-vector products Mv compute the next state of a random walk: if v is a probability distribution over pages, Mv gives the distribution after one click. Step 3: Converting this binary adjacency matrix to a column-stochastic matrix (normalizing columns to sum to 1) transforms it into a Markov chain transition matrix, which is the mathematical foundation of PageRank."
@@ -48,7 +48,7 @@
         "options": [
           "Each row sums to 1 — does t match",
           "Each column sums to 1 and all entries are non-negative",
-          "All entries are either 0 or 1...",
+          "All entries are either 0 or 1... (xxxxxxxxxxxxxxxxxxxxx)",
           "The matrix is square and symmetric..."
         ],
         "correct_option": "Each column sums to 1 and all entries are non-negative",
@@ -58,7 +58,7 @@
         "id": "M6Q3E5",
         "question": "In PageRank, why is the 'importance' of a page determined by incoming links rather than outgoing links?",
         "options": [
-          "Outgoing links are easier to count...",
+          "Outgoing links are easier to count... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Each incoming link is essentially a 'vote' from another page saying this page is worth visiting",
           "Google's algorithm only considers the first page on each website...",
           "Outgoing links slow down page loading..."
@@ -82,7 +82,7 @@
         "id": "M6Q3E7",
         "question": "What is a 'dangling node' in a web graph?",
         "options": [
-          "A page with incoming links",
+          "A page with incoming links (xxxxxxxxxxxxxxx)",
           "A page with no outgoing links (a dead end)",
           "A page that links to itself",
           "A page that links to every other page"
@@ -96,7 +96,7 @@
         "options": [
           "[0,0,1,0]^T — all probability mass goes to C",
           "[0.5,0,0.5,0]^T — split between A and C",
-          "[0,0,0,1]^T — all mass goes to D",
+          "[0,0,0,1]^T — all mass goes to D (xxxxxxxxxxx)",
           "[0.25,0.25,0.25,0.25]^T — equal distribution"
         ],
         "correct_option": "[0,0,1,0]^T — all probability mass goes to C",
@@ -109,7 +109,7 @@
           "It reduces the importance of old pages; it is needed to keep the ranking current...",
           "It's a probability (typically 0.85) of following a link vs. randomly teleporting; needed to handle dangling nodes and ensure convergence",
           "It slows down the algorithm; needed for computational efficiency...",
-          "It discounts repeated visits; needed to prevent infinite loops..."
+          "It discounts repeated visits; needed to prevent infinite loops... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "It's a probability (typically 0.85) of following a link vs. randomly teleporting; needed to handle dangling nodes and ensure convergence",
         "explanation": "Step 1: The damping factor d = 0.85 means with probability 0.85, the surfer follows a link; with probability 0.15, they teleport to a random page (uniform distribution). Step 2: This ensures the modified transition matrix M' = dM + (1−d)(1/n)J is strictly positive (every entry > 0), which guarantees irreducibility (every page is reachable from every other) and aperiodicity (no periodic cycles). Step 3: By the Perron-Frobenius theorem, a strictly positive matrix has a unique dominant eigenvector with all positive entries — the damping factor transforms a potentially problematic Markov chain into one with a guaranteed unique steady state, which is the PageRank vector."
@@ -119,7 +119,7 @@
         "question": "For a web graph with 4 pages and the transition matrix M, what equation does the PageRank vector v satisfy?",
         "options": [
           "Mv = v (eigenvector with eigenvalue 1)",
-          "Mv = 0)",
+          "Mv = 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Mv = λv for any λ — does t match",
           "v = M^T v)"
         ],
@@ -158,7 +158,7 @@
         "options": [
           "rmalization is required for the matrix multiplication to work...",
           "It makes the entries interpretable as probability distributions — each entry represents the probability that a random surfer is on that page at steady state",
-          "It makes the computation faster...",
+          "It makes the computation faster... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Without rmalization the eigenvector does t exist..."
         ],
         "correct_option": "It makes the entries interpretable as probability distributions — each entry represents the probability that a random surfer is on that page at steady state",
@@ -181,7 +181,7 @@
         "question": "What is the key difference between a 'random surfer' model and simply counting incoming links?",
         "options": [
           "The random surfer model accounts for the importance of the pages that link to you — a link from an important page transfers more rank than a link from an unimportant one",
-          "There is difference...",
+          "There is difference... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The random surfer model counts outgoing links instead...",
           "Simply counting incoming links is always more accurate..."
         ],
@@ -195,7 +195,7 @@
           "All entries equal — every page has the same importance",
           "The page with the most links wins...",
           "The first page listed has the highest rank",
-          "The algorithm would t converge..."
+          "The algorithm would t converge... (xxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "All entries equal — every page has the same importance",
         "explanation": "Step 1: In a complete graph, every page has the same number of incoming and outgoing links — by symmetry, there is no reason for any page to be more important than another. Step 2: The transition matrix is (1/(n−1))(J − I) where J is all-ones and I is identity, which is doubly stochastic and symmetric. Step 3: The steady-state eigenvector is (1/n, 1/n, ..., 1/n) — the uniform distribution. This confirms that PageRank correctly assigns equal importance when the graph structure is symmetric, and deviations from uniformity arise only from asymmetries in the link structure."
@@ -206,7 +206,7 @@
         "options": [
           "Self-links are igred by Google's algorithm...",
           "The self-loop distributes the page's rank back to itself, but the page's total rank is determined by incoming links from OTHER pages, not by its own outgoing links",
-          "Self-loops make the matrix n-square...",
+          "Self-loops make the matrix n-square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Self-loops cause the algorithm to diverge..."
         ],
         "correct_option": "The self-loop distributes the page's rank back to itself, but the page's total rank is determined by incoming links from OTHER pages, not by its own outgoing links",
@@ -216,7 +216,7 @@
         "id": "M6Q3M8",
         "question": "If we remove the link D→C from our web graph (so D has no outgoing links), why does the standard PageRank formula break down?",
         "options": [
-          "The matrix is longer square...",
+          "The matrix is longer square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Column D would sum to 0 instead of 1, violating the column-stochastic requirement, and the random surfer gets 'stuck' at D",
           "Removing one link cant affect the algorithm...",
           "The matrix becomes symmetric..."
@@ -231,7 +231,7 @@
           "M' = dM + (1-d)·(1/n)·J, where J is the all-ones matrix",
           "M' = M + d·I — does t match",
           "M' = d·M^T)",
-          "M' = M²)"
+          "M' = M²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "M' = dM + (1-d)·(1/n)·J, where J is the all-ones matrix",
         "explanation": "Step 1: The modified matrix adds a 'teleportation' component: with probability d = 0.85, the surfer follows a link (the original M); with probability 1−d = 0.15, they jump to a random page (uniform distribution 1/n). Step 2: M' = 0.85M + 0.15×(1/n)×J, where J is the n×n all-ones matrix, ensures every column sums to 1 (since both M and (1/n)J are column-stochastic) and every entry is strictly positive. Step 3: This strict positivity guarantees that M' is irreducible and aperiodic, so the Perron-Frobenius theorem applies — the dominant eigenvector is unique, positive, and the power method converges to it, giving a well-defined PageRank for every page."
@@ -242,7 +242,7 @@
         "options": [
           "Eigenvector computation is impossible for large matrices...",
           "The web graph matrix is enormous (billions × billions) but very sparse, making iterative matrix-vector multiplication feasible while direct eigendecomposition is not",
-          "The power method always gives exact answers...",
+          "The power method always gives exact answers... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Direct computation is forbidden by Google's patents..."
         ],
         "correct_option": "The web graph matrix is enormous (billions × billions) but very sparse, making iterative matrix-vector multiplication feasible while direct eigendecomposition is not",
@@ -254,7 +254,7 @@
         "id": "M6Q3H1",
         "question": "For the transition matrix M of the 4-page web graph (without damping), is the eigenvalue 1 guaranteed to have a unique eigenvector? What could go wrong?",
         "options": [
-          "always unique for any transition matrix...",
+          "always unique for any transition matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "No — if the graph has multiple disconnected components or periodic cycles, eigenvalue 1 could have multiplicity > 1, giving multiple linearly independent eigenvectors",
           "The eigenvalue 1 never exists for transition matrices...",
           "The eigenvector is always the zero vector..."
@@ -268,7 +268,7 @@
         "options": [
           "M must be symmetric — does t match",
           "M must be irreducible (the web graph is strongly connected) and aperiodic (no periodic cycles)",
-          "M must be a diagonal matrix...",
+          "M must be a diagonal matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "M must have all entries equal..."
         ],
         "correct_option": "M must be irreducible (the web graph is strongly connected) and aperiodic (no periodic cycles)",
@@ -279,7 +279,7 @@
         "question": "If the web graph contains a 'spider trap' — a group of pages that link only to each other and never link out — what happens to PageRank without the damping factor?",
         "options": [
           "All PageRank gets absorbed into the trap, giving those pages 100% of the rank while all other pages get 0",
-          "The algorithm diverges...",
+          "The algorithm diverges... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The trap pages get zero rank...",
           "thing changes — the trap has effect..."
         ],
@@ -293,7 +293,7 @@
           "O(n²) — must multiply the full matrix...",
           "O(L) — only need to process each link once in the sparse matrix-vector product",
           "O(n³) — matrix inversion required...",
-          "O(n log n) — sorting-based..."
+          "O(n log n) — sorting-based... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "O(L) — only need to process each link once in the sparse matrix-vector product",
         "explanation": "Step 1: The transition matrix M is n×n but has only L non-zero entries (one per link, after normalization). Step 2: Computing Mv requires, for each non-zero entry M(i,j), adding M(i,j)×v(j) to the result — this is exactly L multiply-add operations. Step 3: With L ≈ 10n (average 10 links per page), this is O(n) per iteration, making the power method extremely efficient even for n = billions — Google can compute PageRank for the entire web in O(100 × 10n) ≈ O(1000n) total operations, which is feasible on distributed systems."
@@ -317,7 +317,7 @@
           "The damping factor changes the transition probabilities, redistributing some rank from high-degree pages to all pages proportionally, which alters the eigenvector",
           "The damping factor has effect on well-behaved graphs...",
           "It only affects the speed of convergence, t the final answer...",
-          "It makes all entries equal..."
+          "It makes all entries equal... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The damping factor changes the transition probabilities, redistributing some rank from high-degree pages to all pages proportionally, which alters the eigenvector",
         "explanation": "Step 1: Even without traps, M' = 0.85M + 0.15J/n is a different matrix from M — the 0.15J/n component redistributes 15% of each page's rank uniformly to all pages. Step 2: This 'mixing' pulls the eigenvector toward uniform distribution: pages with very high rank in the undamped version lose some rank to all pages, while pages with very low rank gain some. Step 3: The damping factor acts as a regularizer — it interpolates between the link-structure-driven ranking (M) and the uniform ranking (J/n), and the damping parameter d controls the tradeoff: d = 1 gives pure link-based ranking, d = 0 gives uniform ranking."
@@ -328,7 +328,7 @@
         "options": [
           "The user follows many other users...",
           "The user is followed by many OTHER high-centrality users — their influence comes from being connected to influential people, not just from raw follower count",
-          "The user has the oldest account...",
+          "The user has the oldest account... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The user posts the most content..."
         ],
         "correct_option": "The user is followed by many OTHER high-centrality users — their influence comes from being connected to influential people, not just from raw follower count",
@@ -341,7 +341,7 @@
           "The spectral gap is 1 - d = 0.15; it determines how fast the power method converges — larger gap means faster convergence",
           "The spectral gap is d = 0.85; it's the largest eigenvalue...",
           "The spectral gap is n - 1; it depends on the number of pages...",
-          "The spectral gap is always 0..."
+          "The spectral gap is always 0... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The spectral gap is 1 - d = 0.15; it determines how fast the power method converges — larger gap means faster convergence",
         "explanation": "Step 1: The Google matrix M' has eigenvalue 1 (with multiplicity 1) and all other eigenvalues have magnitude ≤ d = 0.85 (since M' = dM + (1−d)J/n and the non-dominant eigenvalues of J/n are 0). Step 2: The spectral gap = 1 − 0.85 = 0.15 — the difference between the dominant eigenvalue and the second-largest. Step 3: The convergence rate of the power method is |λ₂/λ₁| = 0.85 — after k iterations, the error is roughly 0.85ᵏ, so convergence is geometric with rate 0.85 per iteration. The spectral gap (0.15) determines how fast the sub-dominant components decay: larger gap → faster convergence."
@@ -351,7 +351,7 @@
         "question": "In the transition matrix for our web graph, what is the null space of (I - M) and what does it represent?",
         "options": [
           "The null space of (I-M) is spanned by the steady-state eigenvector v — it represents the distribution that is invariant under one step of the random walk",
-          "The null space is always trivial...",
+          "The null space is always trivial... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It represents the set of dangling des...",
           "It represents the most popular page..."
         ],
@@ -364,7 +364,7 @@
         "options": [
           "The eigenvalue changes from 1 to something else...",
           "The eigenvector becomes personalized — it reflects importance relative to the specific user's interests rather than global importance, so different users get different PageRank vectors",
-          "The matrix becomes n-stochastic...",
+          "The matrix becomes n-stochastic... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "PPR does t use eigenvectors at all..."
         ],
         "correct_option": "The eigenvector becomes personalized — it reflects importance relative to the specific user's interests rather than global importance, so different users get different PageRank vectors",

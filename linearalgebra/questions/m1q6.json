@@ -13,7 +13,7 @@
           "The (x, y) pair that satisfies both equations simultaneously",
           "The midpoint between two points...",
           "The slope of either line...",
-          "The origin of the graph..."
+          "The origin of the graph... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The (x, y) pair that satisfies both equations simultaneously",
         "explanation": "Step 1: At the intersection, both lines share the same (x, y). Step 2: This means the coordinates satisfy both equations at once. Step 3: The intersection point is the unique solution to the system of equations."
@@ -24,7 +24,7 @@
         "options": [
           "Yes, with A = [[2,3],[3,4]], x = [x,y], b = [7,10]",
           "only quadratic equations can be matrix-formatted",
-          "but only for 3×3 systems...",
+          "but only for 3×3 systems... (xxxxxxxxxxxxxxxxxxxxx)",
           "because the equations have different coefficients"
         ],
         "correct_option": "Yes, with A = [[2,3],[3,4]], x = [x,y], b = [7,10]",
@@ -83,7 +83,7 @@
         "question": "If two lines are parallel, how many intersection points exist?",
         "options": [
           "Zero — they never meet",
-          "Exactly one",
+          "Exactly one (xxxxxxxxx)",
           "Two — t here",
           "Infinitely many"
         ],
@@ -96,7 +96,7 @@
         "options": [
           "The constants on the right side of each equation",
           "The unkwns x and y — does t match",
-          "The slopes of the lines...",
+          "The slopes of the lines... (xxxxxxxxxxxxxxxxxxxx)",
           "The determinant of A — does t match"
         ],
         "correct_option": "The constants on the right side of each equation",
@@ -107,7 +107,7 @@
         "question": "How many equations do you need to uniquely determine both x and y in a 2-variable system?",
         "options": [
           "Two independent equations",
-          "One equation",
+          "One equation (xxxxxxxxxxx)",
           "Three equations",
           "Zero equations"
         ],
@@ -119,7 +119,7 @@
         "question": "For the system 2x + 3y = 7, can you find the unique solution with just this one equation?",
         "options": [
           "No, there are infinitely many (x,y) pairs that satisfy a single equation",
-          "x = 7/2 and y = 0...",
+          "x = 7/2 and y = 0... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "there is always a unique solution...",
           "Only if x = y — does t match"
         ],
@@ -135,7 +135,7 @@
           "The equilibrium price and quantity where supply equals demand",
           "The maximum price a buyer will pay...",
           "The minimum quantity a seller will produce...",
-          "The point of maximum profit..."
+          "The point of maximum profit... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The equilibrium price and quantity where supply equals demand",
         "explanation": "Step 1: The intersection is where both supply and demand equations are satisfied simultaneously. Step 2: At this point, the quantity producers want to supply equals what buyers want to buy. Step 3: This equilibrium determines the market-clearing price and quantity."
@@ -159,7 +159,7 @@
           "50x = 100 + 20x (revenue = total costs)",
           "20x = 50)",
           "100 = 50x)",
-          "x = 100)"
+          "x = 100) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "50x = 100 + 20x (revenue = total costs)",
         "explanation": "Step 1: Cost equation: C = 100 + 20x. Step 2: Revenue equation: R = 50x. Step 3: Break-even is where R = C: 50x = 100 + 20x → 30x = 100 → x ≈ 3.33 units."
@@ -181,7 +181,7 @@
         "question": "If the determinant of the coefficient matrix is zero, what does that tell you about the system?",
         "options": [
           "The system has either no solution or infinitely many solutions",
-          "The system has exactly one solution...",
+          "The system has exactly one solution... (xxxxxxxxxxxxxxxxxxxxxx)",
           "The system has exactly two solutions...",
           "The system cant be written in matrix form..."
         ],
@@ -193,7 +193,7 @@
         "question": "For two lines 2x + 3y = 7 and 4x + 6y = 14, how many solutions exist?",
         "options": [
           "Infinitely many (the lines are identical)",
-          "Exactly one — does t match",
+          "Exactly one — does t match (xxxxxxxxxxxxx)",
           "Zero (the lines are parallel)",
           "Cant be determined — does t match"
         ],
@@ -206,7 +206,7 @@
         "options": [
           "The unknown variables we are solving for",
           "The constants in the equations",
-          "The slopes of the lines...",
+          "The slopes of the lines... (xxxxxxxxxxxx)",
           "The intersection point only"
         ],
         "correct_option": "The unknown variables we are solving for",
@@ -217,7 +217,7 @@
         "question": "Can a system of 2 equations in 2 unknowns have more than one solution but not infinitely many?",
         "options": [
           "No, it's either 0, 1, or infinitely many solutions",
-          "it can have exactly 2 solutions",
+          "it can have exactly 2 solutions (xxxxxxxxxxxxxxxxx)",
           "it can have exactly 3 solutions",
           "Only if the coefficients are irrational"
         ],
@@ -257,7 +257,7 @@
           "x = det([[7,3],[10,4]])/det(A) = (28-30)/(-1) = 2",
           "x = 7/2)",
           "x = 10/3)",
-          "x = 3)"
+          "x = 3) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "x = det([[7,3],[10,4]])/det(A) = (28-30)/(-1) = 2",
         "explanation": "Step 1: Cramer's rule: x = det(A₁)/det(A), where A₁ replaces column 1 of A with b. Step 2: det(A₁) = det([[7,3],[10,4]]) = 28 - 30 = -2. Step 3: x = -2/(-1) = 2. Similarly y = 1."
@@ -269,7 +269,7 @@
           "2 (rank of augmented matrix) while rank of A = 1 — inconsistent system",
           "Both ranks are 2 — does t match",
           "Both ranks are 1 — does t match",
-          "Rank is 0)"
+          "Rank is 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "2 (rank of augmented matrix) while rank of A = 1 — inconsistent system",
         "explanation": "Step 1: rank(A) = 1 because row 2 = 2 × row 1 (linearly dependent). Step 2: rank([A|b]) = 2 because the augmented rows are not proportional: (4,6,15) ≠ 2×(2,3,7) = (4,6,14). Step 3: When rank(A) ≠ rank([A|b]), the system is inconsistent — no solution exists."
@@ -280,7 +280,7 @@
         "options": [
           "It moves along the demand curve to a new intersection",
           "It stays fixed — does t match",
-          "It disappears entirely...",
+          "It disappears entirely... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Both curves shift simultaneously..."
         ],
         "correct_option": "It moves along the demand curve to a new intersection",
@@ -291,7 +291,7 @@
         "question": "For a 3×3 system Ax = b, how many intersection points do three planes typically have in ℝ³?",
         "options": [
           "Exactly one point (if A is invertible)",
-          "A line)",
+          "A line) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A plane)",
           "points)"
         ],
@@ -304,7 +304,7 @@
         "options": [
           "[2, 1] — the solution to the system",
           "[7, 10])",
-          "[1, 2])",
+          "[1, 2]) (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "[-1, 1])"
         ],
         "correct_option": "[2, 1] — the solution to the system",
@@ -315,7 +315,7 @@
         "question": "If A is a 2×2 matrix with det(A) = 0, does Ax = b always have no solution?",
         "options": [
           "No — it could have infinitely many solutions if b is in the column space of A",
-          "always solution...",
+          "always solution... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "always infinitely many...",
           "It depends on the sign of the determinant..."
         ],
@@ -329,7 +329,7 @@
           "What input vector x does the transformation A send to the output vector b?",
           "What is the determinant of A?...",
           "What are the eigenvalues of A?...",
-          "What is the rank of A?..."
+          "What is the rank of A?... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "What input vector x does the transformation A send to the output vector b?",
         "explanation": "Step 1: A is a linear transformation (matrix). Step 2: Ax = b asks: which vector x, when transformed by A, gives b? Step 3: This is the 'inverse problem' — given the output, find the input. It's solvable uniquely when A is invertible."
@@ -340,7 +340,7 @@
         "options": [
           "x ≈ 3.33 units — this is where R = C, i.e., where the revenue line intersects the cost line",
           "x = 100 units — does t match",
-          "x = 50 units — does t match",
+          "x = 50 units — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "x = 20 units — does t match"
         ],
         "correct_option": "x ≈ 3.33 units — this is where R = C, i.e., where the revenue line intersects the cost line",
@@ -351,7 +351,7 @@
         "question": "If we add a third equation to a 2-variable system (making it 3 equations in 2 unknowns), what can happen?",
         "options": [
           "The system may become inconsistent if the third equation conflicts with the first two",
-          "It always has a unique solution...",
+          "It always has a unique solution... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It always has infinitely many solutions...",
           "The third equation is always redundant..."
         ],
@@ -387,7 +387,7 @@
         "The equilibrium price and quantity where supply meets demand",
         "The maximum possible price",
         "The minimum quantity sold",
-        "The point of zero profit"
+        "The point of zero profit (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "The equilibrium price and quantity where supply meets demand",
       "explanation": "Step 1: At the intersection, both curves agree on the same price and quantity. Step 2: Producers supply exactly what consumers demand. Step 3: This market-clearing point is the equilibrium — solving the system of two equations."
@@ -402,7 +402,7 @@
       "question": "How many units must be sold for the business to break even?",
       "options": [
         "About 3.33 units",
-        "50 units",
+        "50 units (xxxxxx)",
         "100 units",
         "20 units"
       ],
@@ -436,7 +436,7 @@
       "question": "At what dosage x are the beneficial and side effects equal?",
       "options": [
         "x = 3.75",
-        "x = 5",
+        "x = 5 (x)",
         "x = 2.5",
         "x = 10"
       ],

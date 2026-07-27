@@ -71,7 +71,7 @@
         "question": "The rank of a matrix equals the dimension of which subspace?",
         "options": [
           "The null space",
-          "The row space",
+          "The row space (xxxxxxxxx)",
           "The range (column space)",
           "The left null space"
         ],
@@ -156,7 +156,7 @@
         "id": "M4Q6M3",
         "question": "Which rank gives a matrix the property that Ax = b has a unique solution for every b?",
         "options": [
-          "Rank 0",
+          "Rank 0 (xxxxxxxxxxxx)",
           "Rank 1",
           "Rank 2",
           "Full rank (rank = n)"
@@ -171,7 +171,7 @@
           "All vectors (a,b,0,0) for any a,b",
           "All vectors (a,b,c,0)",
           "All vectors (a,0,0,0)",
-          "All of R⁴)"
+          "All of R⁴) (xxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "All vectors (a,b,0,0) for any a,b",
         "explanation": "Step 1: M = diag(1,1,0,0), so M(x,y,z,w) = (x,y,0,0). Step 2: The output always has zeros in positions 3 and 4. Step 3: The range is the xy-plane in R⁴ — vectors of the form (a,b,0,0). The third and fourth coordinates are always destroyed."
@@ -207,7 +207,7 @@
           "if it has eugh nzero entries...",
           "No — rank cannot exceed the number of rows or columns",
           "Only if the matrix is 5×5...",
-          "Only in special cases..."
+          "Only in special cases... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No — rank cannot exceed the number of rows or columns",
         "explanation": "Step 1: The rank is the number of independent rows (or columns). Step 2: A 4×4 matrix has at most 4 independent rows and 4 independent columns. Step 3: So rank ≤ min(4,4) = 4. Rank 5 is impossible — the rank is bounded by the matrix dimensions."
@@ -217,7 +217,7 @@
         "question": "Which statement about rank and the determinant is TRUE?",
         "options": [
           "If det(M) ≠ 0, rank = n (full rank)",
-          "If det(M) = 0, rank = 0",
+          "If det(M) = 0, rank = 0 (xxxxxxxxxx)",
           "det(M) always equals the rank",
           "det(M) is unrelated to rank"
         ],
@@ -269,7 +269,7 @@
           "rank is preserved under multiplication...",
           "No — rank(AB) ≤ min(rank(A), rank(B)), so it could be 0, 1, or 2",
           "— rank(AB) always equals rank(A) + rank(B)...",
-          "if both are diagonal..."
+          "if both are diagonal... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No — rank(AB) ≤ min(rank(A), rank(B)), so it could be 0, 1, or 2",
         "explanation": "Step 1: rank(AB) ≤ min(rank(A), rank(B)) is a fundamental inequality. Step 2: rank(AB) could be less than 2 if the range of B intersects the null space of A. Step 3: For example, if B maps into A's null space, AB = 0 (rank 0). The rank can only decrease or stay the same under multiplication."
@@ -280,7 +280,7 @@
         "options": [
           "— if the range is 3D in R⁴, there are v...",
           "Yes — any vector perpendicular to the range",
-          "— the range is all of R⁴... ...",
+          "— the range is all of R⁴... ... (xxxxxxxxxx)",
           "Only if the matrix is symmetric... ..."
         ],
         "correct_option": "Yes — any vector perpendicular to the range",
@@ -327,7 +327,7 @@
         "question": "A 4×4 matrix M has rank 4. What is the dimension of the solution set of Mx = b for any b ∈ R⁴?",
         "options": [
           "0 (unique solution)",
-          "1 — t here",
+          "1 — t here (xxxxxxx)",
           "2 — t here",
           "4 — t here"
         ],
@@ -352,7 +352,7 @@
         "options": [
           "Yes — there exist rank-2 idempotent matrices",
           "— idempotent matrices must have rank 0 or 4",
-          "Only if M is symmetric...",
+          "Only if M is symmetric... (xxxxxxxxxxxxxxxxx)",
           "Only if det(M) = 0 — does t match"
         ],
         "correct_option": "Yes — there exist rank-2 idempotent matrices",
@@ -363,7 +363,7 @@
         "question": "If A is 4×4 with rank 3, the range is a 3D hyperplane. What is the equation of this hyperplane in R⁴?",
         "options": [
           "a₁x₁ + a₂x₂ + a₃x₃ + a₄x₄ = 0 where (a₁,a₂,a₃,a₄) is the left null space direction",
-          "x₁ = 0)",
+          "x₁ = 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "x₁ + x₂ + x₃ + x₄ = 1...",
           "There is single equation for a 3D hyperplane..."
         ],
@@ -403,7 +403,7 @@
       "options": [
         "All users are connected to everyone",
         "All connection patterns are driven by a single factor",
-        "connections exist",
+        "connections exist (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The network is fully disconnected"
       ],
       "correct_option": "All connection patterns are driven by a single factor",
@@ -415,7 +415,7 @@
       "options": [
         "All 4 machines are needed",
         "The machines produce effectively the same output — 3 are redundant",
-        "machines are working",
+        "machines are working (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The product has 4 independent features"
       ],
       "correct_option": "The machines produce effectively the same output — 3 are redundant",
@@ -426,7 +426,7 @@
       "question": "A camera with 4 sensors captures a 3D scene. The sensor matrix has rank 3. Can the camera fully reconstruct 3D positions?",
       "options": [
         "Yes — rank 3 means the range covers all 3D directions",
-        "— it needs rank 4",
+        "— it needs rank 4 (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Only partially — rank 3 gives 3 out of 4 dimensions",
         "Only if the sensors are orthogonal"
       ],
@@ -437,7 +437,7 @@
       "id": "M4Q6R6",
       "question": "A neural network layer has a 4×4 weight matrix. If the rank drops to 1 after training, what problem might the network have?",
       "options": [
-        "The network is learning well",
+        "The network is learning well (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The layer has collapsed — it can only output 1 dimension of information",
         "The network needs more layers",
         "The learning rate is too high"

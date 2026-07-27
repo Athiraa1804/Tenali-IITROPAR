@@ -37,7 +37,7 @@
           "span{(1,-2,1)}",
           "span{(1,2,3)}",
           "span{(1,1,1)}",
-          "{0}"
+          "{0} (xxxxxxxxx)"
         ],
         "correct_option": "span{(1,-2,1)}",
         "explanation": "Step 1: Row reduce A: R2 − 2R1 = (0,−3,−6), R3 − 3R1 = (0,−8,−12); further reduction shows rank = 2 with one free variable. Step 2: The null space direction is (1,−2,1), verified by (1,4,7)·(1,−2,1) = 1−8+7 = 0, (2,5,8)·(1,−2,1) = 2−10+8 = 0, (3,6,9)·(1,−2,1) = 3−12+9 = 0. Step 3: N(A) = span{(1,−2,1)} is a line in ℝ³. Every row is orthogonal to this null vector — this is the R(A) ⊥ N(A) relationship verified concretely. The null vector (1,−2,1) represents the single input direction that the transformation annihilates."
@@ -47,7 +47,7 @@
         "question": "Verify: Is (1,4,7)·(1,-2,1) = 0?",
         "options": [
           "Yes: 1-8+7 = 0",
-          "1-8+7 = -6",
+          "1-8+7 = -6 (xx)",
           "1+8+7 = 16",
           "it equals 12"
         ],
@@ -60,7 +60,7 @@
         "options": [
           "only square matrices have this property",
           "No, it holds for every matrix regardless of shape",
-          "Only for invertible matrices...",
+          "Only for invertible matrices... (xxxxxxxxxxxxxxxx)",
           "Only for rank-deficient matrices..."
         ],
         "correct_option": "No, it holds for every matrix regardless of shape",
@@ -147,7 +147,7 @@
           "Because Aᵀy=0 means y is perpendicular to every column of A",
           "Because columns are always orthogonal to rows",
           "Because the matrix is square...",
-          "Because rank equals nullity..."
+          "Because rank equals nullity... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because Aᵀy=0 means y is perpendicular to every column of A",
         "explanation": "Step 1: If y ∈ N(Aᵀ), then Aᵀy = 0 by definition. Step 2: The i-th entry of Aᵀy is (column i of A) · y, so Aᵀy = 0 means y is perpendicular to every column of A. Step 3: Since C(A) is the span of the columns, y ⊥ C(A). The proof is structurally identical to the R(A) ⊥ N(A) proof, applied to Aᵀ instead of A. This duality is a recurring theme: properties of A yield input-side results, and the same properties of Aᵀ yield output-side results, because Aᵀ transposes the roles of rows and columns."
@@ -157,7 +157,7 @@
         "question": "If R(A) ⊥ N(A) and dim(R(A)) = r, dim(N(A)) = n-r, do they 'fill up' ℝⁿ together?",
         "options": [
           "Yes: they are orthogonal complements, so R(A) ⊕ N(A) = ℝⁿ",
-          "there may be gaps...",
+          "there may be gaps... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if the matrix is square...",
           "Only if rank = nullity..."
         ],
@@ -169,7 +169,7 @@
         "question": "For a matrix with rank n (full column rank), the null space is {0}. What does the orthogonality R(A) ⊥ N(A) become?",
         "options": [
           "R(A) ⊥ {0}, which is trivially true",
-          "It becomes R(A) ⊥ ℝⁿ",
+          "It becomes R(A) ⊥ ℝⁿ (xxxxxxxxxxxxx)",
           "It longer holds — does t match",
           "It becomes undefined"
         ],
@@ -192,7 +192,7 @@
         "id": "M5Q2M6",
         "question": "If y is in the Left Null Space of A, which of these is true?",
         "options": [
-          "Ay = 0)",
+          "Ay = 0) (xxxxxxxxxxxxxxxxxxxxx)",
           "Aᵀy = 0)",
           "yA = 0)",
           "yᵀA = 0 is the same as Aᵀy = 0"
@@ -217,7 +217,7 @@
         "question": "Can the Row Space and Null Space overlap (share non-zero vectors)?",
         "options": [
           "No, because orthogonal non-zero vectors are linearly independent",
-          "frequently — does t match",
+          "frequently — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if rank = 1 — does t match",
           "Only for square matrices..."
         ],
@@ -255,7 +255,7 @@
         "question": "Prove that R(A) ⊥ N(A) using the definition of matrix-vector multiplication. If Ax = 0, why is x perpendicular to every row?",
         "options": [
           "Because Ax is a vector whose i-th component is (row i)·x, and Ax=0 means each component is 0",
-          "Because A and x commute...",
+          "Because A and x commute... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the transpose of A is involved...",
           "Because determinant is zero..."
         ],
@@ -269,7 +269,7 @@
           "Left null = (1,-2,1); all column dot products with it equal 0",
           "Left null = (1,1,1); column dot products equal 6",
           "Left null = (1,0,-1); dot products alternate...",
-          "Left null does t exist..."
+          "Left null does t exist... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Left null = (1,-2,1); all column dot products with it equal 0",
         "explanation": "Step 1: Solving Aᵀy = 0 with Aᵀ = [[1,2,3],[4,5,6],[7,8,9]]: row reduction gives one free variable, yielding the left null vector (1,−2,1). Step 2: Verify all three columns: (1,2,3)·(1,−2,1) = 1−4+3 = 0 ✓; (4,5,6)·(1,−2,1) = 4−10+6 = 0 ✓; (7,8,9)·(1,−2,1) = 7−16+9 = 0 ✓. Step 3: All three dot products are zero, confirming C(A) ⊥ N(Aᵀ). The left null vector (1,−2,1) is the single unreachable direction in ℝ³: no input can produce an output with this component. This exercise illustrates the complete verification process: find the left null space, then check orthogonality with every column."
@@ -281,7 +281,7 @@
           "Orthogonal complements in ℝⁿ must have dimensions summing to n",
           "Because rank and nullity are defined independently",
           "Because the trace equals the sum of dimensions...",
-          "Because the determinant factors as a product..."
+          "Because the determinant factors as a product... (xxxxxxxxxxxxx)"
         ],
         "correct_option": "Orthogonal complements in ℝⁿ must have dimensions summing to n",
         "explanation": "Step 1: R(A) and N(A) are orthogonal subspaces of ℝⁿ. Step 2: By the Orthogonal Complement Theorem, if V ⊥ W in ℝⁿ, then V ∩ W = {0} and dim(V) + dim(W) ≤ n. Step 3: For the four subspaces, the sum actually achieves n: every column of A defines a constraint that rows must satisfy, and the rank-nullity balance (pivots + free variables = n) ensures no 'gap' between the subspaces. The orthogonality guarantees the intersection is trivial, and the dimension count from row reduction ensures the sum is exactly n. This is the Rank-Nullity Theorem, reinterpreted through the lens of orthogonal complements."
@@ -291,7 +291,7 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], project the vector b = (1,0,0) onto R(A) and N(A). What are the components?",
         "options": [
           "R(A) component + N(A) component = b, with each component orthogonal to the other",
-          "Both components are in R(A)...",
+          "Both components are in R(A)... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The projection is undefined...",
           "b is already in N(A) — does t match"
         ],
@@ -304,7 +304,7 @@
         "options": [
           "v·v = 0 implies v = 0, contradicting v being non-zero",
           "Av = 0 and Av ≠ 0 simultaneously...",
-          "v must be a complex number...",
+          "v must be a complex number... (xxxxxxxxxxxxxxxxxxxxxx)",
           "The dimensions don't add up..."
         ],
         "correct_option": "v·v = 0 implies v = 0, contradicting v being non-zero",
@@ -317,7 +317,7 @@
           "R(A)=span{e₁,e₂}, N(A)=span{e₃}; C(A)=span{e₁,e₂}, N(Aᵀ)=span{e₃}. All dot products = 0.",
           "R(A)=ℝ³, N(A)={0}; all pairs trivially orthogonal...",
           "R(A)=span{e₁}, N(A)=span{e₂,e₃}; mismatched dimensions...",
-          "Orthogonality fails for this matrix..."
+          "Orthogonality fails for this matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "R(A)=span{e₁,e₂}, N(A)=span{e₃}; C(A)=span{e₁,e₂}, N(Aᵀ)=span{e₃}. All dot products = 0.",
         "explanation": "Step 1: R(A) = span{(1,0,0),(0,1,0)} = xy-plane, N(A) = span{(0,0,1)} = z-axis. Verify: e₁·e₃ = 0 ✓, e₂·e₃ = 0 ✓. Step 2: C(A) = span{e₁, e₂} = xy-plane (in ℝ³), N(Aᵀ) = span{e₃} = z-axis (in ℝ³). Same verification. Step 3: Both orthogonal pairs hold: R(A) ⊥ N(A) and C(A) ⊥ N(Aᵀ), with the xy-plane perpendicular to the z-axis in both cases. This is a projection matrix — it collapses the z-component to zero while preserving x and y. The orthogonality structure makes the geometric action transparent: the preserved dimensions (row/column space) and destroyed dimensions (null/left-null space) are at right angles."
@@ -329,7 +329,7 @@
           "N(Aᵀ) = {0} and C(A) = ℝᵐ — all outputs are reachable",
           "N(Aᵀ) = ℝᵐ and C(A) = {0}...",
           "N(Aᵀ) = span of rows and C(A) = span of columns",
-          "Both are 1-dimensional..."
+          "Both are 1-dimensional... (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "N(Aᵀ) = {0} and C(A) = ℝᵐ — all outputs are reachable",
         "explanation": "Step 1: dim(N(Aᵀ)) = m − rank = m − m = 0, so N(Aᵀ) = {0}. Step 2: dim(C(A)) = rank = m, so C(A) = ℝᵐ. Step 3: Every output vector is reachable — the transformation is surjective (onto). Full row rank is the output-side analog of full column rank: the former guarantees surjectivity (all outputs reachable), the latter guarantees injectivity (no information lost). For a square matrix, both conditions hold simultaneously, giving bijectivity (invertibility). The four-subspace framework makes this distinction precise: full row rank kills the left null space; full column rank kills the null space."
@@ -341,7 +341,7 @@
           "N(Aᵀ), because the residual is orthogonal to C(A)",
           "C(A), by definition of projection...",
           "R(A), which is in the input space...",
-          "N(A), the null space — does t match"
+          "N(A), the null space — does t match (xxxxxxxxxxxx)"
         ],
         "correct_option": "N(Aᵀ), because the residual is orthogonal to C(A)",
         "explanation": "Step 1: The orthogonal projection of b onto C(A) gives the closest vector in C(A) to b. Step 2: The residual r = b − proj is perpendicular to C(A) by construction of orthogonal projection. Step 3: Since N(Aᵀ) is the orthogonal complement of C(A) in ℝᵐ, r ∈ N(Aᵀ). This is the foundation of least-squares methods: the residual (error) lives in N(Aᵀ), and the normal equations Aᵀr = 0 encode the condition r ⊥ C(A). The four-subspace framework thus provides the geometric justification for the least-squares solution: project onto C(A), and the residual automatically falls in the orthogonal complement."
@@ -351,7 +351,7 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], verify that the left null vector (1,-2,1) is NOT in C(A).",
         "options": [
           "Correct — (1,-2,1) ⊥ C(A) and C(A) is 2D, so (1,-2,1) is outside it",
-          "In — (1,-2,1) is a column of A...",
+          "In — (1,-2,1) is a column of A... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(1,-2,1) is in C(A) because it has 3 components...",
           "Cant determine without computing..."
         ],
@@ -365,7 +365,7 @@
           "Any vector's squared norm decomposes as the sum of squared norms of its projections onto orthogonal subspaces",
           "It only applies to the null space...",
           "It requires the matrix to be symmetric...",
-          "It is t used in linear algebra..."
+          "It is t used in linear algebra... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Any vector's squared norm decomposes as the sum of squared norms of its projections onto orthogonal subspaces",
         "explanation": "Step 1: For any b ∈ ℝᵐ, decompose b = b_C + b_N where b_C ∈ C(A) and b_N ∈ N(Aᵀ). Step 2: Since C(A) ⊥ N(Aᵀ), the Pythagorean theorem gives |b|² = |b_C|² + |b_N|². Step 3: This decomposition is the theoretical foundation of least-squares: minimizing |b_N|² (the residual norm) is equivalent to maximizing |b_C|² (the signal power). In data science, this same decomposition underlies PCA (signal vs. noise), regression (predicted vs. residual), and compressed sensing (sparse vs. null). The Pythagorean theorem transforms the abstract orthogonality C(A) ⊥ N(Aᵀ) into a quantitative tool for optimization."
@@ -382,7 +382,7 @@
       "question": "When signal and noise are in orthogonal subspaces, what does this mean for image restoration?",
       "options": [
         "They can be perfectly separated",
-        "They always overlap",
+        "They always overlap (xxxxxxxxxx)",
         "The image cant be restored",
         "ise amplifies the signal"
       ],
@@ -400,7 +400,7 @@
         "They eliminate interference between data streams",
         "They increase the signal strength",
         "They reduce the number of antennas needed",
-        "They make encryption easier"
+        "They make encryption easier (xxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "They eliminate interference between data streams",
       "explanation": "Step 1: Orthogonal channels have dot product = 0, meaning they are mathematically independent. Step 2: When the receiver correlates the received signal with each channel, the orthogonality ensures zero crosstalk between channels. Step 3: This is the same principle as R(A) ⊥ N(A): orthogonal subspaces can be cleanly separated by projection. OFDM (used in WiFi and 5G) divides the frequency spectrum into orthogonal subcarriers, each carrying independent data — the four-subspace framework made practical at billions of devices worldwide."
@@ -416,7 +416,7 @@
         "Each feature captures independent information",
         "The features are redundant",
         "The model is overfitting",
-        "The features are isy"
+        "The features are isy (xxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Each feature captures independent information",
       "explanation": "Step 1: Orthogonal features satisfy f₁ · f₂ = 0, meaning they are uncorrelated and each adds new information not captured by others. Step 2: This mirrors the four-subspace framework: R(A) and N(A) partition ℝⁿ into independent pieces. Step 3: In practice, orthogonal feature design (e.g., via Gram-Schmidt or whitening) ensures neural networks learn diverse representations rather than redundant ones. The Pythagorean theorem |v|² = |v₁|² + |v₂|² confirms that information is additive across orthogonal features — no double-counting occurs."
@@ -430,7 +430,7 @@
       "question": "Why can bass and treble be independently adjusted in audio engineering?",
       "options": [
         "Because different frequencies are orthogonal to each other",
-        "Because they have the same amplitude",
+        "Because they have the same amplitude (xxxxxxxxxxxxxxxxxxxx)",
         "Because they travel at different speeds",
         "Because speakers handle them separately"
       ],
@@ -446,7 +446,7 @@
       "question": "In bridge analysis, why is it useful to decompose forces into horizontal and vertical components?",
       "options": [
         "Because the components are independent and can be analyzed separately",
-        "Because forces are always zero",
+        "Because forces are always zero (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Because forces are more important",
         "Because the bridge is symmetrical"
       ],
@@ -463,7 +463,7 @@
       "options": [
         "It is orthogonal to the column space of the design matrix",
         "It is parallel to the column space",
-        "It equals zero always",
+        "It equals zero always (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "It is in the null space of the transpose"
       ],
       "answer": "It is orthogonal to the column space of the design matrix",

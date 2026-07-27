@@ -10,10 +10,10 @@
         "id": "M5Q3E1",
         "question": "What does the Rank-Nullity Theorem state?",
         "options": [
-          "rank + nullity = number of rows",
+          "rank + nullity = number of rows (x)",
           "rank + nullity = number of columns",
-          "rank × nullity = 1 — does t match",
-          "rank - nullity = 0 — does t match"
+          "rank × nullity = 1 — does t match (x)",
+          "rank - nullity = 0 — does t match (x)"
         ],
         "correct_option": "rank + nullity = number of columns",
         "explanation": "Step 1: The Rank-Nullity Theorem states rank(A) + nullity(A) = n, where n is the number of columns (the dimension of the input domain ℝⁿ). Step 2: Rank counts independent output dimensions that survive the transformation; nullity counts input dimensions that are annihilated. Step 3: Together they account for all n input dimensions — this is the 'conservation law' of linear algebra, analogous to energy conservation in physics: nothing is created or destroyed, only redistributed between the row space (surviving dimensions) and null space (lost dimensions). This theorem connects the four subspaces through a single equation."
@@ -106,10 +106,10 @@
         "id": "M5Q3E9",
         "question": "What does a nullity of 0 mean?",
         "options": [
-          "The matrix is the zero matrix...",
+          "The matrix is the zero matrix... (xxxxxxxxxxxxxxxxxxxxxx)",
           "No information is lost — the transformation is injective",
-          "All rows are dependent...",
-          "The matrix is t square..."
+          "All rows are dependent... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "The matrix is t square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No information is lost — the transformation is injective",
         "explanation": "Step 1: Nullity = 0 means N(A) = {0}, the null space contains only the zero vector. Step 2: The only input mapping to zero is the zero input itself — distinct inputs always produce distinct outputs. Step 3: The transformation is injective (one-to-one). By rank-nullity, rank = n (full column rank), meaning every input dimension is 'used' by the transformation. This is the ideal for data encoding, cryptography, and any application where reversibility matters: no information is lost, and the original input can in principle be recovered from the output."
@@ -133,9 +133,9 @@
         "question": "For C = [[1,2,3],[4,5,6],[7,8,9]], verify rank-nullity: rank + nullity = ?",
         "options": [
           "2 + 1 = 3 = n ✓",
-          "1 + 2 = 3 = n ✓",
-          "3 + 0 = 3 = n ✓",
-          "2 + 2 = 4 ≠ n"
+          "1 + 2 = 3 = n ✓ (x)",
+          "3 + 0 = 3 = n ✓ (x)",
+          "2 + 2 = 4 ≠ n (x)"
         ],
         "correct_option": "2 + 1 = 3 = n ✓",
         "explanation": "Step 1: Rank = 2 (row 3 = 2·row2 − row1, so one row is dependent). Step 2: Nullity = n − rank = 3 − 2 = 1, meaning the null space is a line t(1,−2,1). Step 3: 2 + 1 = 3 = n. ✓ The Rank-Nullity Theorem is verified: the two surviving dimensions (rank) plus the one lost dimension (nullity) account for all three input dimensions. This conservation law holds regardless of the matrix's specific entries — it is a structural property of the linear transformation itself."
@@ -145,9 +145,9 @@
         "question": "If rank(A) = rank(Aᵀ), what can you conclude?",
         "options": [
           "Row rank = Column rank, which is always true",
-          "A must be symmetric — does t match",
-          "A must be invertible — does t match",
-          "This is only true for square matrices"
+          "A must be symmetric — does t match (xxxxxxxx)",
+          "A must be invertible — does t match (xxxxxxx)",
+          "This is only true for square matrices (xxxxx)"
         ],
         "correct_option": "Row rank = Column rank, which is always true",
         "explanation": "Step 1: The row rank (dim(R(A))) and column rank (dim(C(A))) are always equal — this is a fundamental theorem of linear algebra. Step 2: Both equal the number of pivots in the row echelon form, which is the rank of the matrix. Step 3: This is not obvious a priori — there is no immediate reason why the number of independent rows should equal the number of independent columns. The proof relies on the fact that row reduction preserves the row space while revealing which columns contain pivots. The Rank-Nullity Theorem provides one proof route: both rank and nullity are determined by the pivot structure, and they must sum to n."
@@ -157,9 +157,9 @@
         "question": "For B = [[1,2],[2,4]], the null space has dimension 1. What is the null space?",
         "options": [
           "span{(-2,1)}",
-          "span{(1,2)}",
-          "span{(2,1)}",
-          "span{(1,-2)}"
+          "span{(1,2)} (x)",
+          "span{(2,1)} (x)",
+          "span{(1,-2)} (x)"
         ],
         "correct_option": "span{(-2,1)}",
         "explanation": "Step 1: Solve Bx = 0: x₁ + 2x₂ = 0 and 2x₁ + 4x₂ = 0. Both reduce to x₁ = −2x₂. Step 2: Setting x₂ = t gives x = t(−2,1), so N(B) = span{(−2,1)}, a line in ℝ². Step 3: By rank-nullity, rank = 1 and nullity = 1, so 1 + 1 = 2 = n ✓. The null vector (−2,1) is perpendicular to the row space span{(1,2)}: (1,2)·(−2,1) = −2+2 = 0, confirming R(B) ⊥ N(B). This exercise connects the Rank-Nullity Theorem to the orthogonality framework of Module 5."
@@ -181,9 +181,9 @@
         "question": "If rank(A) = n for an m×n matrix, the transformation is:",
         "options": [
           "Injective (one-to-one)",
-          "Surjective (onto)",
-          "Bijective (both)",
-          "Neither"
+          "Surjective (onto) (xxx)",
+          "Bijective (both) (xxxx)",
+          "Neither (xxxxxxxxxxxxx)"
         ],
         "correct_option": "Injective (one-to-one)",
         "explanation": "Step 1: Rank = n means nullity = 0, so N(A) = {0} — the only input mapping to zero is the zero input. Step 2: This is the definition of injectivity: distinct inputs always produce distinct outputs. Step 3: However, surjectivity requires rank = m (all outputs reachable), which may not hold if m > n. A 5×3 matrix with rank 3 is injective (no information lost) but not surjective (2 output dimensions unreachable). The four-subspace framework makes this precise: full column rank kills the null space (injective), while full row rank kills the left null space (surjective)."
@@ -193,9 +193,9 @@
         "question": "If A is a 3×3 matrix with rank 3, what is its null space?",
         "options": [
           "{0} — only the zero vector",
-          "A line through the origin",
-          "A plane through the origin",
-          "All of ℝ³)"
+          "A line through the origin (x)",
+          "A plane through the origin (x)",
+          "All of ℝ³) (xxxxxxxxxxxxxx)"
         ],
         "correct_option": "{0} — only the zero vector",
         "explanation": "Step 1: rank = 3, so nullity = 3 − 3 = 0. Step 2: A null space of dimension 0 contains only the zero vector. Step 3: The matrix is invertible — every input maps to a unique output, and every output is reachable. This is the only case where the four subspaces reduce to two: R(A) = C(A) = ℝ³ and N(A) = N(Aᵀ) = {0}. Invertibility is the special condition where the transformation is a bijection (one-to-one and onto), and the Rank-Nullity Theorem confirms it through nullity = 0."
@@ -229,9 +229,9 @@
         "question": "If A has 6 rows and 4 columns with rank 3, which statement is true?",
         "options": [
           "Nullity = 1 and C(A) is a 3D subspace of ℝ⁶",
-          "Nullity = 3 and C(A) is a 1D subspace",
-          "Nullity = 0 and C(A) = ℝ⁶...",
-          "Nullity = 2 and C(A) = ℝ⁴..."
+          "Nullity = 3 and C(A) is a 1D subspace (xxxx)",
+          "Nullity = 0 and C(A) = ℝ⁶... (xxxxxxxxxxxxx)",
+          "Nullity = 2 and C(A) = ℝ⁴... (xxxxxxxxxxxxx)"
         ],
         "correct_option": "Nullity = 1 and C(A) is a 3D subspace of ℝ⁶",
         "explanation": "Step 1: Nullity = n − rank = 4 − 3 = 1. Step 2: C(A) ⊆ ℝ⁶ with dim(C(A)) = rank = 3. Step 3: The transformation maps ℝ⁴ to a 3D subspace of ℝ⁶, losing 1 input dimension (nullity = 1). This is a typical tall matrix: injective (rank = n − 1... wait, rank = 3 < n = 4, so not injective), and C(A) is a 3D hyperplane inside ℝ⁶, with 3 output dimensions unreachable (N(Aᵀ) has dimension 6 − 3 = 3). The Rank-Nullity Theorem and the output-side equation together give the complete dimensional picture."
@@ -255,9 +255,9 @@
         "question": "Prove the Rank-Nullity Theorem: rank(A) + nullity(A) = n. What is the key step?",
         "options": [
           "Row reduce to echelon form and count pivots (rank) and free variables (nullity)",
-          "Compute the determinant and take its logarithm...",
-          "Multiply A by its transpose...",
-          "Use the characteristic polymial..."
+          "Compute the determinant and take its logarithm... (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Multiply A by its transpose... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Use the characteristic polymial... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Row reduce to echelon form and count pivots (rank) and free variables (nullity)",
         "explanation": "Step 1: Row reduce A to echelon form. The number of pivots = rank(A), and the number of free variables = nullity(A). Step 2: Every column is either a pivot column or a free column — there are no other possibilities. Step 3: Since every column is counted exactly once as either a pivot or free variable, pivots + free = n, giving rank + nullity = n. This proof is constructive: it shows not just that the theorem is true, but how to compute both rank and nullity from the same row reduction. The proof also reveals why the theorem holds for any matrix — the pivot structure of row echelon form is universal."
@@ -267,9 +267,9 @@
         "question": "For A = [[1,2,3],[4,5,6],[7,8,9]], verify rank-nullity AND identify what the null space vector (1,-2,1) means geometrically.",
         "options": [
           "rank=2, nullity=1: the line t(1,-2,1) is the set of inputs collapsed to zero",
-          "rank=3, nullity=0: inputs are lost...",
-          "rank=1, nullity=2: a plane of inputs maps to zero...",
-          "rank=2, nullity=2: two independent inputs are lost..."
+          "rank=3, nullity=0: inputs are lost... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "rank=1, nullity=2: a plane of inputs maps to zero... (xxxxxxxxxxxxxxxxxxxxxx)",
+          "rank=2, nullity=2: two independent inputs are lost... (xxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "rank=2, nullity=1: the line t(1,-2,1) is the set of inputs collapsed to zero",
         "explanation": "Step 1: Rank = 2 (row 3 = 2·row2 − row1, so one row is dependent). Step 2: Nullity = 3 − 2 = 1. Step 3: The null space t(1,−2,1) is a line in ℝ³ — every vector on this line gets mapped to zero by A. Geometrically, the transformation squashes this one dimension while preserving the other two (which span R(A), a 2D plane). The Rank-Nullity Theorem confirms the dimensional balance: 2 surviving dimensions + 1 lost dimension = 3 total input dimensions. This is the four-subspace framework made concrete: R(A) ⊥ N(A) as a plane perpendicular to a line in ℝ³."
@@ -279,9 +279,9 @@
         "question": "If A is m×n with m < n, can A ever be injective (one-to-one)?",
         "options": [
           "No: rank ≤ m < n, so nullity ≥ 1, meaning some non-zero input maps to zero",
-          "if all rows are independent...",
-          "if the matrix has zero entries...",
-          "Only if m = n — does t match"
+          "if all rows are independent... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "if the matrix has zero entries... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Only if m = n — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No: rank ≤ m < n, so nullity ≥ 1, meaning some non-zero input maps to zero",
         "explanation": "Step 1: rank ≤ min(m, n) = m < n. Step 2: nullity = n − rank ≥ n − m > 0. Step 3: Since nullity > 0, N(A) contains non-zero vectors, so distinct inputs map to the same output. The transformation cannot be injective. This is a structural impossibility for wide matrices: they always lose at least n − m input dimensions. The Rank-Nullity Theorem makes this precise: a wide matrix (m < n) can never have nullity = 0, so it can never be one-to-one. In practice, this means underdetermined systems always have infinitely many solutions."
@@ -291,9 +291,9 @@
         "question": "For a 4×4 matrix A, if nullity(A) = 2, what can you say about the column space?",
         "options": [
           "C(A) is a 2D subspace of ℝ⁴",
-          "C(A) is a 4D subspace of ℝ⁴",
-          "C(A) is a 2D subspace of ℝ²",
-          "C(A) has dimension 4"
+          "C(A) is a 4D subspace of ℝ⁴ (x)",
+          "C(A) is a 2D subspace of ℝ² (x)",
+          "C(A) has dimension 4 (xxxxx)"
         ],
         "correct_option": "C(A) is a 2D subspace of ℝ⁴",
         "explanation": "Step 1: rank = n − nullity = 4 − 2 = 2. Step 2: dim(C(A)) = rank = 2. Step 3: C(A) is a 2D plane in ℝ⁴ — only half the output dimensions are reachable. The matrix is singular (not invertible), and the four subspaces are: R(A) = 2D plane, N(A) = 2D plane (orthogonal complement in ℝ⁴), C(A) = 2D plane, N(Aᵀ) = 2D plane (orthogonal complement in ℝ⁴). The Rank-Nullity Theorem determines all four dimensions from a single parameter (rank = 2), illustrating its power as the organizing principle of the four-subspace framework."
@@ -303,9 +303,9 @@
         "question": "If A is 5×5 with rank 3, and you compute A², what is the maximum possible rank of A²?",
         "options": [
           "3",
-          "5",
-          "2",
-          "1"
+          "5 (x)",
+          "2 (x)",
+          "1 (x)"
         ],
         "correct_option": "3",
         "explanation": "Step 1: rank(A²) ≤ rank(A) = 3, because the image of A² is a subset of the image of A. Step 2: Applying A twice cannot produce outputs that A alone couldn't already produce. Step 3: The rank of A² could be less than 3 if A maps some of C(A) into N(A) (so those dimensions are lost on the second application). The maximum rank of A² is min(rank(A), rank(A)) = 3, achieved when A maps C(A) onto itself. This result connects to the four-subspace framework: rank(A²) ≤ rank(A) because A cannot expand the column space — it can only maintain or shrink it."
@@ -315,9 +315,9 @@
         "question": "For A = [[1,0,0,0],[0,1,0,0],[0,0,0,0]], verify rank-nullity and describe the geometric meaning.",
         "options": [
           "rank=2, nullity=2: A projects ℝ⁴ onto the xy-plane, collapsing z and w to zero",
-          "rank=3, nullity=1: A projects onto a 3D subspace...",
-          "rank=1, nullity=3: A collapses to a line...",
-          "rank=2, nullity=1: dimensions don't add to 4..."
+          "rank=3, nullity=1: A projects onto a 3D subspace... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "rank=1, nullity=3: A collapses to a line... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "rank=2, nullity=1: dimensions don't add to 4... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "rank=2, nullity=2: A projects ℝ⁴ onto the xy-plane, collapsing z and w to zero",
         "explanation": "Step 1: Two pivots (in columns 1 and 2) → rank = 2. Step 2: Two free variables (columns 3 and 4) → nullity = 2. Step 3: 2 + 2 = 4 = n ✓. The transformation keeps x and y unchanged, sends z and w to zero. Geometrically, it is a projection from 4D onto a 2D plane: the row/column space is the xy-plane (rank = 2), the null space is the zw-plane (nullity = 2), and these two planes are orthogonal complements in ℝ⁴. This is the Rank-Nullity Theorem visualized: the 4 input dimensions are split evenly between what survives and what is lost."
@@ -327,9 +327,9 @@
         "question": "If A has rank r, what is the rank of Aᵀ?",
         "options": [
           "r (always equal)",
-          "m - r",
-          "n - r",
-          "r²"
+          "m - r (xxxxxxxxx)",
+          "n - r (xxxxxxxxx)",
+          "r² (xxxxxxxxxxxx)"
         ],
         "correct_option": "r (always equal)",
         "explanation": "Step 1: Row rank equals column rank — this is a fundamental theorem. Step 2: rank(A) = dim(R(A)) = dim(C(A)) = r. Step 3: rank(Aᵀ) = dim(R(Aᵀ)) = dim(C(Aᵀ)) = dim(C(A)) = r. The Rank-Nullity Theorem provides the bridge: applying it to A gives rank(A) + nullity(A) = n, and applying it to Aᵀ gives rank(Aᵀ) + nullity(Aᵀ) = m. The key insight is that N(A) and R(Aᵀ) are related (as orthogonal complements in ℝⁿ), and N(Aᵀ) and R(A) are related (as orthogonal complements in ℝᵐ), forcing rank(A) = rank(Aᵀ)."
@@ -339,9 +339,9 @@
         "question": "For a 3×3 matrix with rank 1, the null space is:",
         "options": [
           "A 2D plane through the origin",
-          "A 1D line through the origin",
-          "All of ℝ³)",
-          "Just the origin"
+          "A 1D line through the origin (x)",
+          "All of ℝ³) (xxxxxxxxxxxxxxxxx)",
+          "Just the origin (xxxxxxxxxxxx)"
         ],
         "correct_option": "A 2D plane through the origin",
         "explanation": "Step 1: nullity = 3 − 1 = 2. Step 2: A null space of dimension 2 is a plane through the origin. Step 3: The transformation maps all of ℝ³ onto a 1D line (C(A)), and the 2D plane of inputs perpendicular to the row space gets collapsed to zero. This is extreme rank deficiency: only one dimension of the 3D input survives. The Rank-Nullity Theorem reveals the massive imbalance: 1 surviving dimension vs. 2 lost dimensions. In data science, a rank-1 matrix means all data lies on a single line — the ultimate dimensionality reduction."
@@ -351,9 +351,9 @@
         "question": "Can the nullity of a non-zero matrix be 0?",
         "options": [
           "Yes — if the matrix has full column rank",
-          "— n-zero matrices always have n-tri...",
-          "Only for 1×1 matrices... ...",
-          "Only if the matrix is symmetric... ..."
+          "— n-zero matrices always have n-tri... (x)",
+          "Only for 1×1 matrices... ... (xxxxxxxxxx)",
+          "Only if the matrix is symmetric... ... (x)"
         ],
         "correct_option": "Yes — if the matrix has full column rank",
         "explanation": "Step 1: If rank = n (full column rank), nullity = n − n = 0. Step 2: The identity matrix is non-zero with nullity = 0. Step 3: Any matrix with independent columns has nullity = 0 — the transformation is injective. The Rank-Nullity Theorem shows that nullity = 0 is equivalent to rank = n, which is equivalent to the columns being linearly independent. A non-zero matrix can absolutely have zero nullity: the non-zero entries simply need to be arranged so that no column is a linear combination of the others."
@@ -363,9 +363,9 @@
         "question": "If A is 7×5 with rank 5, which statements are true?",
         "options": [
           "nullity=0, A is injective, C(A) is 5D in ℝ⁷, N(A)={0}",
-          "nullity=2, A is surjective, C(A)=ℝ⁷...",
-          "nullity=5, A maps everything to zero...",
-          "nullity=0, A is bijective..."
+          "nullity=2, A is surjective, C(A)=ℝ⁷... (xxxxxxxxxxxxx)",
+          "nullity=5, A maps everything to zero... (xxxxxxxxxxxx)",
+          "nullity=0, A is bijective... (xxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "nullity=0, A is injective, C(A) is 5D in ℝ⁷, N(A)={0}",
         "explanation": "Step 1: nullity = 5 − 5 = 0, so N(A) = {0} and A is injective. Step 2: rank = 5, so C(A) is a 5D subspace of ℝ⁷. Step 3: A is not surjective (C(A) ≠ ℝ⁷, since 5 < 7) and not bijective (since it is not square). The transformation maps ℝ⁵ injectively into a 5D slice of ℝ⁷. The four subspaces are: R(A) = ℝ⁵, N(A) = {0}, C(A) = 5D hyperplane in ℝ⁷, N(Aᵀ) = 2D plane in ℝ⁷ (the unreachable output dimensions). The Rank-Nullity Theorem on both sides gives the complete picture: 5 + 0 = 5 = n, and 5 + 2 = 7 = m."
@@ -382,9 +382,9 @@
       "question": "In a mechanical system, what does the nullity (dimension of the null space) represent?",
       "options": [
         "Redundant constraints that don't restrict motion further",
-        "The number of independent movements",
-        "The total number of joints",
-        "The speed of each joint"
+        "The number of independent movements (xxxxxxxxxxxxxxxxxxx)",
+        "The total number of joints (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The speed of each joint (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Redundant constraints that don't restrict motion further",
       "explanation": "Step 1: The nullity counts input dimensions that map to zero — these are constraint equations that are linear combinations of others. Step 2: In mechanics, these redundant constraints add no new restriction on the system's motion. Step 3: The rank gives the true degrees of freedom, while nullity reveals the wasted, redundant constraints. The Rank-Nullity Theorem quantifies exactly how many constraints are redundant: nullity = n − rank. Engineers use this to identify and remove unnecessary constraints, reducing complexity without changing the system's behavior."
@@ -398,9 +398,9 @@
       "question": "In regression, what do collinear predictors correspond to in terms of the null space?",
       "options": [
         "Null space directions — redundant predictor combinations",
-        "Row space directions — independent predictors",
-        "Column space — the response variable",
-        "Left null space — error terms"
+        "Row space directions — independent predictors (xxxxxxxxx)",
+        "Column space — the response variable (xxxxxxxxxxxxxxxxxx)",
+        "Left null space — error terms (xxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Null space directions — redundant predictor combinations",
       "explanation": "Step 1: Collinear predictors mean one predictor is a linear combination of others — this combination is in the null space of the design matrix. Step 2: The nullity counts how many such redundant combinations exist. Step 3: Multicollinearity (high nullity) destabilizes regression coefficients because the null-space directions cannot be distinguished from the data. The Rank-Nullity Theorem warns analysts: if nullity is high, many predictors are redundant, and the effective dimensionality of the problem is much lower than the number of variables."
@@ -414,9 +414,9 @@
       "question": "In error-correcting codes, what do the parity check bits correspond to in terms of rank and nullity?",
       "options": [
         "Nullity — additional dimensions for error detection",
-        "Rank — the number of message bits",
-        "Column space — the encoded message",
-        "Row space — the parity equations"
+        "Rank — the number of message bits (xxxxxxxxxxxxxxxx)",
+        "Column space — the encoded message (xxxxxxxxxxxxxxx)",
+        "Row space — the parity equations (xxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Nullity — additional dimensions for error detection",
       "explanation": "Step 1: The generator matrix G encodes k message bits into n code bits, with rank(G) = k. Step 2: The n − k parity bits correspond to the nullity of the parity check matrix — these extra dimensions catch errors. Step 3: The Rank-Nullity Theorem governs the tradeoff: more parity bits (higher nullity) means better error detection but lower data rate. This is the fundamental tradeoff in coding theory, and the Rank-Nullity Theorem provides its mathematical foundation."
@@ -446,9 +446,9 @@
       "question": "In an input-output economic model, what does a high nullity suggest about the economy?",
       "options": [
         "Many redundant or idle production chains",
-        "The ecomy is highly efficient",
-        "All industries are independent",
-        "The ecomy has imports"
+        "The ecomy is highly efficient (xxxxxxxxx)",
+        "All industries are independent (xxxxxxxx)",
+        "The ecomy has imports (xxxxxxxxxxxxxxxxx)"
       ],
       "answer": "Many redundant or idle production chains",
       "explanation": "Step 1: High nullity means many input dimensions map to zero output — production configurations that generate no economic activity. Step 2: These represent structural inefficiencies: redundant supply chains or idle capacity. Step 3: The Rank-Nullity Theorem reveals the gap between the number of industries (n) and the number of truly independent drivers (rank). Policymakers can use this to identify which industries are redundant and could be restructured, increasing the economy's effective rank (efficiency) while reducing nullity (waste)."
@@ -462,9 +462,9 @@
       "question": "In satellite imaging with 4 spectral bands and rank 2, how many truly independent spectral signatures exist?",
       "options": [
         "2 independent signatures, with 2 redundant spectral combinations",
-        "4 independent signatures",
-        "1 independent signature",
-        "0 independent signatures"
+        "4 independent signatures (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "1 independent signature (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "0 independent signatures (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "2 independent signatures, with 2 redundant spectral combinations",
       "explanation": "Step 1: rank = 2 means 2 independent spectral patterns are captured. Step 2: nullity = 4 − 2 = 2 means 2 redundant spectral combinations exist — they are linear combinations of the others. Step 3: The Rank-Nullity Theorem reveals that despite having 4 spectral bands, only 2 carry unique information. The satellite could achieve the same results with just 2 bands, saving bandwidth and storage. This is remote sensing's version of dimensionality reduction: the nullity tells you exactly how many bands can be discarded without losing information."

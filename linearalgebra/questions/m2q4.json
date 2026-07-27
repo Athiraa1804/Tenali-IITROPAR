@@ -37,7 +37,7 @@
           "260",
           "360",
           "100",
-          "0"
+          "0 (x)"
         ],
         "correct_option": "260",
         "explanation": "Step 1: 280 + 360 = 640, but the equation requires 900. Step 2: Error = 900 - 640 = 260. Step 3: This residual of 260 is the component of b that lies outside the column space of A — it represents information that cannot be captured by any linear combination of the columns, the irreducible approximation error."
@@ -59,7 +59,7 @@
         "question": "What is the right-hand side vector b in [[3,1],[1,2],[1,1]] × [A,C] = [1200, 1000, 900]?",
         "options": [
           "[1200, 1000, 900]",
-          "[3, 1, 1]",
+          "[3, 1, 1] (xxxxxx)",
           "[280, 360]",
           "[1200, 1000]"
         ],
@@ -71,7 +71,7 @@
         "question": "If A=300 and C=300, what is 3A+1C?",
         "options": [
           "1200",
-          "900",
+          "900 (x)",
           "600",
           "1500"
         ],
@@ -97,7 +97,7 @@
           "There exists at least one solution that satisfies all equations simultaneously",
           "The equations are written in the same format...",
           "All coefficients are positive integers...",
-          "The matrix is square — does t match"
+          "The matrix is square — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "There exists at least one solution that satisfies all equations simultaneously",
         "explanation": "Step 1: A consistent system has at least one solution satisfying every equation. Step 2: Our 3-equation system is inconsistent — no (A,C) satisfies all three. Step 3: For inconsistent systems, least squares provides the 'best compromise' — the solution that comes closest to satisfying all equations, even though it satisfies none exactly."
@@ -135,7 +135,7 @@
           "Because the system is overdetermined — no (A,C) satisfies all three equations simultaneously",
           "Because 280 and 360 are t integers...",
           "Because we need at least 4 equations...",
-          "Because the matrix is t square..."
+          "Because the matrix is t square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because the system is overdetermined — no (A,C) satisfies all three equations simultaneously",
         "explanation": "Step 1: (280, 360) uniquely satisfies equations 1 and 2. Step 2: Substituting into equation 3 gives 640≠900. Step 3: The geometric picture is clear: the first two lines intersect at (280, 360), but the third line doesn't pass through this point. No point can lie on all three lines simultaneously — this is the geometric proof of inconsistency."
@@ -147,7 +147,7 @@
           "260 (only the third equation has error)",
           "360 — t here",
           "540 — t here",
-          "0 — t here"
+          "0 — t here (xxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "260 (only the third equation has error)",
         "explanation": "Step 1: Equations 1 and 2 are satisfied exactly (error = 0). Step 2: Equation 3: 640 vs 900, error = 260. Step 3: Total absolute error = 260. This single-residual error is the irreducible component of b that lies outside the column space — least squares minimises the squared version of this quantity."
@@ -159,7 +159,7 @@
           "The first two equations would now have errors, likely increasing total error",
           "The total error would definitely decrease...",
           "The total error would stay the same...",
-          "Cant be determined — does t match"
+          "Cant be determined — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The first two equations would now have errors, likely increasing total error",
         "explanation": "Step 1: (280, 360) perfectly satisfies equations 1 and 2. Step 2: Moving to (285, 355) introduces errors in those equations while potentially reducing the error in equation 3. Step 3: The least squares solution balances all errors optimally — any deviation from it increases the total squared error, which is why the normal equations give the unique minimum."
@@ -171,7 +171,7 @@
           "It is perpendicular to the column space of the coefficient matrix",
           "It points in the direction of the solution...",
           "It is parallel to the first column...",
-          "It has geometric meaning..."
+          "It has geometric meaning... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "It is perpendicular to the column space of the coefficient matrix",
         "explanation": "Step 1: The least squares condition requires e ⊥ col(A). Step 2: Check: col₁ · e = [3,1,1] · [0,0,260] = 260 ≠ 0 — wait, this means (280, 360) is NOT the least squares solution. Step 3: The true least squares solution makes e perpendicular to ALL columns of A, and it differs from the square-system solution (280, 360) precisely because of the overdetermined third equation."
@@ -181,7 +181,7 @@
         "question": "Why do we often use squared errors (||e||²) instead of absolute errors (||e||₁) in least squares?",
         "options": [
           "Squared errors are differentiable and lead to a clean closed-form solution",
-          "Squared errors are always smaller...",
+          "Squared errors are always smaller... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Absolute errors can't be computed...",
           "Squared errors penalise small errors more..."
         ],
@@ -194,7 +194,7 @@
         "options": [
           "The set of all possible outputs Ax for any x — the 'reachable' values of b",
           "The set of all possible inputs x...",
-          "The null space of A — does t match",
+          "The null space of A — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The eigenvalues of A — does t match"
         ],
         "correct_option": "The set of all possible outputs Ax for any x — the 'reachable' values of b",
@@ -205,7 +205,7 @@
         "question": "If b = [1200, 1000, 900] is NOT in the column space of the 3×2 matrix, what is the best we can do?",
         "options": [
           "Find the point in col(A) closest to b — this is the least squares solution",
-          "Give up — solution exists...",
+          "Give up — solution exists... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Add more equations until b enters col(A)...",
           "Use a larger matrix — does t match"
         ],
@@ -219,7 +219,7 @@
           "The total error may increase, but the error per equation typically decreases",
           "The error always decreases...",
           "The error always increases...",
-          "The error stays the same..."
+          "The error stays the same... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The total error may increase, but the error per equation typically decreases",
         "explanation": "Step 1: More equations add more terms to the squared error sum. Step 2: Total error may grow, but the solution becomes more reliable as noise averages out. Step 3: The error per equation typically decreases — this is the statistical principle behind why larger datasets give better regression fits, connecting least squares to the law of large numbers."
@@ -243,7 +243,7 @@
           "Because without least squares, there's no formula — you try values and observe the error",
           "Because mathematics doesn't have exact solutions...",
           "Because computers can't solve linear systems...",
-          "Because the error is always zero..."
+          "Because the error is always zero... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because without least squares, there's no formula — you try values and observe the error",
         "explanation": "Step 1: Without the normal equations, you'd manually try different (A,C) pairs. Step 2: Each guess gives a different total error — you'd need many attempts to find the best one. Step 3: Least squares replaces this trial-and-error with the direct formula x̂ = (AᵀA)⁻¹Aᵀb — transforming a potentially infinite search into a single computation."
@@ -269,7 +269,7 @@
           "[5500, 5000]",
           "[3600, 3100]",
           "[1200, 1000]",
-          "[900, 800]"
+          "[900, 800] (x)"
         ],
         "correct_option": "[5500, 5000]",
         "explanation": "Step 1: Aᵀb = [3×1200+1×1000+1×900, 1×1200+2×1000+1×900]. Step 2: = [3600+1000+900, 1200+2000+900] = [5500, 5000]. Step 3: The vector Aᵀb projects the target onto the row space of A — it's the 'summary' of what b demands from the parameter space, weighted by each column's contribution."
@@ -280,7 +280,7 @@
         "options": [
           "11A + 6C = 5500 and 6A + 6C = 5000",
           "3A + C = 1200 and A + 2C = 1000",
-          "A + C = 900 — does t match",
+          "A + C = 900 — does t match (xxxxxx)",
           "11A + 6C = 5500 and 3A + C = 1200"
         ],
         "correct_option": "11A + 6C = 5500 and 6A + 6C = 5000",
@@ -316,7 +316,7 @@
         "options": [
           "Because AᵀA is invertible (positive definite) when columns are independent",
           "Because more rows always give unique solutions...",
-          "Because the error is always zero...",
+          "Because the error is always zero... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because full rank means the matrix is square..."
         ],
         "correct_option": "Because AᵀA is invertible (positive definite) when columns are independent",
@@ -328,7 +328,7 @@
         "options": [
           "e is perpendicular (orthogonal) to every column of A",
           "e is parallel to the first column of A",
-          "e lies in the column space of A...",
+          "e lies in the column space of A... (xxxxxxxxxxxxxxxx)",
           "e has specific geometric relationship"
         ],
         "correct_option": "e is perpendicular (orthogonal) to every column of A",
@@ -351,7 +351,7 @@
         "question": "Can the least squares residual ||b - Ax̂||² ever be zero for an overdetermined system?",
         "options": [
           "Only if b happens to lie exactly in the column space of A (all equations are consistent)",
-          "always — does t match",
+          "always — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Never — overdetermined systems always have nzero residual...",
           "Only if A is square — does t match"
         ],
@@ -363,7 +363,7 @@
         "question": "What is the connection between the normal equations and the projection theorem in linear algebra?",
         "options": [
           "The normal equations find the orthogonal projection of b onto col(A), which is the closest point in the column space",
-          "They are unrelated concepts...",
+          "They are unrelated concepts... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The rmal equations find the furthest point from b...",
           "The projection theorem only applies to 3D geometry..."
         ],
@@ -402,7 +402,7 @@
         "An overdetermined system requiring least squares",
         "An underdetermined system",
         "A square system with unique solution",
-        "A homogeneous system"
+        "A homogeneous system (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "An overdetermined system requiring least squares",
       "explanation": "Step 1: Thousands of measurements → thousands of equations. Step 2: Few forecast parameters → few unknowns. Step 3: Overdetermined system, solved by least squares for the best-fit parameters."
@@ -451,7 +451,7 @@
       "question": "When fitting a line through 250 daily stock prices with only 2 parameters (slope and intercept), what method finds the best fit?",
       "options": [
         "Least squares regression",
-        "Matrix inversion",
+        "Matrix inversion (xxxxxx)",
         "Gaussian elimination",
         "Determinant calculation"
       ],

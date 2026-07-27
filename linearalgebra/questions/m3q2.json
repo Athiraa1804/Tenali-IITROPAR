@@ -11,7 +11,7 @@
         "question": "How many unknowns does the equation x+2y+3z=0 have?",
         "options": [
           "3",
-          "2",
+          "2x",
           "1",
           "4"
         ],
@@ -23,7 +23,7 @@
         "question": "Does the point (1,2,3) satisfy the equation x+2y+3z=0?",
         "options": [
           "No, because 1+4+14=19≠0",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxx)",
           "Only if scaled",
           "Cant determine"
         ],
@@ -59,7 +59,7 @@
         "question": "Does the point (1,1,-1) satisfy x+2y+3z=0?",
         "options": [
           "Yes, because 1+2-3=0",
-          "— t here",
+          "— t here (xxxxxxxxxxx)",
           "Only if z=0",
           "Cant determine"
         ],
@@ -73,7 +73,7 @@
           "A plane through the origin",
           "A line through the origin",
           "A circle)",
-          "A point)"
+          "A point) (xxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "A plane through the origin",
         "explanation": "Step 1: One linear equation in 3 unknowns constrains 1 degree of freedom. Step 2: 3 − 1 = 2 dimensions remain, forming a plane through the origin. Step 3: This plane is the orthogonal complement of the normal vector [1,2,3] — every vector in the plane is perpendicular to [1,2,3]. Step 4: The dimension formula dim(W) + dim(W⊥) = 3 gives 1 + 2 = 3, confirming the normal line and the plane together account for all of R³."
@@ -83,7 +83,7 @@
         "question": "Is the vector (1,2,1) perpendicular to (1,2,3)?",
         "options": [
           "No, because their dot product is 8≠0",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only approximately — does t match",
           "Cant determine — does t match"
         ],
@@ -95,7 +95,7 @@
         "question": "How many independent linear equations are needed to define a line in R³?",
         "options": [
           "2",
-          "1",
+          "1x",
           "3",
           "0"
         ],
@@ -119,7 +119,7 @@
         "question": "Is (2,7,3) perpendicular to (1,2,3)?",
         "options": [
           "No, because 2+14+9=25≠0",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxx)",
           "Only if scaled",
           "Cant determine"
         ],
@@ -145,7 +145,7 @@
         "question": "Which of the following points lies on the plane x+2y+3z=0?",
         "options": [
           "(1,1,-1)",
-          "(1,2,3)",
+          "(1,2,3) ()",
           "(0,0,1)",
           "(1,0,1)"
         ],
@@ -157,7 +157,7 @@
         "question": "Is the line T = span{(1,2,1)} contained in the plane x+2y+3z=0?",
         "options": [
           "No, because (1,2,1)·(1,2,3) = 8 ≠ 0",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for certain α — does t match",
           "Cant determine — does t match"
         ],
@@ -169,7 +169,7 @@
         "question": "How many dimensions does a line through the origin in R³ have?",
         "options": [
           "1",
-          "2",
+          "2x",
           "3",
           "0"
         ],
@@ -181,7 +181,7 @@
         "question": "Can two different planes through the origin in R³ intersect in a line?",
         "options": [
           "Yes, two planes typically intersect in a line",
-          "they always coincide...",
+          "they always coincide... (xxxxxxxxxxxxxxxxxxxxx)",
           "They intersect at a point only",
           "They never intersect — does t match"
         ],
@@ -195,7 +195,7 @@
           "A vector perpendicular to the plane",
           "A vector lying in the plane",
           "The direction of steepest descent",
-          "The origin of the plane"
+          "The origin of the plane (xxxxxxxxxxx)"
         ],
         "correct_option": "A vector perpendicular to the plane",
         "explanation": "Step 1: The coefficients of x, y, z in ax+by+cz=0 form the normal vector [a,b,c]. Step 2: The normal vector is perpendicular to every vector in the plane — that is exactly what the equation [a,b,c]·[x,y,z] = 0 means. Step 3: The normal vector uniquely determines the plane (up to scaling), making it the most compact and computationally efficient descriptor of the plane. Step 4: Every vector in the plane is orthogonal to the normal, connecting 3D planes back to the 2D perpendicularity concept from Mission 22."
@@ -217,7 +217,7 @@
         "question": "Is the set {(x,y,z) : x+2y+3z=0} closed under vector addition?",
         "options": [
           "Yes — if u and v satisfy the equation, so does u+v",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for positive components...",
           "Only in R²)"
         ],
@@ -229,7 +229,7 @@
         "question": "Which pair of vectors both lie on the plane x+2y+3z=0?",
         "options": [
           "(1,1,-1) and (3,0,-1)",
-          "(1,0,0) and (0,1,0)",
+          "(1,0,0) and (0,1,0) (x)",
           "(1,2,3) and (2,4,6)",
           "(0,0,1) and (1,0,0)"
         ],
@@ -243,7 +243,7 @@
           "Yes — it contains the origin and is closed under addition and scalar multiplication",
           "— it doesn't contain the origin...",
           "Only if it passes through the origin...",
-          "Subspaces can't be planes..."
+          "Subspaces can't be planes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — it contains the origin and is closed under addition and scalar multiplication",
         "explanation": "Step 1: The plane passes through the origin (0,0,0) since 0+0+0=0. Step 2: It is closed under addition and scalar multiplication (as verified in previous questions), satisfying all three subspace conditions. Step 3: This plane is the orthogonal complement of span{[1,2,3]} — a 2D subspace that is the perpendicular partner of the 1D normal line. Step 4: Being a subspace means we can do linear algebra within it: add vectors, scale them, and find bases, all while staying within the plane."
@@ -256,7 +256,7 @@
         "options": [
           "One constraint removes 1 degree of freedom from 3, leaving 2D",
           "Because planes are simpler than lines...",
-          "Because R³ has 3 axes...",
+          "Because R³ has 3 axes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because coefficients are always positive..."
         ],
         "correct_option": "One constraint removes 1 degree of freedom from 3, leaving 2D",
@@ -281,7 +281,7 @@
           "Yes — T provides the missing direction not in the plane",
           "— they only span a plane...",
           "Only if T lies in the plane...",
-          "Only in R²)"
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — T provides the missing direction not in the plane",
         "explanation": "Step 1: The plane is 2D and T is 1D. Step 2: Since T is not contained in the plane (as verified: (1,2,1)·(1,2,3) = 8 ≠ 0), the direction (1,2,1) adds a third independent direction, spanning all of R³. Step 3: This is an application of the dimension theorem: if V is a 2D subspace and w ∉ V, then span(V ∪ {w}) = R³. Step 4: The 2D plane and the 1D line outside it together account for all 3 dimensions — their direct sum is the whole space R³."
@@ -292,7 +292,7 @@
         "options": [
           "Because the plane equation is defined as the dot product of (a,b,c) with any vector in the plane equaling 0",
           "Because rmal vectors are always perpendicular...",
-          "Because planes are flat...",
+          "Because planes are flat... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the origin is in the plane..."
         ],
         "correct_option": "Because the plane equation is defined as the dot product of (a,b,c) with any vector in the plane equaling 0",
@@ -303,7 +303,7 @@
         "question": "How many independent vectors are needed to span the plane x+2y+3z=0?",
         "options": [
           "2",
-          "1",
+          "1x",
           "3",
           "0"
         ],
@@ -327,7 +327,7 @@
         "question": "What is the geometric relationship between the normal vector (1,2,3) and the plane x+2y+3z=0?",
         "options": [
           "(1,2,3) is perpendicular to the plane",
-          "(1,2,3) lies in the plane",
+          "(1,2,3) lies in the plane (xxxxxxxxxxx)",
           "(1,2,3) is parallel to the plane",
           "(1,2,3) is tangent to the plane"
         ],
@@ -340,7 +340,7 @@
         "options": [
           "Yes, if the three normal vectors are linearly independent",
           "they always intersect in at least a line",
-          "Only two planes can intersect...",
+          "Only two planes can intersect... (xxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if the planes are parallel..."
         ],
         "correct_option": "Yes, if the three normal vectors are linearly independent",
@@ -351,7 +351,7 @@
         "question": "If v = (1,2,1) and the plane is x+2y+3z=0, the projection of v onto the plane's normal (1,2,3) is:",
         "options": [
           "[(v·n)/(n·n)]n = (8/14)(1,2,3) = (4/7, 8/7, 12/7)",
-          "(1,2,3))",
+          "(1,2,3)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(0,0,0))",
           "(1,2,1))"
         ],
@@ -363,7 +363,7 @@
         "question": "Why does the line S = span{(2,7,3)} not lie in the plane x+2y+3z=0?",
         "options": [
           "Because (2,7,3)·(1,2,3) = 25 ≠ 0, so (2,7,3) is not perpendicular to the normal",
-          "Because 2+7+3 = 12 ≠ 0...",
+          "Because 2+7+3 = 12 ≠ 0... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because S has 3 components...",
           "Because the plane has 3 coefficients..."
         ],
@@ -398,7 +398,7 @@
       "question": "If a robot arm's reachable positions satisfy one constraint in 3D, how many degrees of freedom does it have?",
       "options": [
         "2",
-        "1",
+        "1x",
         "3",
         "0"
       ],
@@ -414,7 +414,7 @@
       "question": "How many satellites does a GPS receiver need to determine a precise 3D position?",
       "options": [
         "4",
-        "2",
+        "2x",
         "3",
         "6"
       ],

@@ -10,12 +10,12 @@
         "id": "M3Q7E1",
         "question": "What is 2(1,2,1) + 0(2,7,3)?",
         "options": [
-          "(2,4,2)",
+          "(2,4,2",
           "(1,2,1)",
           "(4,14,6)",
           "(3,9,4)"
         ],
-        "correct_option": "(2,4,2)",
+        "correct_option": "(2,4,2",
         "explanation": "Step 1: 2(1,2,1) = (2,4,2). Step 2: 0(2,7,3) = (0,0,0). Sum = (2,4,2). This point lies on the plane W, showing how scalar multiples of the basis vectors generate points in the span."
       },
       {
@@ -35,7 +35,7 @@
         "question": "Are (1,2,1) and (2,7,3) linearly independent?",
         "options": [
           "Yes — neither is a scalar multiple of the other",
-          "— they are parallel...",
+          "— they are parallel... (xxxxxxxxxxxxxxxxxxxxxxx)",
           "Only if scaled — does t match",
           "Cant determine — does t match"
         ],
@@ -49,7 +49,7 @@
           "A plane through the origin",
           "A line through the origin",
           "All of R³)",
-          "A point)"
+          "A point) (xxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "A plane through the origin",
         "explanation": "Step 1: Two independent vectors provide 2 free parameters (alpha, beta). Step 2: These sweep out a 2D plane through the origin. This is the geometric meaning of span — the set of all points reachable by mixing the given directions."
@@ -70,12 +70,12 @@
         "id": "M3Q7E6",
         "question": "What is 1(1,2,1) + 1(2,7,3)?",
         "options": [
-          "(3,9,4)",
+          "(3,9,4",
           "(1,2,1)",
           "(2,7,3)",
           "(5,14,7)"
         ],
-        "correct_option": "(3,9,4)",
+        "correct_option": "(3,9,4",
         "explanation": "Step 1: (1,2,1) + (2,7,3) = (1+2, 2+7, 1+3) = (3,9,4). Step 2: This point lies on the plane W. Linear combinations like this generate the entire span."
       },
       {
@@ -83,7 +83,7 @@
         "question": "Is the point (3,9,4) in W = span{(1,2,1),(2,7,3)}?",
         "options": [
           "Yes — it equals 1(1,2,1) + 1(2,7,3)",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only approximately — does t match",
           "Cant determine — does t match"
         ],
@@ -109,7 +109,7 @@
           "W becomes a line instead of a plane (vectors become dependent)",
           "W stays a plane — does t match",
           "W becomes all of R³ — does t match",
-          "W disappears — does t match"
+          "W disappears — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "W becomes a line instead of a plane (vectors become dependent)",
         "explanation": "Step 1: (4,14,6) = 2(2,7,3), so it is parallel to (2,7,3). Step 2: Two parallel vectors span only a 1D line, not a 2D plane. This shows that span depends on independence, not just the number of vectors."
@@ -120,7 +120,7 @@
         "options": [
           "A flat surface (plane) through the origin",
           "A curved surface — does t match",
-          "A volume)",
+          "A volume) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A set of isolated points..."
         ],
         "correct_option": "A flat surface (plane) through the origin",
@@ -147,7 +147,7 @@
           "No — you need 3 independent vectors to span all of R³",
           "always — does t match",
           "Only for vectors with positive entries",
-          "Only in 2D)"
+          "Only in 2D) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No — you need 3 independent vectors to span all of R³",
         "explanation": "Step 1: R³ is 3-dimensional. Step 2: Two vectors can only span a 2D plane, leaving one dimension unreachable. To span all of R³, you need 3 independent vectors — this is the basis of R³."
@@ -157,7 +157,7 @@
         "question": "How many vectors do you need to add to W = span{(1,2,1),(2,7,3)} to span all of R³?",
         "options": [
           "1 (any vector not in the plane)",
-          "2 — t here",
+          "2 — t here (xxxxxxxxxxxxxxxxxxx)",
           "3 — t here",
           "0 — W already spans R³"
         ],
@@ -169,7 +169,7 @@
         "question": "Is (1,2,1) + (2,7,3) = (3,9,4) in the plane W?",
         "options": [
           "Yes — it is a linear combination with α=1, β=1",
-          "— sums leave the plane...",
+          "— sums leave the plane... (xxxxxxxxxxxxxxxxxxx)",
           "Only if α=β — does t match",
           "Cant determine — does t match"
         ],
@@ -183,7 +183,7 @@
           "Yes — it contains the origin and is closed under addition and scalar multiplication",
           "— it doesn't contain the origin...",
           "Only if it passes through the origin...",
-          "Subspaces can't be planes..."
+          "Subspaces can't be planes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — it contains the origin and is closed under addition and scalar multiplication",
         "explanation": "Step 1: W contains (0,0,0), is closed under + and scalar multiplication. Step 2: These are the three conditions for a subspace. Any span of vectors is automatically a subspace — this is a fundamental theorem."
@@ -193,7 +193,7 @@
         "question": "What is the normal vector to the plane W = span{(1,2,1),(2,7,3)}?",
         "options": [
           "(1,1,-3) (the cross product)",
-          "(1,2,1))",
+          "(1,2,1)) (xxxxxxxxxxxxxxxxxx)",
           "(2,7,3))",
           "(3,9,4))"
         ],
@@ -205,7 +205,7 @@
         "question": "If you change α and β freely, how many different points can you reach in W?",
         "options": [
           "Infinitely many — all points on the plane",
-          "Exactly 2)",
+          "Exactly 2) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Exactly 4)",
           "Finitely many — does t match"
         ],
@@ -219,7 +219,7 @@
           "x + y - 3z = 0 (using the normal (1,1,-3))",
           "x + 2y + z = 0 — does t match",
           "2x + 7y + 3z = 0 — does t match",
-          "x + y + z = 0 — does t match"
+          "x + y + z = 0 — does t match (xxxxxxxxxxxx)"
         ],
         "correct_option": "x + y - 3z = 0 (using the normal (1,1,-3))",
         "explanation": "Step 1: The normal is (1,1,-3). Step 2: The plane equation is 1*x + 1*y + (-3)*z = 0, or x+y-3z=0. Check: (1,2,1): 1+2-3=0. (2,7,3): 2+7-9=0. The equation and the span describe the same set."
@@ -231,7 +231,7 @@
           "Yes — (1,2,1) and (2,7,3) form a basis for the plane",
           "— some points can't be reached...",
           "Only for α=β — does t match",
-          "Only for integer points..."
+          "Only for integer points... (xxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Yes — (1,2,1) and (2,7,3) form a basis for the plane",
         "explanation": "Step 1: Two independent vectors on a 2D plane form a basis. Step 2: Every point on the plane can be uniquely expressed as a combination of the basis vectors. This is the power of a basis — it gives you a coordinate system for the subspace."
@@ -241,7 +241,7 @@
         "question": "Is the span of (1,2,1) and (2,4,2) a plane?",
         "options": [
           "No — (2,4,2) = 2(1,2,1), so they span only a line",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only in 3D)",
           "Only if perpendicular..."
         ],
@@ -257,7 +257,7 @@
           "If w₁ = α₁v₁+β₁v₂ and w₂ = α₂v₁+β₂v₂, then w₁+w₂ = (α₁+α₂)v₁+(β₁+β₂)v₂ ∈ W",
           "t closed in general...",
           "Only closed for specific vectors...",
-          "Only in R²)"
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "If w₁ = α₁v₁+β₁v₂ and w₂ = α₂v₁+β₂v₂, then w₁+w₂ = (α₁+α₂)v₁+(β₁+β₂)v₂ ∈ W",
         "explanation": "Step 1: Any two vectors in W have the form w1 = alpha1*v1 + beta1*v2 and w2 = alpha2*v1 + beta2*v2. Step 2: Their sum is (alpha1+alpha2)*v1 + (beta1+beta2)*v2, which is still a linear combination of v1 and v2, hence in W. Closure under addition is the second requirement for a subspace."
@@ -268,7 +268,7 @@
         "options": [
           "Solve α(1,2,1)+β(2,7,3)=(a,b,c) — if consistent, it's in W",
           "Check if it's perpendicular to (1,1,-3)...",
-          "Check if its magnitude equals 1...",
+          "Check if its magnitude equals 1... (xxxxxxxxxxxxxxxxxxxxxx)",
           "See if it has integer components..."
         ],
         "correct_option": "Solve α(1,2,1)+β(2,7,3)=(a,b,c) — if consistent, it's in W",
@@ -279,7 +279,7 @@
         "question": "Is the vector (1,0,0) in W = span{(1,2,1),(2,7,3)}?",
         "options": [
           "Check: α+2β=1, 2α+7β=0 → α=-7/3, β=5/3 → check third: -7/3+5=8/3 ≠ 0, so NO",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only approximately — does t match",
           "Cant determine — does t match"
         ],
@@ -293,7 +293,7 @@
           "Because setting α=β=0 always gives the zero vector (0,0,0)",
           "Because all planes pass through the origin...",
           "Because vectors always start at the origin...",
-          "By definition of R³ — does t match"
+          "By definition of R³ — does t match (xxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because setting α=β=0 always gives the zero vector (0,0,0)",
         "explanation": "Step 1: 0*v1 + 0*v2 = (0,0,0). Step 2: The zero vector is always a linear combination (with all coefficients zero), so it is always in the span. This is why every span passes through the origin."
@@ -303,7 +303,7 @@
         "question": "What is the relationship between the span of (1,2,1) and (2,7,3) and the equation x+y-3z=0?",
         "options": [
           "They describe the same set — the plane x+y-3z=0 is exactly the span",
-          "They are different sets...",
+          "They are different sets... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The equation describes a line...",
           "The equation describes all of R³..."
         ],
@@ -317,7 +317,7 @@
           "It becomes all of R³ — three independent vectors span R³",
           "It stays a plane — does t match",
           "It becomes a line — does t match",
-          "thing changes — does t match"
+          "thing changes — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "It becomes all of R³ — three independent vectors span R³",
         "explanation": "Step 1: (1,1,-3) is perpendicular to the plane, so it is not in the span. Step 2: Three independent vectors in R³ span all of R³. Adding a normal vector to a plane's basis extends it to a basis for the entire space."
@@ -329,7 +329,7 @@
           "Infinitely many — any two independent vectors on the plane form a basis",
           "Exactly one — does t match",
           "Exactly two — does t match",
-          "ne)"
+          "ne) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Infinitely many — any two independent vectors on the plane form a basis",
         "explanation": "Step 1: Any two independent vectors on a 2D plane form a valid basis. Step 2: There are infinitely many such pairs — for example, (1,2,1) and (3,9,4) also form a basis. A basis is not unique, but the dimension is."
@@ -341,7 +341,7 @@
           "No — two vectors span at most a 2D plane in 3D space",
           "always — does t match",
           "Only if they are perpendicular...",
-          "Only in R²)"
+          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "No — two vectors span at most a 2D plane in 3D space",
         "explanation": "Step 1: Two vectors provide at most 2 independent directions. Step 2: R³ requires 3 independent directions to span fully, so two vectors can never span all of R³."
@@ -363,7 +363,7 @@
         "question": "Why is the concept of 'span' fundamental to linear algebra?",
         "options": [
           "It defines the set of all reachable outputs from a set of building blocks (vectors)",
-          "It only applies to 2D spaces...",
+          "It only applies to 2D spaces... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It's just ather word for 'addition'...",
           "It only works with perpendicular vectors..."
         ],
@@ -383,7 +383,7 @@
       "options": [
         "The plane of all achievable velocity combinations",
         "The altitude of the plane",
-        "The speed of the plane",
+        "The speed of the plane (xxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The weight of the plane"
       ],
       "correct_option": "The plane of all achievable velocity combinations",
@@ -398,7 +398,7 @@
       "question": "What does the span of two joint movement vectors represent for a robotic arm?",
       "options": [
         "The flat surface of all reachable positions",
-        "The maximum speed",
+        "The maximum speed (xxxxxxxxxxxxxxxxxxxxxxxx)",
         "The arm's weight capacity",
         "The power consumption"
       ],
@@ -414,7 +414,7 @@
       "question": "What geometric shape do the span of two satellite direction vectors define?",
       "options": [
         "A plane of possible positions",
-        "A line",
+        "A line (xxxxxxxxxxxxxxxxxxxxx)",
         "A sphere",
         "A single point"
       ],
@@ -430,7 +430,7 @@
       "question": "If a game character can move in directions (1,0) and (0,1) on a flat plane, what is their span?",
       "options": [
         "The entire 2D plane (all possible positions)",
-        "A line",
+        "A line (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "A single point",
         "A circle"
       ],
@@ -447,7 +447,7 @@
       "options": [
         "The xy-plane (forces in x and y directions only)",
         "The x-axis only",
-        "All of R³",
+        "All of R³ (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "A single line"
       ],
       "correct_option": "The xy-plane (forces in x and y directions only)",
@@ -464,7 +464,7 @@
         "All colours on the red-green plane (no blue component)",
         "All possible colours",
         "Only red and green",
-        "Only yellow"
+        "Only yellow (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "All colours on the red-green plane (no blue component)",
       "explanation": "Step 1: Span{(1,0,0),(0,1,0)} = {(a,b,0) | a,b ≥ 0}. Step 2: This includes red, green, yellow, orange, and other red-green mixtures, but no colours with a blue component."

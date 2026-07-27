@@ -46,7 +46,7 @@
         "id": "M6Q1E4",
         "question": "What does the rank of a rating matrix tell you about users?",
         "options": [
-          "How many movies each user rated...",
+          "How many movies each user rated... (xxxxxxxxxxxxxxxxx)",
           "How many independent taste profiles exist among users",
           "The average rating given by all users...",
           "The total number of ratings in the matrix"
@@ -70,7 +70,7 @@
         "id": "M6Q1E6",
         "question": "For the rating matrix R = [[5,3,0,1],[4,0,0,1],[1,1,5,4]], what does the column space represent?",
         "options": [
-          "All possible user taste profiles",
+          "All possible user taste profiles (xxxxxxxxxxxxx)",
           "All possible movie rating patterns across users",
           "All possible users — does t match",
           "All possible movies — does t match"
@@ -82,7 +82,7 @@
         "id": "M6Q1E7",
         "question": "Why are rating matrices typically sparse (mostly zeros)?",
         "options": [
-          "Most users dislike most movies...",
+          "Most users dislike most movies... (xxxxxxxxxxxxxxxxxxxx)",
           "Users only rate a small fraction of all available items",
           "The matrix is stored in compressed form...",
           "Zeros represent the most common rating..."
@@ -97,7 +97,7 @@
           "All 5 users have unique preferences...",
           "Only 2 of the 5 users have independent taste profiles",
           "The matrix has 2 columns...",
-          "There are only 2 movies..."
+          "There are only 2 movies... (xxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Only 2 of the 5 users have independent taste profiles",
         "explanation": "Step 1: Rank 2 means only 2 rows are linearly independent — the other 3 users' rating vectors can be expressed as linear combinations of those 2 basis vectors. Step 2: This implies a hidden 2-dimensional taste space: every user's preference is a blend of 2 archetypes (e.g., 'action lover' and 'drama enthusiast'), and the 3 redundant users simply occupy specific points in this 2D space. Step 3: For recommendations, this is powerful: instead of storing 5 full rating vectors, you only need to store 2 basis vectors and 5 two-dimensional coordinates — a massive compression that simultaneously reveals the latent structure driving user preferences."
@@ -132,7 +132,7 @@
         "id": "M6Q1M1",
         "question": "Why would Netflix care if its rating matrix has low rank (e.g., rank 5 instead of millions)?",
         "options": [
-          "Low rank means fewer movies to store...",
+          "Low rank means fewer movies to store... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Low rank means user preferences can be explained by just a few latent factors, making recommendations efficient",
           "Low rank means the matrix is small in file size...",
           "Low rank means all users gave the same rating..."
@@ -146,7 +146,7 @@
         "options": [
           "Alice and Bob (both like action movies)",
           "Alice and Charlie (opposite preferences)",
-          "Bob and Charlie — does t match",
+          "Bob and Charlie — does t match (xxxxxxxx)",
           "All three are equally different"
         ],
         "correct_option": "Alice and Charlie (opposite preferences)",
@@ -159,7 +159,7 @@
           "Rank increases to 4",
           "Rank stays the same (still 3)",
           "Rank decreases to 2",
-          "Cant be determined"
+          "Cant be determined (xxxxxxxxx)"
         ],
         "correct_option": "Rank stays the same (still 3)",
         "explanation": "Step 1: Diana's row is a linear combination of existing rows: d = 0.5a + 0.5b, so adding d to the row space does not increase its dimension. Step 2: By the definition of rank as the dimension of the row space, adding a dependent vector cannot increase the dimension — the row space remains span{a, b, c} with dimension 3. Step 3: This illustrates a fundamental principle in recommendation systems: users who are predictable combinations of existing users provide no new information about the latent taste structure — they are 'redundant' in the sense that their preferences can be perfectly inferred from other users, which is exactly what matrix factorization exploits."
@@ -171,7 +171,7 @@
           "It measures the angle between rating vectors, making it insensitive to how many ratings each user has given",
           "It always returns a value between 0 and 1...",
           "It is faster to compute than the dot product...",
-          "It only works for binary ratings..."
+          "It only works for binary ratings... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "It measures the angle between rating vectors, making it insensitive to how many ratings each user has given",
         "explanation": "Step 1: Cosine similarity = (u·v)/(‖u‖‖v‖) = cos θ, which normalizes the dot product by the magnitudes of both vectors, yielding a value in [−1, 1] that depends only on the angle between vectors, not their lengths. Step 2: The raw dot product u·v = ‖u‖‖v‖cos θ conflates magnitude (how many/few ratings a user gave) with direction (what pattern of preferences they have), so a power user with many 5-star ratings would appear artificially similar to everyone. Step 3: By projecting both vectors onto the unit sphere before measuring similarity, cosine similarity isolates the purely directional component — the shape of the taste pattern — which is the actual signal that matters for predicting whether two users will agree on unseen items."
@@ -181,7 +181,7 @@
         "question": "Why is the zero entry in a rating matrix NOT simply treated as 'the user gave a 0 rating'?",
         "options": [
           "Because 0 ratings would distort the mean and variance of each row",
-          "Because the system only accepts ratings from 1 to 5",
+          "Because the system only accepts ratings from 1 to 5 (xxxxxxxxxxxx)",
           "Because zeros are reserved for missing data in all databases",
           "Because 0 is t a valid float in most programming languages"
         ],
@@ -205,7 +205,7 @@
         "question": "If you decompose a rating matrix using SVD and keep only the top k singular values, what are you approximating?",
         "options": [
           "The original matrix with a lower-rank matrix that captures the most important patterns",
-          "The exact original matrix...",
+          "The exact original matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A random matrix with the same dimensions...",
           "The transpose of the original matrix..."
         ],
@@ -218,7 +218,7 @@
         "options": [
           "Higher rank means more latent factors are needed to explain user preferences",
           "Lower rank means more latent factors are present...",
-          "Rank and latent factors are unrelated concepts...",
+          "Rank and latent factors are unrelated concepts... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Rank determines the number of movies, t latent factors..."
         ],
         "correct_option": "Higher rank means more latent factors are needed to explain user preferences",
@@ -231,7 +231,7 @@
           "Cosine similarity only looks at the direction of rating patterns, not their magnitudes",
           "Cosine similarity adds extra ratings to balance them...",
           "It rounds ratings to the nearest whole number first...",
-          "It igres users who rated fewer than 10 movies..."
+          "It igres users who rated fewer than 10 movies... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Cosine similarity only looks at the direction of rating patterns, not their magnitudes",
         "explanation": "Step 1: Cosine similarity = (u·v)/(‖u‖‖v‖) projects both vectors onto the unit sphere before measuring the angle between them, so two vectors u and αu (for any scalar α > 0) yield cosine similarity = 1. Step 2: A power user who rated 200 movies and a casual user who rated 10 movies can have proportional rating vectors (same direction, different magnitudes), and cosine similarity correctly identifies them as having identical taste patterns. Step 3: This normalization is essential in practice because rating volume varies enormously across users — without it, the raw dot product would systematically favor users who rate more items, even if their actual preference patterns are different."
@@ -241,7 +241,7 @@
         "question": "If a rating matrix has full row rank (rank equals the number of users), what does this imply?",
         "options": [
           "Every user has a completely unique taste profile that cannot be predicted from others",
-          "All users like the same movies...",
+          "All users like the same movies... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The matrix has missing entries...",
           "There are exactly as many movies as users..."
         ],
@@ -256,7 +256,7 @@
         "options": [
           "Because there are infinitely many rank-k matrices that agree with the known entries",
           "Because the matrix is too small to have a unique completion...",
-          "Because 0 entries cant be part of any matrix completion...",
+          "Because 0 entries cant be part of any matrix completion... (xxxxxxxxxxxxxxxxxxxxxxx)",
           "Because rank is undefined for matrices with missing entries..."
         ],
         "correct_option": "Because there are infinitely many rank-k matrices that agree with the known entries",
@@ -268,7 +268,7 @@
         "options": [
           "The original movies in order of importance...",
           "User-specific latent feature vectors — each user's coordinates in the k-dimensional latent space",
-          "The ratings each user gave...",
+          "The ratings each user gave... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The singular values themselves..."
         ],
         "correct_option": "User-specific latent feature vectors — each user's coordinates in the k-dimensional latent space",
@@ -280,7 +280,7 @@
         "options": [
           "Because the nuclear norm is the sum of singular values, which is convex, while rank (count of non-zero singular values) is not convex",
           "Because nuclear rm and rank always give the same answer...",
-          "Because convex functions are always linear...",
+          "Because convex functions are always linear... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because rank can never be minimized directly..."
         ],
         "correct_option": "Because the nuclear norm is the sum of singular values, which is convex, while rank (count of non-zero singular values) is not convex",
@@ -316,7 +316,7 @@
         "options": [
           "Because the Frobenius norm squared equals the sum of squared singular values, and discarding σ_{k+1},... removes exactly their squared contributions",
           "Because the Frobenius rm igres small singular values automatically...",
-          "Because the error matrix has singular values...",
+          "Because the error matrix has singular values... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because Frobenius rm and spectral rm are always equal..."
         ],
         "correct_option": "Because the Frobenius norm squared equals the sum of squared singular values, and discarding σ_{k+1},... removes exactly their squared contributions",
@@ -329,7 +329,7 @@
           "The two movies are redundant — recommending one is essentially the same as recommending the other",
           "The two movies are always rated oppositely...",
           "The system should recommend both movies to every user...",
-          "The rank of the matrix is inflated..."
+          "The rank of the matrix is inflated... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The two movies are redundant — recommending one is essentially the same as recommending the other",
         "explanation": "Step 1: If column M2 ≈ α × M1, then M2 is approximately in the span of M1 — they carry nearly identical information about user preferences, and the column space dimension does not increase by adding M2. Step 2: In the SVD, this near-proportionality means one of the singular values is very small (the component capturing the difference between M1 and M2 is negligible), and the two movies map to nearly the same direction in the latent space. Step 3: For the recommendation system, this means M1 and M2 are effectively the same latent factor — recommending one to a user who liked the other is redundant, and the system can collapse them into a single factor, reducing dimensionality without losing meaningful information."
@@ -339,7 +339,7 @@
         "question": "Why can't we simply solve Rx = b for missing ratings, where b is the vector of missing entries and x is a completion vector?",
         "options": [
           "Because the missing entries are in different positions for different users, so there is no single consistent system to solve",
-          "Because R is always singular...",
+          "Because R is always singular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because x would have negative components...",
           "Because Rx always produces zero..."
         ],
@@ -352,7 +352,7 @@
         "options": [
           "Because it uses the latent factor structure — combining user i's latent preferences with movie j's latent attributes — rather than ignoring individual taste",
           "Because it always predicts exactly the true value...",
-          "Because it uses fewer computations...",
+          "Because it uses fewer computations... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because it doesn't require kwing any ratings at all..."
         ],
         "correct_option": "Because it uses the latent factor structure — combining user i's latent preferences with movie j's latent attributes — rather than ignoring individual taste",
@@ -365,7 +365,7 @@
           "The importance (variance explained) of each latent factor in the movie-item space",
           "The number of users who rated each movie...",
           "The total number of ratings in the matrix...",
-          "The average rating for each movie..."
+          "The average rating for each movie... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The importance (variance explained) of each latent factor in the movie-item space",
         "explanation": "Step 1: AA^T = R^T R is a 4×4 matrix whose eigenvectors are the right singular vectors V (the columns of V), and its eigenvalues are σ₁², σ₂², σ₃², 0 (since rank = 3). Step 2: Each eigenvalue σ_i² measures the variance explained by the i-th latent factor in the movie space — it quantifies how much of the total movie preference variation is captured by that factor. Step 3: The first eigenvalue is largest, meaning the first latent factor captures the most movie preference variation (the dominant taste dimension); the ratio σ₁²/(σ₁² + σ₂² + σ₃²) gives the fraction of movie-space variance explained by factor 1 alone, which is the basis for deciding how many factors to retain in a practical recommendation system."
@@ -383,7 +383,7 @@
       "options": [
         "Users randomly pick movies to watch",
         "User preferences can be explained by a small number of hidden latent factors",
-        "All users have identical taste",
+        "All users have identical taste (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The matrix contains too few ratings to be useful"
       ],
       "answer": "User preferences can be explained by a small number of hidden latent factors",
@@ -400,7 +400,7 @@
         "How many warehouses store each product",
         "The number of distinct shopping patterns or product categories among customers",
         "The total number of products sold",
-        "The average price of products"
+        "The average price of products (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "The number of distinct shopping patterns or product categories among customers",
       "explanation": "Step 1: Each customer's purchase vector lives in the product space, and the rank counts how many linearly independent purchase patterns exist. Step 2: If rank is 5, there are 5 major categories of buying behavior (e.g., electronics buyer, book buyer, fashion buyer, home goods buyer, grocery buyer), and all other customers' patterns are combinations of these 5 archetypes. Step 3: Amazon uses this low-rank structure to compress customer data and build efficient recommendation engines — the rank directly quantifies the number of distinct customer segments the platform must serve."
@@ -415,7 +415,7 @@
       "options": [
         "The exact genre label for every song",
         "Hidden latent factors that capture music taste dimensions like energy, mood, and instrumentation",
-        "The most popular songs of all time",
+        "The most popular songs of all time (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Which songs are currently trending"
       ],
       "answer": "Hidden latent factors that capture music taste dimensions like energy, mood, and instrumentation",
@@ -429,7 +429,7 @@
       "story": "An e-commerce platform builds a user-product matrix where entries indicate purchase frequency. The column space of this matrix reveals which products tend to be purchased together — products whose columns point in similar directions are bought by the same type of customer. This drives the 'Customers who bought X also bought Y' feature.",
       "question": "In an e-commerce user-product matrix, what does the similarity between two product columns indicate?",
       "options": [
-        "The products are priced similarly",
+        "The products are priced similarly (xxxxxxxxxxxxx)",
         "The products appeal to the same type of customer",
         "The products are stored in the same warehouse",
         "The products were released on the same date"
@@ -445,7 +445,7 @@
       "story": "A market research company surveys 1000 customers using 20 questions about product preferences. When they build the response matrix and compute its rank, they find rank = 4. This means all 20 questions can be explained by just 4 underlying customer segments — the survey is effectively measuring 4 traits, not 20 independent ones.",
       "question": "When a 20-question survey produces a response matrix with rank 4, what does this tell the researcher?",
       "options": [
-        "The survey has 4 answers",
+        "The survey has 4 answers (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The 20 questions are measuring only 4 independent underlying traits or customer segments",
         "4 respondents gave invalid answers",
         "The survey should be reduced to exactly 4 questions"

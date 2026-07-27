@@ -22,12 +22,12 @@
         "id": "M1Q14E2",
         "question": "What is A × (2, -1) for A = [[1,2],[2,4]]?",
         "options": [
-          "(0, 0)",
+          "(0, 0",
           "(2, -1)",
           "(1, 2)",
           "(4, -2)"
         ],
-        "correct_option": "(0, 0)",
+        "correct_option": "(0, 0",
         "explanation": "Step 1: A × (2,-1) = (1·2+2·(-1), 2·2+4·(-1)) = (2-2, 4-4) = (0,0). Step 2: The vector (2,-1) maps to the origin. Step 3: This vector is in the null space of A."
       },
       {
@@ -36,7 +36,7 @@
         "options": [
           "The set of all vectors x such that Ax = 0",
           "The set of all outputs of A",
-          "The set of all eigenvalues",
+          "The set of all eigenvalues (xxxxxxxxxxxxx)",
           "The set of all row vectors"
         ],
         "correct_option": "The set of all vectors x such that Ax = 0",
@@ -46,12 +46,12 @@
         "id": "M1Q14E4",
         "question": "If A = [[1,2],[2,4]], what is A × (4, -2)?",
         "options": [
-          "(0, 0)",
+          "(0, 0",
           "(4, -2)",
           "(2, 4)",
           "(8, -4)"
         ],
-        "correct_option": "(0, 0)",
+        "correct_option": "(0, 0",
         "explanation": "Step 1: A × (4,-2) = (4-4, 8-8) = (0,0). Step 2: (4,-2) = 2 × (2,-1). Step 3: Scalar multiples of null space vectors are also in the null space."
       },
       {
@@ -59,7 +59,7 @@
         "question": "The row 2 of [[1,2],[2,4]] is twice row 1. This means:",
         "options": [
           "The rows are linearly dependent, causing det = 0",
-          "The matrix is invertible...",
+          "The matrix is invertible... (xxxxxxxxxxxxxxxxxxx)",
           "The matrix has full rank...",
           "The null space is trivial..."
         ],
@@ -72,7 +72,7 @@
         "options": [
           "x = -2y (both equations say the same thing)",
           "x = 2y)",
-          "x = y)",
+          "x = y) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "x = 0 and y = 0 only — does t match"
         ],
         "correct_option": "x = -2y (both equations say the same thing)",
@@ -85,7 +85,7 @@
           "The line x = -2y (or equivalently, y = -x/2)",
           "The line x = y — does t match",
           "The line x = 2y — does t match",
-          "The x-axis)"
+          "The x-axis) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The line x = -2y (or equivalently, y = -x/2)",
         "explanation": "Step 1: The null space equation is x + 2y = 0, so x = -2y. Step 2: Parametrically, (x,y) = t(-2, 1) for any real t. Step 3: This is a line through the origin with direction vector (-2, 1)."
@@ -108,7 +108,7 @@
         "options": [
           "A line through the origin (or a single point)",
           "The entire plane — does t match",
-          "A circle)",
+          "A circle) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A parabola)"
         ],
         "correct_option": "A line through the origin (or a single point)",
@@ -118,12 +118,12 @@
         "id": "M1Q14E10",
         "question": "If A = [[1,2],[2,4]], what is A × (-2, 1)?",
         "options": [
-          "(0, 0)",
+          "(0, 0",
           "(-2, 1)",
           "(1, 2)",
           "(2, -1)"
         ],
-        "correct_option": "(0, 0)",
+        "correct_option": "(0, 0",
         "explanation": "Step 1: A × (-2,1) = (1·(-2)+2·1, 2·(-2)+4·1) = (-2+2, -4+4) = (0,0). Step 2: (-2,1) is another null space vector. Step 3: It's the negative of (2,-1), confirming the null space is a line through the origin."
       }
     ],
@@ -133,7 +133,7 @@
         "question": "Why is det(A) = 0 significant for understanding the null space?",
         "options": [
           "det = 0 means non-zero vectors exist that map to the origin (non-trivial null space)",
-          "det = 0 means the null space is empty...",
+          "det = 0 means the null space is empty... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "det = 0 means the null space is all of ℝ²...",
           "det = 0 tells us thing about the null space..."
         ],
@@ -145,7 +145,7 @@
         "question": "If the null space of a 2×2 matrix contains a non-zero vector, what is the dimension of the null space?",
         "options": [
           "1 (the null space is a line through the origin)",
-          "2 — t here",
+          "2 — t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "0 — t here",
           "Cant be determined — does t match"
         ],
@@ -158,7 +158,7 @@
         "options": [
           "Yes — all vectors on the null space line map to the origin",
           "only the zero vector maps to origin...",
-          "Only two vectors — does t match",
+          "Only two vectors — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only integer vectors — does t match"
         ],
         "correct_option": "Yes — all vectors on the null space line map to the origin",
@@ -182,7 +182,7 @@
         "options": [
           "A flow pattern that cancels out at every junction (net flow = 0 everywhere)",
           "The fastest route through the network...",
-          "The maximum flow capacity...",
+          "The maximum flow capacity... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A blocked road — does t match"
         ],
         "correct_option": "A flow pattern that cancels out at every junction (net flow = 0 everywhere)",
@@ -194,7 +194,7 @@
         "options": [
           "Because information in the null space is permanently lost — multiple original images could produce the same blurred result",
           "Because blurring is too slow to reverse...",
-          "Because the pixels are too small...",
+          "Because the pixels are too small... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the human eye can't see the difference..."
         ],
         "correct_option": "Because information in the null space is permanently lost — multiple original images could produce the same blurred result",
@@ -206,7 +206,7 @@
         "options": [
           "[[1,2|0],[0,0|0]] — one pivot, one free variable",
           "[[1,0|0],[0,1|0]] — free variables",
-          "[[0,0|0],[0,0|0]] — all zeros...",
+          "[[0,0|0],[0,0|0]] — all zeros... (xxxxxxxxxxxxxx)",
           "[[1,2|0],[2,4|0]] — unchanged..."
         ],
         "correct_option": "[[1,2|0],[0,0|0]] — one pivot, one free variable",
@@ -217,7 +217,7 @@
         "question": "In audio compression (like MP3), some frequency components are discarded. Mathematically, this is equivalent to:",
         "options": [
           "Projecting onto the complement of the null space — those frequencies become zero",
-          "Adding ise to the signal...",
+          "Adding ise to the signal... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Multiplying by a diagonal matrix...",
           "Rotating the signal — does t match"
         ],
@@ -231,7 +231,7 @@
           "The column space is a line and the null space is a perpendicular line (in standard inner product)",
           "They are the same line...",
           "They are perpendicular planes...",
-          "There is relationship..."
+          "There is relationship... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The column space is a line and the null space is a perpendicular line (in standard inner product)",
         "explanation": "Step 1: rank = 1 → column space is 1D (a line). Step 2: nullity = 2 - 1 = 1 → null space is also 1D. Step 3: The row space is perpendicular to the null space (fundamental theorem of linear algebra), and the column space is perpendicular to the left null space."
@@ -243,7 +243,7 @@
           "{(0, y) : y ∈ ℝ} — the y-axis",
           "The x-axis)",
           "Just the origin",
-          "All of ℝ²)"
+          "All of ℝ²) (xxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "{(0, y) : y ∈ ℝ} — the y-axis",
         "explanation": "Step 1: [[1,0],[0,0]] × (x,y) = (x, 0). Step 2: For this to equal (0,0), we need x = 0. Step 3: y is free, so the null space is {(0, y)} = the y-axis."
@@ -255,7 +255,7 @@
         "question": "For A = [[1,2],[2,4]], the null space is {t(-2,1) : t ∈ ℝ}. What is the dimension of this null space?",
         "options": [
           "1-dimensional (spanned by one non-zero vector)",
-          "2-dimensional — does t match",
+          "2-dimensional — does t match (xxxxxxxxxxxxxxxx)",
           "0-dimensional — does t match",
           "Infinite-dimensional — does t match"
         ],
@@ -280,7 +280,7 @@
         "options": [
           "Yes — if A is the zero matrix, then Ax = 0 for all x",
           "the null space is always a proper subset",
-          "Only for n = 1 — does t match",
+          "Only for n = 1 — does t match (xxxxxxxxxxxxxxxxxxxxx)",
           "Only for singular matrices..."
         ],
         "correct_option": "Yes — if A is the zero matrix, then Ax = 0 for all x",
@@ -291,7 +291,7 @@
         "question": "The fundamental theorem of linear algebra states that the null space of A is orthogonal to the row space of A. For A = [[1,2],[2,4]], verify: is (-2,1) perpendicular to (1,2)?",
         "options": [
           "Yes: (-2)(1) + (1)(2) = 0, confirming orthogonality",
-          "the dot product is n-zero...",
+          "the dot product is n-zero... (xxxxxxxxxxxxxxxxxxxxx)",
           "Only if we use a different inner product",
           "Orthogonality doesn't apply to null spaces"
         ],
@@ -317,7 +317,7 @@
           "nullity = 1, a line through the origin in ℝ³ that maps to zero",
           "nullity = 2, a plane — does t match",
           "nullity = 0, just the origin...",
-          "nullity = 3, all of ℝ³..."
+          "nullity = 3, all of ℝ³... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "nullity = 1, a line through the origin in ℝ³ that maps to zero",
         "explanation": "Step 1: rank + nullity = dim(domain) = 3. Step 2: nullity = 3 - 2 = 1. Step 3: A 1D null space in ℝ³ is a line through the origin — all vectors along this line are mapped to zero by T."
@@ -327,7 +327,7 @@
         "question": "The image of a linear map T: ℝ³ → ℝ³ with rank 2 is a:",
         "options": [
           "2-dimensional plane through the origin (the column space)",
-          "A line)",
+          "A line) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "All of ℝ³)",
           "A single point — does t match"
         ],
@@ -339,7 +339,7 @@
         "question": "In network routing, if the routing matrix has a null space of dimension 3, what does this mean for the traffic flow?",
         "options": [
           "There are 3 independent circulating flow patterns that produce zero net traffic at all junctions",
-          "The network has 3 roads...",
+          "The network has 3 roads... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Traffic can only flow in 3 directions...",
           "The network is completely blocked..."
         ],
@@ -363,7 +363,7 @@
         "question": "Why is understanding the null space crucial in applied mathematics and engineering?",
         "options": [
           "It reveals which inputs produce no output (redundancies, conservation laws, and hidden symmetries in physical systems)",
-          "It helps compute determinants faster...",
+          "It helps compute determinants faster... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It only matters for theoretical mathematics...",
           "It makes matrices easier to multiply..."
         ],
@@ -402,7 +402,7 @@
         "The null space — frequency components that map to zero",
         "The eigenvalues",
         "The determinant",
-        "The trace"
+        "The trace (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "answer": "The null space — frequency components that map to zero",
       "explanation": "Step 1: Compression removes specific frequency components. Step 2: These components are in the null space of the compression operator. Step 3: Once in the null space, they are zero — the information is gone."
@@ -418,7 +418,7 @@
       "options": [
         "Flow patterns that produce zero net traffic at every junction (circulating flows)",
         "The fastest route through the network",
-        "The road with the most traffic",
+        "The road with the most traffic (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The junction with the most roads"
       ],
       "answer": "Flow patterns that produce zero net traffic at every junction (circulating flows)",
@@ -452,7 +452,7 @@
       "options": [
         "Self-stress states — internal forces that balance without external loads",
         "The strongest member of the structure",
-        "The point of maximum load",
+        "The point of maximum load (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The foundation of the building"
       ],
       "answer": "Self-stress states — internal forces that balance without external loads",

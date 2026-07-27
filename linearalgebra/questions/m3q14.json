@@ -23,7 +23,7 @@
         "question": "What is the null space direction of B = [[1,2],[2,4]]?",
         "options": [
           "(2,-1)",
-          "(1,2)",
+          "(1,2) (x)",
           "(2,4)",
           "(1,1)"
         ],
@@ -47,7 +47,7 @@
         "question": "Is (2,-1) perpendicular to (1,2)?",
         "options": [
           "Yes — (2,-1)·(1,2) = 2-2 = 0",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxx)",
           "Only approximately",
           "Cant determine"
         ],
@@ -60,7 +60,7 @@
         "options": [
           "The direction (2,-1) is in the null space — all info along it is lost",
           "B is invertible — does t match",
-          "(2,-1) is in the range...",
+          "(2,-1) is in the range... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "B maps everything to zero..."
         ],
         "correct_option": "The direction (2,-1) is in the null space — all info along it is lost",
@@ -95,7 +95,7 @@
         "question": "Does rank(1) + nullity(1) = 2 = dim(R²)?",
         "options": [
           "Yes — the Rank-Nullity Theorem holds",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only approximately — does t match",
           "Only for special matrices"
         ],
@@ -109,7 +109,7 @@
           "{t(1,2) | t ∈ R} — a line through the origin",
           "All of R²)",
           "A single point — does t match",
-          "A plane)"
+          "A plane) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "{t(1,2) | t ∈ R} — a line through the origin",
         "explanation": "Step 1: B*(x,y) = (x+2y)(1,2) = t(1,2) where t = x+2y. Step 2: The range is all scalar multiples of (1,2)."
@@ -120,7 +120,7 @@
         "options": [
           "Because B maps it to the zero vector — the 'null' output",
           "Because it has a negative component...",
-          "Because it's the diagonal...",
+          "Because it's the diagonal... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because it's the longest direction..."
         ],
         "correct_option": "Because B maps it to the zero vector — the 'null' output",
@@ -135,7 +135,7 @@
           "Because B*(2,-1) = (0,0), so any movement along this direction is invisible in the output",
           "Because (2,-1) has a negative component...",
           "Because B can't handle negative numbers...",
-          "Because the entries are positive..."
+          "Because the entries are positive... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "Because B*(2,-1) = (0,0), so any movement along this direction is invisible in the output",
         "explanation": "Step 1: Moving along (2,-1) produces zero change in the output. Step 2: B cannot distinguish between points that differ only in this direction."
@@ -147,7 +147,7 @@
           "They are perpendicular — their dot product is 0",
           "They are parallel — does t match",
           "They are the same — does t match",
-          "They are at 45° — does t match"
+          "They are at 45° — does t match (xxxxxxxxxxxxxxx)"
         ],
         "correct_option": "They are perpendicular — their dot product is 0",
         "explanation": "Step 1: (2,-1)·(1,2) = 2-2 = 0. Step 2: The null space and range are always perpendicular for any matrix."
@@ -158,7 +158,7 @@
         "options": [
           "The projection of (3,1) onto (1,2)",
           "(3,1) itself — does t match",
-          "(0,0))",
+          "(0,0)) (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "(2,-1))"
         ],
         "correct_option": "The projection of (3,1) onto (1,2)",
@@ -169,7 +169,7 @@
         "question": "What is the null space component of (3,1)?",
         "options": [
           "(3,1) - (1,2) = (2,-1)",
-          "(3,1))",
+          "(3,1)) (xxxxxxxxxxxxxx)",
           "(1,2))",
           "(0,0))"
         ],
@@ -183,7 +183,7 @@
           "B*(1,2) = (5,10) and B*(2,-1) = (0,0), so B*(3,1) = (5,10)",
           "B maps both to zero — does t match",
           "B maps both to (3,1) — does t match",
-          "B swaps them — does t match"
+          "B swaps them — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "B*(1,2) = (5,10) and B*(2,-1) = (0,0), so B*(3,1) = (5,10)",
         "explanation": "Step 1: B*(1,2) = (1+4, 2+8) = (5,10). Step 2: B*(2,-1) = (0,0). Sum: B*(3,1) = (5,10)+(0,0) = (5,10)."
@@ -193,7 +193,7 @@
         "question": "What does the decomposition (x,y) = range component + null space component tell us about B's action?",
         "options": [
           "B keeps the range component and destroys the null space component",
-          "B keeps both — does t match",
+          "B keeps both — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "B destroys both — does t match",
           "B swaps them — does t match"
         ],
@@ -205,7 +205,7 @@
         "question": "For the general formula: line 2y+x=k maps to (k, 2k). What is k geometrically?",
         "options": [
           "The value of x+2y on the line — it measures 'how far' the line is from the origin along the range direction",
-          "The slope of the line...",
+          "The slope of the line... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The length of the line...",
           "The angle of the line..."
         ],
@@ -217,7 +217,7 @@
         "question": "Is the null space of B a subspace of R²?",
         "options": [
           "Yes — it's a line through the origin (1D subspace)",
-          "— t here",
+          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for special matrices...",
           "Subspaces can't be null spaces..."
         ],
@@ -229,7 +229,7 @@
         "question": "What is the geometric meaning of the range direction (1,2)?",
         "options": [
           "It's the only direction in which B produces non-zero output",
-          "It's the direction B cant see...",
+          "It's the direction B cant see... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "It's the direction of the null space...",
           "It's the direction B maps to zero..."
         ],
@@ -241,7 +241,7 @@
         "question": "If B had rank 2 instead of 1, what would the null space be?",
         "options": [
           "Only the zero vector (nullity = 0)",
-          "A line)",
+          "A line) (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "A plane)",
           "All of R²)"
         ],
@@ -255,7 +255,7 @@
         "question": "Prove that the null space and range of any matrix are perpendicular.",
         "options": [
           "If n is in null(A) and r is in range(A) = C(A), then r = Ax for some x, so n·r = n·(Ax) = (Aᵀn)·x. Since n ⊥ rows of A, n·r = 0",
-          "They're always parallel...",
+          "They're always parallel... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for square matrices...",
           "Only for singular matrices..."
         ],
@@ -267,7 +267,7 @@
         "question": "Why does B map the line 2y+x=k to a SINGLE point rather than another line?",
         "options": [
           "Because the line is parallel to the null space, so all points differ by null space vectors that B maps to zero",
-          "Because B is invertible...",
+          "Because B is invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the line passes through the origin...",
           "By coincidence — does t match"
         ],
@@ -281,7 +281,7 @@
           "Range: (13/5, 26/5), Null: (12/5, -11/5)",
           "(5,3) is entirely in the range",
           "(5,3) is entirely in the null space",
-          "Cant decompose — does t match"
+          "Cant decompose — does t match (xxxxxxxxx)"
         ],
         "correct_option": "Range: (13/5, 26/5), Null: (12/5, -11/5)",
         "explanation": "Step 1: Project (5,3) onto (1,2): [(5,3)·(1,2)/5](1,2) = [11/5](1,2) = (11/5, 22/5). Step 2: Null component: (5,3)-(11/5, 22/5) = (14/5, -7/5) = (7/5)(2,-1)."
@@ -292,7 +292,7 @@
         "options": [
           "proj = [v·(1,2)/(1,2)·(1,2)](1,2) = [v·(1,2)/5](1,2)",
           "proj = v·(1,2) — does t match",
-          "proj = (1,2) — does t match",
+          "proj = (1,2) — does t match (xxxxxxxxxxxxxxxxxxxxxxx)",
           "proj = v/(1,2) — does t match"
         ],
         "correct_option": "proj = [v·(1,2)/(1,2)·(1,2)](1,2) = [v·(1,2)/5](1,2)",
@@ -303,7 +303,7 @@
         "question": "Can you write any vector (a,b) as a combination of the range direction (1,2) and null space direction (2,-1)?",
         "options": [
           "Yes — (1,2) and (2,-1) are independent and span R²",
-          "— they don't span R²...",
+          "— they don't span R²... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Only for special (a,b)...",
           "Only for positive components..."
         ],
@@ -315,7 +315,7 @@
         "question": "If B has rank 1, nullity 1 in R², what is the 'general collapse formula'?",
         "options": [
           "Line 2y+x=k maps to (k, 2k) — each k gives a distinct output on the range line",
-          "All lines map to the origin...",
+          "All lines map to the origin... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Lines map to lines — does t match",
           "thing collapses — does t match"
         ],
@@ -327,7 +327,7 @@
         "question": "Why is it important that the null space and range directions form a basis for R²?",
         "options": [
           "Because it means every vector can be decomposed into a part B keeps and a part B destroys",
-          "Because B is invertible...",
+          "Because B is invertible... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because B is the identity...",
           "Because det=0 — does t match"
         ],
@@ -341,7 +341,7 @@
           "The null space becomes trivial (only zero vector) since det=1≠0",
           "The null space stays the same...",
           "The null space gets larger...",
-          "The null space becomes 2D..."
+          "The null space becomes 2D... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
         ],
         "correct_option": "The null space becomes trivial (only zero vector) since det=1≠0",
         "explanation": "Step 1: det([[1,2],[2,5]]) = 5-4 = 1 ≠ 0. Step 2: Non-zero determinant means B is invertible, null space = {0}, no information is lost."
@@ -352,7 +352,7 @@
         "options": [
           "The null space consists of inputs that produce zero output, which must be perpendicular to the output directions",
           "By coincidence — does t match",
-          "Only for 2×2 matrices...",
+          "Only for 2×2 matrices... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "Because the matrix is square..."
         ],
         "correct_option": "The null space consists of inputs that produce zero output, which must be perpendicular to the output directions",
@@ -363,7 +363,7 @@
         "question": "For a rank-1 matrix in R², what is the complete geometric picture?",
         "options": [
           "The plane collapses onto a line, with each preimage line (parallel to null space) collapsing to a point on the range",
-          "thing changes — does t match",
+          "thing changes — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
           "The plane expands — does t match",
           "The origin moves — does t match"
         ],
@@ -384,7 +384,7 @@
         "High-variance, high-information directions",
         "Low-variance ise",
         "Random directions",
-        "The data mean"
+        "The data mean (xxxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "High-variance, high-information directions",
       "explanation": "Step 1: PCA identifies directions of maximum variance (range) and minimum variance (null space). Step 2: The range directions carry the most information and are preserved."
@@ -400,7 +400,7 @@
         "Rigid body motions that require no energy",
         "Maximum deformation",
         "Critical loads",
-        "Failure modes"
+        "Failure modes (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
       ],
       "correct_option": "Rigid body motions that require no energy",
       "explanation": "Step 1: The stiffness matrix maps displacements to forces. Step 2: Null space displacements produce zero force — the structure moves freely without deforming."
@@ -415,7 +415,7 @@
       "options": [
         "Internal transactions with zero net effect",
         "The most productive industries",
-        "The total GDP",
+        "The total GDP (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "Export revenues"
       ],
       "correct_option": "Internal transactions with zero net effect",
@@ -430,7 +430,7 @@
       "question": "In audio filtering, what does the range of the filtering matrix represent?",
       "options": [
         "The preserved audio signal",
-        "The removed ise",
+        "The removed ise (xxxxxxxxx)",
         "The volume level",
         "The sample rate"
       ],
@@ -447,7 +447,7 @@
       "options": [
         "Inputs that the layer cannot distinguish — they produce the same output",
         "The most important inputs",
-        "The training data",
+        "The training data (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
         "The learning rate"
       ],
       "correct_option": "Inputs that the layer cannot distinguish — they produce the same output",
@@ -462,7 +462,7 @@
       "question": "In network routing, what do null space path combinations represent?",
       "options": [
         "Redundant paths that cancel to zero net flow",
-        "The fastest routes",
+        "The fastest routes (xxxxxxxxxxxxxxxxxxxxxxxx)",
         "The most popular destinations",
         "The cheapest paths"
       ],

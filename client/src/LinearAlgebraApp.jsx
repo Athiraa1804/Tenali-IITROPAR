@@ -3349,15 +3349,7 @@ function LinearAlgebraApp({ onBack }) {
           <h3 style={{ textAlign: 'center', margin: '12px 0 4px' }}>Mission {currentMission} Quiz</h3>
           {!mqStarted && !mqFinished && (
             <div style={{ textAlign: 'center', padding: '16px 0' }}>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-dim)', marginBottom: 12 }}>Test your understanding of this mission with 10 questions.</p>
-              <div className="checkbox-group" style={{ marginBottom: 12, justifyContent: 'center' }}>
-                {['easy', 'medium', 'hard', 'adaptive'].map(d => (
-                  <label key={d} className={`checkbox-pill${mqDifficulty === d ? ' active' : ''}`}>
-                    <input type="radio" name="mq-diff" checked={mqDifficulty === d} onChange={() => setMqDifficulty(d)} />
-                    {d.charAt(0).toUpperCase() + d.slice(1)}
-                  </label>
-                ))}
-              </div>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-dim)', marginBottom: 12 }}>Test your understanding of this mission with 10 adaptive questions. Pass (≥7/10) to unlock real-life applications.</p>
               <button className="la-quiz-next-btn" onClick={mqStart} style={{ maxWidth: 250, margin: '0 auto' }}>Start Quiz</button>
             </div>
           )}
@@ -3431,7 +3423,7 @@ function LinearAlgebraApp({ onBack }) {
           )}
           {mqFinished && (() => {
             const pct = mqTotal > 0 ? Math.round((mqScore / mqTotal) * 100) : 0;
-            const passed = pct >= 80;
+            const passed = pct >= 70; // 70% threshold (≥7/10) — matches Matrix Mystics plan
             const hasNext = currentMission < mod.end || MODULES.some(m => m.id === currentModule + 1);
             return (
             <div>

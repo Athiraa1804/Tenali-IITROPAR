@@ -90,6 +90,13 @@ import LanguageDashboard from './language/LanguageDashboard'
 import { VOCAB_CORPUS } from './vocabCorpus'
 import PercentExplanationApp from './PercentExplanationApp'
 import { playSound } from './audioContext'
+import GeometryApp from './GeometryApp';
+import EquationSandboxApp from './lib/EquationSandboxApp.jsx';
+import QFormulaConceptApp from './lib/concept/QFormulaConceptApp.jsx';
+import SimulConceptApp from './lib/simul-concept/SimulConceptApp.jsx';
+import DiagnosticQuiz from './lib/DiagnosticQuiz.jsx';
+import { useI18n } from './lib/i18n.jsx';
+import CuriosityApp from './Curiosity.jsx';
 import ProctoredQuiz from './proctor/ProctoredQuiz'
 import useProctor from './proctor/useProctor'
 import ProctorDashboard from './proctor/ProctorDashboard'
@@ -98,13 +105,6 @@ import PlaygroundApp from './PlaygroundApp'
 import LocalCompilerApp from './LocalCompilerApp'
 import BattleApp from './BattleApp'
 import SudokuApp from './SudokuApp'
-import EquationSandboxApp from './lib/EquationSandboxApp.jsx';
-import QFormulaConceptApp from './lib/concept/QFormulaConceptApp.jsx';
-import SimulConceptApp from './lib/simul-concept/SimulConceptApp.jsx';
-import DiagnosticQuiz from './lib/DiagnosticQuiz.jsx';
-import { useI18n } from './lib/i18n.jsx';
-import CuriosityApp from './Curiosity.jsx';
-import GeometryApp from './GeometryApp';
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -43382,38 +43382,8 @@ function App() {
     )
   }
 
-  // Route: /proctor → Proctor Dashboard (admin only)
+  // Route: /proctor → Proctor Dashboard (instructor view)
   if (pathname === '/proctor') {
-    if (!user) {
-      return (
-        <div className="app-shell">
-          <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <div className="card" style={{ padding: 40, textAlign: 'center' }}>
-            <h2>🔒 Admin Login Required</h2>
-            <p style={{ color: 'var(--clr-text-soft)', marginBottom: 20 }}>Please log in with an admin account to access the Proctor Dashboard.</p>
-            <AuthGate>
-              <div />
-            </AuthGate>
-          </div>
-        </div>
-      )
-    }
-    if (user.role !== 'admin') {
-      return (
-        <div className="app-shell">
-          <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <div className="card" style={{ padding: 40, textAlign: 'center' }}>
-            <h2>⛔ Access Denied</h2>
-            <p style={{ color: 'var(--clr-text-soft)', marginBottom: 20 }}>You need admin privileges to access the Proctor Dashboard.</p>
-            <button onClick={() => { window.location.href = '/' }} style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: 'var(--clr-accent)', color: '#fff', cursor: 'pointer', fontWeight: 600 }}>Back to Home</button>
-          </div>
-        </div>
-      )
-    }
     const ProctorDash = ProctorDashboard
     return (
       <>
@@ -44643,9 +44613,9 @@ function App() {
     'visual-math-lab-redux': VisualMathLabRedux,
     'mensuration-lab': MensurationLabApp,
     'basic-arith-lab': BasicArithmeticLabApp,
+    geocraft: GeometryApp,
     battle: BattleApp,          // Live fastest-finger duels
     sudoku: SudokuApp,          // 9x9 Sudoku puzzle
-    geocraft: GeometryApp,
 
     'comic-addition': ComicAdditionApp,
     gk: GKApp,                    // General Knowledge
@@ -44738,8 +44708,9 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
-    riddle: RiddleApp,              // Math Riddles
+    // matrixmystics mode removed — Matrix Mystics content now embedded in LinearAlgebraApp's mission quiz
     trackProgress: null,
+    riddle: RiddleApp,              // Math Riddles
   }
 
   // Get the component to render (or null if mode not set)
@@ -44889,7 +44860,7 @@ function App() {
       </button>
       <div>
         {mode === 'vachana' ? (
-          <Vachana onBack={() => setMode(null)} />
+          <Vachana onBack={() => setMode(null)} initialAdaptScore={diagnosticState[mode] || 0} />
         ) : (
           <div className="card">
             {renderContent()}
@@ -45019,7 +44990,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'lineqgym', name: 'LinearEquations-Gym', subtitle: 'Solve linear equations (MCQ)', color: 'blue' },
     { key: 'indicesgym', name: 'Indices-Gym', subtitle: 'Index laws (MCQ)', color: 'green' },
     { key: 'polygym', name: 'Polynomials Gym', subtitle: 'Arithmetic → monomial algebra (MCQ)', color: 'blue' },
-  ]
+  ] // end regularApps (MatrixMystics tile removed — uses LinearAlgebraApp via linearalgebra mode)
 
   // Combined list for search filtering
   const allApps = [...hamburgerApps, ...regularApps]
@@ -45166,6 +45137,18 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
             </button>
 
             {filteredHamburgerApps.map(app => (
+              <button key={app.key} onClick={() => { setMenuOpen(false); onSelect(app.key) }} style={{
+                display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
+                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
+                fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'
+              }} onMouseEnter={e => e.target.style.background = 'var(--clr-hover-strong)'}
+                onMouseLeave={e => e.target.style.background = 'none'}>
+                <strong style={{ color: 'var(--clr-accent)' }}>{app.name}</strong>
+                <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>{app.subtitle}</span>
+              </button>
+            ))}
+
+            {featuredApps.map(app => (
               <button key={app.key} onClick={() => { setMenuOpen(false); onSelect(app.key) }} style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
                 background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
@@ -55607,6 +55590,25 @@ const PolyGymApp = makeMCQuizApp({
     extrahard: 'Extra Hard — squaring & collect like terms',
   },
   tip: 'Every multiplication reduces to two single-digit numbers. Watch the signs and the powers.',
+})
+
+// ───────────────────────────────────────────────────────────────────────────
+// MATRIX MYSTICS — comprehensive linear algebra MCQ test bank
+// 6 modules, 53 topics, 1855+ questions across easy/medium/hard + real app.
+// ───────────────────────────────────────────────────────────────────────────
+
+const MatrixMysticsApp = makeMCQuizApp({
+  title: 'Matrix Mystics',
+  subtitle: 'Linear Algebra — 6 modules, 53 topics',
+  apiPath: 'matrixmystics-api',
+  adaptiveOnly: true,
+  diffLabels: {
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    extrahard: 'Extra Hard',
+  },
+  tip: 'All questions are MCQ. Read carefully — options are similar length to test real understanding.',
 })
 
 // ───────────────────────────────────────────────────────────────────────────

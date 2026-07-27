@@ -46,7 +46,7 @@
         "id": "M1Q1E4",
         "question": "Does this straight line pass through the origin (0,0)?",
         "options": [
-          "because L=0 gives R=0",
+          "Yes, because L=0 gives R=0",
           "it misses the origin",
           "Only in even weeks",
           "Cant be determined"
@@ -106,7 +106,7 @@
         "id": "M1Q1E9",
         "question": "If both brothers save a fixed, equal amount every single week (not changing week to week), would the graph of (week number, cumulative savings) also be a line through the origin?",
         "options": [
-          "since equal weekly addition gives constant slope",
+          "Yes, since equal weekly addition gives constant slope",
           "cumulative totals always curve upward",
           "Only for Ram, t Lakshman...",
           "Cant say without more data..."
@@ -204,7 +204,7 @@
         "id": "M1Q1M7",
         "question": "Suppose each week the actual rupee amount saved varies (not fixed), but Ram always saves exactly twice whatever Lakshman saves that week. Do the cumulative totals (L, R) still satisfy R = 2L?",
         "options": [
-          "because summing '2×(weekly amount)' over weeks gives 2×(sum of weekly amounts)",
+          "Yes, because summing '2×(weekly amount)' over weeks gives 2×(sum of weekly amounts)",
           "only single-week amounts satisfy it, t totals...",
           "Only true for week 1 — does t match",
           "Cant be determined without exact amounts..."
@@ -240,7 +240,7 @@
         "id": "M1Q1M10",
         "question": "If instead the relationship were R = 2L + 5 (say, Ram gets a ₹5 bonus every week), would the line still pass through the origin?",
         "options": [
-          "since at L=0, R=5, t 0",
+          "No, since at L=0, R=5, not 0",
           "adding a constant doesn't move the line",
           "Only if L is negative...",
           "Cant say)"
@@ -254,7 +254,7 @@
         "id": "M1Q1H1",
         "question": "Suppose both brothers received a one-time ₹10 gift before the weekly saving pattern began, so the true relation is R = 2L + 10. Does (L,R) still form a straight line? Does it pass through the origin?",
         "options": [
-          "it's still a line, but it does T pass through the origin",
+          "Yes, it's still a line, but it does NOT pass through the origin",
           "a line, and it still passes through the origin",
           "it's longer a line at all...",
           "Cant be determined without more weeks of data..."
@@ -290,7 +290,7 @@
         "id": "M1Q1H4",
         "question": "If w₁=(L₁,R₁) and w₂=(L₂,R₂) both satisfy R=2L, does their sum w₁+w₂ = (L₁+L₂, R₁+R₂) also satisfy R=2L?",
         "options": [
-          "since R₁=2L₁ and R₂=2L₂, adding gives R₁+R₂ = 2(L₁+L₂)",
+          "Yes: since R₁=2L₁ and R₂=2L₂, adding gives R₁+R₂ = 2(L₁+L₂)",
           "sums of valid points can leave the line...",
           "Only if L₁=L₂ — does t match",
           "Cant say without actual numbers..."
@@ -302,7 +302,7 @@
         "id": "M1Q1H5",
         "question": "Is the set {(L,R): R=2L} closed under scalar multiplication — i.e., if (L,R) is in the set, is α(L,R) also in the set for any real α?",
         "options": [
-          "α(L,R) = (αL, αR), and αR = 2(αL) still holds",
+          "Yes: α(L,R) = (αL, αR), and αR = 2(αL) still holds",
           "only positive α work...",
           "Only α=1 works — does t match",
           "Cant say)"
@@ -437,7 +437,7 @@
       "id": "M1Q1R6",
       "question": "A taxi charges a FIXED base fare of ₹50 PLUS ₹10 per km. Plotting total fare (y) vs distance traveled (x), the graph is:",
       "options": [
-        "A straight line that does T pass through the origin",
+        "A straight line that does NOT pass through the origin",
         "A straight line through the origin",
         "A curve",
         "A circle"

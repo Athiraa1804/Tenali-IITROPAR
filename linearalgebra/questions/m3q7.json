@@ -34,7 +34,7 @@
         "id": "M3Q7E3",
         "question": "Are (1,2,1) and (2,7,3) linearly independent?",
         "options": [
-          "— neither is a scalar multiple of the other",
+          "Yes — neither is a scalar multiple of the other",
           "— they are parallel...",
           "Only if scaled — does t match",
           "Cant determine — does t match"
@@ -58,7 +58,7 @@
         "id": "M3Q7E5",
         "question": "Does the origin (0,0,0) belong to W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "— set α=0, β=0",
+          "Yes — set α=0, β=0",
           "— t here",
           "Only if the vectors are independent",
           "Only in R²)"
@@ -82,7 +82,7 @@
         "id": "M3Q7E7",
         "question": "Is the point (3,9,4) in W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "— it equals 1(1,2,1) + 1(2,7,3)",
+          "Yes — it equals 1(1,2,1) + 1(2,7,3)",
           "— t here",
           "Only approximately — does t match",
           "Cant determine — does t match"
@@ -144,7 +144,7 @@
         "id": "M3Q7M2",
         "question": "Can any vector in R³ be written as a linear combination of (1,2,1) and (2,7,3)?",
         "options": [
-          "— you need 3 independent vectors to span all of R³",
+          "No — you need 3 independent vectors to span all of R³",
           "always — does t match",
           "Only for vectors with positive entries",
           "Only in 2D)"
@@ -156,7 +156,7 @@
         "id": "M3Q7M3",
         "question": "How many vectors do you need to add to W = span{(1,2,1),(2,7,3)} to span all of R³?",
         "options": [
-          "1 (any vector t in the plane)",
+          "1 (any vector not in the plane)",
           "2 — t here",
           "3 — t here",
           "0 — W already spans R³"
@@ -168,7 +168,7 @@
         "id": "M3Q7M4",
         "question": "Is (1,2,1) + (2,7,3) = (3,9,4) in the plane W?",
         "options": [
-          "— it is a linear combination with α=1, β=1",
+          "Yes — it is a linear combination with α=1, β=1",
           "— sums leave the plane...",
           "Only if α=β — does t match",
           "Cant determine — does t match"
@@ -180,7 +180,7 @@
         "id": "M3Q7M5",
         "question": "Is W = span{(1,2,1),(2,7,3)} a subspace of R³?",
         "options": [
-          "— it contains the origin and is closed under addition and scalar multiplication",
+          "Yes — it contains the origin and is closed under addition and scalar multiplication",
           "— it doesn't contain the origin...",
           "Only if it passes through the origin...",
           "Subspaces can't be planes..."
@@ -216,7 +216,7 @@
         "id": "M3Q7M8",
         "question": "What is the equation of the plane W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "x + y - 3z = 0 (using the rmal (1,1,-3))",
+          "x + y - 3z = 0 (using the normal (1,1,-3))",
           "x + 2y + z = 0 — does t match",
           "2x + 7y + 3z = 0 — does t match",
           "x + y + z = 0 — does t match"
@@ -228,7 +228,7 @@
         "id": "M3Q7M9",
         "question": "Does every point on the plane x+y-3z=0 have the form α(1,2,1)+β(2,7,3)?",
         "options": [
-          "— (1,2,1) and (2,7,3) form a basis for the plane",
+          "Yes — (1,2,1) and (2,7,3) form a basis for the plane",
           "— some points can't be reached...",
           "Only for α=β — does t match",
           "Only for integer points..."
@@ -240,7 +240,7 @@
         "id": "M3Q7M10",
         "question": "Is the span of (1,2,1) and (2,4,2) a plane?",
         "options": [
-          "— (2,4,2) = 2(1,2,1), so they span only a line",
+          "No — (2,4,2) = 2(1,2,1), so they span only a line",
           "— t here",
           "Only in 3D)",
           "Only if perpendicular..."
@@ -278,7 +278,7 @@
         "id": "M3Q7H3",
         "question": "Is the vector (1,0,0) in W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "Check: α+2β=1, 2α+7β=0 → α=-7/3, β=5/3 → check third: -7/3+5=8/3 ≠ 0, so",
+          "Check: α+2β=1, 2α+7β=0 → α=-7/3, β=5/3 → check third: -7/3+5=8/3 ≠ 0, so NO",
           "— t here",
           "Only approximately — does t match",
           "Cant determine — does t match"
@@ -338,7 +338,7 @@
         "id": "M3Q7H8",
         "question": "Can the span of two vectors in R³ be all of R³?",
         "options": [
-          "— two vectors span at most a 2D plane in 3D space",
+          "No — two vectors span at most a 2D plane in 3D space",
           "always — does t match",
           "Only if they are perpendicular...",
           "Only in R²)"
@@ -461,7 +461,7 @@
       "story": "In additive colour mixing, red (1,0,0) and green (0,1,0) are two primary colours. Their span defines all colours achievable by mixing only red and green — the yellow-green spectrum on the rg-plane.",
       "question": "What colours can be made by mixing only red (1,0,0) and green (0,1,0) in an additive system?",
       "options": [
-        "All colours on the red-green plane ( blue component)",
+        "All colours on the red-green plane (no blue component)",
         "All possible colours",
         "Only red and green",
         "Only yellow"

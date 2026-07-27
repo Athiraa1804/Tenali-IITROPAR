@@ -58,7 +58,7 @@
         "id": "M1Q10E5",
         "question": "Is g(x) = x³ - x² - 14x + 2 a polynomial?",
         "options": [
-          "it is a degree-3 polymial",
+          "Yes, it is a degree-3 polynomial",
           "it has too many terms",
           "Only for integer x — does t match",
           "Only if all coefficients are positive"
@@ -144,7 +144,7 @@
         "id": "M1Q10M2",
         "question": "Why can a cubic equation have three solutions while a quadratic has at most two?",
         "options": [
-          "Because a cubic has degree 3, allowing the curve to wiggle and cross a line up to 3 times",
+          "Because a cubic has degree 3, allowing the curve to wiggle and cross a horizontal line up to 3 times",
           "Because cubics always have more terms...",
           "Because the quadratic formula only gives two answers...",
           "Because cubics don't have symmetry..."
@@ -156,7 +156,7 @@
         "id": "M1Q10M3",
         "question": "Can a degree-n polynomial have more than n real roots?",
         "options": [
-          "— the Fundamental Theorem of Algebra limits it to exactly n roots (counting multiplicity)",
+          "No — the Fundamental Theorem of Algebra limits it to exactly n roots (counting multiplicity)",
           "always n+1 — does t match",
           "Only for even n — does t match",
           "Only if all roots are real..."
@@ -180,7 +180,7 @@
         "id": "M1Q10M5",
         "question": "The factor theorem states that if g(a) = 0, then (x - a) is a factor of g(x). Verify: if x = 2 is a root, is (x - 2) a factor?",
         "options": [
-          "— g(2) = 0 means (x - 2) divides g(x) exactly",
+          "Yes — g(2) = 0 means (x - 2) divides g(x) exactly",
           "the factor theorem doesn't apply to cubics",
           "Only if the coefficient of x² is zero",
           "Only for positive roots..."
@@ -192,7 +192,7 @@
         "id": "M1Q10M6",
         "question": "For g(x) = x³ - x² - 14x + 2, what is the end behavior as x → +∞?",
         "options": [
-          "g(x) → +∞ ()",
+          "g(x) → +∞ (goes up)",
           "g(x) → -∞ ()",
           "g(x) → 0",
           "g(x) oscillates"
@@ -204,7 +204,7 @@
         "id": "M1Q10M7",
         "question": "For g(x) = x³ - x² - 14x + 2, what is the end behavior as x → -∞?",
         "options": [
-          "g(x) → -∞ ()",
+          "g(x) → -∞ (goes down)",
           "g(x) → +∞ ()",
           "g(x) → 0",
           "g(x) oscillates"
@@ -290,7 +290,7 @@
         "id": "M1Q10H4",
         "question": "Can a cubic function be one-to-one (invertible) over all of ℝ?",
         "options": [
-          "Only if it is strictly motonic ( turning points) — possible when the derivative has real roots",
+          "Only if it is strictly monotonic (no turning points) — possible when the derivative has no real roots",
           "always — does t match",
           "never — cubics always have turning points...",
           "Only for positive leading coefficients..."
@@ -326,7 +326,7 @@
         "id": "M1Q10H7",
         "question": "Why is the set {x³, x², x, 1} a basis for the space of polynomials of degree ≤ 3?",
         "options": [
-          "These 4 functions are linearly independent and span the space — any degree-≤3 polymial is a unique combination of them",
+          "These 4 functions are linearly independent and span the space — any degree-≤3 polynomial is a unique combination of them",
           "Because they all pass through the origin...",
           "Because they are all increasing functions...",
           "Because there are exactly 4 of them..."
@@ -350,7 +350,7 @@
         "id": "M1Q10H9",
         "question": "Does every cubic polynomial have at least one real root?",
         "options": [
-          "— because a cubic goes from -∞ to +∞, it must cross the x-axis at least once",
+          "Yes — because a cubic goes from -∞ to +∞, it must cross the x-axis at least once",
           "some cubics have real roots...",
           "Only if the constant term is zero...",
           "Only for positive leading coefficients..."

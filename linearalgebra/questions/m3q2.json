@@ -22,7 +22,7 @@
         "id": "M3Q2E2",
         "question": "Does the point (1,2,3) satisfy the equation x+2y+3z=0?",
         "options": [
-          "because 1+4+14=19≠0",
+          "No, because 1+4+14=19≠0",
           "— t here",
           "Only if scaled",
           "Cant determine"
@@ -34,7 +34,7 @@
         "id": "M3Q2E3",
         "question": "Does the origin (0,0,0) satisfy x+2y+3z=0?",
         "options": [
-          "",
+          "Yes",
           "— t here",
           "Only approximately",
           "Undefined"
@@ -47,7 +47,7 @@
         "question": "Does the point (1,-1,0) satisfy x+2y+3z=0?",
         "options": [
           "because 1-2+0=-1≠0... wait let me rec...",
-          "",
+          "No",
           "— t here ...",
           "Cant determine — does t match ..."
         ],
@@ -58,7 +58,7 @@
         "id": "M3Q2E5",
         "question": "Does the point (1,1,-1) satisfy x+2y+3z=0?",
         "options": [
-          "because 1+2-3=0",
+          "Yes, because 1+2-3=0",
           "— t here",
           "Only if z=0",
           "Cant determine"
@@ -82,7 +82,7 @@
         "id": "M3Q2E7",
         "question": "Is the vector (1,2,1) perpendicular to (1,2,3)?",
         "options": [
-          "because their dot product is 8≠0",
+          "No, because their dot product is 8≠0",
           "— t here",
           "Only approximately — does t match",
           "Cant determine — does t match"
@@ -106,7 +106,7 @@
         "id": "M3Q2E9",
         "question": "Does the line T = {α(1,2,1) | α∈R} pass through the origin?",
         "options": [
-          "when α=0",
+          "Yes, when α=0",
           "— t here",
           "Only for positive α",
           "Only for α=1"
@@ -118,7 +118,7 @@
         "id": "M3Q2E10",
         "question": "Is (2,7,3) perpendicular to (1,2,3)?",
         "options": [
-          "because 2+14+9=25≠0",
+          "No, because 2+14+9=25≠0",
           "— t here",
           "Only if scaled",
           "Cant determine"
@@ -156,7 +156,7 @@
         "id": "M3Q2M3",
         "question": "Is the line T = span{(1,2,1)} contained in the plane x+2y+3z=0?",
         "options": [
-          "because (1,2,1)·(1,2,3) = 8 ≠ 0",
+          "No, because (1,2,1)·(1,2,3) = 8 ≠ 0",
           "— t here",
           "Only for certain α — does t match",
           "Cant determine — does t match"
@@ -180,7 +180,7 @@
         "id": "M3Q2M5",
         "question": "Can two different planes through the origin in R³ intersect in a line?",
         "options": [
-          "two planes typically intersect in a line",
+          "Yes, two planes typically intersect in a line",
           "they always coincide...",
           "They intersect at a point only",
           "They never intersect — does t match"
@@ -216,7 +216,7 @@
         "id": "M3Q2M8",
         "question": "Is the set {(x,y,z) : x+2y+3z=0} closed under vector addition?",
         "options": [
-          "— if u and v satisfy the equation, so does u+v",
+          "Yes — if u and v satisfy the equation, so does u+v",
           "— t here",
           "Only for positive components...",
           "Only in R²)"
@@ -240,7 +240,7 @@
         "id": "M3Q2M10",
         "question": "Is the plane x+2y+3z=0 a subspace of R³?",
         "options": [
-          "— it contains the origin and is closed under addition and scalar multiplication",
+          "Yes — it contains the origin and is closed under addition and scalar multiplication",
           "— it doesn't contain the origin...",
           "Only if it passes through the origin...",
           "Subspaces can't be planes..."
@@ -278,7 +278,7 @@
         "id": "M3Q2H3",
         "question": "Can the line T = span{(1,2,1)} and the plane x+2y+3z=0 together span all of R³?",
         "options": [
-          "— T provides the missing direction t in the plane",
+          "Yes — T provides the missing direction not in the plane",
           "— they only span a plane...",
           "Only if T lies in the plane...",
           "Only in R²)"
@@ -314,7 +314,7 @@
         "id": "M3Q2H6",
         "question": "If a line in R³ does not pass through the origin, is it a subspace?",
         "options": [
-          "— it fails the zero vector condition",
+          "No — it fails the zero vector condition",
           "— all lines are subspaces",
           "Only if it's parallel to a coordinate axis",
           "Depends on the direction..."
@@ -338,7 +338,7 @@
         "id": "M3Q2H8",
         "question": "Can three planes through the origin in R³ intersect in just a single point (the origin)?",
         "options": [
-          "if the three rmal vectors are linearly independent",
+          "Yes, if the three normal vectors are linearly independent",
           "they always intersect in at least a line",
           "Only two planes can intersect...",
           "Only if the planes are parallel..."
@@ -362,7 +362,7 @@
         "id": "M3Q2H10",
         "question": "Why does the line S = span{(2,7,3)} not lie in the plane x+2y+3z=0?",
         "options": [
-          "Because (2,7,3)·(1,2,3) = 25 ≠ 0, so (2,7,3) is t perpendicular to the rmal",
+          "Because (2,7,3)·(1,2,3) = 25 ≠ 0, so (2,7,3) is not perpendicular to the normal",
           "Because 2+7+3 = 12 ≠ 0...",
           "Because S has 3 components...",
           "Because the plane has 3 coefficients..."

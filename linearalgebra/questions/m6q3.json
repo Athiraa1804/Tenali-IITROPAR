@@ -47,7 +47,7 @@
         "question": "What does it mean for a matrix to be column-stochastic?",
         "options": [
           "Each row sums to 1 — does t match",
-          "Each column sums to 1 and all entries are n-negative",
+          "Each column sums to 1 and all entries are non-negative",
           "All entries are either 0 or 1...",
           "The matrix is square and symmetric..."
         ],
@@ -59,7 +59,7 @@
         "question": "In PageRank, why is the 'importance' of a page determined by incoming links rather than outgoing links?",
         "options": [
           "Outgoing links are easier to count...",
-          "Each incoming link is essentially a 'vote' from ather page saying this page is worth visiting",
+          "Each incoming link is essentially a 'vote' from another page saying this page is worth visiting",
           "Google's algorithm only considers the first page on each website...",
           "Outgoing links slow down page loading..."
         ],
@@ -83,7 +83,7 @@
         "question": "What is a 'dangling node' in a web graph?",
         "options": [
           "A page with incoming links",
-          "A page with outgoing links (a dead end)",
+          "A page with no outgoing links (a dead end)",
           "A page that links to itself",
           "A page that links to every other page"
         ],
@@ -107,7 +107,7 @@
         "question": "What is the damping factor in PageRank, and why is it needed?",
         "options": [
           "It reduces the importance of old pages; it is needed to keep the ranking current...",
-          "It's a probability (typically 0.85) of following a link vs. randomly teleporting; needed to handle dangling des and ensure convergence",
+          "It's a probability (typically 0.85) of following a link vs. randomly teleporting; needed to handle dangling nodes and ensure convergence",
           "It slows down the algorithm; needed for computational efficiency...",
           "It discounts repeated visits; needed to prevent infinite loops..."
         ],
@@ -205,7 +205,7 @@
         "question": "Why does a page that links to itself (self-loop) not increase its own PageRank?",
         "options": [
           "Self-links are igred by Google's algorithm...",
-          "The self-loop distributes the page's rank back to itself, but the page's total rank is determined by incoming links from OTHER pages, t by its own outgoing links",
+          "The self-loop distributes the page's rank back to itself, but the page's total rank is determined by incoming links from OTHER pages, not by its own outgoing links",
           "Self-loops make the matrix n-square...",
           "Self-loops cause the algorithm to diverge..."
         ],
@@ -241,7 +241,7 @@
         "question": "Why is the PageRank problem solved by the power method (iterative multiplication) rather than by directly computing eigenvectors?",
         "options": [
           "Eigenvector computation is impossible for large matrices...",
-          "The web graph matrix is ermous (billions × billions) but very sparse, making iterative matrix-vector multiplication feasible while direct eigendecomposition is t",
+          "The web graph matrix is enormous (billions × billions) but very sparse, making iterative matrix-vector multiplication feasible while direct eigendecomposition is not",
           "The power method always gives exact answers...",
           "Direct computation is forbidden by Google's patents..."
         ],
@@ -255,7 +255,7 @@
         "question": "For the transition matrix M of the 4-page web graph (without damping), is the eigenvalue 1 guaranteed to have a unique eigenvector? What could go wrong?",
         "options": [
           "always unique for any transition matrix...",
-          "— if the graph has multiple disconnected components or periodic cycles, eigenvalue 1 could have multiplicity > 1, giving multiple linearly independent eigenvectors",
+          "No — if the graph has multiple disconnected components or periodic cycles, eigenvalue 1 could have multiplicity > 1, giving multiple linearly independent eigenvectors",
           "The eigenvalue 1 never exists for transition matrices...",
           "The eigenvector is always the zero vector..."
         ],
@@ -267,7 +267,7 @@
         "question": "By the Perron-Frobenius theorem for non-negative matrices, what conditions on the transition matrix M guarantee that the PageRank eigenvector is unique and all entries are strictly positive?",
         "options": [
           "M must be symmetric — does t match",
-          "M must be irreducible (the web graph is strongly connected) and aperiodic ( periodic cycles)",
+          "M must be irreducible (the web graph is strongly connected) and aperiodic (no periodic cycles)",
           "M must be a diagonal matrix...",
           "M must have all entries equal..."
         ],
@@ -302,7 +302,7 @@
         "id": "M6Q3H5",
         "question": "In the 4-page web graph (A→B, A→C, B→C, C→A, D→C), what is the exact PageRank vector without damping? (Hint: analyze the transition matrix structure.)",
         "options": [
-          "v = (1/3, 1/3, 1/3, 0) — D gets zero because thing links to it",
+          "v = (1/3, 1/3, 1/3, 0) — D gets zero because nothing links to it",
           "v = (0.25, 0.25, 0.25, 0.25) — uniform...",
           "v = (1/4, 1/4, 1/2, 0) — C gets most because it has most incoming links",
           "v = (0, 0, 1, 0) — C gets everything..."
@@ -327,7 +327,7 @@
         "question": "If we model a social network (follow graph) using PageRank-like eigenvector centrality, what does a high eigenvector centrality score mean for a user?",
         "options": [
           "The user follows many other users...",
-          "The user is followed by many OTHER high-centrality users — their influence comes from being connected to influential people, t just from raw follower count",
+          "The user is followed by many OTHER high-centrality users — their influence comes from being connected to influential people, not just from raw follower count",
           "The user has the oldest account...",
           "The user posts the most content..."
         ],

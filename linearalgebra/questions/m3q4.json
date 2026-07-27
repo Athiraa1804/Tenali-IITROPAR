@@ -34,7 +34,7 @@
         "id": "M3Q4E3",
         "question": "Is (1,-2,1) in the null space of A = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
-          "because A*(1,-2,1) = (0,0,0)",
+          "Yes, because A*(1,-2,1) = (0,0,0)",
           "— t here",
           "Only partially — does t match",
           "Cant determine — does t match"
@@ -82,7 +82,7 @@
         "id": "M3Q4E7",
         "question": "Does the null space of A = [[1,2,3],[4,5,6],[7,8,9]] contain non-zero vectors?",
         "options": [
-          "e.g., t(1,-2,1)",
+          "Yes, e.g., t(1,-2,1)",
           "only the zero vector",
           "Only (1,0,0)",
           "Cant determine"
@@ -204,7 +204,7 @@
         "id": "M3Q4M7",
         "question": "Is the matrix A = [[1,2,3],[4,5,6],[7,8,9]] invertible?",
         "options": [
-          "because det(A) = 0",
+          "No, because det(A) = 0",
           "always",
           "Only if augmented",
           "Depends on the context"
@@ -216,7 +216,7 @@
         "id": "M3Q4M8",
         "question": "If A is singular, what does Ax=b always have?",
         "options": [
-          "Either solution or infinitely many solutions",
+          "Either no solution or infinitely many solutions",
           "Exactly one solution — does t match",
           "solution at all — does t match",
           "Exactly two solutions..."
@@ -314,7 +314,7 @@
         "id": "M3Q4H6",
         "question": "Can a 3×3 matrix with nullity 2 exist? If so, what is its rank?",
         "options": [
-          "with rank 1",
+          "Yes, with rank 1",
           "impossible",
           "with rank 3",
           "with rank 0"
@@ -326,7 +326,7 @@
         "id": "M3Q4H7",
         "question": "Why does the null space of A = [[1,2,3],[4,5,6],[7,8,9]] equal the null space of [[1,2,3],[4,5,6]] (the first two rows only)?",
         "options": [
-          "Because Row3 is a linear combination of Rows 1 and 2, so it adds new constraints",
+          "Because Row3 is a linear combination of Rows 1 and 2, so it adds no new constraints",
           "Because Row3 is always redundant...",
           "Because 3×3 matrices always have this property...",
           "Because the null space igres row operations..."
@@ -350,7 +350,7 @@
         "id": "M3Q4H9",
         "question": "Is the null space of A² always at least as large as the null space of A?",
         "options": [
-          "— if Ax=0, then A²x = A(Ax) = A(0) = 0",
+          "Yes — if Ax=0, then A²x = A(Ax) = A(0) = 0",
           "always smaller — does t match",
           "Always the same size — does t match",
           "Depends on A — does t match"
@@ -397,7 +397,7 @@
       "story": "When you remove background noise from an audio recording, you are filtering out specific frequency components. The noise lives in the null space of the desired signal — it is orthogonal to the clean audio.",
       "question": "In audio noise removal, what does the null space of the filtering operation contain?",
       "options": [
-        "The filtered-out ise",
+        "The filtered-out noise",
         "The clean audio signal",
         "The volume level",
         "The recording duration"
@@ -413,7 +413,7 @@
       "story": "When engineers analyse how a bridge vibrates, they compute the stiffness matrix of the structure. The null space represents vibration modes that require zero energy — the structure can move in these patterns without any restoring force.",
       "question": "What do the zero-energy modes in the null space of a stiffness matrix represent?",
       "options": [
-        "Rigid body modes that require energy to excite",
+        "Rigid body modes that require no energy to excite",
         "The strongest vibration modes",
         "Modes that destroy the structure",
         "The natural frequency of the bridge"

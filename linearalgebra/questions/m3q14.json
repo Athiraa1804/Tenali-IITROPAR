@@ -46,7 +46,7 @@
         "id": "M3Q14E4",
         "question": "Is (2,-1) perpendicular to (1,2)?",
         "options": [
-          "— (2,-1)·(1,2) = 2-2 = 0",
+          "Yes — (2,-1)·(1,2) = 2-2 = 0",
           "— t here",
           "Only approximately",
           "Cant determine"
@@ -94,7 +94,7 @@
         "id": "M3Q14E8",
         "question": "Does rank(1) + nullity(1) = 2 = dim(R²)?",
         "options": [
-          "— the Rank-Nullity Theorem holds",
+          "Yes — the Rank-Nullity Theorem holds",
           "— t here",
           "Only approximately — does t match",
           "Only for special matrices"
@@ -216,7 +216,7 @@
         "id": "M3Q14M8",
         "question": "Is the null space of B a subspace of R²?",
         "options": [
-          "— it's a line through the origin (1D subspace)",
+          "Yes — it's a line through the origin (1D subspace)",
           "— t here",
           "Only for special matrices...",
           "Subspaces can't be null spaces..."
@@ -228,7 +228,7 @@
         "id": "M3Q14M9",
         "question": "What is the geometric meaning of the range direction (1,2)?",
         "options": [
-          "It's the only direction in which B produces n-zero output",
+          "It's the only direction in which B produces non-zero output",
           "It's the direction B cant see...",
           "It's the direction of the null space...",
           "It's the direction B maps to zero..."
@@ -302,7 +302,7 @@
         "id": "M3Q14H5",
         "question": "Can you write any vector (a,b) as a combination of the range direction (1,2) and null space direction (2,-1)?",
         "options": [
-          "— (1,2) and (2,-1) are independent and span R²",
+          "Yes — (1,2) and (2,-1) are independent and span R²",
           "— they don't span R²...",
           "Only for special (a,b)...",
           "Only for positive components..."
@@ -397,7 +397,7 @@
       "story": "When analysing a structure, the range of the stiffness matrix represents deformable modes — ways the structure can bend. The null space represents rigid body modes — ways it can move without deforming.",
       "question": "In structural analysis, what do the null space modes of the stiffness matrix represent?",
       "options": [
-        "Rigid body motions that require energy",
+        "Rigid body motions that require no energy",
         "Maximum deformation",
         "Critical loads",
         "Failure modes"
@@ -445,7 +445,7 @@
       "story": "In a neural network layer, the range of the weight matrix represents the features the layer can express. The null space represents input patterns the layer cannot distinguish — they all produce the same output.",
       "question": "In a neural network, what do null space input patterns represent?",
       "options": [
-        "Inputs that the layer cant distinguish — they produce the same output",
+        "Inputs that the layer cannot distinguish — they produce the same output",
         "The most important inputs",
         "The training data",
         "The learning rate"

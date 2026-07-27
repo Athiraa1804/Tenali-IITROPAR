@@ -46,7 +46,7 @@
         "id": "M6Q2E4",
         "question": "What does cosine similarity measure that the raw dot product does not?",
         "options": [
-          "The angle between vectors, rmalized for their magnitudes",
+          "The angle between vectors, normalized for their magnitudes",
           "The product of the magnitudes...",
           "The sum of all components...",
           "The Euclidean distance between vectors..."
@@ -71,7 +71,7 @@
         "question": "If two users have a dot product of 0 between their rating vectors, what can we say about their tastes?",
         "options": [
           "They have identical tastes...",
-          "Their rating vectors are orthogonal — they share common preference pattern",
+          "Their rating vectors are orthogonal — they share no common preference pattern",
           "They have opposite tastes...",
           "They rated movies in common..."
         ],
@@ -95,7 +95,7 @@
         "question": "What is the main advantage of cosine similarity over the raw dot product for recommendation systems?",
         "options": [
           "It is faster to compute...",
-          "It is independent of the magnitude of rating vectors, so it compares patterns t intensities",
+          "It is independent of the magnitude of rating vectors, so it compares patterns not intensities",
           "It always returns values between 0 and 1...",
           "It doesn't require kwing the ratings..."
         ],
@@ -132,7 +132,7 @@
         "id": "M6Q2M1",
         "question": "Why might the dot product be misleading as a similarity measure when comparing a user who rated 200 movies to one who rated only 5?",
         "options": [
-          "The user with 200 ratings has a much larger vector rm, inflating the dot product even if their taste patterns are similar",
+          "The user with 200 ratings has a much larger vector norm, inflating the dot product even if their taste patterns are similar",
           "The dot product only works for users with the same number of ratings...",
           "The dot product will always be zero for users with different numbers of ratings...",
           "The dot product cant handle sparse vectors..."
@@ -156,7 +156,7 @@
         "id": "M6Q2M3",
         "question": "What is the cold-start problem in collaborative filtering, and why does it occur?",
         "options": [
-          "New users have rating history, so the system cant compute their similarity to existing users",
+          "New users have no rating history, so the system cannot compute their similarity to existing users",
           "The system runs slowly when there are too many users...",
           "The system cant recommend movies released in the current year...",
           "The system crashes when the matrix is too large..."
@@ -204,7 +204,7 @@
         "id": "M6Q2M7",
         "question": "Why can't collaborative filtering make good recommendations for a movie that no one in the user's neighborhood has rated?",
         "options": [
-          "Because there is signal — similar user has provided information about that movie",
+          "Because there is no signal — no similar user has provided information about that movie",
           "Because the dot product would be undefined...",
           "Because the movie doesn't exist in the matrix...",
           "Because the system only recommends movies with the highest average rating"
@@ -302,7 +302,7 @@
         "id": "M6Q2H5",
         "question": "In the cosine similarity computation, if we have two users u and v with most entries being zero (sparse vectors), what computational advantage can we exploit?",
         "options": [
-          "We only need to compute the dot product over the entries where BOTH users have n-zero ratings, igring the zeros",
+          "We only need to compute the dot product over the entries where BOTH users have non-zero ratings, ignoring the zeros",
           "We must compute over all entries even if they are zero...",
           "Sparse vectors always have cosine similarity 0...",
           "We can skip the rmalization step..."
@@ -314,7 +314,7 @@
         "id": "M6Q2H6",
         "question": "Why does the k-nearest-neighbor approach in collaborative filtering often outperform using ALL users for similarity computation?",
         "options": [
-          "Distant users (low similarity) add ise to the prediction — restricting to k nearest neighbors focuses on the most relevant signal and reduces ise",
+          "Distant users (low similarity) add noise to the prediction — restricting to k nearest neighbors focuses on the most relevant signal and reduces noise",
           "Using all users is always better, k-NN never outperforms it...",
           "k-NN is only faster, t more accurate...",
           "All users always provide equally useful information..."

@@ -205,7 +205,7 @@
         "question": "Can a 4×4 matrix have rank 5?",
         "options": [
           "if it has eugh nzero entries...",
-          "— rank cant exceed the number of rows or columns",
+          "No — rank cannot exceed the number of rows or columns",
           "Only if the matrix is 5×5...",
           "Only in special cases..."
         ],
@@ -267,7 +267,7 @@
         "question": "If A and B are both 4×4 matrices with rank 2, must AB also have rank 2?",
         "options": [
           "rank is preserved under multiplication...",
-          "— rank(AB) ≤ min(rank(A), rank(B)), so it could be 0, 1, or 2",
+          "No — rank(AB) ≤ min(rank(A), rank(B)), so it could be 0, 1, or 2",
           "— rank(AB) always equals rank(A) + rank(B)...",
           "if both are diagonal..."
         ],
@@ -279,7 +279,7 @@
         "question": "For a 4×4 matrix, rank + nullity = 4. If the null space is a line (1D), the range is a 3D hyperplane. Can you find a vector NOT in the range?",
         "options": [
           "— if the range is 3D in R⁴, there are v...",
-          "— any vector perpendicular to the range",
+          "Yes — any vector perpendicular to the range",
           "— the range is all of R⁴... ...",
           "Only if the matrix is symmetric... ..."
         ],
@@ -350,7 +350,7 @@
         "id": "M4Q6H9",
         "question": "Can a 4×4 matrix have rank 2 and also be idempotent (M² = M)?",
         "options": [
-          "— there exist rank-2 idempotent matrices",
+          "Yes — there exist rank-2 idempotent matrices",
           "— idempotent matrices must have rank 0 or 4",
           "Only if M is symmetric...",
           "Only if det(M) = 0 — does t match"
@@ -425,7 +425,7 @@
       "id": "M4Q6R5",
       "question": "A camera with 4 sensors captures a 3D scene. The sensor matrix has rank 3. Can the camera fully reconstruct 3D positions?",
       "options": [
-        "— rank 3 means the range covers all 3D directions",
+        "Yes — rank 3 means the range covers all 3D directions",
         "— it needs rank 4",
         "Only partially — rank 3 gives 3 out of 4 dimensions",
         "Only if the sensors are orthogonal"

@@ -82,7 +82,7 @@
         "id": "M3Q6E7",
         "question": "Does the line 2y+x=10 map to a single point under B?",
         "options": [
-          "to (10,20)",
+          "Yes, to (10,20)",
           "it maps to a line...",
           "to (0,0) — does t match",
           "different points map to different outputs"
@@ -156,7 +156,7 @@
         "id": "M3Q6M3",
         "question": "Are different values of k mapped to different output points (k, 2k)?",
         "options": [
-          "— different k values give different points on the line t(1,2)",
+          "Yes — different k values give different points on the line t(1,2)",
           "— all map to the same point...",
           "Only for positive k — does t match",
           "Only for integers — does t match"
@@ -204,7 +204,7 @@
         "id": "M3Q6M7",
         "question": "Is the null space direction (2,-1) perpendicular to the range direction (1,2)?",
         "options": [
-          "— (2,-1)·(1,2) = 2-2 = 0",
+          "Yes — (2,-1)·(1,2) = 2-2 = 0",
           "— t here",
           "Only approximately",
           "Cant determine"
@@ -228,7 +228,7 @@
         "id": "M3Q6M9",
         "question": "Why can't we recover the original input from B*(x,y)?",
         "options": [
-          "Because many different inputs give the same output (t one-to-one)",
+          "Because many different inputs give the same output (not one-to-one)",
           "Because B is always zero...",
           "Because the output is always positive...",
           "Because B is the identity..."
@@ -240,7 +240,7 @@
         "id": "M3Q6M10",
         "question": "The range of B is the line t(1,2). Is this line the same as the column space of B?",
         "options": [
-          "— the range and column space are the same thing",
+          "Yes — the range and column space are the same thing",
           "— they are different...",
           "Only if B is square — does t match",
           "Only for invertible matrices..."
@@ -302,7 +302,7 @@
         "id": "M3Q6H5",
         "question": "Can a non-singular (invertible) matrix ever collapse a line to a single point?",
         "options": [
-          "— n-singular matrices are one-to-one and preserve dimensions",
+          "No — non-singular matrices are one-to-one and preserve dimensions",
           "always — does t match",
           "Only for special lines...",
           "Only in 3D)"
@@ -326,7 +326,7 @@
         "id": "M3Q6H7",
         "question": "What would B = [[1,2],[2,4]] look like if we changed it to [[1,2],[2,5]]?",
         "options": [
-          "It would longer be singular — det=1≠0, so it would be invertible and preserve dimensions",
+          "It would no longer be singular — det=1≠0, so it would be invertible and preserve dimensions",
           "It would still be singular...",
           "It would map everything to zero...",
           "It would have rank 0 — does t match"

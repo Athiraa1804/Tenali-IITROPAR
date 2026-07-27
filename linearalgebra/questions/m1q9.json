@@ -46,7 +46,7 @@
         "id": "M1Q9E4",
         "question": "Does f(8) = f(-8) for f(x) = x² - 10?",
         "options": [
-          "both equal 54",
+          "Yes, both equal 54",
           "they give different values",
           "Only for positive values",
           "Cant be determined"
@@ -82,7 +82,7 @@
         "id": "M1Q9E7",
         "question": "Can a linear equation like 3x + 2 = 17 have two solutions?",
         "options": [
-          "— a linear equation has at most one solution",
+          "No — a linear equation has at most one solution",
           "always two — does t match",
           "Only if the slope is zero...",
           "Only for negative coefficients..."
@@ -106,7 +106,7 @@
         "id": "M1Q9E9",
         "question": "For f(x) = x² - 10, is f a one-to-one function?",
         "options": [
-          "because f(8) = f(-8) = 54 — two inputs give the same output",
+          "No, because f(8) = f(-8) = 54 — two inputs give the same output",
           "every output has exactly one input...",
           "Only for positive x — does t match",
           "It depends on the value of 54..."
@@ -118,7 +118,7 @@
         "id": "M1Q9E10",
         "question": "Does f(x) = x² - 10 have an inverse function over all real numbers?",
         "options": [
-          "because f is t one-to-one over all reals",
+          "No, because f is not one-to-one over all reals",
           "the inverse is √(x+10)...",
           "every function has an inverse",
           "Only for x > 0 — does t match"
@@ -168,7 +168,7 @@
         "id": "M1Q9M4",
         "question": "Does the parabola y = x² - 10 intersect y = -10?",
         "options": [
-          "at exactly one point: the vertex (0, -10)",
+          "Yes, at exactly one point: the vertex (0, -10)",
           "At two points — does t match",
           "Never)",
           "At infinitely many points..."
@@ -192,7 +192,7 @@
         "id": "M1Q9M6",
         "question": "If f(x) = x² - 10, and we restrict the domain to x ≥ 0, is the restricted function one-to-one?",
         "options": [
-          "— on x ≥ 0, the function is strictly increasing, so each output comes from exactly one input",
+          "Yes — on x ≥ 0, the function is strictly increasing, so each output comes from exactly one input",
           "it's still t one-to-one...",
           "Only for x > 10 — does t match",
           "Only if the range is restricted too..."
@@ -240,7 +240,7 @@
         "id": "M1Q9M10",
         "question": "What does it mean geometrically that the parabola y = x² - 10 intersects y = 54 at two points?",
         "options": [
-          "The line y = 54 cuts through the parabola at two symmetric locations",
+          "The horizontal line y = 54 cuts through the parabola at two symmetric locations",
           "The line is tangent to the parabola...",
           "The parabola has two vertices...",
           "The two curves are parallel..."
@@ -254,7 +254,7 @@
         "id": "M1Q9H1",
         "question": "If f(x) = x² - 10 is not invertible over all reals, but f|_{x≥0} (restricted to x ≥ 0) IS invertible, what is the domain and range of the restricted inverse?",
         "options": [
-          "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to n-negative inputs)",
+          "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to non-negative inputs)",
           "Domain: all reals, Range: all reals...",
           "Domain: x > 0, Range: x > 10...",
           "The restricted inverse doesn't exist..."
@@ -266,7 +266,7 @@
         "id": "M1Q9H2",
         "question": "In terms of linear algebra, why does the quadratic f(x) = x² - 10 fail the invertibility test that linear functions like g(x) = 3x + 2 pass?",
         "options": [
-          "Because f is n-linear (degree 2), so its derivative changes sign, making it n-motonic — unlike linear functions which are always motonic",
+          "Because f is non-linear (degree 2), so its derivative changes sign, making it non-monotonic — unlike linear functions which are always monotonic",
           "Because f has a negative constant...",
           "Because the coefficient of x² is 1...",
           "Because f passes through negative values..."
@@ -338,7 +338,7 @@
         "id": "M1Q9H8",
         "question": "In a quadratic regression model y = ax² + bx + c fitting real data, having two x-values for the same y-value means:",
         "options": [
-          "The model predicts the same outcome at two different input values — a n-unique mapping",
+          "The model predicts the same outcome at two different input values — a non-unique mapping",
           "The model is always linear...",
           "The data is perfectly symmetric...",
           "The model has real solutions..."
@@ -350,7 +350,7 @@
         "id": "M1Q9H9",
         "question": "Consider the set V = {f : ℝ → ℝ | f(x) = ax² + bx + c, a,b,c ∈ ℝ}. Is V closed under addition?",
         "options": [
-          "— the sum of two degree-≤2 polymials is still degree ≤ 2",
+          "Yes — the sum of two degree-≤2 polynomials is still degree ≤ 2",
           "— adding two quadratics can give degree 4...",
           "Only if both have the same a value...",
           "Only for c = 0 — does t match"
@@ -362,7 +362,7 @@
         "id": "M1Q9H10",
         "question": "Why can't a parabola y = x² - 10 be a level set of a linear function?",
         "options": [
-          "Because linear functions have straight level sets (lines), t curved parabolas",
+          "Because linear functions have straight level sets (lines), not curved parabolas",
           "Because the constant is -10...",
           "Because the coefficient is 1...",
           "Because it passes through negative values..."

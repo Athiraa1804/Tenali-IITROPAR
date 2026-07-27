@@ -22,7 +22,7 @@
         "id": "M3Q1E2",
         "question": "Is the vector [3,4] perpendicular to [4,-3]?",
         "options": [
-          "",
+          "Yes",
           "",
           "Only if scaled",
           "Cant determine"
@@ -94,7 +94,7 @@
         "id": "M3Q1E8",
         "question": "Is [1,2] perpendicular to [-2,1]?",
         "options": [
-          "",
+          "Yes",
           "— t here",
           "Only approximately",
           "Only in 3D"
@@ -156,7 +156,7 @@
         "id": "M3Q1M3",
         "question": "If two vectors have a dot product of 5, can they be perpendicular?",
         "options": [
-          "perpendicular vectors must have dot product = 0",
+          "No, perpendicular vectors must have dot product = 0",
           "if scaled appropriately...",
           "Only in 3D)",
           "always — does t match"
@@ -216,7 +216,7 @@
         "id": "M3Q1M8",
         "question": "Are the vectors [1,3] and [3,1] perpendicular?",
         "options": [
-          "",
+          "No",
           "",
           "Only if scaled",
           "Cant determine"
@@ -254,7 +254,7 @@
         "id": "M3Q1H1",
         "question": "Why is the perpendicular set of a non-zero vector in R² always a 1-dimensional subspace?",
         "options": [
-          "Because one linear equation in two unkwns reduces degrees of freedom by 1",
+          "Because one linear equation in two unknowns reduces degrees of freedom by 1",
           "Because all perpendicular sets are lines...",
           "Because R² only has two dimensions...",
           "Because the dot product is linear..."
@@ -266,7 +266,7 @@
         "id": "M3Q1H2",
         "question": "Is the perpendicular set of a non-zero vector in R² closed under addition?",
         "options": [
-          "— if u·v = 0 and w·v = 0, then (u+w)·v = 0",
+          "Yes — if u·v = 0 and w·v = 0, then (u+w)·v = 0",
           "— adding two perpendicular vectors may ...",
           "Only for certain vectors... ...",
           "Only in R³) ..."
@@ -278,7 +278,7 @@
         "id": "M3Q1H3",
         "question": "Is the perpendicular set of a non-zero vector in R² closed under scalar multiplication?",
         "options": [
-          "— if u·v = 0, then (cu)·v = c(u·v) = 0 for any scalar c",
+          "Yes — if u·v = 0, then (cu)·v = c(u·v) = 0 for any scalar c",
           "— only positive scalars work...",
           "Only if c = 1 — does t match",
           "Depends on the vector..."
@@ -290,7 +290,7 @@
         "id": "M3Q1H4",
         "question": "Does the perpendicular set of [a,b] always contain the zero vector?",
         "options": [
-          "because [a,b]·[0,0] = 0 always",
+          "Yes, because [a,b]·[0,0] = 0 always",
           "it depends on a and b",
           "Only if a = b — does t match",
           "Only in 3D)"
@@ -302,7 +302,7 @@
         "id": "M3Q1H5",
         "question": "Since the perpendicular set of a non-zero vector in R² contains the zero vector, is closed under addition, and is closed under scalar multiplication, what is it formally?",
         "options": [
-          "A 1-dimensional subspace ()",
+          "A 1-dimensional subspace (line through origin)",
           "A 2-dimensional subspace...",
           "t a subspace — does t match",
           "An affine set — does t match"
@@ -350,7 +350,7 @@
         "id": "M3Q1H9",
         "question": "Can a non-zero vector in R² be perpendicular to itself?",
         "options": [
-          "because [a,b]·[a,b] = a²+b² > 0 for any n-zero vector",
+          "No, because [a,b]·[a,b] = a²+b² > 0 for any non-zero vector",
           "if a = -b — does t match",
           "Only in R³)",
           "always — does t match"
@@ -462,7 +462,7 @@
       "story": "In a game, a character moves along vector [2,1]. A wall surface has a normal vector [1,-2]. The game checks if the character's movement is perpendicular to the wall normal to determine sliding behavior.",
       "question": "Is the character's movement [2,1] perpendicular to the wall normal [1,-2]?",
       "options": [
-        "",
+        "Yes",
         "",
         "Only partially",
         "Cant determine"

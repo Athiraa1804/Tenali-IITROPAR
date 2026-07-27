@@ -46,7 +46,7 @@
         "id": "M3Q13E4",
         "question": "Does line 2y+x=10 map to (10,20)?",
         "options": [
-          "— (k, 2k) with k=10",
+          "Yes — (k, 2k) with k=10",
           "— it maps to (4,8)",
           "Only for one point on the line",
           "Cant determine"
@@ -70,7 +70,7 @@
         "id": "M3Q13E6",
         "question": "Do different values of k give different output points?",
         "options": [
-          "— (k₁, 2k₁) ≠ (k₂, 2k₂) when k₁ ≠ k₂",
+          "Yes — (k₁, 2k₁) ≠ (k₂, 2k₂) when k₁ ≠ k₂",
           "— all map to the same point",
           "Only for positive k — does t match",
           "Only for integers — does t match"
@@ -94,7 +94,7 @@
         "id": "M3Q13E8",
         "question": "Do all the output points (k, 2k) lie on the same line?",
         "options": [
-          "— they all lie on the line t(1,2)",
+          "Yes — they all lie on the line t(1,2)",
           "— they're scattered",
           "Only for even k — does t match",
           "Only near the origin — does t match"
@@ -118,7 +118,7 @@
         "id": "M3Q13E10",
         "question": "Is there a one-to-one correspondence between lines 2y+x=k and output points (k,2k)?",
         "options": [
-          "— each line maps to a unique point, and each point comes from exactly one line",
+          "Yes — each line maps to a unique point, and each point comes from exactly one line",
           "— multiple lines map to one point...",
           "Only for positive k — does t match",
           "Cant determine — does t match"
@@ -168,7 +168,7 @@
         "id": "M3Q13M4",
         "question": "If line 2y+x=10 maps to (10,20) and line 2y+x=62 maps to (62,124), can we tell from the outputs which input was 'larger'?",
         "options": [
-          "— (62,124) has larger components, so k=62 > k=10",
+          "Yes — (62,124) has larger components, so k=62 > k=10",
           "— outputs are random...",
           "Only by checking the inputs...",
           "They're equal — does t match"
@@ -192,7 +192,7 @@
         "id": "M3Q13M6",
         "question": "Are the preimage lines of different output points parallel to each other?",
         "options": [
-          "— all preimage lines have direction (2,-1), parallel to the null space",
+          "Yes — all preimage lines have direction (2,-1), parallel to the null space",
           "— they have different directions...",
           "Only for adjacent k values...",
           "Cant determine — does t match"
@@ -216,7 +216,7 @@
         "id": "M3Q13M8",
         "question": "Does the mapping k → (k, 2k) preserve the ordering of k values?",
         "options": [
-          "— larger k gives a point further from the origin in the (1,2) direction",
+          "Yes — larger k gives a point further from the origin in the (1,2) direction",
           "— ordering is lost...",
           "Only for positive k — does t match",
           "Only for integers — does t match"
@@ -278,7 +278,7 @@
         "id": "M3Q13H3",
         "question": "Does the range line t(1,2) contain any points that are NOT outputs of B?",
         "options": [
-          "— for any (a,2a) on the range, choose (a,0) and B*(a,0) = (a,2a)",
+          "No — for any (a,2a) on the range, choose (a,0) and B*(a,0) = (a,2a)",
           "— the origin is missing...",
           "Only positive points are outputs...",
           "Only integer points — does t match"
@@ -302,7 +302,7 @@
         "id": "M3Q13H5",
         "question": "If we knew only the output (k, 2k), could we determine the exact input (x,y)?",
         "options": [
-          "— we kw k = x+2y, but there are infinitely many (x,y) pairs with this sum",
+          "No — we know k = x+2y, but there are infinitely many (x,y) pairs with this sum",
           "uniquely — does t match",
           "Only approximately — does t match",
           "Only for k > 0 — does t match"
@@ -338,7 +338,7 @@
         "id": "M3Q13H8",
         "question": "If the null space direction were (1,1) instead of (2,-1), would the preimage lines still be parallel?",
         "options": [
-          "— all cosets of any subspace are parallel to each other",
+          "Yes — all cosets of any subspace are parallel to each other",
           "— they would intersect...",
           "Only for special cases...",
           "Depends on B — does t match"

@@ -10,7 +10,7 @@
         "id": "M4Q8E1",
         "question": "If (1,0,0) and (0,1,0) are both in the range of A, is (1,1,0) also in the range?",
         "options": [
-          "because (1,1,0) = (1,0,0) + (0,1,0) and the range is closed under addition",
+          "Yes, because (1,1,0) = (1,0,0) + (0,1,0) and the range is closed under addition",
           "addition is t guaranteed...",
           "Only if A is invertible...",
           "Only for positive combinations..."
@@ -70,7 +70,7 @@
         "id": "M4Q8E6",
         "question": "If (1,0,0) is in the range, is 5(1,0,0) = (5,0,0) in the range?",
         "options": [
-          "by closure under scalar multiplication",
+          "Yes, by closure under scalar multiplication",
           "only the original vector is guaranteed",
           "Only if A is invertible...",
           "Only for integers — does t match"
@@ -205,7 +205,7 @@
         "question": "If v is in the range and w is NOT in the range, must v + w be in the range?",
         "options": [
           "because v + w is always in the range",
-          "— adding a n-range vector can leave the range",
+          "No — adding a non-range vector can leave the range",
           "Only if w is in the null space...",
           "Only for specific matrices..."
         ],
@@ -228,7 +228,7 @@
         "id": "M4Q8M9",
         "question": "If A : R³ → R³ has range = R³ (full rank), can every vector b ∈ R³ be written as b = Ax for some x?",
         "options": [
-          "— full rank means the range is all of R³",
+          "Yes — full rank means the range is all of R³",
           "— some vectors are unreachable",
           "Only if b has integer components",
           "Only if A is symmetric..."
@@ -350,7 +350,7 @@
         "id": "M4Q8H9",
         "question": "Can the range of a linear map be an open set (not containing its boundary)?",
         "options": [
-          "— the range is always a subspace, which is closed",
+          "No — the range is always a subspace, which is closed",
           "if the map is t continuous...",
           "Only for infinite-dimensional spaces...",
           "Only if the range is all of Rⁿ..."
@@ -363,7 +363,7 @@
         "question": "If range(A) is the plane 2x - y + z = 0 in R³, find a vector NOT in the range.",
         "options": [
           "(1,2,0) — check: 2(1)-2+0=0, so it IS in the range",
-          "(1,0,0) — check: 2(1)-0+0=2≠0, so T in range",
+          "(1,0,0) — check: 2(1)-0+0=2≠0, so NOT in range",
           "(2,1,1) — check: 4-1+1=4≠0...",
           "(1,1,-1) — check: 2-1-1=0, so it IS in range"
         ],
@@ -401,7 +401,7 @@
       "id": "M4Q8R3",
       "question": "A computer display has RGB basis vectors. The span of (1,0,0), (0,1,0), (0,0,1) covers the full colour gamut. If the display can only produce red and green (not blue), what is its colour range?",
       "options": [
-        "All colours",
+        "Only the xy-plane of colours (no blue component)",
         "Only the xy-plane of colours ( blue component)",
         "Only red and green",
         "A 1D line"
@@ -426,7 +426,7 @@
       "question": "A robot with 3 joints can move in 3D space. If the robot's motion matrix has rank 2, it can reach positions in a 2D plane. The direction it CANNOT reach is:",
       "options": [
         "Any direction in the plane",
-        "The rmal to the plane (null space direction)",
+        "The normal to the plane (null space direction)",
         "All 3D directions",
         "Only the origin"
       ],

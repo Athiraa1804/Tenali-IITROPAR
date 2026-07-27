@@ -156,7 +156,7 @@
         "id": "M1Q11M3",
         "question": "Can a point in ℝ² also be considered a point in ℝ³?",
         "options": [
-          "by appending z = 0: (x, y) in ℝ² corresponds to (x, y, 0) in ℝ³",
+          "Yes, by appending z = 0: (x, y) in ℝ² corresponds to (x, y, 0) in ℝ³",
           "ℝ² and ℝ³ are completely separate...",
           "Only if x = y — does t match",
           "Only for integer coordinates..."
@@ -192,7 +192,7 @@
         "id": "M1Q11M6",
         "question": "In ℝ³, how many non-coplanar points are needed to determine a unique plane?",
         "options": [
-          "3 n-collinear points",
+          "3 non-collinear points",
           "2 points",
           "4 points",
           "1 point"
@@ -278,7 +278,7 @@
         "id": "M1Q11H3",
         "question": "Can ℝ² be considered a subspace of ℝ³?",
         "options": [
-          "ℝ² ≅ {(x,y,0) : x,y ∈ ℝ} is a subspace of ℝ³ (the z = 0 plane)",
+          "Yes: ℝ² ≅ {(x,y,0) : x,y ∈ ℝ} is a subspace of ℝ³ (the z = 0 plane)",
           "they are different spaces entirely...",
           "Only if we change the origin...",
           "Only for vector addition..."
@@ -302,7 +302,7 @@
         "id": "M1Q11H5",
         "question": "The set of all polynomials of degree ≤ 2, denoted P₂, is isomorphic to ℝ³. Why?",
         "options": [
-          "Because any polymial a + bx + cx² is determined by 3 coefficients (a, b, c), just as a point in ℝ³ is determined by 3 coordinates",
+          "Because any polynomial a + bx + cx² is determined by 3 coefficients (a, b, c), just as a point in ℝ³ is determined by 3 coordinates",
           "Because both involve the number 2...",
           "Because both have a basis of 2 elements...",
           "Because polymials can be plotted in 3D..."
@@ -350,7 +350,7 @@
         "id": "M1Q11H9",
         "question": "Can ℝ⁵ contain a 3-dimensional subspace? If so, give an example.",
         "options": [
-          "{(x₁,x₂,x₃,0,0) : xᵢ ∈ ℝ} is a 3D subspace of ℝ⁵",
+          "Yes: {(x₁,x₂,x₃,0,0) : xᵢ ∈ ℝ} is a 3D subspace of ℝ⁵",
           "subspaces must have the same dimension as the full space",
           "Only if the subspace passes through a specific point",
           "Only for even dimensions..."
@@ -362,7 +362,7 @@
         "id": "M1Q11H10",
         "question": "The set of all continuous functions on [0,1] is an infinite-dimensional vector space. What does 'infinite-dimensional' mean in this context?",
         "options": [
-          "finite set of functions can serve as a basis — you need infinitely many basis functions",
+          "No finite set of functions can serve as a basis — you need infinitely many basis functions",
           "The functions can only take infinite values...",
           "There are infinitely many points in [0,1]...",
           "The functions are t well-defined..."

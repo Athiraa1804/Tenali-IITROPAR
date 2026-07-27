@@ -106,7 +106,7 @@
         "id": "M3Q15E9",
         "question": "Does B preserve information about all 2 dimensions of the input?",
         "options": [
-          "— only 1 dimension is preserved (the range), the other is lost (null space)",
+          "No — only 1 dimension is preserved (the range), the other is lost (null space)",
           "both dimensions are preserved...",
           "dimensions are preserved...",
           "Only the null space is preserved..."
@@ -180,7 +180,7 @@
         "id": "M3Q15M5",
         "question": "If B = [[1,2],[2,4]] and we add a third row [3,6], making B a 3×2 matrix, what are rank and nullity?",
         "options": [
-          "rank = 1, nullity = 1 (Row 3 is a multiple of Row 1, new info)",
+          "rank = 1, nullity = 1 (Row 3 is a multiple of Row 1, no new info)",
           "rank = 2, nullity = 0...",
           "rank = 3, nullity = 0...",
           "rank = 1, nullity = 2..."
@@ -216,7 +216,7 @@
         "id": "M3Q15M8",
         "question": "If a matrix has nullity 0, what does that mean?",
         "options": [
-          "dimensions are lost — the matrix is injective (one-to-one)",
+          "No dimensions are lost — the matrix is injective (one-to-one)",
           "All dimensions are lost...",
           "The matrix is the zero matrix...",
           "The matrix is singular..."
@@ -240,7 +240,7 @@
         "id": "M3Q15M10",
         "question": "What is the 'dimension' of a point (the zero vector)?",
         "options": [
-          "0 — a point has extent",
+          "0 — a point has no extent",
           "1 — t here",
           "2 — t here",
           "Undefined)"

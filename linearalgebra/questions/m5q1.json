@@ -204,7 +204,7 @@
         "id": "M5Q1M7",
         "question": "For A = [[1,2],[3,6]], is the vector (-3,1) in the Left Null Space N(Aᵀ)?",
         "options": [
-          "because Aᵀ(-3,1) = 0",
+          "Yes, because Aᵀ(-3,1) = 0",
           "because Aᵀ(-3,1) ≠ 0",
           "because it is in N(A)",
           "because it has 2 components"
@@ -338,7 +338,7 @@
         "id": "M5Q1H8",
         "question": "If A is m×n with m > n (more rows than columns), can C(A) ever be all of ℝᵐ?",
         "options": [
-          "because dim(C(A)) ≤ rank ≤ n < m",
+          "No, because dim(C(A)) ≤ rank ≤ n < m",
           "if the columns are independent",
           "always — does t match",
           "Only if A is square — does t match"

@@ -119,7 +119,7 @@
         "question": "Is M = [[1,2],[3,6]] an invertible matrix?",
         "options": [
           "because it has rank 2",
-          "because its determinant is 0",
+          "No, because its determinant is 0",
           "because it is 2×2",
           "because it has null space"
         ],
@@ -133,7 +133,7 @@
         "question": "For M = [[1,2],[3,6]], the row space and column space are both 1-dimensional. Are they the same subspace?",
         "options": [
           "they are both t(1,2)...",
-          "row space is t(1,2) and column space is t(1,3)",
+          "No, row space is t(1,2) and column space is t(1,3)",
           "they are both t(1,3)...",
           "row space is t(1,3) and column space is t(1,2)"
         ],
@@ -328,7 +328,7 @@
         "options": [
           "(1,2) is in both...",
           "(-2,1) is in both...",
-          "because the row space and null space are perpendicular and share only the origin",
+          "No, because the row space and null space are perpendicular and share only the origin",
           "any vector satisfying x+2y=0 is in both..."
         ],
         "correct_option": "No, because the row space and null space are perpendicular and share only the origin",

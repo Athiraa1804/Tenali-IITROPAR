@@ -23,7 +23,7 @@
         "question": "What does a '0' entry in a rating matrix typically represent?",
         "options": [
           "The user gave the movie a rating of 0 out of 5",
-          "The user has t rated that movie",
+          "The user has not rated that movie",
           "The movie does t exist...",
           "The rating is being computed..."
         ],
@@ -107,7 +107,7 @@
         "question": "What is the null space of a rating matrix?",
         "options": [
           "The set of user vectors that produce zero ratings for all movies",
-          "The set of rating vectors that cant occur in the data",
+          "The set of rating vectors that cannot occur in the data",
           "The set of movies with ratings...",
           "The set of users who rated thing..."
         ],
@@ -193,7 +193,7 @@
         "question": "In the rating matrix R = [[5,3,0,1],[4,0,0,1],[1,1,5,4]], what does it mean that Bob has two zeros in his rating vector?",
         "options": [
           "Bob hates movies M2 and M3...",
-          "Bob has t rated movies M2 and M3",
+          "Bob has not rated movies M2 and M3",
           "The system lost Bob's ratings for M2 and M3",
           "Bob only watches movies M1 and M4"
         ],
@@ -228,7 +228,7 @@
         "id": "M6Q1M9",
         "question": "Why would two users with very different total number of ratings still be considered similar by cosine similarity?",
         "options": [
-          "Cosine similarity only looks at the direction of rating patterns, t their magnitudes",
+          "Cosine similarity only looks at the direction of rating patterns, not their magnitudes",
           "Cosine similarity adds extra ratings to balance them...",
           "It rounds ratings to the nearest whole number first...",
           "It igres users who rated fewer than 10 movies..."
@@ -240,7 +240,7 @@
         "id": "M6Q1M10",
         "question": "If a rating matrix has full row rank (rank equals the number of users), what does this imply?",
         "options": [
-          "Every user has a completely unique taste profile that cant be predicted from others",
+          "Every user has a completely unique taste profile that cannot be predicted from others",
           "All users like the same movies...",
           "The matrix has missing entries...",
           "There are exactly as many movies as users..."
@@ -254,7 +254,7 @@
         "id": "M6Q1H1",
         "question": "For the matrix R = [[5,3,0,1],[4,0,0,1],[1,1,5,4]], if we treat 0 entries as missing and want to complete the matrix, why is this problem fundamentally ill-posed without additional constraints?",
         "options": [
-          "Because there are infinitely many rank-k matrices that agree with the kwn entries",
+          "Because there are infinitely many rank-k matrices that agree with the known entries",
           "Because the matrix is too small to have a unique completion...",
           "Because 0 entries cant be part of any matrix completion...",
           "Because rank is undefined for matrices with missing entries..."
@@ -278,7 +278,7 @@
         "id": "M6Q1H3",
         "question": "In matrix completion (like the Netflix Prize), why is the nuclear norm minimization problem a convex relaxation of the rank minimization problem?",
         "options": [
-          "Because the nuclear rm is the sum of singular values, which is convex, while rank (count of n-zero singular values) is t convex",
+          "Because the nuclear norm is the sum of singular values, which is convex, while rank (count of non-zero singular values) is not convex",
           "Because nuclear rm and rank always give the same answer...",
           "Because convex functions are always linear...",
           "Because rank can never be minimized directly..."
@@ -314,7 +314,7 @@
         "id": "M6Q1H6",
         "question": "Why does the Frobenius norm of the error matrix ‖R - R_k‖_F relate directly to the discarded singular values in SVD truncation?",
         "options": [
-          "Because the Frobenius rm squared equals the sum of squared singular values, and discarding σ_{k+1},... removes exactly their squared contributions",
+          "Because the Frobenius norm squared equals the sum of squared singular values, and discarding σ_{k+1},... removes exactly their squared contributions",
           "Because the Frobenius rm igres small singular values automatically...",
           "Because the error matrix has singular values...",
           "Because Frobenius rm and spectral rm are always equal..."
@@ -338,7 +338,7 @@
         "id": "M6Q1H8",
         "question": "Why can't we simply solve Rx = b for missing ratings, where b is the vector of missing entries and x is a completion vector?",
         "options": [
-          "Because the missing entries are in different positions for different users, so there is single consistent system to solve",
+          "Because the missing entries are in different positions for different users, so there is no single consistent system to solve",
           "Because R is always singular...",
           "Because x would have negative components...",
           "Because Rx always produces zero..."
@@ -350,7 +350,7 @@
         "id": "M6Q1H9",
         "question": "For a rating matrix R with SVD R = UΣV^T, the prediction for a missing entry R(i,j) is typically computed as (UΣV^T)(i,j). Why is this a better prediction than simply using the global average rating?",
         "options": [
-          "Because it uses the latent factor structure — combining user i's latent preferences with movie j's latent attributes — rather than igring individual taste",
+          "Because it uses the latent factor structure — combining user i's latent preferences with movie j's latent attributes — rather than ignoring individual taste",
           "Because it always predicts exactly the true value...",
           "Because it uses fewer computations...",
           "Because it doesn't require kwing any ratings at all..."

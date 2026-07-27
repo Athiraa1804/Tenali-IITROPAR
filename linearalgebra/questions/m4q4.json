@@ -71,7 +71,7 @@
         "question": "The two orthogonal pairs are R(M) ⊥ N(M) and C(M) ⊥ N(Mᵀ). Do R(M) and C(M) have to be perpendicular?",
         "options": [
           "always — does t match",
-          "they are generally T perpendicular",
+          "No, they are generally NOT perpendicular",
           "Only if M is symmetric...",
           "Only for square matrices..."
         ],
@@ -119,7 +119,7 @@
         "question": "Can a nonzero vector be in both R(M) and N(M) simultaneously?",
         "options": [
           "if the matrix is symmetric...",
-          "because they are perpendicular and share only the origin",
+          "No, because they are perpendicular and share only the origin",
           "always — does t match",
           "Only for n-square matrices..."
         ],
@@ -314,7 +314,7 @@
         "id": "M4Q4H6",
         "question": "For A = [[1,2,3],[4,5,6],[7,8,9]], N(A) = t(1,-2,1) and N(Aᵀ) = t(1,-2,1) (same direction!). R(A) is a plane. Is it possible for N(A) and N(Aᵀ) to be the same subspace?",
         "options": [
-          "— it happens when A and Aᵀ share the same null direction",
+          "Yes — it happens when A and Aᵀ share the same null direction",
           "— they always live in different spaces...",
           "Only if A is symmetric...",
           "Only if rank = 0 — does t match"
@@ -338,7 +338,7 @@
         "id": "M4Q4H8",
         "question": "For a rank-1 matrix M = [[1,2],[3,6]], all four subspaces are perpendicular lines in R². Do R(M) and N(Mᵀ) point in the same direction?",
         "options": [
-          "R(M) = t(1,2) and N(Mᵀ) = t(-3,1) are different directions",
+          "No: R(M) = t(1,2) and N(Mᵀ) = t(-3,1) are different directions",
           "they are the same line...",
           "They are perpendicular...",
           "They are parallel — does t match"
@@ -350,7 +350,7 @@
         "id": "M4Q4H9",
         "question": "If A is 3×3 with rank 2, R(A) is a 2D plane and N(A) is a 1D line perpendicular to it. C(A) is a 2D plane and N(Aᵀ) is a 1D line perpendicular to it. Can the two 1D lines (N(A) and N(Aᵀ)) ever be the same?",
         "options": [
-          "it depends on the matrix — as seen with [[1,4,7],[2,5,8],[3,6,9]]",
+          "Yes, it depends on the matrix — as seen with [[1,4,7],[2,5,8],[3,6,9]]",
           "Never — they live in different spaces...",
           "Only if the matrix is the identity...",
           "Only if the matrix has rank 3..."
@@ -362,7 +362,7 @@
         "id": "M4Q4H10",
         "question": "The Fundamental Theorem says R(A) ⊥ N(A) and C(A) ⊥ N(Aᵀ). Can we also say R(A) ⊥ N(Aᵀ) in general?",
         "options": [
-          "— this is t guaranteed and is generally false",
+          "No — this is not guaranteed and is generally false",
           "always — does t match",
           "Only for square matrices...",
           "Only when rank equals m..."
@@ -413,7 +413,7 @@
       "id": "M4Q4R4",
       "question": "A GPS receiver gets signals from 4 satellites but the system matrix has rank 3. The 1D left null space represents what?",
       "options": [
-        "A direction the receiver cant determine from satellite signals",
+        "A direction the receiver cannot determine from satellite signals",
         "An extra satellite providing redundant information",
         "The speed of light",
         "The satellite orbit radius"
@@ -438,7 +438,7 @@
       "question": "Audio noise-cancelling headphones use a reference mic to capture ambient noise. The anti-noise signal is designed to be in the left null space of the music channel. Why does this prevent music distortion?",
       "options": [
         "The anti-ise is louder than the music",
-        "Because N(Aᵀ) ⊥ C(A), the anti-ise cancels ise without affecting music",
+        "Because N(Aᵀ) ⊥ C(A), the anti-noise cancels noise without affecting music",
         "The headphones turn off the music temporarily",
         "The ise and music are at different frequencies"
       ],

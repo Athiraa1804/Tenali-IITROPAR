@@ -34,7 +34,7 @@
         "id": "M3Q9E3",
         "question": "Is (1,-2,1) in the null space of A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
-          "because A*(1,-2,1) = (0,0,0)",
+          "Yes, because A*(1,-2,1) = (0,0,0)",
           "— t here",
           "Only partially — does t match",
           "Cant determine — does t match"
@@ -82,7 +82,7 @@
         "id": "M3Q9E7",
         "question": "Does A = [[1,4,7],[2,5,8],[3,6,9]] have a non-trivial null space?",
         "options": [
-          "it contains (1,-2,1) and all its scalar multiples",
+          "Yes, it contains (1,-2,1) and all its scalar multiples",
           "only the zero vector...",
           "Only (0,0,0) — does t match",
           "Cant determine — does t match"
@@ -94,7 +94,7 @@
         "id": "M3Q9E8",
         "question": "Is the null space of this A the same direction as the null space of [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
-          "— both are t(1,-2,1)",
+          "Yes — both are t(1,-2,1)",
           "— different directions",
           "Only approximately",
           "Cant compare"
@@ -228,7 +228,7 @@
         "id": "M3Q9M9",
         "question": "Is A = [[1,4,7],[2,5,8],[3,6,9]] invertible?",
         "options": [
-          "because det(A) = 0",
+          "No, because det(A) = 0",
           "— t here",
           "Only if augmented",
           "Depends on context"
@@ -240,7 +240,7 @@
         "id": "M3Q9M10",
         "question": "Does the null space of A contain any vectors with all positive components?",
         "options": [
-          "— if x,y,z > 0, then x+4y+7z > 0 ≠ 0",
+          "No — if x,y,z > 0, then x+4y+7z > 0 ≠ 0",
           "all of them — does t match",
           "Only (1,1,1) — does t match",
           "Cant determine — does t match"
@@ -290,7 +290,7 @@
         "id": "M3Q9H4",
         "question": "Can you find the null space direction of A without solving the full system?",
         "options": [
-          "— by ticing Row3 is redundant and using the cross product of Row1 and Row2",
+          "Yes — by noticing Row3 is redundant and using the cross product of Row1 and Row2",
           "— always need full row reduction...",
           "Only for special matrices...",
           "Only in R²)"
@@ -350,7 +350,7 @@
         "id": "M3Q9H9",
         "question": "If A has rank 2 and null space direction (1,-2,1), can you find a vector NOT in the null space?",
         "options": [
-          "— (1,0,0) is t perpendicular to all rows, e.g., (1,0,0)·Row1 = 1 ≠ 0",
+          "Yes — (1,0,0) is not perpendicular to all rows, e.g., (1,0,0)·Row1 = 1 ≠ 0",
           "— all vectors are in the null space...",
           "Only zero vectors — does t match",
           "Cant determine — does t match"
@@ -413,7 +413,7 @@
       "story": "When engineers analyse a bridge for vibrations, they compute the stiffness matrix. The null space contains vibration modes requiring zero energy — the structure can move freely without restoring force.",
       "question": "What do zero-energy modes in the null space of a stiffness matrix represent?",
       "options": [
-        "Rigid body motions that require energy",
+        "Rigid body motions that require no energy",
         "Maximum vibration amplitude",
         "Structural failure modes",
         "Natural frequencies"

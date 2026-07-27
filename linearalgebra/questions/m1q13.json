@@ -22,7 +22,7 @@
         "id": "M1Q13E2",
         "question": "Since det(A) = -1 ≠ 0, is the matrix A invertible?",
         "options": [
-          "a n-zero determinant means the matrix is invertible",
+          "Yes, a non-zero determinant means the matrix is invertible",
           "because the determinant is negative...",
           "Only if the determinant is positive...",
           "Cant be determined — does t match"
@@ -46,7 +46,7 @@
         "id": "M1Q13E4",
         "question": "If det(A) = 0, can you find the inverse of A?",
         "options": [
-          "— a zero determinant means the matrix is singular (t invertible)",
+          "No — a zero determinant means the matrix is singular (not invertible)",
           "always — does t match",
           "Only if the matrix is 3×3...",
           "Only for positive matrices..."
@@ -118,7 +118,7 @@
         "id": "M1Q13E10",
         "question": "Is the identity matrix [[1,0],[0,1]] invertible?",
         "options": [
-          "— det = 1 ≠ 0, and its inverse is itself",
+          "Yes — det = 1 ≠ 0, and its inverse is itself",
           "— it's already the simplest matrix",
           "Only for 3×3 identity matrices",
           "Only if we define a special inverse"
@@ -144,7 +144,7 @@
         "id": "M1Q13M2",
         "question": "Does a zero determinant always mean a matrix is not invertible?",
         "options": [
-          "— det = 0 is equivalent to being singular (n-invertible)",
+          "Yes — det = 0 is equivalent to being singular (non-invertible)",
           "some zero-determinant matrices are invertible",
           "Only for 3×3 matrices...",
           "Only if the matrix is symmetric..."
@@ -156,7 +156,7 @@
         "id": "M1Q13M3",
         "question": "If det(A) ≠ 0, does Ax = b always have a unique solution?",
         "options": [
-          "— an invertible matrix guarantees a unique solution for any b",
+          "Yes — an invertible matrix guarantees a unique solution for any b",
           "Only if b is positive...",
           "Only for 2×2 matrices...",
           "it depends on b — does t match"
@@ -290,7 +290,7 @@
         "id": "M1Q13H4",
         "question": "The general linear group GL(2, ℝ) is the set of all invertible 2×2 real matrices. Is it a subgroup of the group of all 2×2 matrices under multiplication?",
         "options": [
-          "— it's closed under multiplication and inverses, and contains the identity",
+          "Yes — it's closed under multiplication and inverses, and contains the identity",
           "— it doesn't contain the identity...",
           "Only for matrices with positive determinants...",
           "Only for integer matrices..."

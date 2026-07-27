@@ -58,7 +58,7 @@
         "id": "M4Q5E5",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], is N(A) = N(Aᵀ)?",
         "options": [
-          "both are t(1,-2,1)",
+          "Yes, both are t(1,-2,1)",
           "they are different",
           "N(A) is a line and N(Aᵀ) is a plane",
           "N(A) is empty — does t match"
@@ -82,7 +82,7 @@
         "id": "M4Q5E7",
         "question": "Is (1,-2,1) perpendicular to the row (1,4,7)?",
         "options": [
-          "1-8+7 = 0",
+          "Yes: 1-8+7 = 0",
           "1-8+7 = 0 but this is coincidence",
           "1+8+7 = 16 ≠ 0 — does t match",
           "1+4+7 = 12 ≠ 0 — does t match"
@@ -192,7 +192,7 @@
         "id": "M4Q5M6",
         "question": "Can you decompose any vector v ∈ R³ as v = v_row + v_null where v_row ∈ R(A) and v_null ∈ N(A)?",
         "options": [
-          "this is the orthogonal decomposition theorem",
+          "Yes, this is the orthogonal decomposition theorem",
           "only if v is in the row space...",
           "Only for specific vectors...",
           "Only if A is invertible..."
@@ -254,7 +254,7 @@
         "id": "M4Q5H1",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], N(A) = N(Aᵀ) = t(1,-2,1). Is this typical for all 3×3 rank-2 matrices?",
         "options": [
-          "— it is a special coincidence of this matrix's structure",
+          "No — it is a special coincidence of this matrix's structure",
           "— all rank-2 matrices have equal null spaces",
           "Only for symmetric matrices...",
           "Only when rank equals n-1..."
@@ -290,7 +290,7 @@
         "id": "M4Q5H4",
         "question": "If A is 3×3 with rank 2, then R(A) = C(A) = 2D planes. Are these the SAME plane?",
         "options": [
-          "t necessarily — R(A) and C(A) can be different planes even with the same dimension",
+          "Not necessarily — R(A) and C(A) can be different planes even with the same dimension",
           "always — row and column spaces are identical...",
           "Only if A is symmetric...",
           "Only when rank = n — does t match"
@@ -338,7 +338,7 @@
         "id": "M4Q5H8",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], both R(A) and C(A) are 2D planes in R³. Are they the same plane?",
         "options": [
-          "— both satisfy x - 2y + z = 0",
+          "Yes — both satisfy x - 2y + z = 0",
           "— they are different planes",
           "R(A) is a plane but C(A) is a line",
           "They are perpendicular"

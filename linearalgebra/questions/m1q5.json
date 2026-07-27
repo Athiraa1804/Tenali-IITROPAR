@@ -46,7 +46,7 @@
         "id": "M1Q5E4",
         "question": "If a = 0 and b = 3, what does the graph of y = 0x + 3 look like?",
         "options": [
-          "A line at y = 3",
+          "A horizontal line at y = 3",
           "A line at x = 3",
           "A line through the origin with slope 3",
           "A parabola)"
@@ -132,7 +132,7 @@
         "id": "M1Q5M1",
         "question": "When you increase the slope parameter a, does the line y = ax + b become steeper?",
         "options": [
-          "increasing |a| always makes the line steeper",
+          "Yes, increasing |a| always makes the line steeper",
           "increasing a always makes the line flatter",
           "Only if b is positive...",
           "Only if a starts negative..."
@@ -144,7 +144,7 @@
         "id": "M1Q5M2",
         "question": "Is the slope a equal to the tangent of the angle the line makes with the x-axis?",
         "options": [
-          "tan(θ) = slope = a",
+          "Yes, tan(θ) = slope = a",
           "tan(θ) = 1/slope",
           "Only for slopes between 0 and 1",
           "Only for positive slopes"
@@ -216,7 +216,7 @@
         "id": "M1Q5M8",
         "question": "When the slope a is very close to 0 (say a = 0.01), what does the line look like?",
         "options": [
-          "Nearly — y barely changes as x increases",
+          "Nearly horizontal — y barely changes as x increases",
           "Nearly — does t match",
           "A parabola)",
           "A circle)"
@@ -254,7 +254,7 @@
         "id": "M1Q5H1",
         "question": "Consider the set of all lines y = ax + b where a and b are real numbers. Is this collection a vector space over ℝ?",
         "options": [
-          "because adding two lines y = a₁x + b₁ and y = a₂x + b₂ does t always give ather line of this form (the sum is y = (a₁+a₂)x + (b₁+b₂), which IS a line — but the zero element must be the zero LINE, which doesn't exist in this set)",
+          "No, because adding two lines y = a₁x + b₁ and y = a₂x + b₂ does not always give another line of this form (the sum is y = (a₁+a₂)x + (b₁+b₂), which IS a line — but the zero element must be the zero LINE, which doesn't exist in this set)",
           "it is a 2-dimensional vector space...",
           "because lines cant be added...",
           "because each line is a vector..."
@@ -350,7 +350,7 @@
         "id": "M1Q5H9",
         "question": "Consider the map φ: ℝ² → {lines in ℝ²} defined by φ(a, b) = line y = ax + b. Is this map injective (one-to-one)?",
         "options": [
-          "different (a,b) pairs always give different lines",
+          "Yes, different (a,b) pairs always give different lines",
           "two different (a,b) pairs can give the same line",
           "Only if b ≠ 0 — does t match",
           "Only for positive slopes..."

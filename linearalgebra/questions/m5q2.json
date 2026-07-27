@@ -46,7 +46,7 @@
         "id": "M5Q2E4",
         "question": "Verify: Is (1,4,7)·(1,-2,1) = 0?",
         "options": [
-          "1-8+7 = 0",
+          "Yes: 1-8+7 = 0",
           "1-8+7 = -6",
           "1+8+7 = 16",
           "it equals 12"
@@ -59,7 +59,7 @@
         "question": "Does the orthogonality R(A) ⊥ N(A) depend on the matrix being square?",
         "options": [
           "only square matrices have this property",
-          "it holds for every matrix regardless of shape",
+          "No, it holds for every matrix regardless of shape",
           "Only for invertible matrices...",
           "Only for rank-deficient matrices..."
         ],
@@ -106,7 +106,7 @@
         "id": "M5Q2E9",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], verify: is (2,5,8)·(1,-2,1) = 0?",
         "options": [
-          "2-10+8 = 0",
+          "Yes: 2-10+8 = 0",
           "2-10+8 = 0 is false",
           "2+10+8 = 20",
           "it equals -6"
@@ -118,7 +118,7 @@
         "id": "M5Q2E10",
         "question": "Can the zero vector be considered orthogonal to every vector?",
         "options": [
-          "because 0·v = 0 for any v",
+          "Yes, because 0·v = 0 for any v",
           "orthogonality requires n-zero vectors",
           "Only orthogonal to itself...",
           "Depends on the dimension..."
@@ -156,7 +156,7 @@
         "id": "M5Q2M3",
         "question": "If R(A) ⊥ N(A) and dim(R(A)) = r, dim(N(A)) = n-r, do they 'fill up' ℝⁿ together?",
         "options": [
-          "they are orthogonal complements, so R(A) ⊕ N(A) = ℝⁿ",
+          "Yes: they are orthogonal complements, so R(A) ⊕ N(A) = ℝⁿ",
           "there may be gaps...",
           "Only if the matrix is square...",
           "Only if rank = nullity..."
@@ -216,7 +216,7 @@
         "id": "M5Q2M8",
         "question": "Can the Row Space and Null Space overlap (share non-zero vectors)?",
         "options": [
-          "because orthogonal n-zero vectors are linearly independent",
+          "No, because orthogonal non-zero vectors are linearly independent",
           "frequently — does t match",
           "Only if rank = 1 — does t match",
           "Only for square matrices..."
@@ -302,7 +302,7 @@
         "id": "M5Q2H5",
         "question": "If v is a non-zero vector in R(A) ∩ N(A), what contradiction arises?",
         "options": [
-          "v·v = 0 implies v = 0, contradicting v being n-zero",
+          "v·v = 0 implies v = 0, contradicting v being non-zero",
           "Av = 0 and Av ≠ 0 simultaneously...",
           "v must be a complex number...",
           "The dimensions don't add up..."
@@ -350,7 +350,7 @@
         "id": "M5Q2H9",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], verify that the left null vector (1,-2,1) is NOT in C(A).",
         "options": [
-          "— (1,-2,1) ⊥ C(A) and C(A) is 2D, so (1,-2,1) is outside it",
+          "Correct — (1,-2,1) ⊥ C(A) and C(A) is 2D, so (1,-2,1) is outside it",
           "In — (1,-2,1) is a column of A...",
           "(1,-2,1) is in C(A) because it has 3 components...",
           "Cant determine without computing..."
@@ -362,7 +362,7 @@
         "id": "M5Q2H10",
         "question": "The Pythagorean theorem for orthogonal subspaces states: if v = v₁ + v₂ with v₁ ⊥ v₂, then |v|² = |v₁|² + |v₂|². How is this used in the four-subspace framework?",
         "options": [
-          "Any vector's squared rm decomposes as the sum of squared rms of its projections onto orthogonal subspaces",
+          "Any vector's squared norm decomposes as the sum of squared norms of its projections onto orthogonal subspaces",
           "It only applies to the null space...",
           "It requires the matrix to be symmetric...",
           "It is t used in linear algebra..."

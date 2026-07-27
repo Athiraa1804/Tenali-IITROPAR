@@ -132,7 +132,7 @@
         "id": "M2Q4M1",
         "question": "Why can't A=280, C=360 be the 'true' solution if it doesn't satisfy all three equations?",
         "options": [
-          "Because the system is overdetermined — (A,C) satisfies all three equations simultaneously",
+          "Because the system is overdetermined — no (A,C) satisfies all three equations simultaneously",
           "Because 280 and 360 are t integers...",
           "Because we need at least 4 equations...",
           "Because the matrix is t square..."
@@ -156,7 +156,7 @@
         "id": "M2Q4M3",
         "question": "If we tried A=285, C=355, would the total error likely increase or decrease compared to A=280, C=360?",
         "options": [
-          "The first two equations would w have errors, likely increasing total error",
+          "The first two equations would now have errors, likely increasing total error",
           "The total error would definitely decrease...",
           "The total error would stay the same...",
           "Cant be determined — does t match"
@@ -240,7 +240,7 @@
         "id": "M2Q4M10",
         "question": "Why is the problem described as 'guessing' to minimise error?",
         "options": [
-          "Because without least squares, there's formula — you try values and observe the error",
+          "Because without least squares, there's no formula — you try values and observe the error",
           "Because mathematics doesn't have exact solutions...",
           "Because computers can't solve linear systems...",
           "Because the error is always zero..."
@@ -362,7 +362,7 @@
         "id": "M2Q4H10",
         "question": "What is the connection between the normal equations and the projection theorem in linear algebra?",
         "options": [
-          "The rmal equations find the orthogonal projection of b onto col(A), which is the closest point in the column space",
+          "The normal equations find the orthogonal projection of b onto col(A), which is the closest point in the column space",
           "They are unrelated concepts...",
           "The rmal equations find the furthest point from b...",
           "The projection theorem only applies to 3D geometry..."

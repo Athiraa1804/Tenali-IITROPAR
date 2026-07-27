@@ -58,7 +58,7 @@
         "id": "M3Q8E5",
         "question": "Does the null space direction (1,1,-3) satisfy x+2y+z=0?",
         "options": [
-          "because 1+2-3=0",
+          "Yes, because 1+2-3=0",
           "— t here",
           "Only approximately",
           "Cant determine"
@@ -70,7 +70,7 @@
         "id": "M3Q8E6",
         "question": "Does the null space direction (1,1,-3) satisfy 2x+7y+3z=0?",
         "options": [
-          "because 2+7-9=0",
+          "Yes, because 2+7-9=0",
           "— t here",
           "Only if scaled",
           "Cant determine"
@@ -94,7 +94,7 @@
         "id": "M3Q8E8",
         "question": "Is (1,1,-3) perpendicular to the plane W?",
         "options": [
-          "— it is perpendicular to every vector in W",
+          "Yes — it is perpendicular to every vector in W",
           "— t here",
           "Only to the basis vectors...",
           "Only in special cases..."
@@ -192,7 +192,7 @@
         "id": "M3Q8M6",
         "question": "Is the null space of W the same as the normal vector to the plane?",
         "options": [
-          "— the null space direction (1,1,-3) is the rmal to the plane",
+          "Yes — the null space direction (1,1,-3) is the normal to the plane",
           "— they are different...",
           "Only in R²)",
           "Only for perpendicular planes..."
@@ -216,7 +216,7 @@
         "id": "M3Q8M8",
         "question": "Is the null space of W a subspace of R³?",
         "options": [
-          "— it's a line through the origin, satisfying all subspace conditions",
+          "Yes — it's a line through the origin, satisfying all subspace conditions",
           "— t here",
           "Only if it passes through the origin...",
           "Subspaces can't be null spaces..."
@@ -228,7 +228,7 @@
         "id": "M3Q8M9",
         "question": "What is the equation of the plane containing W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "x+y-3z=0 (using rmal (1,1,-3))",
+          "x+y-3z=0 (using normal (1,1,-3))",
           "x+2y+z=0)",
           "2x+7y+3z=0)",
           "x+y+z=0)"
@@ -240,7 +240,7 @@
         "id": "M3Q8M10",
         "question": "If you know the null space direction is (1,1,-3), can you write the plane equation without solving the system?",
         "options": [
-          "— the plane is perpendicular to (1,1,-3), so x+y-3z=0",
+          "Yes — the plane is perpendicular to (1,1,-3), so x+y-3z=0",
           "— you always need to solve...",
           "Only approximately — does t match",
           "Only for special planes..."
@@ -266,7 +266,7 @@
         "id": "M3Q8H2",
         "question": "If the null space direction were (2,2,-6) instead of (1,1,-3), would it still be perpendicular to W?",
         "options": [
-          "— (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
+          "Yes — (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
           "— different vector...",
           "Only if scaled — does t match",
           "Cant determine — does t match"
@@ -290,7 +290,7 @@
         "id": "M3Q8H4",
         "question": "Can two different planes in R³ have the same null space (perpendicular line)?",
         "options": [
-          "— if they are the same plane, they have the same rmal",
+          "Yes — if they are the same plane, they have the same normal",
           "— different planes always have different rmals",
           "Only if parallel — does t match",
           "Only in R²)"
@@ -314,7 +314,7 @@
         "id": "M3Q8H6",
         "question": "If W is a 2D plane in R³ with null space direction n, what is the distance from a point p to the plane?",
         "options": [
-          "|p·n| / ||n|| (projection of p onto rmal divided by rmal's length)",
+          "|p·n| / ||n|| (projection of p onto normal divided by normal's length)",
           "|p| / |n|)",
           "p·n — t here",
           "||p||)"
@@ -351,7 +351,7 @@
         "question": "If W is the plane x+y-3z=0, what is the angle between the normal (1,1,-3) and the plane?",
         "options": [
           "90 degrees — the rmal is always perpendicular to the plane",
-          "0 degrees)",
+          "90 degrees — the normal is always perpendicular to the plane",
           "45 degrees)",
           "Depends on the point — does t match"
         ],
@@ -397,7 +397,7 @@
       "story": "When you apply a force perpendicular to a beam (like pushing sideways on a diving board), that force does not stretch or compress the beam along its length. The perpendicular force is in the null space of the beam's axial direction.",
       "question": "What happens to a beam when a force is applied in the null space of its axial direction?",
       "options": [
-        "It bends without stretching — work along the axis",
+        "It bends without stretching — no work along the axis",
         "It stretches maximally",
         "It compresses",
         "thing happens"
@@ -413,7 +413,7 @@
       "story": "PCA finds the principal components — the directions of maximum variance. The null space of the data matrix contains directions of minimum or zero variance. These low-variance directions represent noise that can be discarded.",
       "question": "In PCA, what do the low-variance directions in the null space of the data represent?",
       "options": [
-        "ise or redundant features that can be discarded",
+        "Noise or redundant features that can be discarded",
         "The most important patterns",
         "The mean of the data",
         "The data range"
@@ -429,7 +429,7 @@
       "story": "The Earth's magnetic field lines are perpendicular to the equipotential surfaces (surfaces of constant magnetic potential). The field direction is the null space of the equipotential surface — it points straight through the surface.",
       "question": "Why are magnetic field lines perpendicular to equipotential surfaces?",
       "options": [
-        "Because the field direction is the null space (rmal) of the equipotential surface",
+        "Because the field direction is the null space (normal) of the equipotential surface",
         "Because they are parallel",
         "Because they coincide",
         "By coincidence"

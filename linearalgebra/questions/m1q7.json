@@ -46,7 +46,7 @@
         "id": "M1Q7E4",
         "question": "Can a function with a non-zero slope be one-to-one (each output from exactly one input)?",
         "options": [
-          "— a n-zero slope means the function is strictly increasing or decreasing",
+          "Yes — a non-zero slope means the function is strictly increasing or decreasing",
           "never)",
           "Only if the slope is 1...",
           "Only for positive slopes..."
@@ -70,7 +70,7 @@
         "id": "M1Q7E6",
         "question": "For f(x) = 3x + 2, is the inverse function also linear?",
         "options": [
-          "f⁻¹(y) = (1/3)y - 2/3, which is linear",
+          "Yes, f⁻¹(y) = (1/3)y - 2/3, which is linear",
           "the inverse is quadratic",
           "the inverse is a constant",
           "Only if the original slope is 1"
@@ -82,7 +82,7 @@
         "id": "M1Q7E7",
         "question": "If f(a) = f(b), does it necessarily mean a = b for f(x) = 3x + 2?",
         "options": [
-          "because f is one-to-one (3a + 2 = 3b + 2 → a = b)",
+          "Yes, because f is one-to-one (3a + 2 = 3b + 2 → a = b)",
           "always)",
           "Only for positive values...",
           "Cant be determined — does t match"
@@ -106,7 +106,7 @@
         "id": "M1Q7E9",
         "question": "Can the function f(x) = 3 (a constant function) be inverted?",
         "options": [
-          "— multiple inputs (every x) give the same output 3, so it's t one-to-one",
+          "No — multiple inputs (every x) give the same output 3, so it's not one-to-one",
           "the inverse is f⁻¹(x) = 3...",
           "f⁻¹(x) = x/3 — does t match",
           "Only if we restrict the domain..."
@@ -132,7 +132,7 @@
         "id": "M1Q7M1",
         "question": "Is f(x) = 3x + 2 invertible because each x gives a unique y?",
         "options": [
-          "— one-to-one (injective) functions are invertible",
+          "Yes — one-to-one (injective) functions are invertible",
           "invertibility requires the slope to be 1",
           "Only if the function passes through the origin",
           "Only for functions with b = 0..."
@@ -192,7 +192,7 @@
         "id": "M1Q7M6",
         "question": "Can the function f(x) = x² (a parabola) be inverted over ALL real numbers?",
         "options": [
-          "— both x = 2 and x = -2 give f(x) = 4, so it's t one-to-one",
+          "No — both x = 2 and x = -2 give f(x) = 4, so it's not one-to-one",
           "the inverse is √x...",
           "f⁻¹(x) = x² — does t match",
           "Only for x ≥ 0 — does t match"
@@ -228,7 +228,7 @@
         "id": "M1Q7M9",
         "question": "For a function to be invertible, must it be one-to-one (injective)?",
         "options": [
-          "— one-to-one is the essential requirement for invertibility",
+          "Yes — one-to-one is the essential requirement for invertibility",
           "any function can be inverted...",
           "Only if it is also onto (surjective)...",
           "Only for linear functions..."
@@ -254,7 +254,7 @@
         "id": "M1Q7H1",
         "question": "The inverse of f(x) = 3x + 2 is f⁻¹(x) = (x-2)/3. Is f⁻¹ also a linear function? What is its matrix representation?",
         "options": [
-          "f⁻¹ is y = (1/3)x - 2/3, a linear (affine) map with slope 1/3",
+          "Yes: f⁻¹ is y = (1/3)x - 2/3, a linear (affine) map with slope 1/3",
           "the inverse of a linear function is always quadratic",
           "f⁻¹(x) = 3x - 2 — does t match",
           "only f itself is linear..."
@@ -278,7 +278,7 @@
         "id": "M1Q7H3",
         "question": "A function f: ℝ → ℝ is bijective if it is both injective (one-to-one) and surjective (onto). Is f(x) = 3x + 2 bijective?",
         "options": [
-          "it's one-to-one (slope ≠ 0) and onto (covers all of ℝ)",
+          "Yes: it's one-to-one (slope ≠ 0) and onto (covers all of ℝ)",
           "it's t onto — does t match",
           "it's t one-to-one...",
           "Only if we restrict the codomain..."
@@ -290,7 +290,7 @@
         "id": "M1Q7H4",
         "question": "If we restrict f(x) = x² to x ≥ 0, the restricted function IS invertible with f⁻¹(x) = √x. Why does restricting the domain fix the invertibility problem?",
         "options": [
-          "Because restricting to x ≥ 0 removes the negative inputs that caused the n-one-to-one issue",
+          "Because restricting to x ≥ 0 removes the negative inputs that caused the non-one-to-one issue",
           "Because square roots are always defined...",
           "Because the domain restriction makes the function linear...",
           "Because the function becomes surjective..."
@@ -326,7 +326,7 @@
         "id": "M1Q7H7",
         "question": "Consider the set of all invertible 2×2 matrices. Is this set closed under matrix multiplication?",
         "options": [
-          "— the product of two invertible matrices is always invertible",
+          "Yes — the product of two invertible matrices is always invertible",
           "— the product may have determinant zero...",
           "Only if the matrices commute...",
           "Only for diagonal matrices..."
@@ -362,7 +362,7 @@
         "id": "M1Q7H10",
         "question": "The function f(x) = 3x + 2 restricted to integers gives f: ℤ → ℤ. Is this restriction still invertible?",
         "options": [
-          "for every integer y, x = (y-2)/3 is also an integer when y ≡ 2 (mod 3), but T for all y — so it's injective but t surjective on ℤ",
+          "Yes: for every integer y, x = (y-2)/3 is also an integer when y ≡ 2 (mod 3), but NOT for all y — so it's injective but not surjective on ℤ",
           "perfectly invertible on all of ℤ...",
           "t even injective on ℤ...",
           "Invertibility doesn't apply to discrete sets..."

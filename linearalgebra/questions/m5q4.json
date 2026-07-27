@@ -156,7 +156,7 @@
         "id": "M5Q4M3",
         "question": "For M = [[2,4],[1,2],[3,6]], verify that (2,1,3) (a column of M) is orthogonal to the Left Null Space.",
         "options": [
-          "(2,1,3).(1,-2,0) = 0 and (2,1,3).(0,-3,1) = 0",
+          "Yes: (2,1,3).(1,-2,0) = 0 and (2,1,3).(0,-3,1) = 0",
           "the dot products are n-zero...",
           "Only the first dot product is zero...",
           "Cant verify without computing..."
@@ -216,7 +216,7 @@
         "id": "M5Q4M8",
         "question": "If we multiply M by the vector (1,2)^T (which is in R(M)), what do we get?",
         "options": [
-          "(10,5,15)^T -- a n-zero vector in C(M)",
+          "(10,5,15)^T -- a non-zero vector in C(M)",
           "(0,0,0)^T -- the zero vector",
           "(1,2,3)^T)",
           "(2,4,6)^T)"
@@ -290,7 +290,7 @@
         "id": "M5Q4H4",
         "question": "If we add a 4th column to M making it M' = [[2,4,6],[1,2,3],[3,6,9]], what happens to rank, nullity, and the four subspaces?",
         "options": [
-          "rank stays 1, nullity increases from 1 to 2; N(M') is w a plane in R^3",
+          "rank stays 1, nullity increases from 1 to 2; N(M') is now a plane in R^3",
           "rank increases to 2, nullity stays 1...",
           "rank stays 1, nullity stays 1...",
           "rank becomes 3, nullity becomes 0..."

@@ -47,7 +47,7 @@
         "question": "Does the point (280, 360) satisfy the third equation A+C=900?",
         "options": [
           "— 280+360=640, t 900",
-          "— 280+360=900",
+          "No — 280+360=640, not 900",
           "— but only approximately",
           "Cant be determined"
         ],
@@ -94,7 +94,7 @@
         "id": "M2Q5E8",
         "question": "Are the first two lines (3A+C=1200 and A+2C=1000) parallel?",
         "options": [
-          "— they have different slopes (-3 and -0.5)",
+          "No — they have different slopes (-3 and -0.5)",
           "— they both have slope -1...",
           "— they are the same line...",
           "Cant determine without graphing"
@@ -156,7 +156,7 @@
         "id": "M2Q5M3",
         "question": "If the third equation were A+C=640 instead of A+C=900, would the system be consistent?",
         "options": [
-          "— because (280, 360) satisfies A+C=640",
+          "Yes — because (280, 360) satisfies A+C=640",
           "— three equations are always inconsistent",
           "Only if we remove the first equation",
           "Only if A and C are negative..."
@@ -192,7 +192,7 @@
         "id": "M2Q5M6",
         "question": "What happens to the feasible region as you add more consistent equations to a 2-unknown system?",
         "options": [
-          "It shrinks from a plane → line → point, but stays n-empty",
+          "It shrinks from a plane → line → point, but stays non-empty",
           "It grows larger — does t match",
           "It becomes a circle — does t match",
           "It disappears immediately..."
@@ -204,7 +204,7 @@
         "id": "M2Q5M7",
         "question": "Why is 'overdetermined' the right word for a system with more equations than unknowns?",
         "options": [
-          "Because there are more constraints (equations) than degrees of freedom (unkwns) — the system is over-constrained",
+          "Because there are more constraints (equations) than degrees of freedom (unknowns) — the system is over-constrained",
           "Because the numbers in the equations are too large...",
           "Because the matrix has too many columns...",
           "Because the solution is always too large..."
@@ -216,7 +216,7 @@
         "id": "M2Q5M8",
         "question": "If the first two lines are parallel, what does that tell you about the system?",
         "options": [
-          "The system is either inconsistent ( solution) or has infinitely many solutions (same line)",
+          "The system is either inconsistent (no solution) or has infinitely many solutions (same line)",
           "The system always has exactly one solution...",
           "The system has exactly two solutions...",
           "The system is underdetermined..."
@@ -240,7 +240,7 @@
         "id": "M2Q5M10",
         "question": "If all three lines formed a triangle (pairwise intersections at three different points), what would that tell you about the system?",
         "options": [
-          "The system is inconsistent — single point satisfies all three equations",
+          "The system is inconsistent — no single point satisfies all three equations",
           "The system has three solutions...",
           "The system is consistent with infinitely many solutions...",
           "The system is underdetermined..."
@@ -338,7 +338,7 @@
         "id": "M2Q5H8",
         "question": "Can an overdetermined system have infinitely many solutions?",
         "options": [
-          "— if the extra equations are linear combinations of the first n independent equations",
+          "Yes — if the extra equations are linear combinations of the first n independent equations",
           "Never — overdetermined systems always have exactly one solution...",
           "Never — overdetermined systems always have zero solutions...",
           "Only if the matrix is square..."

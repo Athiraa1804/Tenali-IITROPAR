@@ -82,7 +82,7 @@
         "id": "M1Q2E7",
         "question": "Does the point D(4,3) satisfy the equation y = x - 1?",
         "options": [
-          "because 3 = 4 - 1",
+          "Yes, because 3 = 4 - 1",
           "because 3 ≠ 4 - 1",
           "Cant be determined",
           "Only approximately"
@@ -118,7 +118,7 @@
         "id": "M1Q2E10",
         "question": "Is the displacement from C to D the same as from B to C?",
         "options": [
-          "both are (1,1)",
+          "Yes, both are (1,1)",
           "they are different",
           "Only if the slope is the same",
           "Cant be determined"
@@ -156,7 +156,7 @@
         "id": "M1Q2M3",
         "question": "Suppose instead Divya walked right 1, up 2 from C(3,2). Would the three points still be collinear?",
         "options": [
-          "because the new slope would differ",
+          "No, because the new slope would differ",
           "because they still share point C",
           "because slopes don't matter",
           "Only if the line passes through the origin"
@@ -192,7 +192,7 @@
         "id": "M1Q2M6",
         "question": "Can you determine if a fourth point E = (5,5) lies on the same line as B, C, and D?",
         "options": [
-          "slope from D to E must also be 1",
+          "Yes: slope from D to E must also be 1",
           "we need more information",
           "Only if E is between B and D",
           "Only if E has integer coordinates"
@@ -254,7 +254,7 @@
         "id": "M1Q2H1",
         "question": "Using vectors, if B = (2,1), C = (3,2), D = (4,3), can you express D as a linear combination of B and C?",
         "options": [
-          "D = 2C - B",
+          "Yes: D = 2C - B",
           "D = B + C — does t match",
           "D is t in the span of B and C",
           "D = B - C — does t match"
@@ -278,7 +278,7 @@
         "id": "M1Q2H3",
         "question": "Is the set S = {(x,y) : y = x - 1} a subspace of ℝ²?",
         "options": [
-          "because it does t contain the origin (0,0)",
+          "No, because it does not contain the origin (0,0)",
           "because it is a line...",
           "because it is closed under addition...",
           "because it is t closed under scalar multiplication"
@@ -290,7 +290,7 @@
         "id": "M1Q2H4",
         "question": "If we translate the line so it passes through the origin (using y = x instead), is the resulting set a subspace of ℝ²?",
         "options": [
-          "because y = x and is closed under addition and scalar multiplication",
+          "Yes, because y = x passes through origin and is closed under addition and scalar multiplication",
           "lines cant be subspaces...",
           "Only if the slope is 1...",
           "Only for rational points..."
@@ -314,7 +314,7 @@
         "id": "M1Q2H6",
         "question": "A fourth person Eria walks from D(4,3) with displacement (1,1). What are her coordinates, and are all four points (B,C,D,E) still collinear?",
         "options": [
-          "E = (5,4), all four are collinear",
+          "E = (5,4), yes all four are collinear",
           "E = (5,4), they are t",
           "E = (4,4), all four are collinear",
           "E = (5,5), they are t"
@@ -338,7 +338,7 @@
         "id": "M1Q2H8",
         "question": "Can three non-collinear points in ℝ² always define a unique triangle? What linear algebra concept does this relate to?",
         "options": [
-          "— three n-collinear points span all of ℝ² and form a basis",
+          "Yes — three non-collinear points span all of ℝ² and form a basis",
           "— you always need four points...",
           "— but only if they pass through the origin...",
           "— only parallel points form triangles..."

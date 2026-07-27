@@ -144,7 +144,7 @@
         "id": "M2Q6M2",
         "question": "Starting with 1000 Stressed (instead of Happy), would you reach the same steady state?",
         "options": [
-          "— the steady state is independent of the starting distribution",
+          "Yes — the steady state is independent of the starting distribution",
           "— different starting points give different steady states",
           "Only if you start with exactly 500 of each...",
           "Only if the chain is symmetric..."
@@ -216,7 +216,7 @@
         "id": "M2Q6M8",
         "question": "After step 3, the distribution is approximately [412, 588]. Is this close to the steady state [417, 583]?",
         "options": [
-          "— it's within 5 of the steady state",
+          "Yes — it's within 5 of the steady state",
           "— it's very far away...",
           "— it will never reach steady state",
           "Only if we start at steady state"
@@ -362,7 +362,7 @@
         "id": "M2Q6H10",
         "question": "Is the Markov chain with M = [[0.3,0.7],[0.5,0.5]] irreducible?",
         "options": [
-          "— both states communicate (you can reach either from either)",
+          "Yes — both states communicate (you can reach either from either)",
           "— Happy cant reach Stressed...",
           "— Stressed cant reach Happy...",
           "Only if the matrix is symmetric..."

@@ -46,7 +46,7 @@
         "id": "M1Q8E4",
         "question": "Is f(5) = f(-5) for f(x) = x² - 10?",
         "options": [
-          "because (-5)² = 25 = 5²",
+          "Yes, because (-5)² = 25 = 5²",
           "they give different values",
           "Only if the function is linear",
           "Cant be determined"
@@ -132,7 +132,7 @@
         "id": "M1Q8M1",
         "question": "The point (5, 15) lies on the parabola y = x² - 10. Is this the same as saying f(5) = 15?",
         "options": [
-          "— f(5) = 15 means the point (5, 15) is on the graph",
+          "Yes — f(5) = 15 means the point (5, 15) is on the graph",
           "they represent different things...",
           "Only if the function is linear...",
           "Only if x = y — does t match"
@@ -240,7 +240,7 @@
         "id": "M1Q8M10",
         "question": "The ocean tide height follows h(t) = 2sin(t) + 5. What type of function models the tide — linear, quadratic, or trigonometric?",
         "options": [
-          "Trigometric (sine function)",
+          "Trigonometric (sine function)",
           "Linear)",
           "Quadratic)",
           "Exponential — does t match"
@@ -254,7 +254,7 @@
         "id": "M1Q8H1",
         "question": "For f(x) = x² - 10, is the function invertible over all real numbers?",
         "options": [
-          "— f(3) = f(-3) = -1, so it's t one-to-one",
+          "No — f(3) = f(-3) = -1, so it's not one-to-one",
           "the inverse is √(x+10)...",
           "every function has an inverse",
           "Only for x ≥ 0 — does t match"
@@ -278,7 +278,7 @@
         "id": "M1Q8H3",
         "question": "The set V = {f: ℝ → ℝ : f(x) = ax² + b} is NOT a vector space. Why?",
         "options": [
-          "Because the sum of two quadratic functions is quadratic (ok), but f(0) for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
+          "Because the sum of two quadratic functions is quadratic (ok), but f(0) must be 0 for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
           "Because quadratic functions can't be added...",
           "Because the set is finite...",
           "Because parabolas don't pass through the origin..."
@@ -338,7 +338,7 @@
         "id": "M1Q8H8",
         "question": "Is the set S = {(x, y) : y = x² - 10} a subspace of ℝ²?",
         "options": [
-          "it doesn't contain the origin, and it's t closed under addition",
+          "No: it doesn't contain the origin, and it's not closed under addition",
           "it's a curve in ℝ²...",
           "because it passes through (0, -10)...",
           "Only for positive x-values..."
@@ -362,7 +362,7 @@
         "id": "M1Q8H10",
         "question": "Can a polynomial of degree n have more than n real roots?",
         "options": [
-          "— the Fundamental Theorem of Algebra limits degree-n polymials to at most n real roots",
+          "No — the Fundamental Theorem of Algebra limits degree-n polynomials to at most n real roots",
           "infinitely many — does t match",
           "Only if n is even — does t match",
           "Only if the polymial is zero everywhere..."

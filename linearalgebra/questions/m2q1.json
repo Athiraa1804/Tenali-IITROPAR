@@ -168,7 +168,7 @@
         "id": "M2Q1M4",
         "question": "What happens if you try to decrypt with a matrix that has det = 0?",
         "options": [
-          "Decryption is impossible — the inverse does t exist",
+          "Decryption is impossible — the inverse does not exist",
           "Decryption works but gives wrong results",
           "You get multiple possible plaintexts...",
           "The message gets re-encrypted..."
@@ -204,7 +204,7 @@
         "id": "M2Q1M7",
         "question": "If the encryption matrix is [[1,2],[2,4]], can you decrypt messages encrypted with it?",
         "options": [
-          "because det = 0 makes it n-invertible",
+          "No, because det = 0 makes it non-invertible",
           "always — does t match",
           "Only for short messages...",
           "Only if you kw the original message"
@@ -302,7 +302,7 @@
         "id": "M2Q1H5",
         "question": "If A and B are both valid (invertible) Hill Cipher encryption matrices, is the product AB also a valid encryption matrix?",
         "options": [
-          "because det(AB) = det(A)×det(B) ≠ 0",
+          "Yes, because det(AB) = det(A)×det(B) ≠ 0",
           "matrix products are never invertible",
           "Only if A = B — does t match",
           "Only if AB is symmetric..."
@@ -338,7 +338,7 @@
         "id": "M2Q1H8",
         "question": "If det(A) = 5 for a Hill Cipher matrix, is A invertible mod 26?",
         "options": [
-          "because gcd(5, 26) = 1",
+          "Yes, because gcd(5, 26) = 1",
           "because 5 is odd",
           "because 5 < 26",
           "because 5 ≠ 1"

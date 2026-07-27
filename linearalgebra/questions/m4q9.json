@@ -327,7 +327,7 @@
         "question": "If A : R⁵ → R⁵ has rank 3, can A be invertible?",
         "options": [
           "as long as rank > 0...",
-          "— invertible matrices must have rank = 5",
+          "No — invertible matrices must have rank = 5",
           "Only if nullity = 0 — does t match",
           "Only for specific entries of A"
         ],
@@ -378,7 +378,7 @@
       "question": "In data compression, a 1000-dimensional dataset is projected onto a 10-dimensional subspace. The rank is 10, nullity is 990. What does the null space represent?",
       "options": [
         "The 10 most important features",
-        "The 990 dimensions of redundant/isy information that are discarded",
+        "The 990 dimensions of redundant/noisy information that are discarded",
         "The original data",
         "The compressed data"
       ],
@@ -414,7 +414,7 @@
       "question": "In machine learning, if a neural network layer has a weight matrix of rank 5 from a 20-dimensional input, the null space is 15D. What is the practical consequence?",
       "options": [
         "The layer captures 20 independent features",
-        "The layer only uses 5 input directions; 15 input directions are igred",
+        "The layer only uses 5 input directions; 15 input directions are ignored",
         "The layer is overparameterised",
         "The layer has too few outputs"
       ],
@@ -426,7 +426,7 @@
       "question": "In a supply chain, a factory converts 8 raw materials (8D input) into 4 products (4D output). If the production matrix has rank 4, the null space is 4D. What does this mean?",
       "options": [
         "All 8 materials are essential",
-        "4 independent combinations of raw materials have effect on output (redundancies)",
+        "4 independent combinations of raw materials have no effect on output (redundancies)",
         "The factory produces 8 products",
         "The factory cant produce anything"
       ],

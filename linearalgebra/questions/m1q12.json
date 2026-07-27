@@ -132,7 +132,7 @@
         "id": "M1Q12M1",
         "question": "If φ(1,0) = (2,3) is the first column of the matrix, why is the matrix [[2,3],[...]] rather than [[2,3,...]]?",
         "options": [
-          "Because the output vector (2,3) becomes the first COLUMN, t the first row",
+          "Because the output vector (2,3) becomes the first COLUMN, not the first row",
           "Because matrices are always written ly...",
           "Because 2 and 3 are the x-coordinates...",
           "Because the matrix has only one row..."
@@ -144,7 +144,7 @@
         "id": "M1Q12M2",
         "question": "Can matrix multiplication be used to compose (combine) two linear transformations?",
         "options": [
-          "— if T₁ has matrix A and T₂ has matrix B, then T₂∘T₁ has matrix BA",
+          "Yes — if T₁ has matrix A and T₂ has matrix B, then T₂∘T₁ has matrix BA",
           "transformations can't be composed...",
           "Only if the matrices are the same size...",
           "Only for rotation matrices..."
@@ -266,7 +266,7 @@
         "id": "M1Q12H2",
         "question": "The linear map φ: ℝ² → ℝ² with matrix [[2,3],[3,4]] is onto (surjective). Why?",
         "options": [
-          "Because the matrix has n-zero determinant, so its columns span all of ℝ²",
+          "Because the matrix has non-zero determinant, so its columns span all of ℝ²",
           "Because the trace is positive...",
           "Because both diagonal entries are positive...",
           "Because the matrix is symmetric..."
@@ -278,7 +278,7 @@
         "id": "M1Q12H3",
         "question": "Is the set of all linear transformations from ℝ² to ℝ² a vector space? If so, what is its dimension?",
         "options": [
-          "it's isomorphic to the space of 2×2 matrices, dimension 4",
+          "Yes, it's isomorphic to the space of 2×2 matrices, dimension 4",
           "transformations can't be added...",
           "dimension 2 — does t match",
           "dimension 8 — does t match"
@@ -314,7 +314,7 @@
         "id": "M1Q12H6",
         "question": "The kernel (null space) of the matrix [[2,3],[3,4]] is:",
         "options": [
-          "{(0,0)} only — trivial kernel, since det ≠ 0",
+          "(0,0) only — trivial kernel, since det ≠ 0",
           "All of ℝ²)",
           "A line through the origin...",
           "Two points)"

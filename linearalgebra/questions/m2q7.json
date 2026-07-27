@@ -156,7 +156,7 @@
         "id": "M2Q7M3",
         "question": "If you start with all 1000 in Restaurant instead of Park, will you reach the same steady state?",
         "options": [
-          "— the steady state is independent of the starting distribution",
+          "Yes — the steady state is independent of the starting distribution",
           "— different starting points give different steady states",
           "Only if the chain is symmetric...",
           "Only if you multiply more times..."
@@ -240,7 +240,7 @@
         "id": "M2Q7M10",
         "question": "What does it mean for a 3-state Markov chain to be 'ergodic'?",
         "options": [
-          "It is irreducible (all states communicate) and aperiodic ( fixed cycling pattern)",
+          "It is irreducible (all states communicate) and aperiodic (no fixed cycling pattern)",
           "It has exactly 3 states...",
           "The matrix is symmetric...",
           "The steady state is always uniform..."
@@ -362,7 +362,7 @@
         "id": "M2Q7H10",
         "question": "What is the relationship between the number of states and the complexity of finding the steady state?",
         "options": [
-          "More states require solving larger linear systems — the rmal equations grow with the number of states",
+          "More states require solving larger linear systems — the normal equations grow with the number of states",
           "More states always make the steady state uniform...",
           "The number of states doesn't affect computation...",
           "More states always converge faster..."

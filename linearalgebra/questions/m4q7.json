@@ -10,7 +10,7 @@
         "id": "M4Q7E1",
         "question": "If (2,4,6) is in the range of A, must 3×(2,4,6) = (6,12,18) also be in the range?",
         "options": [
-          "because scaling an input scales the output",
+          "Yes, because scaling an input scales the output",
           "only the original vector is guaranteed",
           "Only if A is invertible...",
           "Only if the scalar is positive..."
@@ -34,7 +34,7 @@
         "id": "M4Q7E3",
         "question": "If v is in the range of A, is -v also in the range?",
         "options": [
-          "with α = -1",
+          "Yes, with α = -1",
           "negative vectors are never in the range",
           "Only if A is symmetric...",
           "Only if v has positive components"
@@ -82,7 +82,7 @@
         "id": "M4Q7E7",
         "question": "Does the range of A always contain the zero vector?",
         "options": [
-          "because A(0) = 0",
+          "Yes, because A(0) = 0",
           "only if A is singular",
           "Only if rank > 0",
           "It depends on A"
@@ -94,7 +94,7 @@
         "id": "M4Q7E8",
         "question": "If (3,6,9) is in the range of A, is (1,2,3) also in the range?",
         "options": [
-          "because (1,2,3) = (1/3)(3,6,9) and the range is closed under scaling",
+          "Yes, because (1,2,3) = (1/3)(3,6,9) and the range is closed under scaling",
           "dividing is t the same as scaling...",
           "Only if A is invertible...",
           "Only if 1/3 is an integer..."
@@ -144,7 +144,7 @@
         "id": "M4Q7M2",
         "question": "If (1,2,3) and (4,5,6) are both in the range of A, is (5,7,9) also in the range?",
         "options": [
-          "because (5,7,9) = (1,2,3) + (4,5,6) and the range is closed under addition",
+          "Yes, because (5,7,9) = (1,2,3) + (4,5,6) and the range is closed under addition",
           "addition is t guaranteed...",
           "Only if A is symmetric...",
           "Only for specific values..."
@@ -204,7 +204,7 @@
         "id": "M4Q7M7",
         "question": "If v is in the range of A and w is in the range of A, must v - w also be in the range?",
         "options": [
-          "— the range is a subspace, closed under subtraction",
+          "Yes — the range is a subspace, closed under subtraction",
           "— only addition is guaranteed...",
           "Only if v and w are parallel...",
           "Only if A is invertible..."
@@ -228,7 +228,7 @@
         "id": "M4Q7M9",
         "question": "Is the range of a linear map always a convex set?",
         "options": [
-          "— it is a subspace, and subspaces are convex",
+          "Yes — it is a subspace, and subspaces are convex",
           "— convexity is t guaranteed...",
           "Only if the map is injective...",
           "Only for finite-dimensional spaces"
@@ -302,7 +302,7 @@
         "id": "M4Q7H5",
         "question": "If A and B are both linear maps R³ → R³ with ranges that are lines, can A + B have a range that is a plane?",
         "options": [
-          "— the sum of two 1D ranges can span a 2D space",
+          "Yes — the sum of two 1D ranges can span a 2D space",
           "— the sum of two lines is always a line",
           "Only if the lines are perpendicular",
           "Only if A = B — does t match"
@@ -326,7 +326,7 @@
         "id": "M4Q7H7",
         "question": "Can the range of A : R³ → R³ be a curve (like a parabola)?",
         "options": [
-          "— the range of a linear map is always a subspace (straight)",
+          "No — the range of a linear map is always a subspace (straight)",
           "if A is nlinear...",
           "Only for specific matrices...",
           "Only in 2D)"
@@ -401,7 +401,7 @@
       "id": "M4Q7R3",
       "question": "In a linear production model, doubling all inputs exactly doubles all outputs. If a factory can produce 100 units with inputs (5,3), can it produce 200 units?",
       "options": [
-        "with inputs (10,6) — just double the inputs",
+        "Yes, with inputs (10,6) — just double the inputs",
         "200 units requires different inputs",
         "Only with inputs (5,6)",
         "Only if the factory expands"

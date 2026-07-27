@@ -83,7 +83,7 @@
         "question": "What happens to the vector v_k after each Power Method iteration if M is column-stochastic?",
         "options": [
           "The vector entries become negative...",
-          "The vector remains n-negative and its entries still sum to 1 (if we rmalize)",
+          "The vector remains non-negative and its entries still sum to 1 (if we normalize)",
           "The vector grows without bound...",
           "The vector becomes the zero vector..."
         ],
@@ -95,7 +95,7 @@
         "question": "If you start the Power Method with v₀ = (1, 0, 0, 0) (all weight on page A), will you still converge to the same PageRank vector?",
         "options": [
           "different starting points give different answers...",
-          "as long as v₀ has a n-zero component in the dominant eigenvector direction",
+          "Yes, as long as v₀ has a non-zero component in the dominant eigenvector direction",
           "Only if v₀ is the uniform vector...",
           "Only if v₀ sums to 1 — does t match"
         ],
@@ -280,7 +280,7 @@
         "options": [
           "The second largest eigenvalue is exactly d = 0.85 — all n-dominant eigenvalues of M' equal d times the corresponding eigenvalues of M",
           "The second largest eigenvalue is 1 - d = 0.15...",
-          "The second largest eigenvalue is always 0...",
+          "The second largest eigenvalue is exactly d = 0.85 — all non-dominant eigenvalues of M' equal d times the corresponding eigenvalues of M",
           "The second largest eigenvalue equals 1/n..."
         ],
         "correct_option": "The second largest eigenvalue is exactly d = 0.85 — all non-dominant eigenvalues of M' equal d times the corresponding eigenvalues of M",
@@ -315,7 +315,7 @@
         "question": "In the Power Method, after convergence to v*, what happens if you then use v* as the starting vector for a fresh Power Method run on the same matrix?",
         "options": [
           "It converges to a different eigenvector...",
-          "v* is already the fixed point — Mv* = v*, so the iteration stays at v* forever ( change)",
+          "v* is already the fixed point — Mv* = v*, so the iteration stays at v* forever (no change)",
           "The algorithm crashes...",
           "It converges to the zero vector..."
         ],

@@ -58,7 +58,7 @@
         "id": "M3Q11E5",
         "question": "Is (3,6,9)·(1,-2,1) = 0 because Row3 is redundant?",
         "options": [
-          "— Row3 = 2×Row2 - Row1, so it inherits perpendicularity from Rows 1 and 2",
+          "Yes — Row3 = 2×Row2 - Row1, so it inherits perpendicularity from Rows 1 and 2",
           "— it's independent...",
           "By coincidence — does t match",
           "Because Row3 is special..."
@@ -82,7 +82,7 @@
         "id": "M3Q11E7",
         "question": "Does every vector in the row space have dot product 0 with (1,-2,1)?",
         "options": [
-          "— by linearity, if basis vectors are perpendicular, all combinations are too",
+          "Yes — by linearity, if basis vectors are perpendicular, all combinations are too",
           "Only the basis vectors...",
           "Only some of them — does t match",
           "— t here"
@@ -94,7 +94,7 @@
         "id": "M3Q11E8",
         "question": "Is (1,-2,1) perpendicular to the plane spanned by (1,4,7) and (2,5,8)?",
         "options": [
-          "— it's perpendicular to both spanning vectors, hence the entire plane",
+          "Yes — it's perpendicular to both spanning vectors, hence the entire plane",
           "— t here",
           "Only to one vector — does t match",
           "Only approximately — does t match"
@@ -118,7 +118,7 @@
         "id": "M3Q11E10",
         "question": "Can we conclude the row space is perpendicular to the null space just by checking the basis vectors?",
         "options": [
-          "— perpendicularity of basis vectors extends to all linear combinations",
+          "Yes — perpendicularity of basis vectors extends to all linear combinations",
           "— must check every vector...",
           "Only for special matrices...",
           "Only in R²)"
@@ -192,7 +192,7 @@
         "id": "M3Q11M6",
         "question": "Can the row space and null space overlap (share non-zero vectors)?",
         "options": [
-          "— they are perpendicular, so only the zero vector is in both",
+          "No — they are perpendicular, so only the zero vector is in both",
           "always — does t match",
           "Only for singular matrices...",
           "Only in R²)"
@@ -204,7 +204,7 @@
         "id": "M3Q11M7",
         "question": "Does the fact that row space ⊥ null space imply that the row space and null space together span all of R³?",
         "options": [
-          "— they are complementary subspaces with dimensions summing to 3",
+          "Yes — they are complementary subspaces with dimensions summing to 3",
           "— they might t span everything...",
           "Only for square matrices...",
           "Only if rank = n/2 — does t match"
@@ -216,7 +216,7 @@
         "id": "M3Q11M8",
         "question": "Is the vector (3,6,9) perpendicular to the null space direction (1,-2,1)?",
         "options": [
-          "— 3-12+9=0",
+          "Yes — 3-12+9=0",
           "— t here",
           "Only approximately",
           "Cant determine"
@@ -240,7 +240,7 @@
         "id": "M3Q11M10",
         "question": "Does checking (1,4,7)·(1,-2,1)=0 and (2,5,8)·(1,-2,1)=0 prove that EVERY row space vector is perpendicular to (1,-2,1)?",
         "options": [
-          "— because every row space vector is a combination of these two basis vectors",
+          "Yes — because every row space vector is a combination of these two basis vectors",
           "— only proves for these two specific vectors...",
           "Only for integer combinations...",
           "Only in 3D)"
@@ -278,7 +278,7 @@
         "id": "M3Q11H3",
         "question": "If A is a 5×3 matrix with rank 3, does the Fundamental Theorem still guarantee R(A) ⊥ N(A)?",
         "options": [
-          "— it holds for ALL matrices regardless of shape or rank",
+          "Yes — it holds for ALL matrices regardless of shape or rank",
           "— only for square matrices...",
           "Only for rank = n — does t match",
           "Only for singular matrices..."
@@ -302,7 +302,7 @@
         "id": "M3Q11H5",
         "question": "If we didn't know the null space direction, could we find it by finding the vector perpendicular to the row space plane?",
         "options": [
-          "— the null space direction is the rmal to the row space plane",
+          "Yes — the null space direction is the normal to the row space plane",
           "— they're unrelated...",
           "Only approximately — does t match",
           "Only in R²)"
@@ -326,7 +326,7 @@
         "id": "M3Q11H7",
         "question": "Can the row space and null space of a matrix both be 1-dimensional?",
         "options": [
-          "— for a 2×2 matrix with rank 1",
+          "Yes — for a 2×2 matrix with rank 1",
           "— they must have different dimensions",
           "Only in R³)",
           "Only for singular matrices"
@@ -338,7 +338,7 @@
         "id": "M3Q11H8",
         "question": "Is the zero vector the only vector that is in both the row space and null space?",
         "options": [
-          "— if v is in both, v·v=0, so v=0",
+          "Yes — if v is in both, v·v=0, so v=0",
           "— many vectors can be in both",
           "Only for square matrices",
           "Only if rank = n — does t match"
@@ -445,7 +445,7 @@
       "story": "Some encryption schemes use orthogonal bases to encode messages. The message lives in the row space, and the key determines the null space. Without knowing the key, an attacker can't distinguish signal from noise.",
       "question": "In orthogonal-basis encryption, what does the null space represent?",
       "options": [
-        "The ise space that masks the message",
+        "The noise space that masks the message",
         "The message itself",
         "The encryption key",
         "The decoded output"

@@ -82,7 +82,7 @@
         "id": "M2Q2E7",
         "question": "If a system has 4 equations and 2 unknowns, is it overdetermined?",
         "options": [
-          "because there are more equations than unkwns",
+          "Yes, because there are more equations than unknowns",
           "because 4 > 2 — does t match",
           "Only if the equations contradict...",
           "Cant determine without solving..."
@@ -132,7 +132,7 @@
         "id": "M2Q2M1",
         "question": "What does 'overdetermined' mean in the context of linear systems?",
         "options": [
-          "More equations than unkwns",
+          "More equations than unknowns",
           "More unkwns than equations",
           "Exactly as many equations as unkwns",
           "Equations with variables"
@@ -156,7 +156,7 @@
         "id": "M2Q2M3",
         "question": "Can an overdetermined system (more equations than unknowns) ever have an exact solution?",
         "options": [
-          "if all equations are consistent with each other",
+          "Yes, if all equations are consistent with each other",
           "Never — overdetermined systems always have solution",
           "Only if there are more unkwns than equations",
           "Only if the matrix is square..."
@@ -180,7 +180,7 @@
         "id": "M2Q2M5",
         "question": "Why is the error in the third equation (1A+1C=900) larger than zero when A=280, C=360?",
         "options": [
-          "Because the third equation conflicts with the first two — (A,C) satisfies all three exactly",
+          "Because the third equation conflicts with the first two — no (A,C) satisfies all three exactly",
           "Because 280 and 360 are wrong values...",
           "Because we need more equations...",
           "Because the matrix is t square..."
@@ -230,7 +230,7 @@
         "id": "M2Q2M9",
         "question": "If instead of 3A+1C=1200, the third equation were 6A+2C=2400, would the system still be inconsistent?",
         "options": [
-          "— 6A+2C=2400 is just 2×(3A+1C=1200), so it adds new information",
+          "No — 6A+2C=2400 is just 2×(3A+1C=1200), so it adds no new information",
           "— three equations are always inconsistent...",
           "— because there are more equations than unkwns...",
           "Cant determine without solving..."
@@ -328,7 +328,7 @@
         "id": "M2Q2H7",
         "question": "If we added a fourth equation 2A + 3C = 1500 to the overdetermined system, would the residual error necessarily increase?",
         "options": [
-          "t necessarily — the residual depends on all equations, and a consistent fourth equation could reduce it",
+          "Not necessarily — the residual depends on all equations, and a consistent fourth equation could reduce it",
           "always — more equations always increase error...",
           "— adding equations never changes the least squares solution...",
           "— because the system becomes more overdetermined..."
@@ -352,7 +352,7 @@
         "id": "M2Q2H9",
         "question": "Can the least squares solution be interpreted as a projection?",
         "options": [
-          "— x̂ gives the projection of b onto the column space of A",
+          "Yes — x̂ gives the projection of b onto the column space of A",
           "— least squares has geometric interpretation",
           "Only for 2×2 systems — does t match",
           "Only when the system is square..."
@@ -364,7 +364,7 @@
         "id": "M2Q2H10",
         "question": "If the system Ax = b has an exact solution, does the least squares method still work?",
         "options": [
-          "— the least squares solution reduces to the exact solution (residual = 0)",
+          "Yes — the least squares solution reduces to the exact solution (residual = 0)",
           "— least squares only works for overdetermined systems...",
           "— but it gives a different answer than the exact solution...",
           "— the rmal equations become undefined..."

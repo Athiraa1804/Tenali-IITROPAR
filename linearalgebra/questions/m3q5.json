@@ -22,7 +22,7 @@
         "id": "M3Q5E2",
         "question": "Is (1,2,3)·(1,-2,1) equal to 0?",
         "options": [
-          "1-4+3=0",
+          "Yes, 1-4+3=0",
           "— t here",
           "Only approximately",
           "Cant compute"
@@ -34,7 +34,7 @@
         "id": "M3Q5E3",
         "question": "Is (4,5,6)·(1,-2,1) equal to 0?",
         "options": [
-          "4-10+6=0",
+          "Yes, 4-10+6=0",
           "",
           "Only if scaled",
           "Cant compute"
@@ -94,7 +94,7 @@
         "id": "M3Q5E8",
         "question": "Do the row space and null space together span the entire input space R³?",
         "options": [
-          "row space (2D) + null space (1D) = 3D = R³",
+          "Yes, row space (2D) + null space (1D) = 3D = R³",
           "they miss some directions...",
           "Only if A is square — does t match",
           "Only in R²)"
@@ -106,7 +106,7 @@
         "id": "M3Q5E9",
         "question": "Is the null space vector (1,-2,1) perpendicular to both (1,2,3) and (4,5,6)?",
         "options": [
-          "— dot product with both is 0",
+          "Yes — dot product with both is 0",
           "— only perpendicular to one",
           "— t perpendicular to either",
           "Only perpendicular to (1,2,3)"
@@ -168,7 +168,7 @@
         "id": "M3Q5M4",
         "question": "Can a vector be in both the row space and the null space of A (other than zero)?",
         "options": [
-          "— they are perpendicular complements, so only 0 is in both",
+          "No — they are perpendicular complements, so only 0 is in both",
           "always — does t match",
           "Only if A is invertible...",
           "Only in R²)"
@@ -228,7 +228,7 @@
         "id": "M3Q5M9",
         "question": "Can you find a basis for R³ from the row space and null space of A combined?",
         "options": [
-          "— e.g., {(1,2,3),(4,5,6),(1,-2,1)} forms a basis",
+          "Yes — e.g., {(1,2,3),(4,5,6),(1,-2,1)} forms a basis",
           "— they don't span R³...",
           "Only if A is invertible...",
           "Only with 4 vectors — does t match"
@@ -240,7 +240,7 @@
         "id": "M3Q5M10",
         "question": "The Fundamental Theorem guarantees that the null space is perpendicular to the row space. Does it say anything about the column space and null space?",
         "options": [
-          "The column space is T necessarily perpendicular to the null space of A (it's perpendicular to the null space of Aᵀ)",
+          "The column space is NOT necessarily perpendicular to the null space of A (it's perpendicular to the null space of Aᵀ)",
           "They are always perpendicular...",
           "They are always parallel...",
           "relationship exists..."
@@ -302,7 +302,7 @@
         "id": "M3Q5H5",
         "question": "Can the row space and column space of a non-square matrix have the same dimension?",
         "options": [
-          "— the row rank always equals the column rank, even for n-square matrices",
+          "Yes — the row rank always equals the column rank, even for non-square matrices",
           "— they always differ...",
           "Only for square matrices...",
           "Only if the matrix is zero..."
@@ -397,7 +397,7 @@
       "story": "Input-output models in economics describe how different sectors interact. The row space represents growth directions — sectors that drive expansion. The null space represents equilibrium states — flows that cancel out, producing no net change.",
       "question": "In an economic input-output model, what does the null space represent?",
       "options": [
-        "Equilibrium states with net change",
+        "Equilibrium states with no net change",
         "Maximum ecomic growth",
         "The total GDP",
         "Trade deficits"
@@ -445,7 +445,7 @@
       "story": "In communications, the transmitted signal lives in the row space of the channel matrix, while interference and noise live in the null space. Because these subspaces are perpendicular, the signal and noise can be separated cleanly.",
       "question": "In signal processing, why are the row space and null space of the channel matrix important?",
       "options": [
-        "They cleanly separate signal from ise due to perpendicularity",
+        "They cleanly separate signal from noise due to perpendicularity",
         "They both contain the same information",
         "They determine the signal frequency",
         "They set the data rate"

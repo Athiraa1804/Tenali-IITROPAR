@@ -34,7 +34,7 @@
         "id": "M3Q12E3",
         "question": "Both (4,0) and (2,1) map to (4,8). Do they lie on the same line?",
         "options": [
-          "— both satisfy 2y+x=4",
+          "Yes — both satisfy 2y+x=4",
           "— different lines",
           "Only approximately",
           "Cant determine"
@@ -58,7 +58,7 @@
         "id": "M3Q12E5",
         "question": "Does the line 2y+x=4 collapse to (4,8) because x+2y=4 on that line?",
         "options": [
-          "— B*(x,y) = (x+2y, 2(x+2y)) = (4,8) when x+2y=4",
+          "Yes — B*(x,y) = (x+2y, 2(x+2y)) = (4,8) when x+2y=4",
           "— it's a coincidence...",
           "Only for specific points...",
           "Because det=0 — does t match"
@@ -82,7 +82,7 @@
         "id": "M3Q12E7",
         "question": "Does the line 2y+x=0 also collapse to a single point?",
         "options": [
-          "— it collapses to (0,0)",
+          "Yes — it collapses to (0,0)",
           "— it stays a line",
           "Only partially",
           "Cant determine"
@@ -106,7 +106,7 @@
         "id": "M3Q12E9",
         "question": "The entire line 2y+x=4 maps to (4,8). Is this line the preimage of (4,8)?",
         "options": [
-          "— it's the set of all inputs that produce (4,8)",
+          "Yes — it's the set of all inputs that produce (4,8)",
           "— the preimage is a different set",
           "Only part of it — does t match",
           "Cant determine — does t match"
@@ -144,7 +144,7 @@
         "id": "M3Q12M2",
         "question": "Can we recover the original input from B*(x,y) = (4,8)?",
         "options": [
-          "— we kw it's on the line 2y+x=4, but t which specific point",
+          "No — we know it's on the line 2y+x=4, but not which specific point",
           "uniquely — does t match",
           "Only approximately — does t match",
           "Only for positive inputs..."
@@ -228,7 +228,7 @@
         "id": "M3Q12M9",
         "question": "Is the null space direction (2,-1) perpendicular to the range direction (1,2)?",
         "options": [
-          "— (2,-1)·(1,2) = 2-2 = 0",
+          "Yes — (2,-1)·(1,2) = 2-2 = 0",
           "— t here",
           "Only approximately",
           "Cant determine"
@@ -290,7 +290,7 @@
         "id": "M3Q12H4",
         "question": "Can a non-singular matrix ever collapse a line to a point?",
         "options": [
-          "— n-singular matrices are one-to-one, mapping distinct inputs to distinct outputs",
+          "No — non-singular matrices are one-to-one, mapping distinct inputs to distinct outputs",
           "always — does t match",
           "Only for special lines...",
           "Only in 3D)"
@@ -302,7 +302,7 @@
         "id": "M3Q12H5",
         "question": "What happens to a line that is NOT parallel to the null space direction under B?",
         "options": [
-          "It maps to a line (t collapsed to a point)",
+          "It maps to a line (not collapsed to a point)",
           "It maps to a point — does t match",
           "It maps to thing — does t match",
           "It maps to a circle — does t match"

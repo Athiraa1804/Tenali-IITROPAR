@@ -22,7 +22,7 @@
         "id": "M1Q6E2",
         "question": "Can the system 2x + 3y = 7 and 3x + 4y = 10 be written in matrix form Ax = b?",
         "options": [
-          "with A = [[2,3],[3,4]], x = [x,y], b = [7,10]",
+          "Yes, with A = [[2,3],[3,4]], x = [x,y], b = [7,10]",
           "only quadratic equations can be matrix-formatted",
           "but only for 3×3 systems...",
           "because the equations have different coefficients"
@@ -118,7 +118,7 @@
         "id": "M1Q6E10",
         "question": "For the system 2x + 3y = 7, can you find the unique solution with just this one equation?",
         "options": [
-          "there are infinitely many (x,y) pairs that satisfy a single equation",
+          "No, there are infinitely many (x,y) pairs that satisfy a single equation",
           "x = 7/2 and y = 0...",
           "there is always a unique solution...",
           "Only if x = y — does t match"
@@ -180,7 +180,7 @@
         "id": "M1Q6M5",
         "question": "If the determinant of the coefficient matrix is zero, what does that tell you about the system?",
         "options": [
-          "The system has either solution or infinitely many solutions",
+          "The system has either no solution or infinitely many solutions",
           "The system has exactly one solution...",
           "The system has exactly two solutions...",
           "The system cant be written in matrix form..."
@@ -204,7 +204,7 @@
         "id": "M1Q6M7",
         "question": "What does the vector x = [x, y] represent in the matrix equation Ax = b?",
         "options": [
-          "The unkwn variables we are solving for",
+          "The unknown variables we are solving for",
           "The constants in the equations",
           "The slopes of the lines...",
           "The intersection point only"
@@ -216,7 +216,7 @@
         "id": "M1Q6M8",
         "question": "Can a system of 2 equations in 2 unknowns have more than one solution but not infinitely many?",
         "options": [
-          "it's either 0, 1, or infinitely many solutions",
+          "No, it's either 0, 1, or infinitely many solutions",
           "it can have exactly 2 solutions",
           "it can have exactly 3 solutions",
           "Only if the coefficients are irrational"
@@ -314,7 +314,7 @@
         "id": "M1Q6H6",
         "question": "If A is a 2×2 matrix with det(A) = 0, does Ax = b always have no solution?",
         "options": [
-          "— it could have infinitely many solutions if b is in the column space of A",
+          "No — it could have infinitely many solutions if b is in the column space of A",
           "always solution...",
           "always infinitely many...",
           "It depends on the sign of the determinant..."

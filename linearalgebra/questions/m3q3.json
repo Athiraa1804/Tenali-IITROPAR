@@ -70,7 +70,7 @@
         "id": "M3Q3E6",
         "question": "Is (1,1,-3) in the span of {(1,2,1),(2,7,3)}?",
         "options": [
-          "it is perpendicular to the span",
+          "No, it is perpendicular to the span",
           "— t here",
           "Only if scaled — does t match",
           "Cant determine — does t match"
@@ -118,7 +118,7 @@
         "id": "M3Q3E10",
         "question": "Does the null space of W contain the zero vector?",
         "options": [
-          "(0,0,0) is perpendicular to everything",
+          "Yes, (0,0,0) is perpendicular to everything",
           "— t here",
           "Only if W is a line — does t match",
           "Only in R²)"
@@ -132,7 +132,7 @@
         "id": "M3Q3M1",
         "question": "How do you find the null space of a set of vectors?",
         "options": [
-          "Solve the system where each basis vector's dot product with the unkwn equals 0",
+          "Solve the system where each basis vector's dot product with the unknown equals 0",
           "Find the cross product of all vectors...",
           "Multiply the vectors together...",
           "Add all vectors and set to zero..."
@@ -156,7 +156,7 @@
         "id": "M3Q3M3",
         "question": "Is the null space of W = span{(1,2,1),(2,7,3)} perpendicular to every vector in W?",
         "options": [
-          "by definition of null space",
+          "Yes, by definition of null space",
           "— t here",
           "Only to the basis vectors",
           "Only in special cases"
@@ -216,7 +216,7 @@
         "id": "M3Q3M8",
         "question": "Is the null space of W = span{(1,2,1),(2,7,3)} a subspace of R³?",
         "options": [
-          "— it's a line through the origin",
+          "Yes — it's a line through the origin",
           "— it's t closed under addition",
           "Only if it passes through the origin",
           "Subspaces can't be null spaces"
@@ -228,7 +228,7 @@
         "id": "M3Q3M9",
         "question": "If you add a third vector to W = span{(1,2,1),(2,7,3)} that lies in the plane, does the null space change?",
         "options": [
-          "— the span is still the same plane",
+          "No — the span is still the same plane",
           "— the null space gets smaller",
           "— the null space gets larger",
           "The null space disappears"
@@ -240,7 +240,7 @@
         "id": "M3Q3M10",
         "question": "Is every vector in the null space perpendicular to every vector in W?",
         "options": [
-          "— that's exactly what null space means",
+          "Yes — that's exactly what null space means",
           "— only to the basis vectors",
           "Only if W passes through the origin",
           "Only in 2D)"
@@ -302,7 +302,7 @@
         "id": "M3Q3H5",
         "question": "Can a vector be in both W and its null space simultaneously (other than the zero vector)?",
         "options": [
-          "— if v is in W and in W⊥, then v·v = 0, so v = 0",
+          "No — if v is in W and in W⊥, then v·v = 0, so v = 0",
           "always — does t match",
           "Only if W is all of R³...",
           "Only in R²)"
@@ -350,7 +350,7 @@
         "id": "M3Q3H9",
         "question": "Can two different 2D planes in R³ have the same null space?",
         "options": [
-          "— if they are the same plane, they have the same null space",
+          "Yes — if they are the same plane, they have the same null space",
           "— different planes always have different null spaces",
           "Only if parallel — does t match",
           "Only in R²)"
@@ -413,7 +413,7 @@
       "story": "When you push on a beam perpendicular to its length, you are not stretching or compressing it — you are bending it. Forces in the null space of the beam's axial direction do no work along the beam's length.",
       "question": "What happens when a force is applied in the null space of a beam's axial direction?",
       "options": [
-        "It does work along the beam's length — it bends rather than stretches",
+        "It does no work along the beam's length — it bends rather than stretches",
         "It stretches the beam maximally",
         "It compresses the beam",
         "It has effect at all"

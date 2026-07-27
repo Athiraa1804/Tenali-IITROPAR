@@ -23,7 +23,7 @@
         "question": "For y = -5x, does the line pass through the origin (0,0)?",
         "options": [
           "",
-          "only positive slopes pass through the ...",
+          "Yes",
           "Only if x is positive...",
           "Cant be determined — does t match"
         ],
@@ -70,7 +70,7 @@
         "id": "M1Q3E6",
         "question": "Does y = 0.5x pass through the origin?",
         "options": [
-          "because 0.5 × 0 = 0",
+          "Yes, because 0.5 × 0 = 0",
           "because the slope is less than 1",
           "Only if x is an integer",
           "Cant be determined — does t match"
@@ -82,7 +82,7 @@
         "id": "M1Q3E7",
         "question": "Does y = x + 1 pass through the origin?",
         "options": [
-          "because at x = 0, y = 1, t 0",
+          "No, because at x = 0, y = 1, not 0",
           "all lines pass through the origin",
           "Only if x = -1 — does t match",
           "Only for integer values"
@@ -180,7 +180,7 @@
         "id": "M1Q3M5",
         "question": "Can the line y = 0x (i.e., y = 0) be considered a line through the origin?",
         "options": [
-          "it is the x-axis, which passes through the origin",
+          "Yes, it is the x-axis, which passes through the origin",
           "it is a line that doesn't pass through the origin",
           "Only if it is ...",
           "zero slope means line exists..."
@@ -228,7 +228,7 @@
         "id": "M1Q3M9",
         "question": "If you plot y = 2x and y = 2x + 5, what is the relationship between these two lines?",
         "options": [
-          "They are parallel but do t intersect",
+          "They are parallel but do not intersect",
           "They intersect at the origin",
           "They are perpendicular...",
           "They are the same line..."
@@ -254,7 +254,7 @@
         "id": "M1Q3H1",
         "question": "Is the set S = {(x,y) : y = 3x} a subspace of ℝ²?",
         "options": [
-          "it contains (0,0), and is closed under addition and scalar multiplication",
+          "Yes: it contains (0,0), and is closed under addition and scalar multiplication",
           "it doesn't contain the origin...",
           "it is t closed under addition...",
           "Only if we restrict to integer points..."
@@ -350,7 +350,7 @@
         "id": "M1Q3H9",
         "question": "Does the set of all lines through the origin in ℝ² form a vector space itself?",
         "options": [
-          "because the 'addition' of two lines (their union) is t a line",
+          "No, because the 'addition' of two lines (their union) is not a line",
           "it forms a 1-dimensional vector space...",
           "because it contains the zero vector...",
           "because lines can be multiplied by scalars..."

@@ -83,7 +83,7 @@
         "question": "Can the rank of a matrix exceed the number of columns?",
         "options": [
           "always",
-          "rank ≤ min(m,n)",
+          "No, rank ≤ min(m,n)",
           "Only for square matrices",
           "Only for large matrices"
         ],
@@ -107,7 +107,7 @@
         "question": "What does a nullity of 0 mean?",
         "options": [
           "The matrix is the zero matrix...",
-          "information is lost — the transformation is injective",
+          "No information is lost — the transformation is injective",
           "All rows are dependent...",
           "The matrix is t square..."
         ],
@@ -278,7 +278,7 @@
         "id": "M5Q3H3",
         "question": "If A is m×n with m < n, can A ever be injective (one-to-one)?",
         "options": [
-          "rank ≤ m < n, so nullity ≥ 1, meaning some n-zero input maps to zero",
+          "No: rank ≤ m < n, so nullity ≥ 1, meaning some non-zero input maps to zero",
           "if all rows are independent...",
           "if the matrix has zero entries...",
           "Only if m = n — does t match"
@@ -350,7 +350,7 @@
         "id": "M5Q3H9",
         "question": "Can the nullity of a non-zero matrix be 0?",
         "options": [
-          "— if the matrix has full column rank",
+          "Yes — if the matrix has full column rank",
           "— n-zero matrices always have n-tri...",
           "Only for 1×1 matrices... ...",
           "Only if the matrix is symmetric... ..."

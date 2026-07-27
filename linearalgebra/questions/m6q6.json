@@ -156,7 +156,7 @@
         "id": "M6Q6M3",
         "question": "In SVD A = UΣV^T, the first column of U (u₁) corresponds to the largest singular value σ₁. What does u₁ represent geometrically?",
         "options": [
-          "The direction of maximum variance in the output space — where A maps the most 'spread",
+          "The direction of maximum variance in the output space — where A maps the most 'spread'",
           "The direction of zero output...",
           "The direction of minimum variance...",
           "The mean of the output..."
@@ -168,7 +168,7 @@
         "id": "M6Q6M4",
         "question": "The SVD A = UΣV^T can be written as A = Σᵢ σᵢ uᵢvᵢ^T (sum of rank-1 matrices). If we keep only the first k terms, what kind of approximation do we get?",
         "options": [
-          "The best rank-k approximation to A in both the Frobenius rm and the spectral rm",
+          "The best rank-k approximation to A in both the Frobenius norm and the spectral norm",
           "The worst possible rank-k approximation...",
           "An approximation that only works for square matrices...",
           "A rank-0 approximation..."
@@ -204,7 +204,7 @@
         "id": "M6Q6M7",
         "question": "Why are the left singular vectors (columns of U) orthogonal to each other?",
         "options": [
-          "Because U must be an orthogonal matrix — its columns form an orthormal basis, which is required for the decomposition A = UΣV^T to hold",
+          "Because U must be an orthogonal matrix — its columns form an orthonormal basis, which is required for the decomposition A = UΣV^T to hold",
           "Because the data is centered...",
           "Because A is symmetric...",
           "Because singular values are always positive..."
@@ -228,7 +228,7 @@
         "id": "M6Q6M9",
         "question": "What is the pseudoinverse (Moore-Penrose inverse) A⁺ of a matrix A in terms of its SVD?",
         "options": [
-          "A⁺ = VΣ⁺U^T, where Σ⁺ is obtained by inverting each n-zero singular value and transposing the diagonal matrix",
+          "A⁺ = VΣ⁺U^T, where Σ⁺ is obtained by inverting each non-zero singular value and transposing the diagonal matrix",
           "A⁺ = A^T always — does t match",
           "A⁺ = (A^TA)^{-1}A^T only...",
           "A⁺ = UΣV)"
@@ -266,7 +266,7 @@
         "id": "M6Q6H2",
         "question": "Why does the truncated SVD A_k = Σᵢ₌₁ᵏ σᵢ uᵢvᵢ^T minimize ‖A − B‖_F over all rank-k matrices B? (Eckart-Young Theorem)",
         "options": [
-          "Because the Frobenius rm squared equals the sum of squared singular values of the error, and the truncated SVD discards the smallest σᵢ² terms, which are the optimal choice to minimize the sum",
+          "Because the Frobenius norm squared equals the sum of squared singular values of the error, and the truncated SVD discards the smallest σᵢ² terms, which are the optimal choice to minimize the sum",
           "Because any other rank-k matrix has larger singular values...",
           "Because the Frobenius rm igres the smallest singular values...",
           "Because the theorem only holds for square matrices..."
@@ -279,7 +279,7 @@
         "question": "For the 4-page web graph (A→B, A→C, B→C, C→A, D→C) with its column-stochastic transition matrix M, what do the singular values of M tell you about the web graph's structure?",
         "options": [
           "The singular values tell you the number of pages...",
-          "The number of n-zero singular values equals the rank of M, which reveals how many independent 'linking patterns' exist in the web graph",
+          "The number of non-zero singular values equals the rank of M, which reveals how many independent 'linking patterns' exist in the web graph",
           "The singular values are the PageRank scores...",
           "The singular values tell you the diameter of the graph..."
         ],
@@ -326,7 +326,7 @@
         "id": "M6Q6H7",
         "question": "Why is SVD preferred over eigendecomposition for computing low-rank approximations, especially for non-square or non-symmetric matrices?",
         "options": [
-          "SVD always exists for any matrix (square or t, symmetric or t), while eigendecomposition requires the matrix to be diagonalizable — SVD also guarantees real n-negative singular values while eigenvalues can be complex",
+          "SVD always exists for any matrix (square or not, symmetric or not), while eigendecomposition requires the matrix to be diagonalizable — SVD also guarantees real non-negative singular values while eigenvalues can be complex",
           "SVD is always faster — does t match",
           "Eigendecomposition doesn't exist for most matrices...",
           "SVD and eigendecomposition are the same thing..."
@@ -338,7 +338,7 @@
         "id": "M6Q6H8",
         "question": "In the context of recommendation systems, what is the connection between SVD and the four subspaces of the rating matrix R?",
         "options": [
-          "U's columns span C(R) = 'movie importance space', V's columns span R(R) = 'user preference space', n-zero σ's give the latent factors, and zero σ's reveal redundant dimensions that can be discarded",
+          "U's columns span C(R) = 'movie importance space', V's columns span R(R) = 'user preference space', non-zero σ's give the latent factors, and zero σ's reveal redundant dimensions that can be discarded",
           "SVD only gives the column space...",
           "SVD is unrelated to recommendation systems...",
           "The four subspaces are irrelevant for recommendations..."
@@ -351,7 +351,7 @@
         "question": "If A has SVD A = UΣV^T and you want to solve the least-squares problem min‖Ax − b‖₂, what is the solution in terms of the SVD?",
         "options": [
           "x = A⁻¹b (standard inverse)...",
-          "x = VΣ⁺U^Tb (pseudoinverse solution, where Σ⁺ inverts only n-zero singular values)",
+          "x = VΣ⁺U^Tb (pseudoinverse solution, where Σ⁺ inverts only non-zero singular values)",
           "x = UΣV^Tb)",
           "x = VΣU^Tb)"
         ],
@@ -362,7 +362,7 @@
         "id": "M6Q6H10",
         "question": "The SVD unifies all major linear algebra concepts covered in this course. Specifically, what is the relationship between the rank, the four subspaces, the conditioning of a matrix, and the optimal low-rank approximation — all expressed through singular values?",
         "options": [
-          "Rank = number of n-zero σᵢ; C(A) = span of first r columns of U; R(A) = span of first r columns of V; N(A) = span of last n-r columns of V; N(A^T) = span of last m-r columns of U; conditioning = σ₁/σᵣ; best rank-k approximation uses top k singular values — everything flows from the singular values",
+          "Rank = number of non-zero σᵢ; C(A) = span of first r columns of U; R(A) = span of first r columns of V; N(A) = span of last n-r columns of V; N(A^T) = span of last m-r columns of U; conditioning = σ₁/σᵣ; best rank-k approximation uses top k singular values — everything flows from the singular values",
           "SVD only gives the rank...",
           "Only the rank and null space are determined by SVD...",
           "SVD gives the eigenvalues, which determine everything..."

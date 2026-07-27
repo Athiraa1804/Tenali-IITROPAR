@@ -94,7 +94,7 @@
         "id": "M3Q10E8",
         "question": "Does the rank-nullity theorem hold for A? (rank + nullity = n)",
         "options": [
-          "2 + 1 = 3 = number of columns",
+          "Yes: 2 + 1 = 3 = number of columns",
           "— t here",
           "Only approximately — does t match",
           "Only for square matrices"
@@ -132,7 +132,7 @@
         "id": "M3Q10M1",
         "question": "The row space and column space of A both have dimension 2. Are they the same set?",
         "options": [
-          "— the row space is in R³ (rows) and the column space is in R³ (columns), but they are generally different planes",
+          "No — the row space is in R³ (rows) and the column space is in R³ (columns), but they are generally different planes",
           "always the same — does t match",
           "Only for symmetric matrices...",
           "Only for invertible matrices..."
@@ -156,7 +156,7 @@
         "id": "M3Q10M3",
         "question": "Is the null space perpendicular to the row space of A?",
         "options": [
-          "— by the Fundamental Theorem",
+          "Yes — by the Fundamental Theorem",
           "— t here",
           "Only approximately",
           "Only for special matrices"
@@ -180,7 +180,7 @@
         "id": "M3Q10M5",
         "question": "Is the row space of A the same as the column space of Aᵀ?",
         "options": [
-          "— row space of A = column space of Aᵀ by definition",
+          "Yes — row space of A = column space of Aᵀ by definition",
           "— t here",
           "Only for symmetric matrices...",
           "Only in R²)"
@@ -204,7 +204,7 @@
         "id": "M3Q10M7",
         "question": "Can you find a basis for R³ using vectors from the row space and null space of A?",
         "options": [
-          "— two from row space + one from null space = 3 independent vectors",
+          "Yes — two from row space + one from null space = 3 independent vectors",
           "— they don't span R³...",
           "Only if A is invertible...",
           "Only with 4 vectors — does t match"
@@ -240,7 +240,7 @@
         "id": "M3Q10M10",
         "question": "Is the null space of A the same as the null space of the matrix formed by only the first two rows of A?",
         "options": [
-          "— the third row is redundant, so it adds new constraints",
+          "Yes — the third row is redundant, so it adds no new constraints",
           "— t here",
           "Only approximately — does t match",
           "Only for special cases..."
@@ -302,7 +302,7 @@
         "id": "M3Q10H5",
         "question": "Can the row space and column space of a non-square matrix have the same dimension?",
         "options": [
-          "— row rank = column rank always, even for n-square matrices",
+          "Yes — row rank = column rank always, even for non-square matrices",
           "— they always differ...",
           "Only for square matrices...",
           "Only for invertible matrices..."
@@ -362,7 +362,7 @@
         "id": "M3Q10H10",
         "question": "If we know rank(A)=2 for a 3×3 matrix, what can we definitively say about A?",
         "options": [
-          "A is singular (det=0), has a n-trivial null space, and maps R³ onto a 2D plane",
+          "A is singular (det=0), has a non-trivial null space, and maps R³ onto a 2D plane",
           "A is invertible — does t match",
           "A is the zero matrix — does t match",
           "A has full rank — does t match"

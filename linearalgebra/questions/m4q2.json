@@ -48,7 +48,7 @@
         "options": [
           "it is only in the row space",
           "it is only in the null space",
-          "the zero vector is in every subspace",
+          "Yes, the zero vector is in every subspace",
           "it is in neither — does t match"
         ],
         "correct_option": "Yes, the zero vector is in every subspace",
@@ -58,7 +58,7 @@
         "id": "M4Q2E5",
         "question": "For M = [[1,2],[3,6]], the row space is t(1,2). Is (4,8) in the row space?",
         "options": [
-          "because (4,8) = 4×(1,2)",
+          "Yes, because (4,8) = 4×(1,2)",
           "because 4 ≠ 1 — does t match",
           "because (4,8) is in the null space",
           "because the row space is only t(1,2)"
@@ -70,7 +70,7 @@
         "id": "M4Q2E6",
         "question": "Is (2,4) perpendicular to (-2,1)?",
         "options": [
-          "because (2,4)·(-2,1) = 0",
+          "Yes, because (2,4)·(-2,1) = 0",
           "because (2,4)·(-2,1) = 4",
           "because they have the same magnitude",
           "because (2,4) is t in the null space"
@@ -94,7 +94,7 @@
         "id": "M4Q2E8",
         "question": "For M = [[1,2],[3,6]], verify: is the dot product (3,6)·(-2,1) also equal to zero?",
         "options": [
-          "(3,6)·(-2,1) = -6+6 = 0",
+          "Yes: (3,6)·(-2,1) = -6+6 = 0",
           "(3,6)·(-2,1) = -6+6 = 0 but this is co...",
           "(3,6)·(-2,1) = 5 — does t match ...",
           "because (3,6) is t a row of M ..."
@@ -206,7 +206,7 @@
         "options": [
           "Never, null space vectors always have mixe...",
           "if the matrix has all negative entrie...",
-          "it depends on the matrix",
+          "Yes, it depends on the matrix",
           "Never, null space vectors are always perpe..."
         ],
         "correct_option": "Yes, it depends on the matrix",
@@ -290,7 +290,7 @@
         "id": "M4Q2H4",
         "question": "If two matrices A and B have the same row space, must they have the same null space?",
         "options": [
-          "because N(A) is the orthogonal complement of R(A) in Rⁿ",
+          "Yes, because N(A) is the orthogonal complement of R(A) in Rⁿ",
           "the null space depends on the specific entries, t the row space",
           "Only if A and B are the same size...",
           "Only for square matrices..."
@@ -350,7 +350,7 @@
         "id": "M4Q2H9",
         "question": "Can we use the orthogonality R(A) ⊥ N(A) to find the null space if we know the row space?",
         "options": [
-          "find all vectors perpendicular to the row space basis",
+          "Yes: find all vectors perpendicular to the row space basis",
           "orthogonality gives computational information",
           "Only for 2×2 matrices...",
           "Only if the matrix is symmetric..."
@@ -378,7 +378,7 @@
       "question": "In image processing, the useful signal lives in the row space of the transformation matrix and noise lives in the null space. Because they are orthogonal, what does this enable?",
       "options": [
         "Signal and ise overlap completely",
-        "Clean separation of signal from ise by subspace projection",
+        "Clean separation of signal from noise by subspace projection",
         "The ise amplifies the signal",
         "The signal becomes invisible"
       ],
@@ -438,7 +438,7 @@
       "question": "A noise-cancelling headphone uses a reference microphone to capture ambient noise. The noise signal and the music signal are designed to be orthogonal. What does this orthogonality guarantee?",
       "options": [
         "The ise is louder than the music",
-        "Cancelling ise does t distort the music",
+        "Cancelling noise does not distort the music",
         "The music volume is doubled",
         "The headphones use less battery"
       ],

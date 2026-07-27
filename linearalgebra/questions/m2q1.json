@@ -35,7 +35,7 @@
         "question": "What is the determinant of [[2,3],[3,4]]?",
         "options": [
           "-1",
-          "1",
+          "1 (x)",
           "0",
           "7"
         ],
@@ -133,9 +133,9 @@
         "question": "Why must the Hill Cipher encryption matrix be invertible?",
         "options": [
           "To allow decryption by multiplying with the inverse",
-          "To make encryption faster...                  ",
-          "To reduce the message length...               ",
-          "To use smaller numbers in the ciphertext      "
+          "To make encryption faster",
+          "To reduce the message length",
+          "To use smaller numbers in the ciphertext"
         ],
         "correct_option": "To allow decryption by multiplying with the inverse",
         "explanation": "Step 1: Encryption applies ciphertext = A × plaintext. Step 2: Decryption requires reversing this: plaintext = A⁻¹ × ciphertext. Step 3: A⁻¹ exists only when det(A) ≠ 0, i.e., the matrix is invertible. This invertibility requirement is the mathematical guarantee that every encryption can be undone — without it, information would be permanently lost during encryption."
@@ -158,8 +158,8 @@
         "options": [
           "To keep results within the 0-25 alphabet range",
           "To make the matrix always invertible",
-          "To speed up computation...               ",
-          "To prevent frequency analysis...         "
+          "To speed up computation",
+          "To prevent frequency analysis"
         ],
         "correct_option": "To keep results within the 0-25 alphabet range",
         "explanation": "Step 1: Matrix multiplication produces integers like 96, 134 that far exceed the alphabet range. Step 2: Taking mod 26 wraps every result back into 0-25, ensuring each output maps to a valid letter. Step 3: This modular wrapping converts a linear transformation over the reals into one over the finite field Z₂₆, which is essential for the cipher to produce valid ciphertext and for the inverse to work correctly."
@@ -169,9 +169,9 @@
         "question": "What happens if you try to decrypt with a matrix that has det = 0?",
         "options": [
           "Decryption is impossible — the inverse does not exist",
-          "Decryption works but gives wrong results        ",
-          "You get multiple possible plaintexts...         ",
-          "The message gets re-encrypted...                "
+          "Decryption works but gives wrong results",
+          "You get multiple possible plaintexts",
+          "The message gets re-encrypted"
         ],
         "correct_option": "Decryption is impossible — the inverse does not exist",
         "explanation": "Step 1: det = 0 means the matrix is singular — it maps some non-zero vectors to zero, permanently losing information. Step 2: Without an inverse, you cannot reverse the transformation. Step 3: This connects to the rank-nullity theorem: a singular matrix has a non-trivial null space, meaning multiple different plaintexts encrypt to the same ciphertext, making unambiguous decryption impossible."
@@ -193,9 +193,9 @@
         "question": "In Hill Cipher, what does the encryption matrix represent geometrically?",
         "options": [
           "A linear transformation that rotates and stretches letter pairs",
-          "A random number generator...                              ",
-          "A lookup table for individual letters...                  ",
-          "A permutation that shuffles letter positions...           "
+          "A random number generator",
+          "A lookup table for individual letters",
+          "A permutation that shuffles letter positions"
         ],
         "correct_option": "A linear transformation that rotates and stretches letter pairs",
         "explanation": "Step 1: Matrix multiplication is a linear transformation — it maps the 2D plane to itself. Step 2: The encryption matrix can rotate, stretch, shear, or reflect letter-pair vectors. Step 3: Every Hill Cipher key defines a unique geometric transformation; the strength of the cipher depends on how complex this transformation appears to an attacker who doesn't know the key."
@@ -205,9 +205,9 @@
         "question": "If the encryption matrix is [[1,2],[2,4]], can you decrypt messages encrypted with it?",
         "options": [
           "No, because det = 0 makes it non-invertible",
-          "Yes, always — does not match          ",
-          "Only for short messages...            ",
-          "Only if you know the original message"
+          "always — does t match",
+          "Only for short messages",
+          "Only if you kw the original message"
         ],
         "correct_option": "No, because det = 0 makes it non-invertible",
         "explanation": "Step 1: det([[1,2],[2,4]]) = 1×4 - 2×2 = 0, so the matrix is singular. Step 2: A singular matrix collapses the 2D plane onto a line, meaning infinitely many plaintexts map to the same ciphertext. Step 3: This is a critical lesson in Hill Cipher design: the key matrix must be carefully chosen to be invertible, or the cipher fundamentally cannot work — you'd be destroying the information you're trying to protect."
@@ -281,7 +281,7 @@
           "A line through the origin",
           "A plane through origin",
           "Only the zero vector {0}",
-          "All of R² (incorrect)"
+          "All of R²)"
         ],
         "correct_option": "Only the zero vector {0}",
         "explanation": "Step 1: The null space is {v : Av = 0}. Step 2: If A is invertible, Av = 0 implies v = A⁻¹0 = 0, so the null space is trivial. Step 3: By the rank-nullity theorem (rank + nullity = n), invertibility (rank = 2) forces nullity = 0 — a trivial null space means no two distinct plaintexts encrypt to the same ciphertext, guaranteeing perfect recoverability."
@@ -291,9 +291,9 @@
         "question": "Why does Hill Cipher use mod 26 instead of regular arithmetic for encryption?",
         "options": [
           "Regular arithmetic produces numbers outside the 0-25 alphabet range",
-          "Regular arithmetic is slower to compute...                    ",
-          "Mod 26 makes every matrix invertible...                       ",
-          "Mod 26 prevents frequency analysis completely...              "
+          "Regular arithmetic is slower to compute",
+          "Mod 26 makes every matrix invertible",
+          "Mod 26 prevents frequency analysis completely"
         ],
         "correct_option": "Regular arithmetic produces numbers outside the 0-25 alphabet range",
         "explanation": "Step 1: Without mod, matrix multiplication yields values like 96, 134 that don't correspond to any letter. Step 2: mod 26 wraps every result into 0-25, producing valid ciphertext letters. Step 3: This modular reduction is what transforms ordinary linear algebra into a cryptographic system — it's the bridge between continuous mathematics (matrix multiplication) and discrete mathematics (alphabet symbols)."
@@ -303,9 +303,9 @@
         "question": "If A and B are both valid (invertible) Hill Cipher encryption matrices, is the product AB also a valid encryption matrix?",
         "options": [
           "Yes, because det(AB) = det(A)×det(B) ≠ 0",
-          "No, matrix products are never invertible",
-          "Only if A = B — does not match",
-          "Only if AB is symmetric..."
+          "matrix products are never invertible",
+          "Only if A = B — does t match",
+          "Only if AB is symmetric"
         ],
         "correct_option": "Yes, because det(AB) = det(A)×det(B) ≠ 0",
         "explanation": "Step 1: det(AB) = det(A) × det(B) by the multiplicative property of determinants. Step 2: Since both det(A) ≠ 0 and det(B) ≠ 0, det(AB) ≠ 0, making AB invertible. Step 3: This closure property means composing two Hill Cipher encryptions produces another valid cipher — an important concept in cryptography where multiple encryption layers can strengthen security."
@@ -315,9 +315,9 @@
         "question": "What is the row space of the matrix [[2,3],[3,4]]?",
         "options": [
           "A line through the origin",
-          "All of R²             ",
+          "All of R²",
           "Only the zero vector",
-          "A plane in R³       "
+          "A plane in R³"
         ],
         "correct_option": "All of R²",
         "explanation": "Step 1: The row space is span{[2,3], [3,4]}. Step 2: Since det ≠ 0, these two vectors are linearly independent and span all of R². Step 3: A row space equal to R² (full row rank) means the Hill Cipher matrix can produce any possible ciphertext vector from some plaintext — the encryption is surjective, covering the entire alphabet-pair space."
@@ -339,9 +339,9 @@
         "question": "If det(A) = 5 for a Hill Cipher matrix, is A invertible mod 26?",
         "options": [
           "Yes, because gcd(5, 26) = 1",
-          "No, because 5 is odd",
-          "Yes, because 5 < 26",
-          "No, because 5 ≠ 1"
+          "because 5 is odd",
+          "because 5 < 26",
+          "because 5 ≠ 1"
         ],
         "correct_option": "Yes, because gcd(5, 26) = 1",
         "explanation": "Step 1: A is invertible mod 26 iff gcd(det(A), 26) = 1. Step 2: gcd(5, 26) = 1 (since 26 = 5×5 + 1), so the modular inverse exists: 5⁻¹ ≡ 21 (mod 26) because 5×21 = 105 = 4×26 + 1. Step 3: This confirms det = 5 yields a valid Hill Cipher key — the coprimality test is the single most important check when designing a Hill Cipher key."
@@ -350,10 +350,10 @@
         "id": "M2Q1H9",
         "question": "What is the relationship between the column space of the encryption matrix and the set of all possible encrypted output vectors?",
         "options": [
-          "They are perpendicular...                                   ",
+          "They are perpendicular",
           "The column space equals the set of all possible encrypted outputs",
-          "The column space is the null space...                       ",
-          "There is no meaningful relationship...                      "
+          "The column space is the null space",
+          "There is meaningful relationship"
         ],
         "correct_option": "The column space equals the set of all possible encrypted outputs",
         "explanation": "Step 1: Any encrypted vector Av = v₁·col₁ + v₂·col₂ is a linear combination of A's columns. Step 2: The set of all such combinations is exactly the column space. Step 3: For an invertible 2×2 matrix, the column space is all of R², meaning every possible ciphertext pair is achievable — the encryption is a bijection on the plaintext space."
@@ -363,9 +363,9 @@
         "question": "Why can't you use any invertible matrix over the real numbers as a Hill Cipher matrix?",
         "options": [
           "Because real-valued outputs don't map to integer letter values, and mod 26 requires integer arithmetic",
-          "Because real matrices are always singular...                                                     ",
-          "Because real matrices are too slow to compute...                                                 ",
-          "Because real matrices can't encrypt text...                                                      "
+          "Because real matrices are always singular",
+          "Because real matrices are too slow to compute",
+          "Because real matrices can't encrypt text"
         ],
         "correct_option": "Because real-valued outputs don't map to integer letter values, and mod 26 requires integer arithmetic",
         "explanation": "Step 1: Hill Cipher requires integer inputs/outputs (letter indices 0-25). Step 2: A general real-valued invertible matrix can produce non-integer results, which have no meaning under mod 26. Step 3: The matrix must have integer entries AND det must be coprime to 26 — these two conditions together define the valid key space, which is a proper subset of GL(2, R) (invertible real matrices)."
@@ -402,7 +402,7 @@
         "A linear combination of original data values",
         "A random number",
         "The original transaction in plaintext",
-        "An error correction code"
+        "An error ion code"
       ],
       "answer": "A linear combination of original data values",
       "explanation": "Step 1: The encryption matrix multiplies the data vector. Step 2: Each output component is a weighted sum (linear combination) of the original inputs. Step 3: Without knowing the matrix, an attacker cannot separate these combinations back into the original values."

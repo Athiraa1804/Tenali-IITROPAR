@@ -10,8 +10,8 @@
         "id": "M5Q1E1",
         "question": "What is the Row Space of a matrix?",
         "options": [
-          "The span of its columns        ",
-          "The span of its rows             ",
+          "The span of its columns",
+          "The span of its rows",
           "The set of all vectors x where Ax=0",
           "The set of all vectors y where Aᵀy=0"
         ],
@@ -48,7 +48,7 @@
         "options": [
           "A line in ℝ² spanned by (1,2)",
           "A line in ℝ² spanned by (1,3)",
-          "All of ℝ² (incorrect)",
+          "All of ℝ²)",
           "The zero vector only"
         ],
         "correct_option": "A line in ℝ² spanned by (1,2)",
@@ -119,11 +119,11 @@
         "question": "Which two subspaces live in the input domain ℝⁿ?",
         "options": [
           "C(A) and N(Aᵀ)",
-          "R(A) and N(A)",
+          "R(A) and N(A",
           "R(A) and C(A)",
           "N(A) and N(Aᵀ)"
         ],
-        "correct_option": "R(A) and N(A)",
+        "correct_option": "R(A) and N(A",
         "explanation": "Step 1: R(A) ⊆ ℝⁿ because rows of A have n components (one per column). Step 2: N(A) ⊆ ℝⁿ because x must have n components for Ax to be defined. Step 3: Together, R(A) and N(A) are orthogonal complements in ℝⁿ: dim(R(A)) + dim(N(A)) = n, meaning every input vector decomposes uniquely as a sum of a row-space component (that matters) and a null-space component (that is lost). This decomposition is the input-side analog of the output-side C(A) ⊕ N(Aᵀ) = ℝᵐ, and both together form the complete geometric picture of any linear transformation."
       }
     ],
@@ -144,10 +144,10 @@
         "id": "M5Q1M2",
         "question": "Why are the Row Space and Null Space orthogonal to each other?",
         "options": [
-          "Because they have the same dimension...           ",
+          "Because they have the same dimension",
           "Because Ax=0 means x is perpendicular to every row of A",
-          "Because they are in different spaces...           ",
-          "Because the matrix is square...                   "
+          "Because they are in different spaces",
+          "Because the matrix is square"
         ],
         "correct_option": "Because Ax=0 means x is perpendicular to every row of A",
         "explanation": "Step 1: If x ∈ N(A), then Ax = 0, which is a vector equation. Step 2: The i-th entry of Ax is precisely (row i of A) · x, so Ax = 0 means every row dotted with x equals zero — x is perpendicular to every row. Step 3: Since R(A) is the span of the rows, x is orthogonal to the entire row space. This proof uses only the definition of matrix-vector multiplication (as dot products), making it one of the most fundamental results in linear algebra. It holds for every matrix — square or rectangular, invertible or singular — and is the engine behind least-squares methods and the Fundamental Theorem of Linear Algebra."
@@ -194,7 +194,7 @@
         "options": [
           "All outputs are reachable",
           "Some outputs are unreachable",
-          "The matrix is invertible",
+          "The matrix is invertible (xx)",
           "The null space is trivial"
         ],
         "correct_option": "Some outputs are unreachable",
@@ -205,9 +205,9 @@
         "question": "For A = [[1,2],[3,6]], is the vector (-3,1) in the Left Null Space N(Aᵀ)?",
         "options": [
           "Yes, because Aᵀ(-3,1) = 0",
-          "No, because Aᵀ(-3,1) ≠ 0",
-          "Yes, because it is in N(A)",
-          "No, because it has 2 components"
+          "because Aᵀ(-3,1) ≠ 0",
+          "because it is in N(A)",
+          "because it has 2 components"
         ],
         "correct_option": "Yes, because Aᵀ(-3,1) = 0",
         "explanation": "Step 1: Aᵀ = [[1,3],[2,6]]. Computing Aᵀ(−3,1)ᵀ gives (1·(−3)+3·1, 2·(−3)+6·1) = (0, 0). Step 2: Since Aᵀ(−3,1) = 0, the vector (−3,1) satisfies the defining equation of the left null space. Step 3: Note that (−3,1) is also orthogonal to C(A) = span{(1,3)}: (1,3)·(−3,1) = −3+3 = 0, confirming the orthogonality C(A) ⊥ N(Aᵀ). This exercise illustrates how to verify the left null space: compute Aᵀy and check if it vanishes, or equivalently check orthogonality with every column of A."
@@ -216,7 +216,7 @@
         "id": "M5Q1M8",
         "question": "If rank(A) = n (full column rank), what can you say about the Null Space?",
         "options": [
-          "N(A) is all of ℝⁿ — does not match",
+          "N(A) is all of ℝⁿ — does t match",
           "N(A) contains only the zero vector",
           "N(A) has dimension n - m",
           "N(A) equals the row space"
@@ -230,10 +230,10 @@
         "options": [
           "C(A)",
           "N(A)",
-          "R(A)",
+          "R(A",
           "N(Aᵀ)"
         ],
-        "correct_option": "R(A)",
+        "correct_option": "R(A",
         "explanation": "Step 1: A has 2 columns, so the input space is ℝ². Row 1 = (1,2) and Row 2 = (2,4) = 2(1,2), Row 3 = (3,6) = 3(1,2); all rows are multiples of (1,2). Step 2: R(A) = span{(1,2)} is a line, not all of ℝ², since rank = 1 and nullity = 1. Step 3: Actually, none of the four subspaces is all of ℝ² for this rank-1 matrix — C(A) = span{(1,2,3)} is a line in ℝ³, N(A) = span{(−2,1)} is a line in ℝ², and N(Aᵀ) is a 2D plane in ℝ³. The answer R(A) is correct in the sense that R(A) is the only subspace of ℝ² among the options. This illustrates that for rank-deficient matrices, even the row space may not fill the entire input domain."
       },
       {
@@ -241,11 +241,11 @@
         "question": "The four fundamental subspaces of an m×n matrix are paired as orthogonal complements. Which pair lives in ℝⁿ?",
         "options": [
           "C(A) and N(Aᵀ)",
-          "R(A) and N(A)",
+          "R(A) and N(A",
           "C(A) and R(A)",
           "N(A) and N(Aᵀ)"
         ],
-        "correct_option": "R(A) and N(A)",
+        "correct_option": "R(A) and N(A",
         "explanation": "Step 1: Both R(A) and N(A) are subspaces of ℝⁿ because they involve vectors with n components (rows have n entries, and x in Ax must have n entries). Step 2: They are orthogonal complements: R(A) ⊥ N(A) and dim(R(A)) + dim(N(A)) = n. Step 3: Every vector v ∈ ℝⁿ decomposes uniquely as v = v_R + v_N, where v_R ∈ R(A) (the part that matters) and v_N ∈ N(A) (the part that is lost). This direct sum decomposition ℝⁿ = R(A) ⊕ N(A) is one of the two pillar results of the four-subspace framework, the other being ℝᵐ = C(A) ⊕ N(Aᵀ)."
       }
     ],
@@ -255,9 +255,9 @@
         "question": "For A = [[1,2],[3,6]], verify that R(A) ⊕ N(A) = ℝ². What are their dimensions?",
         "options": [
           "dim(R)=1, dim(N)=1, and they intersect only at 0",
-          "dim(R)=2, dim(N)=0 — does not match",
-          "dim(R)=1, dim(N)=2 — does not match",
-          "dim(R)=0, dim(N)=2 — does not match"
+          "dim(R)=2, dim(N)=0 — does t match",
+          "dim(R)=1, dim(N)=2 — does t match",
+          "dim(R)=0, dim(N)=2 — does t match"
         ],
         "correct_option": "dim(R)=1, dim(N)=1, and they intersect only at 0",
         "explanation": "Step 1: R(A) = span{(1,2)} with dim = 1, and N(A) = span{(−2,1)} with dim = 1; their dot product (1,2)·(−2,1) = −2+2 = 0 confirms orthogonality. Step 2: Orthogonal non-zero subspaces intersect only at {0}, and 1 + 1 = 2 = n. Step 3: By the direct sum theorem for orthogonal complements, ℝ² = R(A) ⊕ N(A). This means every input vector v ∈ ℝ² decomposes as v = α(1,2) + β(−2,1) — the row-space component α(1,2) survives the transformation, while the null-space component β(−2,1) is annihilated. This decomposition is the theoretical foundation for understanding exactly which parts of the input carry information."
@@ -266,10 +266,10 @@
         "id": "M5Q1H2",
         "question": "Prove that for any m×n matrix A, the Row Space and Null Space are orthogonal. Which property of matrix multiplication is key?",
         "options": [
-          "Associativity — does not match                                   ",
+          "Associativity — does t match",
           "The definition of matrix-vector product as dot products of rows with x",
-          "Commutativity — does not match                                   ",
-          "Distributivity over addition only...                             "
+          "Commutativity — does t match",
+          "Distributivity over addition only"
         ],
         "correct_option": "The definition of matrix-vector product as dot products of rows with x",
         "explanation": "Step 1: The product Ax produces a vector whose i-th entry is (row i of A) · x, by the very definition of matrix-vector multiplication. Step 2: If x ∈ N(A), then Ax = 0, which means (row i) · x = 0 for every row i. Step 3: Since every row is orthogonal to x, and R(A) is the span of the rows, x ⊥ R(A). This proof is remarkably simple yet profound: it shows that orthogonality between R(A) and N(A) is not an empirical observation but a logical consequence of how matrix multiplication is defined. The same proof technique applied to Aᵀy = 0 yields C(A) ⊥ N(Aᵀ), showing both orthogonal pairs arise from the same algebraic mechanism. This is the heart of the Fundamental Theorem of Linear Algebra."
@@ -290,10 +290,10 @@
         "id": "M5Q1H4",
         "question": "Why is dim(R(A)) always equal to dim(C(A))?",
         "options": [
-          "Because rows and columns are the same vectors        ",
+          "Because rows and columns are the same vectors",
           "Because both equal the rank, which is the number of pivots",
-          "Because the matrix is always square...               ",
-          "It is not always true...                             "
+          "Because the matrix is always square",
+          "It is t always true"
         ],
         "correct_option": "Because both equal the rank, which is the number of pivots",
         "explanation": "Step 1: The row rank is dim(R(A)) = number of linearly independent rows, and the column rank is dim(C(A)) = number of linearly independent columns. Step 2: The theorem row rank = column rank states these are always equal, both equal to the number of pivots in the row echelon form. Step 3: This is a non-obvious fact — there is no a priori reason why the number of independent rows should equal the number of independent columns, yet it always does. The proof relies on the fact that row reduction preserves the row space while revealing pivot columns. This equality is why the single number 'rank' suffices to describe the intrinsic dimensionality of the transformation, connecting all four subspaces through one parameter."
@@ -339,9 +339,9 @@
         "question": "If A is m×n with m > n (more rows than columns), can C(A) ever be all of ℝᵐ?",
         "options": [
           "No, because dim(C(A)) ≤ rank ≤ n < m",
-          "Yes, if the columns are independent",
-          "Yes, always — does not match",
-          "Only if A is square — does not match"
+          "if the columns are independent",
+          "always — does t match",
+          "Only if A is square — does t match"
         ],
         "correct_option": "No, because dim(C(A)) ≤ rank ≤ n < m",
         "explanation": "Step 1: dim(C(A)) = rank ≤ min(m, n) = n < m. Step 2: Since the column space cannot exceed n dimensions, it cannot fill the m-dimensional output space when m > n. Step 3: At least m − n output dimensions are always unreachable, residing in N(Aᵀ). This is a structural impossibility: a tall matrix (more equations than unknowns) can never be surjective. This is why overdetermined systems typically have no exact solution — the right-hand side b often falls outside C(A). The resolution is least-squares: project b onto C(A) and solve for the closest reachable output, a technique that relies directly on the orthogonality C(A) ⊥ N(Aᵀ)."
@@ -363,9 +363,9 @@
         "question": "For A = [[1,2],[3,6]], describe the geometric meaning: A maps ℝ² onto a line in ℝ². What does the null space represent geometrically?",
         "options": [
           "A line perpendicular to the image that gets collapsed to the origin",
-          "A plane that gets expanded...                                 ",
-          "A point that stays fixed...                                   ",
-          "A circle that gets rotated...                                 "
+          "A plane that gets expanded",
+          "A point that stays fixed",
+          "A circle that gets rotated"
         ],
         "correct_option": "A line perpendicular to the image that gets collapsed to the origin",
         "explanation": "Step 1: C(A) = span{(1,3)} is a 1D line in ℝ² — the entire output of the transformation lives on this line. Step 2: N(A) = span{(−2,1)} is a line perpendicular to the row space span{(1,2)}, and every vector on this line is mapped to zero. Step 3: Geometrically, the transformation 'squashes' the 2D plane onto a 1D line: the null-space direction is compressed to a point (the origin), while the row-space direction is preserved (but stretched). This is the geometric essence of rank deficiency: one dimension of information is irrevocably lost. In applications, this collapse model explains data compression (discarding null-space dimensions), sensor redundancy (null-space represents unobservable modes), and dimensionality reduction in machine learning."
@@ -431,7 +431,7 @@
       "options": [
         "Calibration constraints — combinations that should always equal zero",
         "The 3 physical quantities being measured",
-        "Random noise in the sensors",
+        "Random ise in the sensors",
         "The maximum reading of each sensor"
       ],
       "answer": "Calibration constraints — combinations that should always equal zero",
@@ -464,7 +464,7 @@
         "The left null space — gene combinations unaffected by conditions",
         "The row space — genes most affected by conditions",
         "The column space — experimental conditions",
-        "The null space — conditions that produce no output"
+        "The null space — conditions that produce output"
       ],
       "answer": "The left null space — gene combinations unaffected by conditions",
       "explanation": "Step 1: Housekeeping genes maintain constant expression regardless of experimental conditions — they are not 'responsive' to any treatment. Step 2: The left null space N(Aᵀ) contains vectors y such that yᵀA = 0, meaning the corresponding gene combination is unaffected by any column (condition). Step 3: These genes form a 'background' signal orthogonal to the experimental variations. Identifying the left null space in genomics separates constitutive (housekeeping) genes from condition-responsive genes — a fundamental analysis in differential expression studies that directly applies the four-subspace framework to biological discovery."

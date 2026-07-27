@@ -23,19 +23,25 @@ import React from 'react'; window.React = React;
 import ReactDOM from 'react-dom/client'
 import App, { AuthMenu } from './App.jsx'
 import { GlobalXpPanel } from './components/HintSystem/HintModal.jsx';
+import { ProctorProvider } from './proctor/ProctorContext';
 import './index.css';
 import './kid-zone.css';
-import { AccessibilityProvider } from './lib/AccessibilityProvider.jsx'
+import { I18nProvider } from './lib/i18n.jsx';
+import { AccessibilityProvider } from './lib/AccessibilityProvider.jsx';
 
 // Create React root and render the App component
 ReactDOM.createRoot(document.getElementById('root')).render(
   // StrictMode: Enables additional development checks and warnings
   <React.StrictMode>
-    <AccessibilityProvider>
-      <App />
-    </AccessibilityProvider>
-    {/* Hamburger menu (login/logout) — fixed top-right, visible on every page */}
-    <AuthMenu />
-    <GlobalXpPanel />
+    <ProctorProvider>
+      <I18nProvider>
+        <AccessibilityProvider>
+          <App />
+        </AccessibilityProvider>
+        {/* Hamburger menu (login/logout) — fixed top-right, visible on every page */}
+        <AuthMenu />
+        <GlobalXpPanel />
+      </I18nProvider>
+    </ProctorProvider>
   </React.StrictMode>,
 )

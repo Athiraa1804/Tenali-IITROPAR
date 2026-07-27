@@ -40,13 +40,13 @@ function bktUpdate(pMastery, isCorrect, params = DEFAULT_PARAMS) {
 }
 
 /**
- * Wrapper around bktUpdate for use in concept playground apps.
- * Adapts the (score, isCorrect, _unused, { proximityScore, attempts }) call
- * signature to the underlying BKT engine and returns a scalar mastery score.
+ * Convenience wrapper used by Concept Playgrounds.
+ * Accepts (currentScore, isCorrect, params?, meta?) and returns the new numeric mastery.
  */
-function updateBKT(currentScore, isCorrect, _params, _meta) {
-  const result = bktUpdate(currentScore, isCorrect);
-  return result.pMasteryNext;
+// eslint-disable-next-line no-unused-vars
+function updateBKT(currentScore, isCorrect, params, _meta) {
+  const { pMasteryNext } = bktUpdate(currentScore, isCorrect, params || DEFAULT_PARAMS);
+  return pMasteryNext;
 }
 
 export { bktUpdate, updateBKT, DEFAULT_PARAMS, clamp };

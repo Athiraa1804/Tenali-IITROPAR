@@ -37,7 +37,7 @@
           "The number of rows (m)",
           "The number of columns (n)",
           "The rank of A",
-          "0 — t here (xxxxxxxxxxxxxx)"
+          "0 — t here"
         ],
         "correct_option": "The number of columns (n)",
         "explanation": "Step 1: The rank-nullity theorem states rank + nullity = n. Step 2: n is the number of columns (dimension of the domain). Step 3: This is a fundamental theorem — the dimensions of the row space and null space add up to the domain's dimension."
@@ -82,7 +82,7 @@
         "id": "M4Q9E7",
         "question": "The rank-nullity theorem applies to matrices of size:",
         "options": [
-          "Square only (xxxxxxxxxxxxxx)",
+          "Square only",
           "Any m×n rectangular matrix",
           "Only when m = n",
           "Only when rank = n"
@@ -240,7 +240,7 @@
         "id": "M4Q9M10",
         "question": "If A : R² → R² has rank 1, the null space is:",
         "options": [
-          "Just {0}) (xxxxxxxxxxxxxxx)",
+          "Just {0})",
           "A line through the origin",
           "All of R²)",
           "A point other than origin"
@@ -257,7 +257,7 @@
           "They are parallel — does t match",
           "They are orthogonal complements in R⁵",
           "They are the same subspace",
-          "They intersect in a line (xxxxxxxxxxxx)"
+          "They intersect in a line"
         ],
         "correct_option": "They are orthogonal complements in R⁵",
         "explanation": "Step 1: row space is 3D, null space is 2D. Step 2: 3 + 2 = 5 = n. Step 3: They are orthogonal complements: row(A) ⊥ null(A) and row(A) ⊕ null(A) = R⁵. Every vector in R⁵ decomposes uniquely as a row-space part plus a null-space part."
@@ -267,7 +267,7 @@
         "question": "For A : Rⁿ → Rᵐ with rank r, the row space has dimension r and the null space has dimension n - r. Show that dim(range) + dim(null space) = n using the Rank-Nullity theorem.",
         "options": [
           "dim(range) = r, dim(null) = n - r, so r + (n-r) = n",
-          "dim(range) = m, dim(null) = n, so m + n = n (xxxxxxx)",
+          "dim(range) = m, dim(null) = n, so m + n = n",
           "dim(range) = r, dim(null) = r, so r + r = n",
           "dim(range) = n, dim(null) = 0, so n + 0 = n"
         ],
@@ -326,7 +326,7 @@
         "id": "M4Q9H7",
         "question": "If A : R⁵ → R⁵ has rank 3, can A be invertible?",
         "options": [
-          "as long as rank > 0... (xxxxxxxxxxxxxxxxxxxx)",
+          "as long as rank > 0",
           "No — invertible matrices must have rank = 5",
           "Only if nullity = 0 — does t match",
           "Only for specific entries of A"
@@ -340,7 +340,7 @@
         "options": [
           "Orthogonality",
           "Bijectivity (invertibility)",
-          "Nilpotency) (xxxxxxxxxxxxxxx)",
+          "Nilpotency)",
           "Idempotency — does t match"
         ],
         "correct_option": "Bijectivity (invertibility)",
@@ -379,7 +379,7 @@
       "options": [
         "The 10 most important features",
         "The 990 dimensions of redundant/noisy information that are discarded",
-        "The original data (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The original data",
         "The compressed data"
       ],
       "correct_option": "The 990 dimensions of redundant/noisy information that are discarded",
@@ -391,7 +391,7 @@
       "options": [
         "The arm moves in 3D space",
         "The arm reconfigures its joints without changing the end-effector position",
-        "The arm locks up (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The arm locks up",
         "The arm moves to a new position"
       ],
       "correct_option": "The arm reconfigures its joints without changing the end-effector position",
@@ -404,7 +404,7 @@
         "The 3 useful signal components",
         "The 2 dimensions of signal that are lost (unrecoverable)",
         "The ise in the system",
-        "The encoded signal (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "The encoded signal"
       ],
       "correct_option": "The 2 dimensions of signal that are lost (unrecoverable)",
       "explanation": "Step 1: rank = 3, nullity = 2. Step 2: The 2D null space represents information that cannot be recovered from the 3-channel output. Step 3: This is the fundamental limit of the encoding — Rank-Nullity tells us exactly how much information is irrecoverably lost."
@@ -416,7 +416,7 @@
         "The layer captures 20 independent features",
         "The layer only uses 5 input directions; 15 input directions are ignored",
         "The layer is overparameterised",
-        "The layer has too few outputs (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "The layer has too few outputs"
       ],
       "correct_option": "The layer only uses 5 input directions; 15 input directions are ignored",
       "explanation": "Step 1: rank = 5, nullity = 15. Step 2: Only 5 input directions affect the output; 15 are in the null space. Step 3: The layer has a 15D 'blind spot' — inputs in this direction have no effect. Rank-Nullity reveals how many input features actually matter."
@@ -425,7 +425,7 @@
       "id": "M4Q9R5",
       "question": "In a supply chain, a factory converts 8 raw materials (8D input) into 4 products (4D output). If the production matrix has rank 4, the null space is 4D. What does this mean?",
       "options": [
-        "All 8 materials are essential (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "All 8 materials are essential",
         "4 independent combinations of raw materials have no effect on output (redundancies)",
         "The factory produces 8 products",
         "The factory cant produce anything"
@@ -440,7 +440,7 @@
         "The 4 preserved quantum states",
         "The 4-dimensional subspace of states that are annihilated by the channel",
         "The measurement basis",
-        "The entangled states (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "The entangled states"
       ],
       "correct_option": "The 4-dimensional subspace of states that are annihilated by the channel",
       "explanation": "Step 1: rank = 4, nullity = 4. Step 2: The 4D range preserves quantum information; the 4D null space represents states destroyed by the channel. Step 3: The rank-nullity split determines which quantum states survive the channel and which are irrecoverably lost."

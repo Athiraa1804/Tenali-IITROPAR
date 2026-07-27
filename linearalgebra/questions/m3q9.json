@@ -35,7 +35,7 @@
         "question": "Is (1,-2,1) in the null space of A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
           "Yes, because A*(1,-2,1) = (0,0,0)",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only partially — does t match (xx)",
           "Cant determine — does t match (xx)"
         ],
@@ -83,9 +83,9 @@
         "question": "Does A = [[1,4,7],[2,5,8],[3,6,9]] have a non-trivial null space?",
         "options": [
           "Yes, it contains (1,-2,1) and all its scalar multiples",
-          "only the zero vector... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only (0,0,0) — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Cant determine — does t match (xxxxxxxxxxxxxxxxxxxxxxx)"
+          "only the zero vector",
+          "Only (0,0,0) — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "Yes, it contains (1,-2,1) and all its scalar multiples",
         "explanation": "Step 1: Since det(A)=0, A is singular. Step 2: Singular matrices have non-trivial null spaces."
@@ -96,8 +96,8 @@
         "options": [
           "Yes — both are t(1,-2,1)",
           "— different directions (x)",
-          "Only approximately (xxxx)",
-          "Cant compare (xxxxxxxxxx)"
+          "Only approximately",
+          "Cant compare"
         ],
         "correct_option": "Yes — both are t(1,-2,1)",
         "explanation": "Step 1: Both matrices have rank 2 with the same null space direction (1,-2,1). Step 2: This is because their row spaces are related — they are transposes in structure."
@@ -107,9 +107,9 @@
         "question": "To find the null space, you should solve which equations?",
         "options": [
           "Only the first two (since Row3 is redundant)",
-          "All three) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only Row3) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only Row1) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "All three)",
+          "Only Row3)",
+          "Only Row1)"
         ],
         "correct_option": "Only the first two (since Row3 is redundant)",
         "explanation": "Step 1: Row3 adds no new information. Step 2: Solving x+4y+7z=0 and 2x+5y+8z=0 gives the complete null space."
@@ -193,9 +193,9 @@
         "question": "Why does this matrix have the same null space direction as [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
           "Because they are transposes of each other and share the same row space structure",
-          "By coincidence — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because they have the same entries... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because both are singular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "By coincidence — does t match",
+          "Because they have the same entries",
+          "Because both are singular"
         ],
         "correct_option": "Because they are transposes of each other and share the same row space structure",
         "explanation": "Step 1: A = [[1,4,7],[2,5,8],[3,6,9]] is the transpose of [[1,2,3],[4,5,6],[7,8,9]]. Step 2: Transpose matrices have related null spaces — the null space of A equals the left null space of Aᵀ."
@@ -205,9 +205,9 @@
         "question": "What does A*(1,-2,1) = (0,0,0) tell us about the columns of A?",
         "options": [
           "Column1 - 2×Column2 + Column3 = 0 — the columns are linearly dependent",
-          "The columns are independent... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "The columns are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "thing special — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "The columns are independent",
+          "The columns are perpendicular",
+          "thing special — does t match"
         ],
         "correct_option": "Column1 - 2×Column2 + Column3 = 0 — the columns are linearly dependent",
         "explanation": "Step 1: A*(1,-2,1) = 1·Col1 + (-2)·Col2 + 1·Col3 = 0. Step 2: This means Col3 = 2×Col2 - Col1, so the columns are linearly dependent."
@@ -217,9 +217,9 @@
         "question": "If A has null space direction (1,-2,1), what is the equation that defines the column space?",
         "options": [
           "The column space is perpendicular to the left null space of A",
-          "The column space contains (1,-2,1)... (xxxxxxxxxxxxxxxxxxxxxx)",
-          "The column space equals (1,-2,1)... (xxxxxxxxxxxxxxxxxxxxxxxx)",
-          "relationship exists... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "The column space contains (1,-2,1)",
+          "The column space equals (1,-2,1)",
+          "relationship exists"
         ],
         "correct_option": "The column space is perpendicular to the left null space of A",
         "explanation": "Step 1: The Fundamental Theorem states C(A) ⊥ N(Aᵀ). Step 2: The column space is perpendicular to the left null space, not directly related to N(A)."
@@ -229,8 +229,8 @@
         "question": "Is A = [[1,4,7],[2,5,8],[3,6,9]] invertible?",
         "options": [
           "No, because det(A) = 0",
-          "— t here (xxxxxxxxxxxx)",
-          "Only if augmented (xxx)",
+          "— t here",
+          "Only if augmented",
           "Depends on context (xx)"
         ],
         "correct_option": "No, because det(A) = 0",
@@ -241,9 +241,9 @@
         "question": "Does the null space of A contain any vectors with all positive components?",
         "options": [
           "No — if x,y,z > 0, then x+4y+7z > 0 ≠ 0",
-          "all of them — does t match (xxxxxxxxxxx)",
-          "Only (1,1,1) — does t match (xxxxxxxxxx)",
-          "Cant determine — does t match (xxxxxxxx)"
+          "all of them — does t match",
+          "Only (1,1,1) — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "No — if x,y,z > 0, then x+4y+7z > 0 ≠ 0",
         "explanation": "Step 1: If all components are positive, x+4y+7z is a sum of positive terms > 0. Step 2: This can't equal 0, so no all-positive vector is in the null space."
@@ -255,9 +255,9 @@
         "question": "Prove that if x is in the null space of A, then cx is also in the null space for any scalar c.",
         "options": [
           "A(cx) = c(Ax) = c·0 = 0 by linearity of matrix multiplication",
-          "Only if c=1 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for positive c — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "t always true — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Only if c=1 — does t match",
+          "Only for positive c — does t match",
+          "t always true — does t match"
         ],
         "correct_option": "A(cx) = c(Ax) = c·0 = 0 by linearity of matrix multiplication",
         "explanation": "Step 1: Matrix multiplication is linear: A(cx) = c(Ax). Step 2: Since Ax=0, c(Ax) = c·0 = 0."
@@ -267,9 +267,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], verify that every row is perpendicular to (1,-2,1).",
         "options": [
           "Row1·(1,-2,1) = 1-8+7=0, Row2·(1,-2,1) = 2-10+8=0, Row3·(1,-2,1) = 3-12+9=0",
-          "Only Row1 is perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "ne are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only Row3 is perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Only Row1 is perpendicular",
+          "ne are perpendicular",
+          "Only Row3 is perpendicular"
         ],
         "correct_option": "Row1·(1,-2,1) = 1-8+7=0, Row2·(1,-2,1) = 2-10+8=0, Row3·(1,-2,1) = 3-12+9=0",
         "explanation": "Step 1: Compute each dot product. Step 2: All three equal 0, confirming the Fundamental Theorem."
@@ -291,9 +291,9 @@
         "question": "Can you find the null space direction of A without solving the full system?",
         "options": [
           "Yes — by noticing Row3 is redundant and using the cross product of Row1 and Row2",
-          "— always need full row reduction... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for special matrices... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "— always need full row reduction",
+          "Only for special matrices",
+          "Only in R²)"
         ],
         "correct_option": "Yes — by noticing Row3 is redundant and using the cross product of Row1 and Row2",
         "explanation": "Step 1: The null space direction is perpendicular to the row space. Step 2: The cross product of Row1 and Row2 (or any two independent rows) gives the null space direction."
@@ -303,9 +303,9 @@
         "question": "What is the cross product (1,4,7)×(2,5,8)?",
         "options": [
           "(32-35, 14-8, 5-8) = (-3,6,-3) or simplified (1,-2,1)",
-          "(1,4,7)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "(2,5,8)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "(3,9,15)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "(1,4,7))",
+          "(2,5,8))",
+          "(3,9,15))"
         ],
         "correct_option": "(32-35, 14-8, 5-8) = (-3,6,-3) or simplified (1,-2,1)",
         "explanation": "Step 1: Cross product: (4·8-7·5, 7·2-1·8, 1·5-4·2) = (32-35, 14-8, 5-8) = (-3,6,-3). Step 2: Simplified: (-3,6,-3) = -3(1,-2,1), confirming the null space direction."
@@ -315,9 +315,9 @@
         "question": "Why does A = [[1,4,7],[2,5,8],[3,6,9]] have the same null space direction as Aᵀ = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
           "Because the null space of A equals the left null space of Aᵀ, and for this special structure they coincide",
-          "By pure coincidence — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because they have the same determinant... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because both are 3×3 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "By pure coincidence — does t match",
+          "Because they have the same determinant",
+          "Because both are 3×3 — does t match"
         ],
         "correct_option": "Because the null space of A equals the left null space of Aᵀ, and for this special structure they coincide",
         "explanation": "Step 1: N(A) = N(Aᵀ) happens when the row space of A equals the row space of Aᵀ (i.e., A is symmetric-like in structure). Step 2: For these specific matrices, the null space direction (1,-2,1) satisfies both Ax=0 and Aᵀx=0."
@@ -327,9 +327,9 @@
         "question": "If the null space of A has direction (1,-2,1), what does this say about the columns of A?",
         "options": [
           "Col3 = 2×Col2 - Col1, meaning the columns are linearly dependent",
-          "The columns are all zero... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "The columns are independent... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "The columns are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "The columns are all zero",
+          "The columns are independent",
+          "The columns are perpendicular"
         ],
         "correct_option": "Col3 = 2×Col2 - Col1, meaning the columns are linearly dependent",
         "explanation": "Step 1: A*(1,-2,1) = 0 means 1·Col1 + (-2)·Col2 + 1·Col3 = 0. Step 2: Rearranging: Col3 = 2×Col2 - Col1. The columns satisfy this dependency."
@@ -339,9 +339,9 @@
         "question": "For a general 3×3 matrix with rank 2, what is the geometric relationship between the row space and null space?",
         "options": [
           "The row space is a 2D plane, the null space is a 1D line perpendicular to it",
-          "They are the same — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "They are parallel — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "relationship — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "They are the same — does t match",
+          "They are parallel — does t match",
+          "relationship — does t match"
         ],
         "correct_option": "The row space is a 2D plane, the null space is a 1D line perpendicular to it",
         "explanation": "Step 1: Rank 2 → row space is 2D. Step 2: nullity = 3-2 = 1 → null space is 1D. By Fundamental Theorem, they are perpendicular complements."
@@ -351,9 +351,9 @@
         "question": "If A has rank 2 and null space direction (1,-2,1), can you find a vector NOT in the null space?",
         "options": [
           "Yes — (1,0,0) is not perpendicular to all rows, e.g., (1,0,0)·Row1 = 1 ≠ 0",
-          "— all vectors are in the null space... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only zero vectors — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Cant determine — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "— all vectors are in the null space",
+          "Only zero vectors — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "Yes — (1,0,0) is not perpendicular to all rows, e.g., (1,0,0)·Row1 = 1 ≠ 0",
         "explanation": "Step 1: (1,0,0)·Row1 = 1+0+0 = 1 ≠ 0. Step 2: So (1,0,0) is not in the null space — most vectors aren't."
@@ -363,9 +363,9 @@
         "question": "What is the dimension of the space spanned by the null space and row space of A combined?",
         "options": [
           "3 (= n, the number of columns)",
-          "2 — t here (xxxxxxxxxxxxxxxxxx)",
-          "1 — t here (xxxxxxxxxxxxxxxxxx)",
-          "4 — t here (xxxxxxxxxxxxxxxxxx)"
+          "2 — t here",
+          "1 — t here",
+          "4 — t here"
         ],
         "correct_option": "3 (= n, the number of columns)",
         "explanation": "Step 1: Row space is 2D, null space is 1D, and they are perpendicular. Step 2: Together they span all of R³, giving 2+1=3 dimensions."
@@ -382,9 +382,9 @@
       "question": "In JPEG image compression, what happens to the components in the null space of the transform?",
       "options": [
         "They are discarded to reduce file size",
-        "They are amplified (xxxxxxxxxxxxxxxxxx)",
-        "They are preserved exactly (xxxxxxxxxx)",
-        "They are inverted (xxxxxxxxxxxxxxxxxxx)"
+        "They are amplified",
+        "They are preserved exactly",
+        "They are inverted"
       ],
       "correct_option": "They are discarded to reduce file size",
       "explanation": "Step 1: Null space components produce zero output in the compression. Step 2: These details are lost during compression, shrinking the file while keeping the image looking similar."
@@ -398,9 +398,9 @@
       "question": "In audio filtering, where does the unwanted noise typically live mathematically?",
       "options": [
         "In the null space of the filtering operation",
-        "In the signal subspace (xxxxxxxxxxxxxxxxxxxx)",
-        "In the time domain (xxxxxxxxxxxxxxxxxxxxxxxx)",
-        "In the frequency domain only (xxxxxxxxxxxxxx)"
+        "In the signal subspace",
+        "In the time domain",
+        "In the frequency domain only"
       ],
       "correct_option": "In the null space of the filtering operation",
       "explanation": "Step 1: The filter preserves the signal subspace and suppresses the null space. Step 2: Noise components perpendicular to the desired signal are removed."
@@ -414,9 +414,9 @@
       "question": "What do zero-energy modes in the null space of a stiffness matrix represent?",
       "options": [
         "Rigid body motions that require no energy",
-        "Maximum vibration amplitude (xxxxxxxxxxxx)",
-        "Structural failure modes (xxxxxxxxxxxxxxx)",
-        "Natural frequencies (xxxxxxxxxxxxxxxxxxxx)"
+        "Maximum vibration amplitude",
+        "Structural failure modes",
+        "Natural frequencies"
       ],
       "correct_option": "Rigid body motions that require no energy",
       "explanation": "Step 1: The stiffness matrix maps displacements to forces. Step 2: Null space displacements produce zero force — the structure moves freely in these patterns."
@@ -430,9 +430,9 @@
       "question": "Why is a non-trivial null space a security concern in linear encryption?",
       "options": [
         "Some messages become invisible (encrypted to zeros)",
-        "The encryption is too fast (xxxxxxxxxxxxxxxxxxxxxxx)",
-        "The key is too short (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "The messages are too long (xxxxxxxxxxxxxxxxxxxxxxxx)"
+        "The encryption is too fast",
+        "The key is too short",
+        "The messages are too long"
       ],
       "correct_option": "Some messages become invisible (encrypted to zeros)",
       "explanation": "Step 1: If a message vector is in the null space, Ax=0. Step 2: The encrypted output is all zeros — the message disappears, creating a security hole."
@@ -446,9 +446,9 @@
       "question": "What do null space vectors in a gene regulatory network represent?",
       "options": [
         "Gene combinations whose effects cancel to zero",
-        "The most active genes (xxxxxxxxxxxxxxxxxxxxxxx)",
-        "Genetic mutations (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "Evolutionary advantages (xxxxxxxxxxxxxxxxxxxxx)"
+        "The most active genes",
+        "Genetic mutations",
+        "Evolutionary advantages"
       ],
       "correct_option": "Gene combinations whose effects cancel to zero",
       "explanation": "Step 1: Null space vectors satisfy Ax=0. Step 2: These represent gene combinations that produce no net regulatory effect — their interactions perfectly cancel out."
@@ -462,9 +462,9 @@
       "question": "In a traffic network, what do null space vectors of the flow conservation matrix represent?",
       "options": [
         "Circulation loops that don't affect net flow at any intersection",
-        "Traffic jams (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "Road closures (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "Speed limits (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "Traffic jams",
+        "Road closures",
+        "Speed limits"
       ],
       "correct_option": "Circulation loops that don't affect net flow at any intersection",
       "explanation": "Step 1: Null space flows satisfy Ax=0, meaning net flow at every node is zero. Step 2: These are closed circulation loops — traffic that circles back without adding or removing flow at any intersection."

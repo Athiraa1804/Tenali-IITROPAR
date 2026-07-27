@@ -13,7 +13,7 @@
           "The slope or steepness of the line",
           "The y-intercept — does t match",
           "The length of the line",
-          "The color of the line (xxxxxxxxxxx)"
+          "The color of the line"
         ],
         "correct_option": "The slope or steepness of the line",
         "explanation": "Step 1: The parameter a is the coefficient of x. Step 2: It determines how much y changes for each unit change in x. Step 3: A larger |a| means a steeper line; a smaller |a| means a flatter line."
@@ -23,9 +23,9 @@
         "question": "In y = ax + b, what does the parameter b control?",
         "options": [
           "The y-intercept — where the line crosses the y-axis",
-          "The slope of the line...",
+          "The slope of the line",
           "The x-intercept — does t match",
-          "The origin) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "The origin)"
         ],
         "correct_option": "The y-intercept — where the line crosses the y-axis",
         "explanation": "Step 1: When x = 0, y = b. Step 2: The point (0, b) is where the line crosses the y-axis. Step 3: Changing b shifts the line up or down without changing its steepness."
@@ -60,8 +60,8 @@
         "options": [
           "It shifts upward while maintaining the same slope",
           "It becomes steeper — does t match",
-          "It rotates around the origin...",
-          "It becomes ... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "It rotates around the origin",
+          "It becomes"
         ],
         "correct_option": "It shifts upward while maintaining the same slope",
         "explanation": "Step 1: The slope a = 2 stays the same — the steepness doesn't change. Step 2: Increasing b moves the y-intercept upward. Step 3: The line translates (slides) up without rotating."
@@ -97,7 +97,7 @@
           "It becomes steeper while keeping the same y-intercept",
           "It shifts up — does t match",
           "It shifts down — does t match",
-          "It becomes ... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "It becomes"
         ],
         "correct_option": "It becomes steeper while keeping the same y-intercept",
         "explanation": "Step 1: The y-intercept stays at (0, 2) since b = 2 is fixed. Step 2: Increasing a from 1 to 4 increases the slope. Step 3: The line rotates around the y-intercept point (0,2), becoming steeper."
@@ -134,8 +134,8 @@
         "options": [
           "Yes, increasing |a| always makes the line steeper",
           "increasing a always makes the line flatter",
-          "Only if b is positive... (xxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if a starts negative..."
+          "Only if b is positive",
+          "Only if a starts negative"
         ],
         "correct_option": "Yes, increasing |a| always makes the line steeper",
         "explanation": "Step 1: The slope a determines the rate of change of y with respect to x. Step 2: A larger |a| means a greater change in y per unit change in x. Step 3: This produces a steeper line, whether a is positive (rising) or negative (falling)."
@@ -158,7 +158,7 @@
         "options": [
           "A constant value that never changes over time",
           "A value that increases linearly",
-          "A value that decreases to zero (xxxxxxxxxxxxx)",
+          "A value that decreases to zero",
           "An undefined state — does t match"
         ],
         "correct_option": "A constant value that never changes over time",
@@ -169,9 +169,9 @@
         "question": "Two lines have equations y = 3x + 1 and y = 3x - 2. What is the relationship between them?",
         "options": [
           "They are parallel (same slope, different intercepts)",
-          "They are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "They intersect at the origin...",
-          "They are the same line..."
+          "They are perpendicular",
+          "They intersect at the origin",
+          "They are the same line"
         ],
         "correct_option": "They are parallel (same slope, different intercepts)",
         "explanation": "Step 1: Both have slope a = 3 (same steepness). Step 2: Their intercepts differ (b = 1 vs b = -2). Step 3: Equal slopes with different intercepts means the lines are parallel and never intersect."
@@ -182,8 +182,8 @@
         "options": [
           "Same steepness but opposite directions — one rises, one falls",
           "Different steepness — does t match",
-          "Same direction, different steepness...",
-          "They are parallel — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Same direction, different steepness",
+          "They are parallel — does t match"
         ],
         "correct_option": "Same steepness but opposite directions — one rises, one falls",
         "explanation": "Step 1: y = 2x has slope 2 (rising line through Quadrants I and III). Step 2: y = -2x has slope -2 (falling line through Quadrants II and IV). Step 3: |2| = |-2|, so same steepness, but the sign controls direction."
@@ -219,7 +219,7 @@
           "Nearly horizontal — y barely changes as x increases",
           "Nearly — does t match",
           "A parabola)",
-          "A circle) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "A circle)"
         ],
         "correct_option": "Nearly horizontal — y barely changes as x increases",
         "explanation": "Step 1: A small slope means y changes very slowly with x. Step 2: For every 1 unit increase in x, y increases by only 0.01 units. Step 3: This produces a line that appears nearly horizontal."
@@ -243,7 +243,7 @@
           "It passes through the origin (0,0)",
           "It has a steeper slope",
           "It is always positive",
-          "It is always (xxxxxxxxxxxxxxxxxxxx)"
+          "It is always"
         ],
         "correct_option": "It passes through the origin (0,0)",
         "explanation": "Step 1: When b = 0, at x = 0, y = 0. Step 2: The point (0,0) lies on the line. Step 3: This is the key distinction — lines with b = 0 pass through the origin (making them direct proportionality relationships), while b ≠ 0 shifts the line away from the origin."
@@ -255,9 +255,9 @@
         "question": "Consider the set of all lines y = ax + b where a and b are real numbers. Is this collection a vector space over ℝ?",
         "options": [
           "No, because adding two lines y = a₁x + b₁ and y = a₂x + b₂ does not always give another line of this form (the sum is y = (a₁+a₂)x + (b₁+b₂), which IS a line — but the zero element must be the zero LINE, which doesn't exist in this set)",
-          "it is a 2-dimensional vector space...",
-          "because lines cant be added... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "because each line is a vector..."
+          "it is a 2-dimensional vector space",
+          "because lines cant be added",
+          "because each line is a vector"
         ],
         "correct_option": "No, because adding two lines y = a₁x + b₁ and y = a₂x + b₂ does not always give another line of this form (the sum is y = (a₁+a₂)x + (b₁+b₂), which IS a line — but the zero element must be the zero LINE, which doesn't exist in this set)",
         "explanation": "Step 1: The set of all lines in the plane is not itself a vector space because there's no 'zero vector' (zero line) — every line has infinitely many points. Step 2: The set of functions {f(x) = ax + b} IS a 2D vector space, but the set of geometric lines is not directly. Step 3: This distinction between functions and their graphs is important in linear algebra."
@@ -269,7 +269,7 @@
           "2-dimensional (basis: {1, x})",
           "1-dimensional — does t match",
           "3-dimensional — does t match",
-          "Infinite-dimensional (xxxxxxx)"
+          "Infinite-dimensional"
         ],
         "correct_option": "2-dimensional (basis: {1, x})",
         "explanation": "Step 1: Any f(x) = ax + b can be written as a·x + b·1. Step 2: The functions {x, 1} are linearly independent and span V. Step 3: Since the basis has 2 elements, dim(V) = 2."
@@ -293,7 +293,7 @@
           "Only T₁, because T₁(0) = 0 while T₂(0) = 1 ≠ 0",
           "Both are linear maps — does t match",
           "Only T₂, because it has a n-zero intercept",
-          "Neither is a linear map... (xxxxxxxxxxxxxxxxxx)"
+          "Neither is a linear map"
         ],
         "correct_option": "Only T₁, because T₁(0) = 0 while T₂(0) = 1 ≠ 0",
         "explanation": "Step 1: A linear map must satisfy T(0) = 0. Step 2: T₁(0) = 2(0) = 0 ✓. Step 3: T₂(0) = 2(0) + 1 = 1 ≠ 0 ✗. T₂ is an affine map, not a linear map."
@@ -303,9 +303,9 @@
         "question": "In the parameter space (a, b), what geometric object represents all lines passing through the point (1, 2)?",
         "options": [
           "The line b = -a + 2 in the (a, b) parameter plane",
-          "A circle centered at origin...",
+          "A circle centered at origin",
           "A single point — does t match",
-          "The entire (a, b) plane... (xxxxxxxxxxxxxxxxxxxxx)"
+          "The entire (a, b) plane"
         ],
         "correct_option": "The line b = -a + 2 in the (a, b) parameter plane",
         "explanation": "Step 1: For y = ax + b to pass through (1,2): 2 = a(1) + b. Step 2: This gives b = 2 - a, or b = -a + 2. Step 3: In the (a, b) parameter space, this constraint defines a line — all pairs (a, 2-a) produce lines through (1,2)."
@@ -327,9 +327,9 @@
         "question": "The set of all lines through the origin is a 1-parameter family (parameterized by slope a). The set of ALL lines in the plane is a 2-parameter family. Why?",
         "options": [
           "Because you need two independent parameters (slope and intercept) to specify any line",
-          "Because the plane is 2-dimensional...",
-          "Because lines have two endpoints... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because you need to specify two points..."
+          "Because the plane is 2-dimensional",
+          "Because lines have two endpoints",
+          "Because you need to specify two points"
         ],
         "correct_option": "Because you need two independent parameters (slope and intercept) to specify any line",
         "explanation": "Step 1: Lines through the origin are determined by slope alone (1 parameter). Step 2: General lines need both slope and intercept (2 parameters). Step 3: The extra parameter (intercept) accounts for the vertical position, which is the degree of freedom that moves a line off the origin."
@@ -339,7 +339,7 @@
         "question": "If we define the 'angle' between two lines y = a₁x + b₁ and y = a₂x + b₂ using tan(θ) = |(a₁ - a₂)/(1 + a₁a₂)|, what happens when a₁a₂ = -1?",
         "options": [
           "The lines are perpendicular (θ = 90°)",
-          "The lines are parallel (xxxxxxxxxxxxx)",
+          "The lines are parallel",
           "The formula gives 0 — does t match",
           "The lines coincide — does t match"
         ],
@@ -353,7 +353,7 @@
           "Yes, different (a,b) pairs always give different lines",
           "two different (a,b) pairs can give the same line",
           "Only if b ≠ 0 — does t match",
-          "Only for positive slopes... (xxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Only for positive slopes"
         ],
         "correct_option": "Yes, different (a,b) pairs always give different lines",
         "explanation": "Step 1: If (a₁, b₁) ≠ (a₂, b₂), then either a₁ ≠ a₂ or b₁ ≠ b₂. Step 2: If a₁ ≠ a₂, the slopes differ, so the lines are different. Step 3: If a₁ = a₂ but b₁ ≠ b₂, the lines are parallel but at different heights. Either way, distinct (a,b) gives distinct lines."
@@ -363,9 +363,9 @@
         "question": "In the space V = {f(x) = ax + b}, what is the kernel (null space) of the linear functional D(f) = f'(0)?",
         "options": [
           "The set of constant functions {f(x) = b}, i.e., all functions with a = 0",
-          "The zero function only...",
-          "All of V) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "The set of functions with b = 0..."
+          "The zero function only",
+          "All of V)",
+          "The set of functions with b = 0"
         ],
         "correct_option": "The set of constant functions {f(x) = b}, i.e., all functions with a = 0",
         "explanation": "Step 1: D(f) = f'(0) = a (the derivative of ax + b is a). Step 2: D(f) = 0 when a = 0. Step 3: Functions with a = 0 are constant functions f(x) = b, forming a 1D subspace of V."
@@ -402,7 +402,7 @@
         "The initial savings before the plan started",
         "The amount saved per week",
         "The total savings after one year",
-        "The interest rate (xxxxxxxxxxxxxxxxxxxxxxxx)"
+        "The interest rate"
       ],
       "answer": "The initial savings before the plan started",
       "explanation": "Step 1: At week 0 (before any saving), the total is the y-intercept. Step 2: In y = 100x + 500, at x = 0, y = 500. Step 3: This ₹500 is the starting balance — the savings already in the account before the weekly plan begins."
@@ -416,7 +416,7 @@
       "story": "When graphing the relationship between Kelvin (y) and Celsius (x), the equation is K = C + 273.15. If you plot Celsius on the x-axis and Kelvin on the y-axis, the resulting straight line doesn't pass through the origin.",
       "question": "Why doesn't the Celsius-Kelvin line pass through the origin?",
       "options": [
-        "Because 0°C does t represent absolute zero — it's the freezing point of water",
+        "Because 0°C does not represent absolute zero — it's the freezing point of water",
         "Because temperature is always positive",
         "Because the slope is exactly 1",
         "Because Kelvin and Celsius are t related"
@@ -434,7 +434,7 @@
       "question": "What happens to the neuron's line if Bias is set to zero?",
       "options": [
         "The line shifts to pass through the origin (0,0)",
-        "The line becomes (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The line becomes",
         "The line becomes",
         "The line becomes a parabola"
       ],
@@ -468,7 +468,7 @@
       "question": "What does the negative y-intercept of -500 represent in this factory scenario?",
       "options": [
         "The fixed startup costs that must be recovered before making profit",
-        "The profit per unit (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The profit per unit",
         "The number of units produced",
         "The maximum possible profit"
       ],

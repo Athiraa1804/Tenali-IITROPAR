@@ -35,7 +35,7 @@
         "question": "What is the Null Space of a matrix?",
         "options": [
           "The span of its columns",
-          "The span of its rows (xxxxxxxxx)",
+          "The span of its rows",
           "The set of vectors x where Ax=0",
           "The set of vectors y where Ay=0"
         ],
@@ -48,7 +48,7 @@
         "options": [
           "A line in ℝ² spanned by (1,2)",
           "A line in ℝ² spanned by (1,3)",
-          "All of ℝ²) (xxxxxxxxxxxxxxxxx)",
+          "All of ℝ²)",
           "The zero vector only"
         ],
         "correct_option": "A line in ℝ² spanned by (1,2)",
@@ -61,7 +61,7 @@
           "ℝⁿ (the input space)",
           "ℝᵐ (the output space)",
           "Both spaces",
-          "Neither (xxxxxxxxxxxx)"
+          "Neither"
         ],
         "correct_option": "ℝᵐ (the output space)",
         "explanation": "Step 1: N(Aᵀ) = {y : Aᵀy = 0}, and since Aᵀ is n×m, the vector y must have m components. Step 2: Therefore N(Aᵀ) ⊆ ℝᵐ, the output codomain — the same space where C(A) lives. Step 3: The left null space and column space are orthogonal complements in ℝᵐ, meaning N(Aᵀ) captures exactly the output directions that C(A) cannot reach. This duality between the two orthogonal pairs (R⊥N in ℝⁿ and C⊥Nᵀ in ℝᵐ) is what makes the four-subspace framework so powerful for understanding both input and output structure of any transformation."
@@ -73,7 +73,7 @@
           "A line spanned by (1,2)",
           "A line spanned by (-2,1)",
           "A line spanned by (2,-1)",
-          "All of ℝ² (xxxxxxxxxxxxx)"
+          "All of ℝ²"
         ],
         "correct_option": "A line spanned by (-2,1)",
         "explanation": "Step 1: Solving Ax = 0 yields x₁ + 2x₂ = 0 and 3x₁ + 6x₂ = 0, which both reduce to x₁ = −2x₂. Step 2: Parametrizing with x₂ = t gives N(A) = span{(−2,1)}, a single line in ℝ². Step 3: Geometrically, every vector on this line is 'squashed' to the origin by A. The line (−2,1) is perpendicular to the row space span{(1,2)}, verifying the fundamental orthogonality R(A) ⊥ N(A). This orthogonality is not a coincidence — it is a theorem that holds for every matrix, arising directly from the definition of matrix-vector multiplication."
@@ -95,7 +95,7 @@
         "question": "The Column Space of a matrix consists of:",
         "options": [
           "All solutions to Ax = 0",
-          "The span of its rows (xxxxxxxxxxx)",
+          "The span of its rows",
           "All possible outputs Ax for any x",
           "The span of its columns"
         ],
@@ -144,10 +144,10 @@
         "id": "M5Q1M2",
         "question": "Why are the Row Space and Null Space orthogonal to each other?",
         "options": [
-          "Because they have the same dimension...",
+          "Because they have the same dimension",
           "Because Ax=0 means x is perpendicular to every row of A",
-          "Because they are in different spaces...",
-          "Because the matrix is square... (xxxxxxxxxxxxxxxxxxxxxx)"
+          "Because they are in different spaces",
+          "Because the matrix is square"
         ],
         "correct_option": "Because Ax=0 means x is perpendicular to every row of A",
         "explanation": "Step 1: If x ∈ N(A), then Ax = 0, which is a vector equation. Step 2: The i-th entry of Ax is precisely (row i of A) · x, so Ax = 0 means every row dotted with x equals zero — x is perpendicular to every row. Step 3: Since R(A) is the span of the rows, x is orthogonal to the entire row space. This proof uses only the definition of matrix-vector multiplication (as dot products), making it one of the most fundamental results in linear algebra. It holds for every matrix — square or rectangular, invertible or singular — and is the engine behind least-squares methods and the Fundamental Theorem of Linear Algebra."
@@ -218,7 +218,7 @@
         "options": [
           "N(A) is all of ℝⁿ — does t match",
           "N(A) contains only the zero vector",
-          "N(A) has dimension n - m (xxxxxxxx)",
+          "N(A) has dimension n - m",
           "N(A) equals the row space"
         ],
         "correct_option": "N(A) contains only the zero vector",
@@ -255,7 +255,7 @@
         "question": "For A = [[1,2],[3,6]], verify that R(A) ⊕ N(A) = ℝ². What are their dimensions?",
         "options": [
           "dim(R)=1, dim(N)=1, and they intersect only at 0",
-          "dim(R)=2, dim(N)=0 — does t match (xxxxxxxxxxxxx)",
+          "dim(R)=2, dim(N)=0 — does t match",
           "dim(R)=1, dim(N)=2 — does t match",
           "dim(R)=0, dim(N)=2 — does t match"
         ],
@@ -266,10 +266,10 @@
         "id": "M5Q1H2",
         "question": "Prove that for any m×n matrix A, the Row Space and Null Space are orthogonal. Which property of matrix multiplication is key?",
         "options": [
-          "Associativity — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Associativity — does t match",
           "The definition of matrix-vector product as dot products of rows with x",
           "Commutativity — does t match",
-          "Distributivity over addition only..."
+          "Distributivity over addition only"
         ],
         "correct_option": "The definition of matrix-vector product as dot products of rows with x",
         "explanation": "Step 1: The product Ax produces a vector whose i-th entry is (row i of A) · x, by the very definition of matrix-vector multiplication. Step 2: If x ∈ N(A), then Ax = 0, which means (row i) · x = 0 for every row i. Step 3: Since every row is orthogonal to x, and R(A) is the span of the rows, x ⊥ R(A). This proof is remarkably simple yet profound: it shows that orthogonality between R(A) and N(A) is not an empirical observation but a logical consequence of how matrix multiplication is defined. The same proof technique applied to Aᵀy = 0 yields C(A) ⊥ N(Aᵀ), showing both orthogonal pairs arise from the same algebraic mechanism. This is the heart of the Fundamental Theorem of Linear Algebra."
@@ -292,8 +292,8 @@
         "options": [
           "Because rows and columns are the same vectors",
           "Because both equal the rank, which is the number of pivots",
-          "Because the matrix is always square...",
-          "It is t always true... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because the matrix is always square",
+          "It is t always true"
         ],
         "correct_option": "Because both equal the rank, which is the number of pivots",
         "explanation": "Step 1: The row rank is dim(R(A)) = number of linearly independent rows, and the column rank is dim(C(A)) = number of linearly independent columns. Step 2: The theorem row rank = column rank states these are always equal, both equal to the number of pivots in the row echelon form. Step 3: This is a non-obvious fact — there is no a priori reason why the number of independent rows should equal the number of independent columns, yet it always does. The proof relies on the fact that row reduction preserves the row space while revealing pivot columns. This equality is why the single number 'rank' suffices to describe the intrinsic dimensionality of the transformation, connecting all four subspaces through one parameter."
@@ -329,7 +329,7 @@
           "R={0}, C={0}, N=ℝⁿ, Nᵀ=ℝᵐ",
           "R=ℝⁿ, C=ℝᵐ, N={0}, Nᵀ={0}",
           "R=ℝⁿ, C={0}, N=ℝⁿ, Nᵀ=ℝᵐ",
-          "All four are {0} (xxxxxxx)"
+          "All four are {0}"
         ],
         "correct_option": "R={0}, C={0}, N=ℝⁿ, Nᵀ=ℝᵐ",
         "explanation": "Step 1: Every row is zero, so R(Z) = {0}; every column is zero, so C(Z) = {0}. Rank = 0. Step 2: Zx = 0 for all x, so N(Z) = ℝⁿ (every input is annihilated); Zᵀy = 0 for all y, so N(Zᵀ) = ℝᵐ. Step 3: The zero matrix is the opposite extreme from the identity: it collapses everything to zero, losing all information. Its row space and column space are trivial, while its null spaces fill the entire ambient spaces. This extreme illustrates that the four-subspace framework handles every matrix uniformly — from full-rank to zero, the same structure applies, with the rank parameter smoothly interpolating between these extremes."
@@ -340,7 +340,7 @@
         "options": [
           "No, because dim(C(A)) ≤ rank ≤ n < m",
           "if the columns are independent",
-          "always — does t match (xxxxxxxxxxxxx)",
+          "always — does t match",
           "Only if A is square — does t match"
         ],
         "correct_option": "No, because dim(C(A)) ≤ rank ≤ n < m",
@@ -363,9 +363,9 @@
         "question": "For A = [[1,2],[3,6]], describe the geometric meaning: A maps ℝ² onto a line in ℝ². What does the null space represent geometrically?",
         "options": [
           "A line perpendicular to the image that gets collapsed to the origin",
-          "A plane that gets expanded...",
-          "A point that stays fixed... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "A circle that gets rotated..."
+          "A plane that gets expanded",
+          "A point that stays fixed",
+          "A circle that gets rotated"
         ],
         "correct_option": "A line perpendicular to the image that gets collapsed to the origin",
         "explanation": "Step 1: C(A) = span{(1,3)} is a 1D line in ℝ² — the entire output of the transformation lives on this line. Step 2: N(A) = span{(−2,1)} is a line perpendicular to the row space span{(1,2)}, and every vector on this line is mapped to zero. Step 3: Geometrically, the transformation 'squashes' the 2D plane onto a 1D line: the null-space direction is compressed to a point (the origin), while the row-space direction is preserved (but stretched). This is the geometric essence of rank deficiency: one dimension of information is irrevocably lost. In applications, this collapse model explains data compression (discarding null-space dimensions), sensor redundancy (null-space represents unobservable modes), and dimensionality reduction in machine learning."
@@ -431,7 +431,7 @@
       "options": [
         "Calibration constraints — combinations that should always equal zero",
         "The 3 physical quantities being measured",
-        "Random ise in the sensors (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "Random ise in the sensors",
         "The maximum reading of each sensor"
       ],
       "answer": "Calibration constraints — combinations that should always equal zero",
@@ -445,7 +445,7 @@
       "story": "In a data network, the routing matrix maps input flows to output flows. The row space shows which input flow patterns can be controlled. The null space reveals input patterns that produce no output — 'dead' flows. The column space shows achievable output distributions, and the left null space identifies output patterns that are unreachable regardless of input.",
       "question": "In a network, what does the null space of the routing matrix represent?",
       "options": [
-        "Input flow patterns that produce output — dead flows",
+        "Input flow patterns that produce no output — dead flows",
         "The maximum throughput of the network",
         "The most popular destination",
         "The fastest routing path"
@@ -463,7 +463,7 @@
       "options": [
         "The left null space — gene combinations unaffected by conditions",
         "The row space — genes most affected by conditions",
-        "The column space — experimental conditions (xxxxxxxxxxxxxxxxxxxx)",
+        "The column space — experimental conditions",
         "The null space — conditions that produce output"
       ],
       "answer": "The left null space — gene combinations unaffected by conditions",

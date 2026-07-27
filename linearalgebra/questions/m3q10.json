@@ -72,7 +72,7 @@
         "options": [
           "{(1,4,7),(2,5,8)} (first two rows)",
           "{(1,2,3),(4,5,6)} — does t match",
-          "{(7,8,9)}) (xxxxxxxxxxxxxxxxxxxxxx)",
+          "{(7,8,9)})",
           "All three rows — does t match"
         ],
         "correct_option": "{(1,4,7),(2,5,8)} (first two rows)",
@@ -84,7 +84,7 @@
         "options": [
           "{(1,2,3),(4,5,6)} (first two columns)",
           "{(1,4,7),(2,5,8)} — does t match",
-          "{(7,8,9)}) (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "{(7,8,9)})",
           "All three columns — does t match"
         ],
         "correct_option": "{(1,2,3),(4,5,6)} (first two columns)",
@@ -95,7 +95,7 @@
         "question": "Does the rank-nullity theorem hold for A? (rank + nullity = n)",
         "options": [
           "Yes: 2 + 1 = 3 = number of columns",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only approximately — does t match",
           "Only for square matrices"
         ],
@@ -109,7 +109,7 @@
           "A plane through the origin in R³",
           "A line through the origin",
           "All of R³)",
-          "A point) (xxxxxxxxxxxxxxxxxxxxxx)"
+          "A point)"
         ],
         "correct_option": "A plane through the origin in R³",
         "explanation": "Step 1: The row space is 2-dimensional in R³. Step 2: A 2D subspace in R³ is a plane through the origin."
@@ -133,9 +133,9 @@
         "question": "The row space and column space of A both have dimension 2. Are they the same set?",
         "options": [
           "No — the row space is in R³ (rows) and the column space is in R³ (columns), but they are generally different planes",
-          "always the same — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for symmetric matrices...",
-          "Only for invertible matrices..."
+          "always the same — does t match",
+          "Only for symmetric matrices",
+          "Only for invertible matrices"
         ],
         "correct_option": "No — the row space is in R³ (rows) and the column space is in R³ (columns), but they are generally different planes",
         "explanation": "Step 1: Row space = span{(1,4,7),(2,5,8)}, Column space = span{(1,2,3),(4,5,6)}. Step 2: These are different planes in R³ — same dimension but different orientations."
@@ -157,7 +157,7 @@
         "question": "Is the null space perpendicular to the row space of A?",
         "options": [
           "Yes — by the Fundamental Theorem",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only approximately",
           "Only for special matrices"
         ],
@@ -169,7 +169,7 @@
         "question": "How many dimensions of R³ does the row space + null space account for?",
         "options": [
           "3 (all of R³)",
-          "2 (xxxxxxxxxx)",
+          "2",
           "1",
           "4"
         ],
@@ -181,8 +181,8 @@
         "question": "Is the row space of A the same as the column space of Aᵀ?",
         "options": [
           "Yes — row space of A = column space of Aᵀ by definition",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for symmetric matrices...",
+          "— t here",
+          "Only for symmetric matrices",
           "Only in R²)"
         ],
         "correct_option": "Yes — row space of A = column space of Aᵀ by definition",
@@ -205,8 +205,8 @@
         "question": "Can you find a basis for R³ using vectors from the row space and null space of A?",
         "options": [
           "Yes — two from row space + one from null space = 3 independent vectors",
-          "— they don't span R³... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if A is invertible...",
+          "— they don't span R³",
+          "Only if A is invertible",
           "Only with 4 vectors — does t match"
         ],
         "correct_option": "Yes — two from row space + one from null space = 3 independent vectors",
@@ -218,8 +218,8 @@
         "options": [
           "Row rank always equals column rank — a fundamental theorem of linear algebra",
           "Because A is square — does t match",
-          "By coincidence — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because the entries are consecutive..."
+          "By coincidence — does t match",
+          "Because the entries are consecutive"
         ],
         "correct_option": "Row rank always equals column rank — a fundamental theorem of linear algebra",
         "explanation": "Step 1: The rank of A is defined as the dimension of the row space. Step 2: It's a theorem that this equals the dimension of the column space."
@@ -241,9 +241,9 @@
         "question": "Is the null space of A the same as the null space of the matrix formed by only the first two rows of A?",
         "options": [
           "Yes — the third row is redundant, so it adds no new constraints",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only approximately — does t match",
-          "Only for special cases..."
+          "Only for special cases"
         ],
         "correct_option": "Yes — the third row is redundant, so it adds no new constraints",
         "explanation": "Step 1: Row3 = 2×Row2 - Row1, so Ax=0 with all three rows is equivalent to using just the first two. Step 2: The null space is determined by the independent rows only."
@@ -269,7 +269,7 @@
           "They are always equal (= rank)",
           "R(A) is always larger",
           "C(A) is always larger",
-          "relationship (xxxxxxxxxxxxxxxx)"
+          "relationship"
         ],
         "correct_option": "They are always equal (= rank)",
         "explanation": "Step 1: Both dimensions equal the rank of A. Step 2: This is a fundamental property — row rank = column rank for any matrix."
@@ -279,9 +279,9 @@
         "question": "Why are the row space and column space different planes even though they have the same dimension?",
         "options": [
           "Because they are spanned by different vectors in different subspaces of R³",
-          "Because the matrix is t symmetric...",
+          "Because the matrix is t symmetric",
           "Because rank is 2 — does t match",
-          "By coincidence — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "By coincidence — does t match"
         ],
         "correct_option": "Because they are spanned by different vectors in different subspaces of R³",
         "explanation": "Step 1: Row space is spanned by rows: {(1,4,7),(2,5,8)}. Step 2: Column space is spanned by columns: {(1,2,3),(4,5,6)}. These are different sets of vectors, creating different planes."
@@ -291,9 +291,9 @@
         "question": "If A is an m×n matrix with rank r, what are the dimensions of all four subspaces?",
         "options": [
           "R(A): r in Rⁿ, N(A): n-r in Rⁿ, C(A): r in Rᵐ, N(Aᵀ): m-r in Rᵐ",
-          "All are r-dimensional... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "All are n-r dimensional...",
-          "Depends on m and n only..."
+          "All are r-dimensional",
+          "All are n-r dimensional",
+          "Depends on m and n only"
         ],
         "correct_option": "R(A): r in Rⁿ, N(A): n-r in Rⁿ, C(A): r in Rᵐ, N(Aᵀ): m-r in Rᵐ",
         "explanation": "Step 1: Row space and null space live in Rⁿ. Step 2: Column space and left null space live in Rᵐ. Their dimensions are r, n-r, r, and m-r respectively."
@@ -303,9 +303,9 @@
         "question": "Can the row space and column space of a non-square matrix have the same dimension?",
         "options": [
           "Yes — row rank = column rank always, even for non-square matrices",
-          "— they always differ... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for square matrices...",
-          "Only for invertible matrices..."
+          "— they always differ",
+          "Only for square matrices",
+          "Only for invertible matrices"
         ],
         "correct_option": "Yes — row rank = column rank always, even for non-square matrices",
         "explanation": "Step 1: For a 2×5 matrix with rank 2, row space is 2D in R⁵ and column space is 2D in R². Step 2: Same dimension (2), different ambient spaces."
@@ -315,9 +315,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], decompose (1,0,0) into row space and null space components.",
         "options": [
           "Project onto row space plane and subtract to get null space component",
-          "t possible — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "(1,0,0) is entirely in the row space...",
-          "(1,0,0) is entirely in the null space..."
+          "t possible — does t match",
+          "(1,0,0) is entirely in the row space",
+          "(1,0,0) is entirely in the null space"
         ],
         "correct_option": "Project onto row space plane and subtract to get null space component",
         "explanation": "Step 1: Project (1,0,0) onto the row space (perpendicular to (1,-2,1)). Step 2: The projection gives the row space component; the difference is the null space component."
@@ -327,9 +327,9 @@
         "question": "Why is the Fundamental Theorem called 'fundamental'?",
         "options": [
           "Because it connects all four subspaces and underpins virtually all of linear algebra",
-          "Because it was discovered first... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because it's the simplest theorem...",
-          "Because it only applies to fundamental cases..."
+          "Because it was discovered first",
+          "Because it's the simplest theorem",
+          "Because it only applies to fundamental cases"
         ],
         "correct_option": "Because it connects all four subspaces and underpins virtually all of linear algebra",
         "explanation": "Step 1: The theorem states R(A) ⊥ N(A) and C(A) ⊥ N(Aᵀ), with dimensions summing to n and m. Step 2: This structure underlies solutions to linear systems, least squares, and dimension theory."
@@ -339,7 +339,7 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], what is the equation of the row space plane?",
         "options": [
           "x - 2y + z = 0 (perpendicular to null direction (1,-2,1))",
-          "x + y + z = 0 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "x + y + z = 0 — does t match",
           "x + 4y + 7z = 0 — does t match",
           "2x + 5y + 8z = 0 — does t match"
         ],
@@ -352,7 +352,7 @@
         "options": [
           "Depends on the specific column vectors — it's span{(1,2,3),(4,5,6)}",
           "Same as row space — does t match",
-          "x+y+z=0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "x+y+z=0)",
           "Cant be determined — does t match"
         ],
         "correct_option": "Depends on the specific column vectors — it's span{(1,2,3),(4,5,6)}",
@@ -363,7 +363,7 @@
         "question": "If we know rank(A)=2 for a 3×3 matrix, what can we definitively say about A?",
         "options": [
           "A is singular (det=0), has a non-trivial null space, and maps R³ onto a 2D plane",
-          "A is invertible — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "A is invertible — does t match",
           "A is the zero matrix — does t match",
           "A has full rank — does t match"
         ],
@@ -400,7 +400,7 @@
         "All achievable output combinations",
         "The most efficient production",
         "The cheapest products",
-        "The raw materials (xxxxxxxxxxxxxxx)"
+        "The raw materials"
       ],
       "correct_option": "All achievable output combinations",
       "explanation": "Step 1: The column space is the span of the column vectors. Step 2: Each column represents the output profile of one industry; their span covers all achievable output bundles."
@@ -432,7 +432,7 @@
         "Gene patterns, condition patterns, redundant genes, and unmeasurable conditions",
         "Only gene locations",
         "Only protein structures",
-        "Only DNA sequences (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "Only DNA sequences"
       ],
       "correct_option": "Gene patterns, condition patterns, redundant genes, and unmeasurable conditions",
       "explanation": "Step 1: Row space = gene co-regulation patterns. Step 2: Column space = condition profiles. Null space = redundant genes. Left null space = unmeasurable conditions."
@@ -446,7 +446,7 @@
       "question": "In wireless communications, what does the null space of the channel matrix represent?",
       "options": [
         "Input signals that produce zero output (undetectable)",
-        "The strongest signals (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The strongest signals",
         "The fastest data rates",
         "The clearest channels"
       ],
@@ -463,7 +463,7 @@
       "options": [
         "The main skill dimensions that differentiate students",
         "The hardest courses",
-        "The best students (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The best students",
         "The grading scale"
       ],
       "correct_option": "The main skill dimensions that differentiate students",

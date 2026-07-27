@@ -145,9 +145,9 @@
         "question": "Why can a cubic equation have three solutions while a quadratic has at most two?",
         "options": [
           "Because a cubic has degree 3, allowing the curve to wiggle and cross a horizontal line up to 3 times",
-          "Because cubics always have more terms...",
-          "Because the quadratic formula only gives two answers...",
-          "Because cubics don't have symmetry... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because cubics always have more terms",
+          "Because the quadratic formula only gives two answers",
+          "Because cubics don't have symmetry"
         ],
         "correct_option": "Because a cubic has degree 3, allowing the curve to wiggle and cross a horizontal line up to 3 times",
         "explanation": "Step 1: Degree determines the maximum number of real roots. Step 2: A cubic can change direction twice (2 turning points), creating an S-shape. Step 3: This S-shape allows a horizontal line to cross the curve at up to 3 points."
@@ -157,9 +157,9 @@
         "question": "Can a degree-n polynomial have more than n real roots?",
         "options": [
           "No — the Fundamental Theorem of Algebra limits it to exactly n roots (counting multiplicity)",
-          "always n+1 — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "always n+1 — does t match",
           "Only for even n — does t match",
-          "Only if all roots are real..."
+          "Only if all roots are real"
         ],
         "correct_option": "No — the Fundamental Theorem of Algebra limits it to exactly n roots (counting multiplicity)",
         "explanation": "Step 1: A degree-n polynomial has exactly n roots in ℂ (counting multiplicity). Step 2: Some roots may be complex (non-real). Step 3: Therefore, at most n roots can be real — you can never exceed the degree."
@@ -169,7 +169,7 @@
         "question": "A character in a video game follows a cubic jump path. How many different times can they be at the same height?",
         "options": [
           "Up to 3 times (going up, coming down, bouncing up again)",
-          "Exactly once — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Exactly once — does t match",
           "Exactly twice — does t match",
           "Infinitely many — does t match"
         ],
@@ -183,7 +183,7 @@
           "Yes — g(2) = 0 means (x - 2) divides g(x) exactly",
           "the factor theorem doesn't apply to cubics",
           "Only if the coefficient of x² is zero",
-          "Only for positive roots... (xxxxxxxxxxxxxxxxxxxxx)"
+          "Only for positive roots"
         ],
         "correct_option": "Yes — g(2) = 0 means (x - 2) divides g(x) exactly",
         "explanation": "Step 1: Check: g(2) = 8 - 4 - 28 + 2 = -22 ≠ 0. Wait — for the factored form (x+4)(x-2)(x-3), g(2) = 0. Step 2: Since g(2) = 0, by the factor theorem, (x - 2) is indeed a factor. Step 3: This is how we factor polynomials — find roots, then extract factors."
@@ -194,7 +194,7 @@
         "options": [
           "g(x) → +∞ (goes up)",
           "g(x) → -∞ ()",
-          "g(x) → 0 (xxxxxxxxx)",
+          "g(x) → 0",
           "g(x) oscillates"
         ],
         "correct_option": "g(x) → +∞ (goes up)",
@@ -206,7 +206,7 @@
         "options": [
           "g(x) → -∞ (goes down)",
           "g(x) → +∞ ()",
-          "g(x) → 0 (xxxxxxxxxxx)",
+          "g(x) → 0",
           "g(x) oscillates"
         ],
         "correct_option": "g(x) → -∞ (goes down)",
@@ -217,9 +217,9 @@
         "question": "If a cubic equation has three real roots, what does the graph look like?",
         "options": [
           "An S-shaped curve crossing the x-axis at three points",
-          "A parabola touching the x-axis once...",
+          "A parabola touching the x-axis once",
           "A straight line — does t match",
-          "A circle) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "A circle)"
         ],
         "correct_option": "An S-shaped curve crossing the x-axis at three points",
         "explanation": "Step 1: Three real roots means three x-intercepts. Step 2: The cubic must cross the x-axis three times. Step 3: This requires the S-shaped wiggle characteristic of degree-3 curves."
@@ -229,9 +229,9 @@
         "question": "Stock prices sometimes follow cubic patterns. If a cubic model gives three solutions for when the price equals ₹100, what does this mean practically?",
         "options": [
           "The stock price hit ₹100 on three different trading days",
-          "The stock price is always ₹100... (xxxxxxxxxxxxxxxxxxxxx)",
-          "There is an error in the model...",
-          "The stock price never reaches ₹100..."
+          "The stock price is always ₹100",
+          "There is an error in the model",
+          "The stock price never reaches ₹100"
         ],
         "correct_option": "The stock price hit ₹100 on three different trading days",
         "explanation": "Step 1: Each solution represents a different time when price = 100. Step 2: The cubic rises, falls, and rises again, crossing the ₹100 level three times. Step 3: This could represent the price going above ₹100, dipping below, then rising above again."
@@ -257,7 +257,7 @@
           "Exactly 3 (counting multiplicity)",
           "At least 3)",
           "Exactly 2)",
-          "Up to 3) (xxxxxxxxxxxxxxxxxxxxxxx)"
+          "Up to 3)"
         ],
         "correct_option": "Exactly 3 (counting multiplicity)",
         "explanation": "Step 1: The polynomial is degree 3. Step 2: By the Fundamental Theorem, it has exactly 3 roots in ℂ, counting multiplicity. Step 3: Here all 3 are real (-4, 2, 3), but in general some could be complex conjugate pairs."
@@ -267,7 +267,7 @@
         "question": "If a cubic has roots r₁, r₂, r₃, then by Vieta's formulas, what is r₁ + r₂ + r₃ for x³ - x² - 14x + 24 = 0?",
         "options": [
           "1 (the negative of the x² coefficient)",
-          "-1 — t here (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "-1 — t here",
           "14 — t here",
           "24 — t here"
         ],
@@ -279,7 +279,7 @@
         "question": "By Vieta's formulas, what is the product r₁ × r₂ × r₃ of the roots of x³ - x² - 14x + 24 = 0?",
         "options": [
           "-24 (the negative of the constant term)",
-          "24 — t here (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "24 — t here",
           "14 — t here",
           "-14 — t here"
         ],
@@ -291,9 +291,9 @@
         "question": "Can a cubic function be one-to-one (invertible) over all of ℝ?",
         "options": [
           "Only if it is strictly monotonic (no turning points) — possible when the derivative has no real roots",
-          "always — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "never — cubics always have turning points...",
-          "Only for positive leading coefficients..."
+          "always — does t match",
+          "never — cubics always have turning points",
+          "Only for positive leading coefficients"
         ],
         "correct_option": "Only if it is strictly monotonic (no turning points) — possible when the derivative has no real roots",
         "explanation": "Step 1: A cubic f(x) = ax³ + bx² + cx + d has derivative f'(x) = 3ax² + 2bx + c (a quadratic). Step 2: If the discriminant of f' is negative, f' has no real roots → f is strictly monotonic. Step 3: Strictly monotonic cubics are one-to-one and hence invertible over all ℝ."
@@ -305,7 +305,7 @@
           "4 (basis: {1, x, x², x³})",
           "3 — t here",
           "5 — t here",
-          "Infinite) (xxxxxxxxxxxxxx)"
+          "Infinite)"
         ],
         "correct_option": "4 (basis: {1, x, x², x³})",
         "explanation": "Step 1: Any degree-≤3 polynomial can be written as a + bx + cx² + dx³. Step 2: The four basis functions {1, x, x², x³} are linearly independent and span the space. Step 3: dim = 4, with 4 free coefficients."
@@ -315,9 +315,9 @@
         "question": "If a cubic g(x) has a double root at x = 2 and a single root at x = -1, what is its factored form?",
         "options": [
           "g(x) = k(x - 2)²(x + 1) for some constant k",
-          "g(x) = k(x - 2)(x + 1)²...",
-          "g(x) = k(x - 2)(x + 1)... (xxxxxxxxxxxxxxxx)",
-          "g(x) = k(x + 2)²(x - 1)..."
+          "g(x) = k(x - 2)(x + 1)²",
+          "g(x) = k(x - 2)(x + 1)",
+          "g(x) = k(x + 2)²(x - 1)"
         ],
         "correct_option": "g(x) = k(x - 2)²(x + 1) for some constant k",
         "explanation": "Step 1: A double root at x = 2 means (x - 2)² is a factor. Step 2: A single root at x = -1 means (x + 1) is a factor. Step 3: Total degree: 2 + 1 = 3, matching a cubic. g(x) = k(x-2)²(x+1)."
@@ -327,9 +327,9 @@
         "question": "Why is the set {x³, x², x, 1} a basis for the space of polynomials of degree ≤ 3?",
         "options": [
           "These 4 functions are linearly independent and span the space — any degree-≤3 polynomial is a unique combination of them",
-          "Because they all pass through the origin...",
-          "Because they are all increasing functions...",
-          "Because there are exactly 4 of them... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because they all pass through the origin",
+          "Because they are all increasing functions",
+          "Because there are exactly 4 of them"
         ],
         "correct_option": "These 4 functions are linearly independent and span the space — any degree-≤3 polynomial is a unique combination of them",
         "explanation": "Step 1: Any a + bx + cx² + dx³ can be written as a(1) + b(x) + c(x²) + d(x³). Step 2: No basis function can be written as a combination of the others (they have different degrees). Step 3: Linear independence + spanning = basis."
@@ -339,7 +339,7 @@
         "question": "A cubic with three real roots r₁ < r₂ < r₃ has what sign pattern for g(x) if the leading coefficient is positive?",
         "options": [
           "Negative between r₁ and r₂, positive between r₂ and r₃ (alternating)",
-          "Always positive — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Always positive — does t match",
           "Always negative — does t match",
           "Positive between r₁ and r₂, negative between r₂ and r₃"
         ],
@@ -351,9 +351,9 @@
         "question": "Does every cubic polynomial have at least one real root?",
         "options": [
           "Yes — because a cubic goes from -∞ to +∞, it must cross the x-axis at least once",
-          "some cubics have real roots... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if the constant term is zero...",
-          "Only for positive leading coefficients..."
+          "some cubics have real roots",
+          "Only if the constant term is zero",
+          "Only for positive leading coefficients"
         ],
         "correct_option": "Yes — because a cubic goes from -∞ to +∞, it must cross the x-axis at least once",
         "explanation": "Step 1: As x → -∞, x³ → -∞. Step 2: As x → +∞, x³ → +∞. Step 3: By the Intermediate Value Theorem, a continuous function going from negative to positive must cross zero at least once."
@@ -363,7 +363,7 @@
         "question": "The space of polynomials of degree ≤ 3 has dimension 4. What is the dimension of the subspace of polynomials with no constant term (a = 0)?",
         "options": [
           "3 (basis: {x, x², x³})",
-          "4 — t here (xxxxxxxxxx)",
+          "4 — t here",
           "2 — t here",
           "1 — t here"
         ],
@@ -402,7 +402,7 @@
         "Because the cubic rises, falls, and rises again, crossing the target price multiple times",
         "Because stock prices are always linear",
         "Because cubics always have one solution",
-        "Because the model is too simple (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "Because the model is too simple"
       ],
       "answer": "Because the cubic rises, falls, and rises again, crossing the target price multiple times",
       "explanation": "Step 1: Cubics have at most 2 turning points. Step 2: This allows the curve to cross any horizontal line up to 3 times. Step 3: Each crossing represents a different time when the stock price equals the target value."
@@ -417,7 +417,7 @@
       "question": "Why is finding all roots of a cubic important in structural engineering?",
       "options": [
         "Because each root represents a critical point (support or maximum deflection) that must be identified",
-        "Because engineers only need one root (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "Because engineers only need one root",
         "Because cubics always have exactly 3 real roots",
         "Because the roots are always at x = 0"
       ],
@@ -434,7 +434,7 @@
       "question": "If V(t) = 0 has three positive real solutions, what does this mean physically?",
       "options": [
         "The reservoir empties three separate times during the year",
-        "The reservoir never empties (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The reservoir never empties",
         "The reservoir is always full",
         "There is an error in the model"
       ],
@@ -451,7 +451,7 @@
       "question": "If the cubic profit model has three positive roots, how many break-even points does the company have?",
       "options": [
         "3 — the company breaks even at three different production levels",
-        "1 — only one break-even point (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "1 — only one break-even point",
         "0 — the company never breaks even",
         "2 — exactly two break-even points"
       ],

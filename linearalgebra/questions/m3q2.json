@@ -23,7 +23,7 @@
         "question": "Does the point (1,2,3) satisfy the equation x+2y+3z=0?",
         "options": [
           "No, because 1+4+14=19≠0",
-          "— t here (xxxxxxxxxxxxxx)",
+          "— t here",
           "Only if scaled",
           "Cant determine"
         ],
@@ -46,10 +46,10 @@
         "id": "M3Q2E4",
         "question": "Does the point (1,-1,0) satisfy x+2y+3z=0?",
         "options": [
-          "because 1-2+0=-1≠0... wait let me rec...",
+          "because 1-2+0=-1≠0... wait let me rec",
           "No",
-          "— t here ...",
-          "Cant determine — does t match ..."
+          "— t here",
+          "Cant determine — does t match"
         ],
         "correct_option": "No",
         "explanation": "Step 1: Substitute x=1, y=−1, z=0: 1 + 2(−1) + 3(0) = 1 − 2 + 0 = −1. Step 2: Since −1 ≠ 0, this point does not lie on the plane. Step 3: The value of the equation at a point measures how far the point is from the plane (scaled by the normal's magnitude). Step 4: Testing membership in a plane is simply evaluating the linear equation — if it equals zero, the point is on the plane; this is the fastest way to check plane membership."
@@ -59,7 +59,7 @@
         "question": "Does the point (1,1,-1) satisfy x+2y+3z=0?",
         "options": [
           "Yes, because 1+2-3=0",
-          "— t here (xxxxxxxxxxx)",
+          "— t here",
           "Only if z=0",
           "Cant determine"
         ],
@@ -73,7 +73,7 @@
           "A plane through the origin",
           "A line through the origin",
           "A circle)",
-          "A point) (xxxxxxxxxxxxxxxxx)"
+          "A point)"
         ],
         "correct_option": "A plane through the origin",
         "explanation": "Step 1: One linear equation in 3 unknowns constrains 1 degree of freedom. Step 2: 3 − 1 = 2 dimensions remain, forming a plane through the origin. Step 3: This plane is the orthogonal complement of the normal vector [1,2,3] — every vector in the plane is perpendicular to [1,2,3]. Step 4: The dimension formula dim(W) + dim(W⊥) = 3 gives 1 + 2 = 3, confirming the normal line and the plane together account for all of R³."
@@ -83,7 +83,7 @@
         "question": "Is the vector (1,2,1) perpendicular to (1,2,3)?",
         "options": [
           "No, because their dot product is 8≠0",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only approximately — does t match",
           "Cant determine — does t match"
         ],
@@ -119,7 +119,7 @@
         "question": "Is (2,7,3) perpendicular to (1,2,3)?",
         "options": [
           "No, because 2+14+9=25≠0",
-          "— t here (xxxxxxxxxxxxxx)",
+          "— t here",
           "Only if scaled",
           "Cant determine"
         ],
@@ -157,7 +157,7 @@
         "question": "Is the line T = span{(1,2,1)} contained in the plane x+2y+3z=0?",
         "options": [
           "No, because (1,2,1)·(1,2,3) = 8 ≠ 0",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only for certain α — does t match",
           "Cant determine — does t match"
         ],
@@ -181,7 +181,7 @@
         "question": "Can two different planes through the origin in R³ intersect in a line?",
         "options": [
           "Yes, two planes typically intersect in a line",
-          "they always coincide... (xxxxxxxxxxxxxxxxxxxxx)",
+          "they always coincide",
           "They intersect at a point only",
           "They never intersect — does t match"
         ],
@@ -195,7 +195,7 @@
           "A vector perpendicular to the plane",
           "A vector lying in the plane",
           "The direction of steepest descent",
-          "The origin of the plane (xxxxxxxxxxx)"
+          "The origin of the plane"
         ],
         "correct_option": "A vector perpendicular to the plane",
         "explanation": "Step 1: The coefficients of x, y, z in ax+by+cz=0 form the normal vector [a,b,c]. Step 2: The normal vector is perpendicular to every vector in the plane — that is exactly what the equation [a,b,c]·[x,y,z] = 0 means. Step 3: The normal vector uniquely determines the plane (up to scaling), making it the most compact and computationally efficient descriptor of the plane. Step 4: Every vector in the plane is orthogonal to the normal, connecting 3D planes back to the 2D perpendicularity concept from Mission 22."
@@ -217,8 +217,8 @@
         "question": "Is the set {(x,y,z) : x+2y+3z=0} closed under vector addition?",
         "options": [
           "Yes — if u and v satisfy the equation, so does u+v",
-          "— t here (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for positive components...",
+          "— t here",
+          "Only for positive components",
           "Only in R²)"
         ],
         "correct_option": "Yes — if u and v satisfy the equation, so does u+v",
@@ -241,9 +241,9 @@
         "question": "Is the plane x+2y+3z=0 a subspace of R³?",
         "options": [
           "Yes — it contains the origin and is closed under addition and scalar multiplication",
-          "— it doesn't contain the origin...",
-          "Only if it passes through the origin...",
-          "Subspaces can't be planes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "— it doesn't contain the origin",
+          "Only if it passes through the origin",
+          "Subspaces can't be planes"
         ],
         "correct_option": "Yes — it contains the origin and is closed under addition and scalar multiplication",
         "explanation": "Step 1: The plane passes through the origin (0,0,0) since 0+0+0=0. Step 2: It is closed under addition and scalar multiplication (as verified in previous questions), satisfying all three subspace conditions. Step 3: This plane is the orthogonal complement of span{[1,2,3]} — a 2D subspace that is the perpendicular partner of the 1D normal line. Step 4: Being a subspace means we can do linear algebra within it: add vectors, scale them, and find bases, all while staying within the plane."
@@ -255,9 +255,9 @@
         "question": "Why does one linear equation in R³ define a plane rather than a line?",
         "options": [
           "One constraint removes 1 degree of freedom from 3, leaving 2D",
-          "Because planes are simpler than lines...",
-          "Because R³ has 3 axes... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because coefficients are always positive..."
+          "Because planes are simpler than lines",
+          "Because R³ has 3 axes",
+          "Because coefficients are always positive"
         ],
         "correct_option": "One constraint removes 1 degree of freedom from 3, leaving 2D",
         "explanation": "Step 1: R³ has 3 degrees of freedom. Step 2: One independent linear equation constrains 1 degree of freedom, leaving 3−1=2 free parameters, which sweep out a 2D plane. Step 3: The key word is 'independent' — a redundant equation (a linear combination of other equations) removes zero new degrees of freedom. The rank of the coefficient matrix determines how many effective constraints exist. Step 4: The solution dimension equals n − rank, a general formula that applies to any system of linear equations."
@@ -279,9 +279,9 @@
         "question": "Can the line T = span{(1,2,1)} and the plane x+2y+3z=0 together span all of R³?",
         "options": [
           "Yes — T provides the missing direction not in the plane",
-          "— they only span a plane...",
-          "Only if T lies in the plane...",
-          "Only in R²) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "— they only span a plane",
+          "Only if T lies in the plane",
+          "Only in R²)"
         ],
         "correct_option": "Yes — T provides the missing direction not in the plane",
         "explanation": "Step 1: The plane is 2D and T is 1D. Step 2: Since T is not contained in the plane (as verified: (1,2,1)·(1,2,3) = 8 ≠ 0), the direction (1,2,1) adds a third independent direction, spanning all of R³. Step 3: This is an application of the dimension theorem: if V is a 2D subspace and w ∉ V, then span(V ∪ {w}) = R³. Step 4: The 2D plane and the 1D line outside it together account for all 3 dimensions — their direct sum is the whole space R³."
@@ -291,9 +291,9 @@
         "question": "For the plane ax+by+cz=0, the normal vector (a,b,c) is perpendicular to every vector in the plane. Why?",
         "options": [
           "Because the plane equation is defined as the dot product of (a,b,c) with any vector in the plane equaling 0",
-          "Because rmal vectors are always perpendicular...",
-          "Because planes are flat... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because the origin is in the plane..."
+          "Because rmal vectors are always perpendicular",
+          "Because planes are flat",
+          "Because the origin is in the plane"
         ],
         "correct_option": "Because the plane equation is defined as the dot product of (a,b,c) with any vector in the plane equaling 0",
         "explanation": "Step 1: The plane equation ax+by+cz=0 can be written as [a,b,c]·[x,y,z]=0. Step 2: This equation states exactly that every vector [x,y,z] in the plane has dot product 0 with the normal [a,b,c], meaning they are perpendicular. Step 3: The plane is literally DEFINED as the set of vectors perpendicular to the normal — this is the same orthogonality condition from Mission 22, generalized to R³. Step 4: The normal-to-plane relationship is just the orthogonal complement relationship: the plane is W⊥ where W = span{[a,b,c]}."
@@ -317,7 +317,7 @@
           "No — it fails the zero vector condition",
           "— all lines are subspaces",
           "Only if it's parallel to a coordinate axis",
-          "Depends on the direction..."
+          "Depends on the direction"
         ],
         "correct_option": "No — it fails the zero vector condition",
         "explanation": "Step 1: A subspace must contain the zero vector. Step 2: A line that doesn't pass through the origin doesn't contain (0,0,0), so it cannot be a subspace. Step 3: This is a critical distinction: lines through the origin are subspaces, but shifted lines (affine lines) are not. The equation x+2y+3z=d with d≠0 defines a plane that does NOT pass through the origin and is therefore NOT a subspace. Step 4: Only the homogeneous version (d=0) gives a genuine subspace — this 'homogeneous vs. inhomogeneous' distinction is central to linear algebra."
@@ -327,7 +327,7 @@
         "question": "What is the geometric relationship between the normal vector (1,2,3) and the plane x+2y+3z=0?",
         "options": [
           "(1,2,3) is perpendicular to the plane",
-          "(1,2,3) lies in the plane (xxxxxxxxxxx)",
+          "(1,2,3) lies in the plane",
           "(1,2,3) is parallel to the plane",
           "(1,2,3) is tangent to the plane"
         ],
@@ -340,8 +340,8 @@
         "options": [
           "Yes, if the three normal vectors are linearly independent",
           "they always intersect in at least a line",
-          "Only two planes can intersect... (xxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if the planes are parallel..."
+          "Only two planes can intersect",
+          "Only if the planes are parallel"
         ],
         "correct_option": "Yes, if the three normal vectors are linearly independent",
         "explanation": "Step 1: Three independent planes give 3 independent equations in 3 unknowns. Step 2: 3−3=0 degrees of freedom, leaving only the origin (0,0,0) as the intersection. Step 3: This is a square system with full rank — the only solution is the trivial one. By the invertible matrix theorem, three independent constraints in R³ pin down a unique point (the origin). Step 4: This shows how solving systems of linear equations is geometrically equivalent to finding the intersection of hyperplanes."
@@ -351,7 +351,7 @@
         "question": "If v = (1,2,1) and the plane is x+2y+3z=0, the projection of v onto the plane's normal (1,2,3) is:",
         "options": [
           "[(v·n)/(n·n)]n = (8/14)(1,2,3) = (4/7, 8/7, 12/7)",
-          "(1,2,3)) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "(1,2,3))",
           "(0,0,0))",
           "(1,2,1))"
         ],
@@ -363,9 +363,9 @@
         "question": "Why does the line S = span{(2,7,3)} not lie in the plane x+2y+3z=0?",
         "options": [
           "Because (2,7,3)·(1,2,3) = 25 ≠ 0, so (2,7,3) is not perpendicular to the normal",
-          "Because 2+7+3 = 12 ≠ 0... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because S has 3 components...",
-          "Because the plane has 3 coefficients..."
+          "Because 2+7+3 = 12 ≠ 0",
+          "Because S has 3 components",
+          "Because the plane has 3 coefficients"
         ],
         "correct_option": "Because (2,7,3)·(1,2,3) = 25 ≠ 0, so (2,7,3) is not perpendicular to the normal",
         "explanation": "Step 1: For a line span{v} to lie in a plane n·x=0, we need n·v=0. Step 2: Here (1,2,3)·(2,7,3) = 2+14+9 = 25 ≠ 0, so the direction vector is not perpendicular to the normal, and the line is not in the plane. Step 3: The dot product test n·v = 0 is both necessary and sufficient for line-plane containment — if the test fails, the line pierces through the plane at exactly one point (the origin, since both pass through it). Step 4: This connects the perpendicularity concept from Mission 22 to the geometric relationship between lines and planes in 3D."

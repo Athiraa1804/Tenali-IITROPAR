@@ -61,7 +61,7 @@
           "Quadratic (degree 2)",
           "Linear (degree 1)",
           "Cubic (degree 3)",
-          "Constant (xxxxxxxxxxx)"
+          "Constant"
         ],
         "correct_option": "Quadratic (degree 2)",
         "explanation": "Step 1: The highest power of x is 2 (from x²). Step 2: Degree 2 functions are called quadratic. Step 3: The graph of a quadratic function is a parabola."
@@ -97,7 +97,7 @@
           "It increases from -10 to 15",
           "It decreases from 10 to -15",
           "It stays constant at -10",
-          "It oscillates (xxxxxxxxxxxxx)"
+          "It oscillates"
         ],
         "correct_option": "It increases from -10 to 15",
         "explanation": "Step 1: f(0) = -10, f(5) = 15. Step 2: As x increases from 0 to 5, x² increases from 0 to 25. Step 3: Therefore y = x² - 10 increases from -10 to 15."
@@ -108,7 +108,7 @@
         "options": [
           "x = √10 and x = -√10 (approximately ±3.16)",
           "x = 10 and x = -10 — does t match",
-          "x = 0) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "x = 0)",
           "x = 5 and x = -5 — does t match"
         ],
         "correct_option": "x = √10 and x = -√10 (approximately ±3.16)",
@@ -133,9 +133,9 @@
         "question": "The point (5, 15) lies on the parabola y = x² - 10. Is this the same as saying f(5) = 15?",
         "options": [
           "Yes — f(5) = 15 means the point (5, 15) is on the graph",
-          "they represent different things...",
-          "Only if the function is linear...",
-          "Only if x = y — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "they represent different things",
+          "Only if the function is linear",
+          "Only if x = y — does t match"
         ],
         "correct_option": "Yes — f(5) = 15 means the point (5, 15) is on the graph",
         "explanation": "Step 1: f(5) = 15 means when input is 5, output is 15. Step 2: On a graph, this corresponds to the point (5, 15). Step 3: Function evaluation and plotting points are equivalent operations."
@@ -145,9 +145,9 @@
         "question": "Why is the parabola y = x² - 10 symmetric about the y-axis?",
         "options": [
           "Because f(x) = f(-x) for all x — squaring removes the sign",
-          "Because the vertex is at the origin...",
-          "Because all parabolas are symmetric...",
-          "Because -10 is negative... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because the vertex is at the origin",
+          "Because all parabolas are symmetric",
+          "Because -10 is negative"
         ],
         "correct_option": "Because f(x) = f(-x) for all x — squaring removes the sign",
         "explanation": "Step 1: f(-x) = (-x)² - 10 = x² - 10 = f(x). Step 2: This means the function value is the same at x and -x. Step 3: The graph is a mirror image across the y-axis — this is called an even function."
@@ -158,7 +158,7 @@
         "options": [
           "Same shape (both parabolas opening upward), but h is shifted up by 15 units",
           "Different shapes — does t match",
-          "Same position — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Same position — does t match",
           "h is narrower than g — does t match"
         ],
         "correct_option": "Same shape (both parabolas opening upward), but h is shifted up by 15 units",
@@ -205,7 +205,7 @@
         "question": "As x increases from 0, does f(x) = x² - 10 increase or decrease initially?",
         "options": [
           "It increases (x² grows, making x² - 10 rise from -10)",
-          "It decreases — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "It decreases — does t match",
           "It stays at -10 — does t match",
           "It oscillates — does t match"
         ],
@@ -241,7 +241,7 @@
         "question": "The ocean tide height follows h(t) = 2sin(t) + 5. What type of function models the tide — linear, quadratic, or trigonometric?",
         "options": [
           "Trigonometric (sine function)",
-          "Linear) (xxxxxxxxxxxxxxxxxxxxx)",
+          "Linear)",
           "Quadratic)",
           "Exponential — does t match"
         ],
@@ -255,7 +255,7 @@
         "question": "For f(x) = x² - 10, is the function invertible over all real numbers?",
         "options": [
           "No — f(3) = f(-3) = -1, so it's not one-to-one",
-          "the inverse is √(x+10)... (xxxxxxxxxxxxxxxxxxxx)",
+          "the inverse is √(x+10)",
           "every function has an inverse",
           "Only for x ≥ 0 — does t match"
         ],
@@ -279,9 +279,9 @@
         "question": "The set V = {f: ℝ → ℝ : f(x) = ax² + b} is NOT a vector space. Why?",
         "options": [
           "Because the sum of two quadratic functions is quadratic (ok), but f(0) must be 0 for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
-          "Because quadratic functions can't be added...",
-          "Because the set is finite... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because parabolas don't pass through the origin..."
+          "Because quadratic functions can't be added",
+          "Because the set is finite",
+          "Because parabolas don't pass through the origin"
         ],
         "correct_option": "Because the sum of two quadratic functions is quadratic (ok), but f(0) must be 0 for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
         "explanation": "Step 1: f₁(x) = x² - 10 and f₂(x) = -x² + 5 are both in V. Step 2: (f₁ + f₂)(x) = -5, which is a constant (degree 0), not degree 2. Step 3: The sum is not in V (not quadratic with degree exactly 2), so V is not closed under addition."
@@ -291,9 +291,9 @@
         "question": "For f(x) = x² - 10, what is the derivative f'(x), and what does it represent geometrically?",
         "options": [
           "f'(x) = 2x — the slope of the tangent line at any point x",
-          "f'(x) = x² — the area under the curve... (xxxxxxxxxxxxxxxx)",
-          "f'(x) = 2x - 10 — the shifted parabola...",
-          "f'(x) = 10 — the constant rate of change..."
+          "f'(x) = x² — the area under the curve",
+          "f'(x) = 2x - 10 — the shifted parabola",
+          "f'(x) = 10 — the constant rate of change"
         ],
         "correct_option": "f'(x) = 2x — the slope of the tangent line at any point x",
         "explanation": "Step 1: The derivative of x² is 2x, and the derivative of -10 is 0. Step 2: f'(x) = 2x gives the instantaneous rate of change (slope) at any point. Step 3: At x = 0, the slope is 0 (vertex, horizontal tangent). At x = 5, slope = 10 (steep)."
@@ -327,8 +327,8 @@
         "question": "For f(x) = x² - 10, the function values at x = 0, 1, 2, 3, 4 are -10, -9, -6, -1, 6. What pattern do you notice in the successive differences?",
         "options": [
           "The differences increase by 2 each time (1, 3, 5, 7) — characteristic of quadratics",
-          "The differences are constant...",
-          "The differences decrease... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "The differences are constant",
+          "The differences decrease",
           "pattern exists — does t match"
         ],
         "correct_option": "The differences increase by 2 each time (1, 3, 5, 7) — characteristic of quadratics",
@@ -339,9 +339,9 @@
         "question": "Is the set S = {(x, y) : y = x² - 10} a subspace of ℝ²?",
         "options": [
           "No: it doesn't contain the origin, and it's not closed under addition",
-          "it's a curve in ℝ²... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "because it passes through (0, -10)...",
-          "Only for positive x-values..."
+          "it's a curve in ℝ²",
+          "because it passes through (0, -10)",
+          "Only for positive x-values"
         ],
         "correct_option": "No: it doesn't contain the origin, and it's not closed under addition",
         "explanation": "Step 1: (0,0) is not in S since 0 ≠ 0² - 10 = -10. Step 2: Even if it contained the origin, sums of points on a parabola generally don't lie on the same parabola. Step 3: Parabolas are not linear objects — they cannot be vector subspaces."
@@ -363,9 +363,9 @@
         "question": "Can a polynomial of degree n have more than n real roots?",
         "options": [
           "No — the Fundamental Theorem of Algebra limits degree-n polynomials to at most n real roots",
-          "infinitely many — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "infinitely many — does t match",
           "Only if n is even — does t match",
-          "Only if the polymial is zero everywhere..."
+          "Only if the polymial is zero everywhere"
         ],
         "correct_option": "No — the Fundamental Theorem of Algebra limits degree-n polynomials to at most n real roots",
         "explanation": "Step 1: A degree-n polynomial can be factored into at most n linear factors over ℂ. Step 2: Over ℝ, some factors may be irreducible (complex roots). Step 3: Therefore at most n real roots exist — this is a fundamental result in algebra."
@@ -416,7 +416,7 @@
       "story": "Ocean tides rise and fall in a periodic, wave-like pattern modelled by trigonometric functions. The tide height h(t) = 2sin(t) + 5 oscillates between 3 metres (low tide) and 7 metres (high tide), with an average water level of 5 metres.",
       "question": "What type of mathematical function models the tide?",
       "options": [
-        "Trigometric (periodic/sinusoidal)",
+        "Trigonometric (periodic/sinusoidal)",
         "Linear",
         "Quadratic",
         "Exponential"

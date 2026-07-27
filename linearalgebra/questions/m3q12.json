@@ -37,7 +37,7 @@
           "Yes — both satisfy 2y+x=4",
           "— different lines",
           "Only approximately",
-          "Cant determine (xxxxxxxxxx)"
+          "Cant determine"
         ],
         "correct_option": "Yes — both satisfy 2y+x=4",
         "explanation": "Step 1: 2(0)+4=4 ✓ and 2(1)+2=4 ✓. Step 2: Both points lie on the line 2y+x=4, which collapses to (4,8)."
@@ -59,8 +59,8 @@
         "question": "Does the line 2y+x=4 collapse to (4,8) because x+2y=4 on that line?",
         "options": [
           "Yes — B*(x,y) = (x+2y, 2(x+2y)) = (4,8) when x+2y=4",
-          "— it's a coincidence... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for specific points...",
+          "— it's a coincidence",
+          "Only for specific points",
           "Because det=0 — does t match"
         ],
         "correct_option": "Yes — B*(x,y) = (x+2y, 2(x+2y)) = (4,8) when x+2y=4",
@@ -84,7 +84,7 @@
         "options": [
           "Yes — it collapses to (0,0)",
           "— it stays a line",
-          "Only partially (xxxxxxxxxxxx)",
+          "Only partially",
           "Cant determine"
         ],
         "correct_option": "Yes — it collapses to (0,0)",
@@ -109,7 +109,7 @@
           "Yes — it's the set of all inputs that produce (4,8)",
           "— the preimage is a different set",
           "Only part of it — does t match",
-          "Cant determine — does t match (xxxxxxxxxxxxxxxxxxxxx)"
+          "Cant determine — does t match"
         ],
         "correct_option": "Yes — it's the set of all inputs that produce (4,8)",
         "explanation": "Step 1: The preimage of (4,8) is {x : Bx = (4,8)}. Step 2: This equals the line 2y+x=4 — every point on it maps to (4,8)."
@@ -121,7 +121,7 @@
           "Infinitely many — every point on the line",
           "Exactly one — does t match",
           "Exactly two — does t match",
-          "ne) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "ne)"
         ],
         "correct_option": "Infinitely many — every point on the line",
         "explanation": "Step 1: Every point (x,y) with x+2y=4 gives B*(x,y)=(4,8). Step 2: There are infinitely many such points on the line."
@@ -133,9 +133,9 @@
         "question": "Why does the line 2y+x=4 map to a single point rather than staying as a line?",
         "options": [
           "Because B is singular (det=0), it collapses dimensions",
-          "Because the line is special...",
-          "Because B is the identity... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because the entries are integers..."
+          "Because the line is special",
+          "Because B is the identity",
+          "Because the entries are integers"
         ],
         "correct_option": "Because B is singular (det=0), it collapses dimensions",
         "explanation": "Step 1: B has rank 1 (not full rank). Step 2: A rank-1 matrix in R² maps the entire 2D plane onto a 1D line, and individual lines collapse to points."
@@ -145,9 +145,9 @@
         "question": "Can we recover the original input from B*(x,y) = (4,8)?",
         "options": [
           "No — we know it's on the line 2y+x=4, but not which specific point",
-          "uniquely — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "uniquely — does t match",
           "Only approximately — does t match",
-          "Only for positive inputs..."
+          "Only for positive inputs"
         ],
         "correct_option": "No — we know it's on the line 2y+x=4, but not which specific point",
         "explanation": "Step 1: The output (4,8) tells us x+2y=4. Step 2: But any point on this line gives the same output — information about the specific point is lost."
@@ -157,9 +157,9 @@
         "question": "What is the geometric interpretation of B collapsing a line to a point?",
         "options": [
           "The line is parallel to the null space direction, so all points on it differ by null space vectors",
-          "The line is perpendicular to B...",
-          "The line passes through the origin...",
-          "B is the identity on lines... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "The line is perpendicular to B",
+          "The line passes through the origin",
+          "B is the identity on lines"
         ],
         "correct_option": "The line is parallel to the null space direction, so all points on it differ by null space vectors",
         "explanation": "Step 1: The null space of B is the direction (2,-1). Step 2: The line 2y+x=4 has direction (2,-1) — it's parallel to the null space. Points differing by null space vectors map to the same output."
@@ -183,7 +183,7 @@
           "Different points — each k gives a distinct output (k, 2k)",
           "Same point)",
           "Depends on k — does t match",
-          "pattern) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "pattern)"
         ],
         "correct_option": "Different points — each k gives a distinct output (k, 2k)",
         "explanation": "Step 1: Line 2y+x=k maps to (k, 2k). Step 2: Different k values give different points on the range line t(1,2)."
@@ -195,7 +195,7 @@
           "The line t(1,2)",
           "All of R²",
           "A single point",
-          "A plane (xxxxxxx)"
+          "A plane"
         ],
         "correct_option": "The line t(1,2)",
         "explanation": "Step 1: B*(x,y) = (x+2y)(1,2). Step 2: The output is always a multiple of (1,2), so the range is the line t(1,2)."
@@ -229,7 +229,7 @@
         "question": "Is the null space direction (2,-1) perpendicular to the range direction (1,2)?",
         "options": [
           "Yes — (2,-1)·(1,2) = 2-2 = 0",
-          "— t here (xxxxxxxxxxxxxxxxxxx)",
+          "— t here",
           "Only approximately",
           "Cant determine"
         ],
@@ -241,9 +241,9 @@
         "question": "Why does the line 2y+x=4 specifically collapse to (4,8) rather than some other point?",
         "options": [
           "Because (4,8) = (k, 2k) with k=4, and 2y+x=4 means x+2y=4",
-          "By coincidence — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "By coincidence — does t match",
           "Because 4+8=12 — does t match",
-          "Because the determinant is 0..."
+          "Because the determinant is 0"
         ],
         "correct_option": "Because (4,8) = (k, 2k) with k=4, and 2y+x=4 means x+2y=4",
         "explanation": "Step 1: On the line 2y+x=4, x+2y=4. Step 2: B*(x,y) = (x+2y, 2(x+2y)) = (4, 8). The value k=4 determines the output."
@@ -255,7 +255,7 @@
         "question": "Why does the line 2y+x=4 have the same direction as the null space of B?",
         "options": [
           "The line's direction vector (2,-1) equals the null space direction — they're parallel",
-          "They're perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "They're perpendicular",
           "It's a coincidence — does t match",
           "Only true for k=4 — does t match"
         ],
@@ -267,8 +267,8 @@
         "question": "If a line is parallel to the null space, why do all its points map to the same output?",
         "options": [
           "Any two points on the line differ by a null space vector, which B maps to zero",
-          "Because B is singular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because the line passes through the origin...",
+          "Because B is singular",
+          "Because the line passes through the origin",
           "By coincidence — does t match"
         ],
         "correct_option": "Any two points on the line differ by a null space vector, which B maps to zero",
@@ -279,9 +279,9 @@
         "question": "For B = [[1,2],[2,4]], how many distinct preimages are there for points on the range line?",
         "options": [
           "Each point (k,2k) has a unique preimage line 2y+x=k",
-          "All points have the same preimage...",
-          "Some points have preimage... (xxxxxxxxxxxxxxxxxxxxxx)",
-          "Preimages are single points..."
+          "All points have the same preimage",
+          "Some points have preimage",
+          "Preimages are single points"
         ],
         "correct_option": "Each point (k,2k) has a unique preimage line 2y+x=k",
         "explanation": "Step 1: B*(x,y) = (k,2k) requires x+2y=k. Step 2: This defines a unique line for each k — the preimage of each range point is a distinct line."
@@ -292,8 +292,8 @@
         "options": [
           "No — non-singular matrices are one-to-one, mapping distinct inputs to distinct outputs",
           "always — does t match",
-          "Only for special lines...",
-          "Only in 3D) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Only for special lines",
+          "Only in 3D)"
         ],
         "correct_option": "No — non-singular matrices are one-to-one, mapping distinct inputs to distinct outputs",
         "explanation": "Step 1: A non-singular matrix has full rank. Step 2: Full rank means the transformation is injective (one-to-one) — no information is lost."
@@ -304,7 +304,7 @@
         "options": [
           "It maps to a line (not collapsed to a point)",
           "It maps to a point — does t match",
-          "It maps to thing — does t match (xxxxxxxxxxxx)",
+          "It maps to thing — does t match",
           "It maps to a circle — does t match"
         ],
         "correct_option": "It maps to a line (not collapsed to a point)",
@@ -329,7 +329,7 @@
           "It squishes R² flat onto the line t(1,2), with each preimage line collapsing to a point",
           "It rotates R² — does t match",
           "It reflects R² — does t match",
-          "It scales R² uniformly... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "It scales R² uniformly"
         ],
         "correct_option": "It squishes R² flat onto the line t(1,2), with each preimage line collapsing to a point",
         "explanation": "Step 1: B has rank 1, mapping 2D onto 1D. Step 2: The plane is compressed onto the line t(1,2), with parallel lines (each perpendicular to (1,2)) collapsing to individual points."
@@ -339,7 +339,7 @@
         "question": "How many distinct preimage lines are there, one for each point on the range?",
         "options": [
           "Infinitely many — one for each k ∈ R",
-          "Exactly 2) (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Exactly 2)",
           "Exactly 4)",
           "Finitely many — does t match"
         ],
@@ -351,7 +351,7 @@
         "question": "If we restrict B to the line 2y+x=4, what is the restriction's rank?",
         "options": [
           "0 — the entire line maps to one point",
-          "1 — t here (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "1 — t here",
           "2 — t here",
           "Depends on the line — does t match"
         ],
@@ -364,8 +364,8 @@
         "options": [
           "Each preimage line is a coset of the null space — there's one for each point on the range",
           "They are unrelated — does t match",
-          "More null space means fewer preimage lines...",
-          "Only one preimage line exists... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "More null space means fewer preimage lines",
+          "Only one preimage line exists"
         ],
         "correct_option": "Each preimage line is a coset of the null space — there's one for each point on the range",
         "explanation": "Step 1: The preimage of output b is x₀ + null space, where Ax₀ = b. Step 2: Each such coset is a line parallel to the null space, and there's one for each point on the range."
@@ -382,7 +382,7 @@
       "question": "When many 3D points map to the same pixel in a photo, what does this tell us about the camera's transformation?",
       "options": [
         "It is a singular transformation that collapses depth",
-        "It is invertible (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "It is invertible",
         "It preserves all information",
         "It rotates the image"
       ],
@@ -399,7 +399,7 @@
       "options": [
         "A singular transformation collapsing many data points to one value",
         "An invertible transformation",
-        "A rotation (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "A rotation",
         "A reflection"
       ],
       "correct_option": "A singular transformation collapsing many data points to one value",
@@ -415,7 +415,7 @@
       "options": [
         "They collapse to the same shadow point — depth is lost",
         "They remain separate",
-        "They expand (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "They expand",
         "thing happens"
       ],
       "correct_option": "They collapse to the same shadow point — depth is lost",
@@ -431,7 +431,7 @@
       "options": [
         "Their differences have been collapsed — like a singular matrix mapping a line to a point",
         "thing — they're all the same",
-        "The data is corrupted (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The data is corrupted",
         "The survey is invalid"
       ],
       "correct_option": "Their differences have been collapsed — like a singular matrix mapping a line to a point",
@@ -446,7 +446,7 @@
       "question": "When many different essays receive the same letter grade, what does this represent?",
       "options": [
         "A singular mapping — many distinct inputs collapse to one output",
-        "A unique mapping (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "A unique mapping",
         "An invertible function",
         "A continuous transformation"
       ],
@@ -463,7 +463,7 @@
       "options": [
         "The intensity of preference and relative rankings of other candidates",
         "thing — the vote captures everything",
-        "Only the voter's name (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "Only the voter's name",
         "Only the voting location"
       ],
       "correct_option": "The intensity of preference and relative rankings of other candidates",

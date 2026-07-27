@@ -120,7 +120,7 @@
         "options": [
           "because it has rank 2",
           "No, because its determinant is 0",
-          "because it is 2×2 (xxxxxxxxxxxxxx)",
+          "because it is 2×2",
           "because it has null space"
         ],
         "correct_option": "No, because its determinant is 0",
@@ -132,9 +132,9 @@
         "id": "M4Q1M1",
         "question": "For M = [[1,2],[3,6]], the row space and column space are both 1-dimensional. Are they the same subspace?",
         "options": [
-          "they are both t(1,2)... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "they are both t(1,2)",
           "No, row space is t(1,2) and column space is t(1,3)",
-          "they are both t(1,3)...",
+          "they are both t(1,3)",
           "row space is t(1,3) and column space is t(1,2)"
         ],
         "correct_option": "No, row space is t(1,2) and column space is t(1,3)",
@@ -144,10 +144,10 @@
         "id": "M4Q1M2",
         "question": "Why is the row space of M = [[1,2],[3,6]] a 1-dimensional line rather than a 2-dimensional plane?",
         "options": [
-          "Because M is a 2×2 matrix... (xxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Because M is a 2×2 matrix",
           "Because the two rows are scalar multiples of each other",
-          "Because the determinant is nzero...",
-          "Because M has only one zero entry..."
+          "Because the determinant is nzero",
+          "Because M has only one zero entry"
         ],
         "correct_option": "Because the two rows are scalar multiples of each other",
         "explanation": "Step 1: (3,6) = 3·(1,2), so the second row is a scalar multiple and adds no new direction. Step 2: The span of two collinear vectors remains a line (1D), not a plane (2D). Step 3: This linear dependence between rows directly reduces rank from 2 to 1, collapsing the row space dimension — a concrete illustration of how redundancy in a matrix limits its information capacity."
@@ -242,7 +242,7 @@
         "options": [
           "M² = 7M (a scalar multiple of M)",
           "M² = I (the identity matrix)",
-          "M² = 0 (the zero matrix) (xxxxxxx)",
+          "M² = 0 (the zero matrix)",
           "M² = M (M is idempotent)"
         ],
         "correct_option": "M² = 7M (a scalar multiple of M)",
@@ -256,7 +256,7 @@
         "options": [
           "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
           "(1,2)·(-2,1) = 1·2+2·1 = 4, t perpendicular",
-          "(1,2)·(-2,1) = -2+1 = -1, t perpendicular (xxxxxxxx)",
+          "(1,2)·(-2,1) = -2+1 = -1, t perpendicular",
           "The dot product is undefined for these vectors"
         ],
         "correct_option": "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
@@ -266,7 +266,7 @@
         "id": "M4Q1H2",
         "question": "If M = [[1,2],[3,6]] and v is any vector in the null space of M, which of the following is always true?",
         "options": [
-          "Mv is in the row space...",
+          "Mv is in the row space",
           "Mv = (0,0)",
           "v is in the column space",
           "v is perpendicular to the column space"
@@ -302,10 +302,10 @@
         "id": "M4Q1H5",
         "question": "Can the row space and column space of a square matrix ever be the same subspace?",
         "options": [
-          "they always live in different spaces.....",
+          "they always live in different spaces",
           "Only if the matrix is symmetric",
-          "Only if the matrix is the zero matrix... ...",
-          "for any diagonal matrix with equal di..."
+          "Only if the matrix is the zero matrix...",
+          "for any diagonal matrix with equal di"
         ],
         "correct_option": "Only if the matrix is symmetric",
         "explanation": "Step 1: For a general matrix A, R(A) ⊂ Rⁿ (input space) and C(A) ⊂ Rᵐ (output space) — they live in different spaces when m ≠ n. Step 2: For square matrices (m = n), they live in the same space and R(A) = C(A) exactly when A = Aᵀ (symmetric), because symmetry means rows equal columns. Step 3: This is a deep structural observation: only symmetric matrices have aligned row and column spaces. For non-symmetric matrices, the row and column spaces are generally distinct subspaces — as we saw with M = [[1,2],[3,6]]."
@@ -326,10 +326,10 @@
         "id": "M4Q1H7",
         "question": "For M = [[1,2],[3,6]], is it possible for a vector to be in BOTH the row space and the null space (other than the origin)?",
         "options": [
-          "(1,2) is in both... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "(-2,1) is in both...",
+          "(1,2) is in both",
+          "(-2,1) is in both",
           "No, because the row space and null space are perpendicular and share only the origin",
-          "any vector satisfying x+2y=0 is in both..."
+          "any vector satisfying x+2y=0 is in both"
         ],
         "correct_option": "No, because the row space and null space are perpendicular and share only the origin",
         "explanation": "Step 1: R(M) = t(1,2) and N(M) = t(-2,1) are perpendicular lines through the origin. Step 2: If v is in both, then v·v = 0 (by orthogonality), which implies |v|² = 0, so v = 0. Step 3: This proves that perpendicular subspaces intersect only at the origin — a fundamental property that underlies the orthogonal decomposition Rⁿ = R(A) ⊕ N(A), where every input vector splits uniquely into row space and null space components."
@@ -338,10 +338,10 @@
         "id": "M4Q1H8",
         "question": "What is the geometric interpretation of the fact that det(M) = 0 for M = [[1,2],[3,6]]?",
         "options": [
-          "M rotates vectors by 90°... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "M rotates vectors by 90°",
           "M scales area by a factor of 0, collapsing the plane onto a line",
-          "M reflects vectors across the x-axis...",
-          "M has effect on any vector..."
+          "M reflects vectors across the x-axis",
+          "M has effect on any vector"
         ],
         "correct_option": "M scales area by a factor of 0, collapsing the plane onto a line",
         "explanation": "Step 1: The determinant measures signed area scaling: det(M) = factor by which area changes under M. Step 2: det(M) = 0 means all 2D areas collapse to zero — the image has no area. Step 3: Geometrically, M flattens R² onto the line t(1,3), losing one dimension entirely. This is the geometric heart of rank deficiency: rank < n means the matrix cannot preserve the full dimensionality of the input, and det = 0 is the algebraic certificate of this collapse."
@@ -350,7 +350,7 @@
         "id": "M4Q1H9",
         "question": "For M = [[1,2],[3,6]], the null space is t(-2,1). If you take any vector v in R² and decompose it as v = v_row + v_null (row space component + null space component), what is Mv equal to?",
         "options": [
-          "Mv = 0 always — does t match (xxxxxxxxxxxxxxxxxxx)",
+          "Mv = 0 always — does t match",
           "Mv = M·v_row (the null space component vanishes)",
           "Mv = M·v_null (the row space component vanishes)",
           "Mv = v_row + v_null — does t match"
@@ -362,7 +362,7 @@
         "id": "M4Q1H10",
         "question": "If A is an m×n matrix with rank r, what is the dimension of the subspace spanned by ALL four fundamental subspaces together?",
         "options": [
-          "r (xxxxxx)",
+          "r",
           "m + n",
           "max(m,n)",
           "min(m,n)"
@@ -378,7 +378,7 @@
       "question": "A rank-1 image filter keeps only one pattern from the original image — like preserving only brightness variation while discarding colour and texture. What does this tell you about the filter matrix?",
       "options": [
         "It has rank 1, so its output is 1-dimensional",
-        "It is invertible (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "It is invertible",
         "It preserves all information",
         "It maps to a 2D output"
       ],
@@ -404,7 +404,7 @@
         "The direction perpendicular to the lever arm",
         "The lever arm direction itself",
         "The entire 2D plane",
-        "Just the origin (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "Just the origin"
       ],
       "correct_option": "The direction perpendicular to the lever arm",
       "explanation": "Step 1: The lever transmits force along one direction (column space, rank 1). Step 2: Forces perpendicular to the lever arm produce no torque and are completely lost — they map to zero. Step 3: This perpendicular direction is the null space: inputs along it produce zero output. Understanding the null space in mechanical systems tells engineers which forces are wasted, directly connecting subspace theory to mechanism design."
@@ -439,7 +439,7 @@
       "options": [
         "It doubles the output",
         "It is redundant — its output is a combination of the other two",
-        "It reduces the rank (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "It reduces the rank",
         "It adds a new dimension to the output"
       ],
       "correct_option": "It is redundant — its output is a combination of the other two",

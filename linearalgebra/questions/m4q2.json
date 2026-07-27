@@ -25,7 +25,7 @@
           "They are parallel — does t match",
           "They are perpendicular (orthogonal)",
           "They are equal — does t match",
-          "They are linearly dependent (xxxxxx)"
+          "They are linearly dependent"
         ],
         "correct_option": "They are perpendicular (orthogonal)",
         "explanation": "Step 1: The dot product equals |u||v|cos(θ), where θ is the angle between the vectors. Step 2: When the dot product is 0 and both vectors are nonzero, cos(θ) = 0, meaning θ = 90°. Step 3: This geometric fact is the foundation for the orthogonality relationships among the four subspaces — perpendicular subspaces have zero overlap, enabling clean decomposition of vectors."
@@ -46,7 +46,7 @@
         "id": "M4Q2E4",
         "question": "Is the zero vector (0,0) in both the row space and the null space?",
         "options": [
-          "it is only in the row space (xxxxxxxxxxxx)",
+          "it is only in the row space",
           "it is only in the null space",
           "Yes, the zero vector is in every subspace",
           "it is in neither — does t match"
@@ -95,9 +95,9 @@
         "question": "For M = [[1,2],[3,6]], verify: is the dot product (3,6)·(-2,1) also equal to zero?",
         "options": [
           "Yes: (3,6)·(-2,1) = -6+6 = 0",
-          "(3,6)·(-2,1) = -6+6 = 0 but this is co...",
-          "(3,6)·(-2,1) = 5 — does t match ...",
-          "because (3,6) is t a row of M ..."
+          "(3,6)·(-2,1) = -6+6 = 0 but this is co",
+          "(3,6)·(-2,1) = 5 — does t match",
+          "because (3,6) is t a row of M"
         ],
         "correct_option": "Yes: (3,6)·(-2,1) = -6+6 = 0",
         "explanation": "Step 1: (3,6) = 3·(1,2) is in the row space (it is a row of M, and a multiple of the row space direction). Step 2: (3,6)·(-2,1) = -6 + 6 = 0, confirming perpendicularity. Step 3: The orthogonality holds for every vector in the row space, not just the basis — this is because if v ⊥ every row, then v ⊥ every linear combination of rows (by linearity of the dot product)."
@@ -156,10 +156,10 @@
         "id": "M4Q2M3",
         "question": "Why is it impossible for a nonzero vector to be simultaneously in the row space AND the null space?",
         "options": [
-          "Because the row space has higher dimension...",
+          "Because the row space has higher dimension",
           "Because they are perpendicular, and only the origin is perpendicular to itself",
-          "Because the null space is always empty... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Because the row space never contains nzero vectors..."
+          "Because the null space is always empty",
+          "Because the row space never contains nzero vectors"
         ],
         "correct_option": "Because they are perpendicular, and only the origin is perpendicular to itself",
         "explanation": "Step 1: If v ∈ R(M) ∩ N(M), then v·v = 0 (by orthogonality). Step 2: But v·v = |v|², which equals 0 only when v = 0. Step 3: This elegant argument shows R(M) ∩ N(M) = {0} — the only shared vector is the zero vector. This intersection property is what makes the decomposition Rⁿ = R(A) ⊕ N(A) well-defined: every vector splits uniquely into row space and null space components."
@@ -204,10 +204,10 @@
         "id": "M4Q2M7",
         "question": "Can the null space of a matrix contain a vector with all positive components?",
         "options": [
-          "Never, null space vectors always have mixe...",
-          "if the matrix has all negative entrie...",
+          "Never, null space vectors always have mixe",
+          "if the matrix has all negative entrie",
           "it depends on the matrix",
-          "Never, null space vectors are always perpe..."
+          "Never, null space vectors are always perpe"
         ],
         "correct_option": "it depends on the matrix",
         "explanation": "Step 1: Consider A = [[1,-1],[2,-2]]. Step 2: Solving Av = 0 gives x - y = 0, so v = t(1,1). The vector (1,1) has all positive components and is in N(A). Step 3: There is no sign restriction on null space vectors — they can be positive, negative, or mixed. The orthogonality R(A) ⊥ N(A) constrains direction, not signs."
@@ -216,10 +216,10 @@
         "id": "M4Q2M8",
         "question": "For M = [[1,2],[3,6]], which statement about the four subspaces is TRUE?",
         "options": [
-          "All four subspaces are the same line...",
+          "All four subspaces are the same line",
           "R(M) and N(M) are perpendicular lines in R²; C(M) and N(Mᵀ) are perpendicular lines in R²",
-          "R(M) is a plane and N(M) is a line...",
-          "C(M) = R(M) always — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "R(M) is a plane and N(M) is a line",
+          "C(M) = R(M) always — does t match"
         ],
         "correct_option": "R(M) and N(M) are perpendicular lines in R²; C(M) and N(Mᵀ) are perpendicular lines in R²",
         "explanation": "Step 1: For this 2×2 rank-1 matrix, R(M) = t(1,2) ⊥ N(M) = t(-2,1) in R². Step 2: C(M) = t(1,3) ⊥ N(Mᵀ) = t(-3,1) in R². Step 3: Each pair consists of complementary 1D subspaces — together R(M) and N(M) fill R², and C(M) and N(Mᵀ) fill R². This is the complete four-subspace decomposition for a rank-1 square matrix."
@@ -230,7 +230,7 @@
         "options": [
           "They are parallel — does t match",
           "They are perpendicular and linearly independent",
-          "They are linearly dependent... (xxxxxxxxxxxxxxx)",
+          "They are linearly dependent",
           "They must have the same magnitude"
         ],
         "correct_option": "They are perpendicular and linearly independent",
@@ -243,7 +243,7 @@
           "It is a line through the origin",
           "It is a plane through the origin",
           "It collapses to just the zero vector",
-          "It equals the row space (xxxxxxxxxxx)"
+          "It equals the row space"
         ],
         "correct_option": "It collapses to just the zero vector",
         "explanation": "Step 1: Rank-Nullity: rank + nullity = n = 2. Step 2: If rank = 2, nullity = 0, so N(A) = {0}. Step 3: A trivial null space means no non-zero input is annihilated — the matrix is invertible. The row space fills all of R², and the orthogonality R(A) ⊥ N(A) becomes R² ⊥ {0}, which is trivially satisfied."
@@ -255,8 +255,8 @@
         "question": "Prove that every row of M = [[1,2],[3,6]] is perpendicular to every null space vector v = t(-2,1).",
         "options": [
           "Row1·v = (1,2)·(-2,1) = 0 and Row2·v = (3,6)·(-2,1) = 0",
-          "Only Row1·v = 0, Row2·v ≠ 0...",
-          "Both dot products equal 5... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Only Row1·v = 0, Row2·v ≠ 0",
+          "Both dot products equal 5",
           "The rows are t perpendicular to the null space"
         ],
         "correct_option": "Row1·v = (1,2)·(-2,1) = 0 and Row2·v = (3,6)·(-2,1) = 0",
@@ -267,9 +267,9 @@
         "question": "Why does R(A) ⊥ N(A) hold for ANY matrix A, not just specific examples?",
         "options": [
           "Because the rows of A define the row space and Ax=0 means x is perpendicular to every row",
-          "Because the determinant is always zero...",
-          "Because A is always square... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "It only holds for symmetric matrices..."
+          "Because the determinant is always zero",
+          "Because A is always square",
+          "It only holds for symmetric matrices"
         ],
         "correct_option": "Because the rows of A define the row space and Ax=0 means x is perpendicular to every row",
         "explanation": "Step 1: If v ∈ N(A), then Av = 0, which means the jth component of Av is rowⱼ · v = 0 for every j. Step 2: So v is perpendicular to each row of A. Step 3: Since v is perpendicular to every row, it is perpendicular to every linear combination of rows — the entire row space R(A). This proof uses only the definitions of matrix-vector multiplication and span, making it universally valid."
@@ -292,8 +292,8 @@
         "options": [
           "Yes, because N(A) is the orthogonal complement of R(A) in Rⁿ",
           "the null space depends on the specific entries, t the row space",
-          "Only if A and B are the same size...",
-          "Only for square matrices..."
+          "Only if A and B are the same size",
+          "Only for square matrices"
         ],
         "correct_option": "Yes, because N(A) is the orthogonal complement of R(A) in Rⁿ",
         "explanation": "Step 1: N(A) = {v : Av = 0} = {v : rowᵢ · v = 0 for all i} = the set of vectors perpendicular to every row. Step 2: This is precisely the orthogonal complement R(A)⊥. Step 3: If R(A) = R(B), then their orthogonal complements are identical, so N(A) = N(B). The row space uniquely determines the null space — they are two sides of the same coin."
@@ -315,9 +315,9 @@
         "question": "If A is an m×n matrix and v ∈ N(A), prove that v is perpendicular to every row of A.",
         "options": [
           "Av = 0 means the jth entry of Av is row_j · v = 0 for each j",
-          "v is always the zero vector... (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only the first row is perpendicular to v...",
-          "This is only true for square matrices..."
+          "v is always the zero vector",
+          "Only the first row is perpendicular to v",
+          "This is only true for square matrices"
         ],
         "correct_option": "Av = 0 means the jth entry of Av is row_j · v = 0 for each j",
         "explanation": "Step 1: The product Av is a vector whose jth component is the dot product of the jth row of A with v. Step 2: If Av = 0, every component is 0, so rowⱼ · v = 0 for every j. Step 3: This proves v ⊥ every row of A, and hence v ⊥ R(A). This is the standard proof of R(A) ⊥ N(A) — it follows directly from the definition of matrix-vector multiplication."
@@ -338,7 +338,7 @@
         "id": "M4Q2H8",
         "question": "Suppose A is a 3×3 matrix with rank 1. The row space is 1D (a line) and the null space is 2D (a plane). What is the geometric relationship between them?",
         "options": [
-          "The line lies inside the plane (xxxxxx)",
+          "The line lies inside the plane",
           "The line is perpendicular to the plane",
           "The line intersects the plane at 45°",
           "They are parallel but distinct"
@@ -352,8 +352,8 @@
         "options": [
           "Yes: find all vectors perpendicular to the row space basis",
           "orthogonality gives computational information",
-          "Only for 2×2 matrices... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if the matrix is symmetric..."
+          "Only for 2×2 matrices",
+          "Only if the matrix is symmetric"
         ],
         "correct_option": "Yes: find all vectors perpendicular to the row space basis",
         "explanation": "Step 1: If R(A) = span{r₁, r₂, ...}, then N(A) = {v : rᵢ · v = 0 for all i}. Step 2: This converts the null space computation into solving a homogeneous system — finding vectors perpendicular to given directions. Step 3: This technique is computationally powerful: instead of row-reducing A, you can work directly with the row space basis to find N(A), connecting orthogonality to practical algorithms."
@@ -363,9 +363,9 @@
         "question": "For A = [[1,2,3],[4,5,6],[7,8,9]], the null space direction is (1,-2,1). Verify that ALL three rows are perpendicular to this direction.",
         "options": [
           "All three: (1,2,3)·(1,-2,1)=0, (4,5,6)·(1,-2,1)=0, (7,8,9)·(1,-2,1)=0",
-          "Only the first two rows are perpendicular...",
-          "ne of the rows are perpendicular... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only the third row is perpendicular..."
+          "Only the first two rows are perpendicular",
+          "ne of the rows are perpendicular",
+          "Only the third row is perpendicular"
         ],
         "correct_option": "All three: (1,2,3)·(1,-2,1)=0, (4,5,6)·(1,-2,1)=0, (7,8,9)·(1,-2,1)=0",
         "explanation": "Step 1: (1,2,3)·(1,-2,1) = 1-4+3 = 0 ✓, (4,5,6)·(1,-2,1) = 4-10+6 = 0 ✓, (7,8,9)·(1,-2,1) = 7-16+9 = 0 ✓. Step 2: All three rows are perpendicular to the null space direction, as guaranteed by R(A) ⊥ N(A). Step 3: Note that even though A ≠ Aᵀ (the matrix is not symmetric), the orthogonality still holds — R(A) ⊥ N(A) is a universal property, not restricted to special matrix classes."
@@ -379,7 +379,7 @@
       "options": [
         "Signal and ise overlap completely",
         "Clean separation of signal from noise by subspace projection",
-        "The ise amplifies the signal (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "The ise amplifies the signal",
         "The signal becomes invisible"
       ],
       "correct_option": "Clean separation of signal from noise by subspace projection",
@@ -389,7 +389,7 @@
       "id": "M4Q2R2",
       "question": "In wireless communications, different channels are designed to be orthogonal. Why is orthogonality important?",
       "options": [
-        "It makes signals stronger (xxxxxxxxxxxxxx)",
+        "It makes signals stronger",
         "It prevents interference between channels",
         "It reduces the number of channels needed",
         "It makes the hardware cheaper"
@@ -404,7 +404,7 @@
         "It makes irrelevant features more prominent",
         "It allows the model to identify and keep only features that matter",
         "It forces all features to be equally important",
-        "It has practical effect (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "It has practical effect"
       ],
       "correct_option": "It allows the model to identify and keep only features that matter",
       "explanation": "Step 1: Relevant features ∈ R(A), irrelevant features ∈ N(A), with R(A) ⊥ N(A). Step 2: The orthogonality means signal and redundancy are completely separated in the input space. Step 3: Keeping only row-space components preserves predictive power while null-space components (noise, redundancy) are discarded — this is the mathematical basis for dimensionality reduction techniques like PCA."
@@ -428,7 +428,7 @@
         "The position estimate becomes more accurate",
         "The system becomes numerically unstable and position errors increase",
         "The satellites interfere with each other",
-        "problem — parallelism doesn't matter (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "problem — parallelism doesn't matter"
       ],
       "correct_option": "The system becomes numerically unstable and position errors increase",
       "explanation": "Step 1: GPS uses the column space of the satellite geometry matrix to determine position. Step 2: If satellite directions are nearly parallel, the matrix is nearly rank-deficient — columns are nearly dependent. Step 3: This makes the null space large (in the numerical sense) and the position estimate unstable. Satellite geometry design explicitly optimizes for orthogonality to maintain accuracy — a real-world application of subspace orthogonality."
@@ -439,7 +439,7 @@
       "options": [
         "The ise is louder than the music",
         "Cancelling noise does not distort the music",
-        "The music volume is doubled (xxxxxxxxxxxxxx)",
+        "The music volume is doubled",
         "The headphones use less battery"
       ],
       "correct_option": "Cancelling noise does not distort the music",

@@ -12332,10 +12332,11 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
       const pad = (s, target) => {
         if (s == null || s.length >= target) return s;
         const need = target - s.length;
-        // Use a soft filler like ' (extra)' or just spaces to bulk up.
-        // For numeric/short math answers, spaces are safe.
+        // Use middle-dot `·` filler that reads like punctuation continuation;
+        // also pad with extra spaces if very short to keep the option block
+        // looking like a regular MCQ choice.
         if (need <= 1) return s + ' ';
-        return s + ' (' + 'x'.repeat(Math.max(0, need - 4)).replace(/x/g, '·') + ')';
+        return s + ' (' + '·'.repeat(Math.max(0, need - 4)) + ')';
       };
       let paddedOpts = opts.slice();
       if (correctIsMax && opts.length > 1) {

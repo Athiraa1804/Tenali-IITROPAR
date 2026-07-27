@@ -83,7 +83,7 @@
         "question": "Does the point D(4,3) satisfy the equation y = x - 1?",
         "options": [
           "Yes, because 3 = 4 - 1",
-          "because 3 ≠ 4 - 1 (xxx)",
+          "because 3 ≠ 4 - 1",
           "Cant be determined",
           "Only approximately"
         ],
@@ -145,9 +145,9 @@
         "question": "Why does checking that slope BC = slope CD guarantee collinearity of three points?",
         "options": [
           "Because two equal slopes mean all three points share the same line equation",
-          "Because equal slopes always pass through the origin...",
-          "Because the midpoint formula requires it...",
-          "Because parallel lines always intersect... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because equal slopes always pass through the origin",
+          "Because the midpoint formula requires it",
+          "Because parallel lines always intersect"
         ],
         "correct_option": "Because two equal slopes mean all three points share the same line equation",
         "explanation": "Step 1: If slope BC = slope CD, both segments have the same rate of change. Step 2: Two line segments with the same slope sharing a common point (C) must lie on the same line. Step 3: Therefore B, C, and D all satisfy a single line equation."
@@ -193,7 +193,7 @@
         "question": "Can you determine if a fourth point E = (5,5) lies on the same line as B, C, and D?",
         "options": [
           "Yes: slope from D to E must also be 1",
-          "we need more information (xxxxxxxxxxx)",
+          "we need more information",
           "Only if E is between B and D",
           "Only if E has integer coordinates"
         ],
@@ -229,9 +229,9 @@
         "question": "If you plot all points satisfying y = x - 1 for x ≥ 2, what geometric object do you get?",
         "options": [
           "A ray starting from (2,1) extending right and upward",
-          "A complete infinite line...",
-          "A line segment from (2,1) to (4,3)...",
-          "A parabola) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "A complete infinite line",
+          "A line segment from (2,1) to (4,3)",
+          "A parabola)"
         ],
         "correct_option": "A ray starting from (2,1) extending right and upward",
         "explanation": "Step 1: y = x - 1 is a full line. Step 2: Restricting to x ≥ 2 means we only take the portion from (2,1) rightward. Step 3: Starting at (2,1) and extending infinitely in one direction defines a ray."
@@ -279,8 +279,8 @@
         "question": "Is the set S = {(x,y) : y = x - 1} a subspace of ℝ²?",
         "options": [
           "No, because it does not contain the origin (0,0)",
-          "because it is a line...",
-          "because it is closed under addition...",
+          "because it is a line",
+          "because it is closed under addition",
           "because it is t closed under scalar multiplication"
         ],
         "correct_option": "No, because it does not contain the origin (0,0)",
@@ -291,9 +291,9 @@
         "question": "If we translate the line so it passes through the origin (using y = x instead), is the resulting set a subspace of ℝ²?",
         "options": [
           "Yes, because y = x passes through origin and is closed under addition and scalar multiplication",
-          "lines cant be subspaces...",
-          "Only if the slope is 1... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only for rational points..."
+          "lines cant be subspaces",
+          "Only if the slope is 1",
+          "Only for rational points"
         ],
         "correct_option": "Yes, because y = x passes through origin and is closed under addition and scalar multiplication",
         "explanation": "Step 1: The line y = x contains (0,0). Step 2: If (a,a) and (b,b) are on the line, their sum (a+b, a+b) is also on the line (closed under addition). Step 3: Scalar c(a,a) = (ca, ca) is also on the line (closed under scalar multiplication). All three subspace conditions are satisfied."
@@ -315,7 +315,7 @@
         "question": "A fourth person Eria walks from D(4,3) with displacement (1,1). What are her coordinates, and are all four points (B,C,D,E) still collinear?",
         "options": [
           "E = (5,4), yes all four are collinear",
-          "E = (5,4), they are t (xxxxxxxxxxxxxx)",
+          "E = (5,4), they are t",
           "E = (4,4), all four are collinear",
           "E = (5,5), they are t"
         ],
@@ -339,9 +339,9 @@
         "question": "Can three non-collinear points in ℝ² always define a unique triangle? What linear algebra concept does this relate to?",
         "options": [
           "Yes — three non-collinear points span all of ℝ² and form a basis",
-          "— you always need four points... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "— but only if they pass through the origin...",
-          "— only parallel points form triangles..."
+          "— you always need four points",
+          "— but only if they pass through the origin",
+          "— only parallel points form triangles"
         ],
         "correct_option": "Yes — three non-collinear points span all of ℝ² and form a basis",
         "explanation": "Step 1: Non-collinear points mean at least two of the displacement vectors between them are not parallel. Step 2: Two non-parallel vectors in ℝ² are linearly independent and span all of ℝ². Step 3: This means any point in the plane can be reached, and the three points define a unique triangle."
@@ -384,7 +384,7 @@
       "options": [
         "You walked in a perfectly straight line the entire time",
         "You walked in a circle",
-        "You stopped moving (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+        "You stopped moving",
         "You changed direction at each waypoint"
       ],
       "answer": "You walked in a perfectly straight line the entire time",
@@ -401,7 +401,7 @@
       "options": [
         "To ensure even structural load distribution",
         "To make the building look colorful",
-        "To reduce construction costs (xxxxxxxxxxxxx)",
+        "To reduce construction costs",
         "To increase the building's height"
       ],
       "answer": "To ensure even structural load distribution",
@@ -417,7 +417,7 @@
       "question": "What dangerous consequence could occur if railway sleepers are not collinear?",
       "options": [
         "The train could derail from the tracks",
-        "The train would travel faster (xxxxxxx)",
+        "The train would travel faster",
         "The sleepers would last longer",
         "The rails would become stronger"
       ],
@@ -433,7 +433,7 @@
       "story": "A CNC laser cutter starts at the origin (0,0) and drills holes at (3,2), (5,4), and (7,6). The manufacturer needs to verify these holes lie on a straight line to ensure the cutting pattern is perfectly linear. Are the holes collinear, and what is the slope?",
       "question": "Are Holes A(3,2), B(5,4), C(7,6) on a straight line?",
       "options": [
-        "slope = 1",
+        "Yes, slope = 1",
         "slope = 2",
         "they form a curve",
         "slope = 0.5"

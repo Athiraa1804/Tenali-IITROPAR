@@ -24,7 +24,7 @@
         "options": [
           "",
           "Yes",
-          "Only if x is positive...",
+          "Only if x is positive",
           "Cant be determined — does t match"
         ],
         "correct_option": "Yes",
@@ -60,8 +60,8 @@
         "options": [
           "They all pass through the origin",
           "They all have positive slope (xx)",
-          "They are all (xxxxxxxxxxxxxxxxxx)",
-          "They all have slope 1 (xxxxxxxxx)"
+          "They are all",
+          "They all have slope 1"
         ],
         "correct_option": "They all pass through the origin",
         "explanation": "Step 1: For any value of a, substituting x = 0 gives y = a(0) = 0. Step 2: This means (0,0) always satisfies the equation. Step 3: Every line y = ax passes through the origin, regardless of the value of a."
@@ -84,8 +84,8 @@
         "options": [
           "No, because at x = 0, y = 1, not 0",
           "all lines pass through the origin (x)",
-          "Only if x = -1 — does t match (xxx)",
-          "Only for integer values (xxxxxxxxx)"
+          "Only if x = -1 — does t match",
+          "Only for integer values"
         ],
         "correct_option": "No, because at x = 0, y = 1, not 0",
         "explanation": "Step 1: Substitute x = 0 into y = x + 1. Step 2: y = 0 + 1 = 1 ≠ 0. Step 3: The point (0,0) does not satisfy this equation, so the line does NOT pass through the origin."
@@ -133,9 +133,9 @@
         "question": "Why do all lines y = ax pass through the origin regardless of the value of a?",
         "options": [
           "Because a(0) = 0 for any value of a, so (0,0) always satisfies the equation",
-          "Because all lines intersect each other at the origin... (xxxxxxxxxxxxxxxxxx)",
-          "Because the origin is a special point that every line must contain (xxxxxxx)",
-          "Because a is always positive... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because all lines intersect each other at the origin",
+          "Because the origin is a special point that every line must contain",
+          "Because a is always positive"
         ],
         "correct_option": "Because a(0) = 0 for any value of a, so (0,0) always satisfies the equation",
         "explanation": "Step 1: The equation is y = ax. Step 2: When x = 0, y = a × 0 = 0 regardless of what a equals. Step 3: This means (0,0) is always a solution, so the origin always lies on the line."
@@ -145,9 +145,9 @@
         "question": "What distinguishes y = ax from y = ax + b (where b ≠ 0) in terms of where they cross the y-axis?",
         "options": [
           "y = ax crosses at (0,0) while y = ax + b crosses at (0,b)",
-          "y = ax never crosses the y-axis... (xxxxxxxxxxxxxxxxxxxxx)",
-          "They both cross at the origin... (xxxxxxxxxxxxxxxxxxxxxxx)",
-          "y = ax + b always crosses lower... (xxxxxxxxxxxxxxxxxxxxx)"
+          "y = ax never crosses the y-axis",
+          "They both cross at the origin",
+          "y = ax + b always crosses lower"
         ],
         "correct_option": "y = ax crosses at (0,0) while y = ax + b crosses at (0,b)",
         "explanation": "Step 1: The y-intercept is the point where x = 0. Step 2: For y = ax: y = a(0) = 0, so it crosses at (0,0). Step 3: For y = ax + b: y = a(0) + b = b, so it crosses at (0,b). The constant term b shifts the crossing point."
@@ -169,9 +169,9 @@
         "question": "In the context of direct proportionality, what does the coefficient a in y = ax represent?",
         "options": [
           "The constant of proportionality (ratio of y to x)",
-          "The y-intercept — does t match (xxxxxxxxxxxxxxxxx)",
-          "The x-intercept — does t match (xxxxxxxxxxxxxxxxx)",
-          "The area under the line... (xxxxxxxxxxxxxxxxxxxxx)"
+          "The y-intercept — does t match",
+          "The x-intercept — does t match",
+          "The area under the line"
         ],
         "correct_option": "The constant of proportionality (ratio of y to x)",
         "explanation": "Step 1: In y = ax, for any point (x,y) on the line, y/x = a (for x ≠ 0). Step 2: This constant ratio is called the constant of proportionality. Step 3: It determines how quickly y changes relative to x — the slope of the line."
@@ -181,9 +181,9 @@
         "question": "Can the line y = 0x (i.e., y = 0) be considered a line through the origin?",
         "options": [
           "Yes, it is the x-axis, which passes through the origin",
-          "it is a line that doesn't pass through the origin (xxx)",
-          "Only if it is ... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "zero slope means line exists... (xxxxxxxxxxxxxxxxxxxxx)"
+          "it is a line that doesn't pass through the origin",
+          "Only if it is",
+          "zero slope means line exists"
         ],
         "correct_option": "Yes, it is the x-axis, which passes through the origin",
         "explanation": "Step 1: y = 0x simplifies to y = 0, which is the x-axis. Step 2: The x-axis passes through (0,0). Step 3: Even though it has slope 0, it is still a valid line of the form y = ax that passes through the origin."
@@ -207,7 +207,7 @@
           "y increases faster per unit increase in x",
           "The line is closer to",
           "The line passes through more integer points",
-          "The intercept increases..."
+          "The intercept increases"
         ],
         "correct_option": "y increases faster per unit increase in x",
         "explanation": "Step 1: Slope a = Δy/Δx. Step 2: A larger |a| means a bigger change in y for each unit change in x. Step 3: Geometrically, this produces a steeper line — rising faster (or falling faster if a is negative)."
@@ -218,7 +218,7 @@
         "options": [
           "Quadrants II and IV only",
           "Quadrants I and III only (x)",
-          "All four quadrants (xxxx)",
+          "All four quadrants",
           "Quadrants I and II only (x)"
         ],
         "correct_option": "Quadrants II and IV only",
@@ -229,9 +229,9 @@
         "question": "If you plot y = 2x and y = 2x + 5, what is the relationship between these two lines?",
         "options": [
           "They are parallel but do not intersect",
-          "They intersect at the origin (xxxxxxxx)",
-          "They are perpendicular... (xxxxxxxxxxx)",
-          "They are the same line... (xxxxxxxxxxx)"
+          "They intersect at the origin",
+          "They are perpendicular",
+          "They are the same line"
         ],
         "correct_option": "They are parallel but do not intersect",
         "explanation": "Step 1: Both lines have slope 2. Step 2: Parallel lines have equal slopes. Step 3: y = 2x passes through (0,0), while y = 2x + 5 passes through (0,5), so they never meet — they are parallel and distinct."
@@ -241,9 +241,9 @@
         "question": "Why is the concept of 'passing through the origin' important in linear algebra?",
         "options": [
           "Because vector subspaces must contain the zero vector",
-          "Because all vectors have positive components (xxxxxxx)",
-          "Because the origin is always the largest point (xxxxx)",
-          "Because it makes calculations easier... (xxxxxxxxxxxx)"
+          "Because all vectors have positive components",
+          "Because the origin is always the largest point",
+          "Because it makes calculations easier"
         ],
         "correct_option": "Because vector subspaces must contain the zero vector",
         "explanation": "Step 1: A subspace must satisfy three conditions: contain the zero vector, be closed under addition, and be closed under scalar multiplication. Step 2: Passing through the origin is equivalent to containing the zero vector (0,0). Step 3: This is why lines through the origin are subspaces, but lines not through the origin are not."
@@ -255,9 +255,9 @@
         "question": "Is the set S = {(x,y) : y = 3x} a subspace of ℝ²?",
         "options": [
           "Yes: it contains (0,0), and is closed under addition and scalar multiplication",
-          "it doesn't contain the origin... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "it is t closed under addition... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Only if we restrict to integer points... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "it doesn't contain the origin",
+          "it is t closed under addition",
+          "Only if we restrict to integer points"
         ],
         "correct_option": "Yes: it contains (0,0), and is closed under addition and scalar multiplication",
         "explanation": "Step 1: Origin check: 3(0) = 0 ✓. Step 2: Addition: if (a,3a) and (b,3b) are in S, their sum (a+b, 3a+3b) = (a+b, 3(a+b)) is also in S ✓. Step 3: Scalar multiplication: c(a,3a) = (ca, 3ca) is in S ✓. All three conditions hold."
@@ -279,9 +279,9 @@
         "question": "If two lines y = 2x and y = 5x are both subspaces of ℝ², what is their intersection?",
         "options": [
           "The origin {(0,0)} only",
-          "The entire ℝ² (xxxxxxxx)",
-          "The line y = 3.5x (xxxx)",
-          "The empty set (xxxxxxxx)"
+          "The entire ℝ²",
+          "The line y = 3.5x",
+          "The empty set"
         ],
         "correct_option": "The origin {(0,0)} only",
         "explanation": "Step 1: For a point to be on both lines: 2x = 5x. Step 2: This gives 3x = 0, so x = 0, and y = 0. Step 3: The only common point is (0,0), so the intersection is the trivial subspace — just the origin."
@@ -291,9 +291,9 @@
         "question": "Consider the linear map T: ℝ² → ℝ² defined by T(x,y) = (2x, 2y). What is the image of the line y = x under this transformation?",
         "options": [
           "The same line y = x, since the line passes through the origin",
-          "A line t passing through the origin... (xxxxxxxxxxxxxxxxxxxxx)",
-          "The entire plane ℝ² — does t match (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Just the origin — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "A line t passing through the origin",
+          "The entire plane ℝ² — does t match",
+          "Just the origin — does t match"
         ],
         "correct_option": "The same line y = x, since the line passes through the origin",
         "explanation": "Step 1: A point (t, t) on y = x maps to (2t, 2t). Step 2: The image points (2t, 2t) still satisfy y = x. Step 3: Linear transformations map subspaces to subspaces, and the 1D subspace y = x maps to itself (stretched but unchanged as a set)."
@@ -303,9 +303,9 @@
         "question": "Why can't the line y = 2x + 3 be a subspace of ℝ²?",
         "options": [
           "It fails the zero vector test: (0,0) doesn't satisfy 0 = 2(0) + 3",
-          "Lines can never be subspaces... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "It is t closed under scalar multiplication only... (xxxxxxxxxxxxx)",
-          "It is t closed under addition only... (xxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Lines can never be subspaces",
+          "It is t closed under scalar multiplication only",
+          "It is t closed under addition only"
         ],
         "correct_option": "It fails the zero vector test: (0,0) doesn't satisfy 0 = 2(0) + 3",
         "explanation": "Step 1: For a subspace, the zero vector must be in the set. Step 2: At (0,0): 0 ≠ 2(0) + 3 = 3. Step 3: Since the zero vector is not in the set, the line fails the very first subspace condition and cannot be a subspace."
@@ -315,9 +315,9 @@
         "question": "The set of all lines y = ax (varying a) through the origin — what happens when you take the union of all such lines?",
         "options": [
           "You get all of ℝ² (every point in the plane lies on some line through the origin)",
-          "You only get the first quadrant... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "You get a circle — does t match (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "You get the x-axis only... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "You only get the first quadrant",
+          "You get a circle — does t match",
+          "You get the x-axis only"
         ],
         "correct_option": "You get all of ℝ² (every point in the plane lies on some line through the origin)",
         "explanation": "Step 1: Any point (x₀, y₀) with x₀ ≠ 0 lies on the line y = (y₀/x₀)x. Step 2: If x₀ = 0, the point lies on the y-axis (the line x = 0). Step 3: Every point in ℝ² lies on at least one line through the origin, so the union covers the entire plane."
@@ -327,9 +327,9 @@
         "question": "In terms of basis vectors, what is the relationship between the standard basis {(1,0), (0,1)} and a single vector (1,3)?",
         "options": [
           "(1,3) spans a 1D subspace, while the standard basis spans all of ℝ²",
-          "(1,3) can span all of ℝ² by itself... (xxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "The standard basis spans only a 1D subspace... (xxxxxxxxxxxxxxxxxxx)",
-          "They span the same space... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "(1,3) can span all of ℝ² by itself",
+          "The standard basis spans only a 1D subspace",
+          "They span the same space"
         ],
         "correct_option": "(1,3) spans a 1D subspace, while the standard basis spans all of ℝ²",
         "explanation": "Step 1: (1,3) generates only scalar multiples t(1,3) — a single line. Step 2: {(1,0), (0,1)} generates all combinations a(1,0) + b(0,1) = (a,b) — every point in ℝ². Step 3: A single non-zero vector spans a 1D subspace; two linearly independent vectors in ℝ² span all of ℝ²."
@@ -339,9 +339,9 @@
         "question": "If a 2×2 matrix A has eigenvalues 2 and 5, the eigenspaces are subspaces. What can you say about their dimensions?",
         "options": [
           "Each eigenspace has dimension at most 1 (for distinct eigenvalues of a 2×2 matrix)",
-          "Each eigenspace is 2-dimensional... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Together they form a 4-dimensional space... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "Eigenspaces cant be subspaces... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Each eigenspace is 2-dimensional",
+          "Together they form a 4-dimensional space",
+          "Eigenspaces cant be subspaces"
         ],
         "correct_option": "Each eigenspace has dimension at most 1 (for distinct eigenvalues of a 2×2 matrix)",
         "explanation": "Step 1: For a 2×2 matrix, each eigenspace (null space of A - λI) has dimension 1 or 2. Step 2: With two distinct eigenvalues, each eigenspace is exactly 1-dimensional. Step 3: The two 1D eigenspaces span all of ℝ² when combined, but individually they are lines through the origin."
@@ -351,9 +351,9 @@
         "question": "Does the set of all lines through the origin in ℝ² form a vector space itself?",
         "options": [
           "No, because the 'addition' of two lines (their union) is not a line",
-          "it forms a 1-dimensional vector space... (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "because it contains the zero vector... (xxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-          "because lines can be multiplied by scalars... (xxxxxxxxxxxxxxxxxxxx)"
+          "it forms a 1-dimensional vector space",
+          "because it contains the zero vector",
+          "because lines can be multiplied by scalars"
         ],
         "correct_option": "No, because the 'addition' of two lines (their union) is not a line",
         "explanation": "Step 1: The union of two different lines through the origin is an X-shape, not a single line. Step 2: For a vector space, addition of any two elements must produce another element of the set. Step 3: Since the union of two lines is not a line, the set is not closed under 'addition' and cannot be a vector space."
@@ -363,8 +363,8 @@
         "question": "If T: ℝ² → ℝ² is a linear transformation with T(1,2) = (3,6), what can you say about T(2,4)?",
         "options": [
           "T(2,4) = (6,12), since (2,4) = 2(1,2) and T is linear",
-          "T(2,4) = (3,6) — does t match (xxxxxxxxxxxxxxxxxxxxxx)",
-          "T(2,4) = (6,6) — does t match (xxxxxxxxxxxxxxxxxxxxxx)",
+          "T(2,4) = (3,6) — does t match",
+          "T(2,4) = (6,6) — does t match",
           "Cant be determined without more information about T (x)"
         ],
         "correct_option": "T(2,4) = (6,12), since (2,4) = 2(1,2) and T is linear",
@@ -434,8 +434,8 @@
       "question": "If the flow rate doubles to 4 litres per minute, what happens to the slope of the volume-time graph?",
       "options": [
         "The slope doubles, making the line steeper",
-        "The slope halves (xxxxxxxxxxxxxxxxxxxxxxxx)",
-        "The slope stays the same (xxxxxxxxxxxxxxxx)",
+        "The slope halves",
+        "The slope stays the same",
         "The line longer passes through the origin (x)"
       ],
       "answer": "The slope doubles, making the line steeper",
@@ -451,9 +451,9 @@
       "question": "What does the steepness of Server C's line (y = 10x) represent in real-world terms?",
       "options": [
         "Server C transfers data at a much faster rate (higher bandwidth)",
-        "Server C has higher latency (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "Server C started transferring earlier (xxxxxxxxxxxxxxxxxxxxxxxxx)",
-        "Server C has reached maximum capacity (xxxxxxxxxxxxxxxxxxxxxxxxx)"
+        "Server C has higher latency",
+        "Server C started transferring earlier",
+        "Server C has reached maximum capacity"
       ],
       "answer": "Server C transfers data at a much faster rate (higher bandwidth)",
       "explanation": "Step 1: Slope = data / time = transfer rate. Step 2: Server C has slope 10, which is 10× Server A's rate and 5× Server B's rate. Step 3: A steeper line means more data transferred per hour, indicating higher bandwidth."

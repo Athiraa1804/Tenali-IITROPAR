@@ -109,7 +109,7 @@
           "A line through the origin",
           "A circle)",
           "A single point",
-          "A plane) (xxxxxxxxxxxxxxx)"
+          "A plane)"
         ],
         "correct_option": "A line through the origin",
         "explanation": "Step 1: The condition [1,1]·[x,y] = 0 gives x + y = 0, or y = −x. Step 2: This is a line through the origin with slope −1 — it is the orthogonal complement of span{[1,1]}. Step 3: In R², the orthogonal complement of any 1D subspace is always another 1D subspace (a line). Step 4: The dimension formula dim(W) + dim(W⊥) = n holds universally: 1 + 1 = 2 in R², and generalizes to any subspace and its complement."
@@ -157,8 +157,8 @@
         "question": "If two vectors have a dot product of 5, can they be perpendicular?",
         "options": [
           "No, perpendicular vectors must have dot product = 0",
-          "if scaled appropriately...",
-          "Only in 3D) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "if scaled appropriately",
+          "Only in 3D)",
           "always — does t match"
         ],
         "correct_option": "No, perpendicular vectors must have dot product = 0",
@@ -181,8 +181,8 @@
         "question": "What is the geometric relationship between a vector and the set of all vectors perpendicular to it?",
         "options": [
           "The vector is perpendicular to its own perpendicular set",
-          "The vector lies in its perpendicular set...",
-          "They are parallel — does t match (xxxxxxxxxxxxxxxxxxxxxx)",
+          "The vector lies in its perpendicular set",
+          "They are parallel — does t match",
           "They are identical — does t match"
         ],
         "correct_option": "The vector is perpendicular to its own perpendicular set",
@@ -255,9 +255,9 @@
         "question": "Why is the perpendicular set of a non-zero vector in R² always a 1-dimensional subspace?",
         "options": [
           "Because one linear equation in two unknowns reduces degrees of freedom by 1",
-          "Because all perpendicular sets are lines...",
-          "Because R² only has two dimensions...",
-          "Because the dot product is linear... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Because all perpendicular sets are lines",
+          "Because R² only has two dimensions",
+          "Because the dot product is linear"
         ],
         "correct_option": "Because one linear equation in two unknowns reduces degrees of freedom by 1",
         "explanation": "Step 1: The perpendicular set satisfies ax + by = 0, one independent linear equation in two unknowns. Step 2: Each independent equation removes exactly one degree of freedom from R² (2 − 1 = 1), leaving a 1-dimensional solution set — a line through the origin. Step 3: This is an instance of the rank-nullity principle: one constraint on an n-dimensional space yields an (n−1)-dimensional solution. Step 4: The perpendicular set is always a subspace because the equation is homogeneous (right-hand side = 0), guaranteeing closure under addition and scalar multiplication — the three subspace axioms are all satisfied."
@@ -267,9 +267,9 @@
         "question": "Is the perpendicular set of a non-zero vector in R² closed under addition?",
         "options": [
           "Yes — if u·v = 0 and w·v = 0, then (u+w)·v = 0",
-          "— adding two perpendicular vectors may ...",
-          "Only for certain vectors... ...",
-          "Only in R³) ... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "— adding two perpendicular vectors may",
+          "Only for certain vectors...",
+          "Only in R³)"
         ],
         "correct_option": "Yes — if u·v = 0 and w·v = 0, then (u+w)·v = 0",
         "explanation": "Step 1: If u·v = 0 and w·v = 0, then (u+w)·v = u·v + w·v = 0 + 0 = 0 by the linearity (distributive property) of the dot product. Step 2: This proves the sum of two vectors perpendicular to v is also perpendicular to v — closure under addition holds. Step 3: Together with closure under scalar multiplication and containing the zero vector, this proves the perpendicular set is a genuine subspace. Step 4: The linearity of the dot product is what makes all three subspace conditions verifiable simultaneously, a technique used throughout abstract linear algebra."
@@ -279,9 +279,9 @@
         "question": "Is the perpendicular set of a non-zero vector in R² closed under scalar multiplication?",
         "options": [
           "Yes — if u·v = 0, then (cu)·v = c(u·v) = 0 for any scalar c",
-          "— only positive scalars work...",
+          "— only positive scalars work",
           "Only if c = 1 — does t match",
-          "Depends on the vector... (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)"
+          "Depends on the vector"
         ],
         "correct_option": "Yes — if u·v = 0, then (cu)·v = c(u·v) = 0 for any scalar c",
         "explanation": "Step 1: By the homogeneity property of the dot product, (cu)·v = c(u·v). Step 2: If u·v = 0, then c·0 = 0 for any scalar c, so cu is also perpendicular to v. Step 3: This closure under scalar multiplication means the entire line through any perpendicular vector stays in the perpendicular set — scaling does not break orthogonality. Step 4: This property is essential for the perpendicular set to be a subspace rather than just a set of isolated points, enabling us to talk about its dimension and basis."
@@ -293,7 +293,7 @@
           "Yes, because [a,b]·[0,0] = 0 always",
           "it depends on a and b",
           "Only if a = b — does t match",
-          "Only in 3D) (xxxxxxxxxxxxxxxxxxxxxx)"
+          "Only in 3D)"
         ],
         "correct_option": "Yes, because [a,b]·[0,0] = 0 always",
         "explanation": "Step 1: The zero vector [0,0] satisfies ax + by = a(0) + b(0) = 0 for any a, b. Step 2: This means the zero vector is always in the perpendicular set, satisfying one of the three subspace requirements. Step 3: The zero vector being in every subspace is a fundamental fact — it is the 'anchor' that all subspaces share, guaranteeing non-emptiness. Step 4: Combined with closure under addition and scalar multiplication, the presence of the zero vector completes the proof that the perpendicular set is a genuine subspace."
@@ -303,7 +303,7 @@
         "question": "Since the perpendicular set of a non-zero vector in R² contains the zero vector, is closed under addition, and is closed under scalar multiplication, what is it formally?",
         "options": [
           "A 1-dimensional subspace (line through origin)",
-          "A 2-dimensional subspace... (xxxxxxxxxxxxxxxxx)",
+          "A 2-dimensional subspace",
           "t a subspace — does t match",
           "An affine set — does t match"
         ],
@@ -316,7 +316,7 @@
         "options": [
           "A plane through the origin (2D subspace)",
           "A line through the origin (1D subspace)",
-          "A point (0D) — does t match (xxxxxxxxxxx)",
+          "A point (0D) — does t match",
           "t a subspace — does t match"
         ],
         "correct_option": "A plane through the origin (2D subspace)",
@@ -339,7 +339,7 @@
         "question": "What is the relationship between the slopes of two perpendicular non-vertical lines in R²?",
         "options": [
           "Their product is -1",
-          "Their sum is 0 (xxx)",
+          "Their sum is 0",
           "They are equal",
           "Their product is 1"
         ],
@@ -352,7 +352,7 @@
         "options": [
           "No, because [a,b]·[a,b] = a²+b² > 0 for any non-zero vector",
           "if a = -b — does t match",
-          "Only in R³) (xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx)",
+          "Only in R³)",
           "always — does t match"
         ],
         "correct_option": "No, because [a,b]·[a,b] = a²+b² > 0 for any non-zero vector",
@@ -363,9 +363,9 @@
         "question": "If the perpendicular set of [a,b] is the same as the perpendicular set of [c,d], what must be true?",
         "options": [
           "[a,b] and [c,d] are scalar multiples of each other",
-          "[a,b] = [c,d] — does t match (xxxxxxxxxxxxxxxxxxxx)",
+          "[a,b] = [c,d] — does t match",
           "a = c and b = d — does t match",
-          "[a,b] and [c,d] are perpendicular..."
+          "[a,b] and [c,d] are perpendicular"
         ],
         "correct_option": "[a,b] and [c,d] are scalar multiples of each other",
         "explanation": "Step 1: The perpendicular set of [a,b] is the line ax + by = 0, and of [c,d] is cx + dy = 0. Step 2: For these to be the same line, the equations must be proportional: [a,b] = k[c,d] for some scalar k ≠ 0. Step 3: This reveals a deep fact: a subspace uniquely determines its orthogonal complement, and vice versa — two vectors have the same perpendicular set if and only if they span the same 1D subspace. Step 4: This uniqueness is fundamental to how subspaces pair up in the Fundamental Theorem of Linear Algebra and is why the orthogonal complement operation is well-defined."
@@ -398,7 +398,7 @@
       "question": "Why are orthogonal frequency channels important in wireless communications?",
       "options": [
         "They prevent signal interference between channels",
-        "They increase the speed of data (xxxxxxxxxxxxxxxx)",
+        "They increase the speed of data",
         "They reduce the cost of hardware",
         "They make signals travel farther"
       ],

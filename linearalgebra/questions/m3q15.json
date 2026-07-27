@@ -35,9 +35,9 @@
         "question": "According to the Rank-Nullity Theorem, what is rank + nullity for B?",
         "options": [
           "2 — the dimension of the input space R²",
-          "1 — not correct here              ",
-          "3 — not correct here              ",
-          "0 — not correct here              "
+          "1 — t here",
+          "3 — t here",
+          "0 — t here"
         ],
         "correct_option": "2 — the dimension of the input space R²",
         "explanation": "Step 1: rank = 1, nullity = 1. Step 2: 1+1 = 2 = dim(R²). The theorem holds."
@@ -59,9 +59,9 @@
         "question": "Which dimension 'collapses' when B acts on R²?",
         "options": [
           "The null space direction (2,-1) collapses to zero",
-          "The range direction (1,2) collapses         ",
-          "Both collapse — does not match              ",
-          "Neither collapses — does not match          "
+          "The range direction (1,2) collapses",
+          "Both collapse — does t match",
+          "Neither collapses — does t match"
         ],
         "correct_option": "The null space direction (2,-1) collapses to zero",
         "explanation": "Step 1: B*(2,-1) = (0,0). Step 2: The direction (2,-1) is 'destroyed' — all info along it is lost."
@@ -72,8 +72,8 @@
         "options": [
           "The dimension of the range (output space)",
           "The dimension of the null space",
-          "The number of rows — does not match",
-          "The number of columns...            "
+          "The number of rows — does t match",
+          "The number of columns..."
         ],
         "correct_option": "The dimension of the range (output space)",
         "explanation": "Step 1: Rank is defined as dim(C(A)) = dim(range). Step 2: It tells us the dimension of the output."
@@ -83,9 +83,9 @@
         "question": "What does 'nullity' measure?",
         "options": [
           "The dimension of the null space (lost information)",
-          "The dimension of the range...                ",
-          "The number of zero entries...                ",
-          "The determinant — does not match             "
+          "The dimension of the range...",
+          "The number of zero entries...",
+          "The determinant — does t match"
         ],
         "correct_option": "The dimension of the null space (lost information)",
         "explanation": "Step 1: Nullity is dim(N(A)). Step 2: It counts how many independent directions are annihilated by the matrix."
@@ -106,10 +106,10 @@
         "id": "M3Q15E9",
         "question": "Does B preserve information about all 2 dimensions of the input?",
         "options": [
-          "No — only 1 dimension is preserved (the range), the other is lost (null space)",
-          "Yes, both dimensions are preserved...                                    ",
-          "No dimensions are preserved...                                           ",
-          "Only the null space is preserved...                                      "
+          "— only 1 dimension is preserved (the range), the other is lost (null space)",
+          "both dimensions are preserved...",
+          "dimensions are preserved...",
+          "Only the null space is preserved..."
         ],
         "correct_option": "No — only 1 dimension is preserved (the range), the other is lost (null space)",
         "explanation": "Step 1: The range is 1D — only the (1,2) direction survives. Step 2: The null space direction (2,-1) is lost — B cannot distinguish inputs that differ only in this direction."
@@ -119,9 +119,9 @@
         "question": "What is the geometric picture of B: R² → R² when rank=1?",
         "options": [
           "The plane collapses onto a line — all preimage lines (parallel to null space) collapse to points on the range line",
-          "The plane expands to 3D...                                                                                   ",
-          "Nothing changes — does not match                                                                             ",
-          "The origin moves — does not match                                                                            "
+          "The plane expands to 3D...",
+          "thing changes — does t match",
+          "The origin moves — does t match"
         ],
         "correct_option": "The plane collapses onto a line — all preimage lines (parallel to null space) collapse to points on the range line",
         "explanation": "Step 1: Each preimage line (null space coset) collapses to a single point on the range. Step 2: The 2D plane is compressed to a 1D line."
@@ -133,9 +133,9 @@
         "question": "Why does the Rank-Nullity Theorem work?",
         "options": [
           "Because every vector in the input can be decomposed into a range component and a null space component, which are independent",
-          "Because the matrix is square...                                                                                        ",
-          "Because det=0 — does not match                                                                                         ",
-          "Only for singular matrices...                                                                                          "
+          "Because the matrix is square...",
+          "Because det=0 — does t match",
+          "Only for singular matrices..."
         ],
         "correct_option": "Because every vector in the input can be decomposed into a range component and a null space component, which are independent",
         "explanation": "Step 1: Any input x can be written as x = x_range + x_null. Step 2: The range and null space are independent subspaces, so their dimensions add up to the total."
@@ -145,9 +145,9 @@
         "question": "If a matrix has rank 1 in R³, what does it collapse?",
         "options": [
           "Two dimensions — the output is a line (1D) instead of a 3D space",
-          "One dimension — does not match                             ",
-          "No dimensions — does not match                             ",
-          "Three dimensions — does not match                          "
+          "One dimension — does t match",
+          "dimensions — does t match",
+          "Three dimensions — does t match"
         ],
         "correct_option": "Two dimensions — the output is a line (1D) instead of a 3D space",
         "explanation": "Step 1: rank = 1, nullity = 3-1 = 2. Step 2: Two independent directions are annihilated — 3D collapses to 1D."
@@ -157,9 +157,9 @@
         "question": "For B: R² → R² with rank=1, how many distinct outputs does B produce?",
         "options": [
           "Infinitely many — but all on the line t(1,2)",
-          "Only 1 (incorrect)                     ",
-          "Only 2 (incorrect)                     ",
-          "Exactly 4 (incorrect)                  "
+          "Only 1)",
+          "Only 2)",
+          "Exactly 4)"
         ],
         "correct_option": "Infinitely many — but all on the line t(1,2)",
         "explanation": "Step 1: The range is the entire line t(1,2), which has infinitely many points. Step 2: But this line is 1D — a 'collapsed' version of the original 2D plane."
@@ -169,9 +169,9 @@
         "question": "What happens to the information in the null space direction?",
         "options": [
           "It is completely lost — B maps all vectors along (2,-1) to (0,0)",
-          "It is partially preserved...                               ",
-          "It is doubled — does not match                             ",
-          "It becomes the range — does not match                      "
+          "It is partially preserved...",
+          "It is doubled — does t match",
+          "It becomes the range — does t match"
         ],
         "correct_option": "It is completely lost — B maps all vectors along (2,-1) to (0,0)",
         "explanation": "Step 1: Any vector x + t(2,-1) maps to the same output as x. Step 2: B cannot distinguish between these — the information is lost."
@@ -180,10 +180,10 @@
         "id": "M3Q15M5",
         "question": "If B = [[1,2],[2,4]] and we add a third row [3,6], making B a 3×2 matrix, what are rank and nullity?",
         "options": [
-          "rank = 1, nullity = 1 (Row 3 is a multiple of Row 1, no new info)",
-          "rank = 2, nullity = 0...                                    ",
-          "rank = 3, nullity = 0...                                    ",
-          "rank = 1, nullity = 2...                                    "
+          "rank = 1, nullity = 1 (Row 3 is a multiple of Row 1, new info)",
+          "rank = 2, nullity = 0...",
+          "rank = 3, nullity = 0...",
+          "rank = 1, nullity = 2..."
         ],
         "correct_option": "rank = 1, nullity = 1 (Row 3 is a multiple of Row 1, no new info)",
         "explanation": "Step 1: [3,6] = 3×[1,2], so it adds no new independent row. Step 2: rank stays 1, nullity stays 1 (n=2, rank+nullity=2)."
@@ -193,9 +193,9 @@
         "question": "Why is the Rank-Nullity Theorem considered 'the fundamental theorem of linear algebra'?",
         "options": [
           "It connects the input space, range, and null space through a simple equation: rank + nullity = n",
-          "It only applies to square matrices...                                                      ",
-          "It's only for singular matrices...                                                         ",
-          "It was proven recently...                                                                  "
+          "It only applies to square matrices...",
+          "It's only for singular matrices...",
+          "It was proven recently..."
         ],
         "correct_option": "It connects the input space, range, and null space through a simple equation: rank + nullity = n",
         "explanation": "Step 1: The theorem unifies the three fundamental subspaces. Step 2: It holds for ALL matrices (square or rectangular, singular or non-singular)."
@@ -216,10 +216,10 @@
         "id": "M3Q15M8",
         "question": "If a matrix has nullity 0, what does that mean?",
         "options": [
-          "No dimensions are lost — the matrix is injective (one-to-one)",
-          "All dimensions are lost...                              ",
-          "The matrix is the zero matrix...                        ",
-          "The matrix is singular...                               "
+          "dimensions are lost — the matrix is injective (one-to-one)",
+          "All dimensions are lost...",
+          "The matrix is the zero matrix...",
+          "The matrix is singular..."
         ],
         "correct_option": "No dimensions are lost — the matrix is injective (one-to-one)",
         "explanation": "Step 1: nullity = 0 means the null space is trivial (only zero vector). Step 2: No two different inputs give the same output — the matrix is one-to-one."
@@ -229,9 +229,9 @@
         "question": "For B = [[1,2],[2,4]], the rank-nullity theorem says rank+nullity=2. How does this relate to det(B)=0?",
         "options": [
           "rank < 2 (full rank) means det=0 — the matrix is singular and collapses a dimension",
-          "rank = 2 means det=0 — does not match                                         ",
-          "nullity = 0 means det=0...                                                    ",
-          "No relationship — does not match                                              "
+          "rank = 2 means det=0 — does t match",
+          "nullity = 0 means det=0...",
+          "relationship — does t match"
         ],
         "correct_option": "rank < 2 (full rank) means det=0 — the matrix is singular and collapses a dimension",
         "explanation": "Step 1: Full rank = rank 2 = det ≠ 0 = invertible. Step 2: rank = 1 < 2 means det = 0 = singular = dimension collapse."
@@ -240,10 +240,10 @@
         "id": "M3Q15M10",
         "question": "What is the 'dimension' of a point (the zero vector)?",
         "options": [
-          "0 — a point has no extent",
-          "1 — not correct here",
-          "2 — not correct here",
-          "Undefined (incorrect)"
+          "0 — a point has extent",
+          "1 — t here",
+          "2 — t here",
+          "Undefined)"
         ],
         "correct_option": "0 — a point has no extent",
         "explanation": "Step 1: A point is zero-dimensional — it has no length, width, or height. Step 2: This is why a line (1D) passing through a point has dimension 1."
@@ -255,9 +255,9 @@
         "question": "State the Rank-Nullity Theorem precisely for an m×n matrix A.",
         "options": [
           "rank(A) + nullity(A) = n, where n is the number of columns (dimension of input space)",
-          "rank(A) + nullity(A) = m...                                                     ",
-          "rank(A) + nullity(A) = m+n...                                                   ",
-          "rank(A) - nullity(A) = n...                                                     "
+          "rank(A) + nullity(A) = m...",
+          "rank(A) + nullity(A) = m+n...",
+          "rank(A) - nullity(A) = n..."
         ],
         "correct_option": "rank(A) + nullity(A) = n, where n is the number of columns (dimension of input space)",
         "explanation": "Step 1: A maps Rⁿ → Rᵐ. Step 2: The input space is Rⁿ, so rank + nullity = n (not m)."
@@ -267,9 +267,9 @@
         "question": "If B: R² → R² has rank 1, how many 'degrees of freedom' does the output have?",
         "options": [
           "1 — the output lies on a 1D line, constrained to move in only one direction",
-          "2 — not correct here                                                  ",
-          "0 — not correct here                                                  ",
-          "Infinitely many — does not match                                      "
+          "2 — t here",
+          "0 — t here",
+          "Infinitely many — does t match"
         ],
         "correct_option": "1 — the output lies on a 1D line, constrained to move in only one direction",
         "explanation": "Step 1: The range is 1D. Step 2: The output has one degree of freedom — it can move along the line but not off it."
@@ -291,9 +291,9 @@
         "question": "Why can't we recover the null space component from the output of B?",
         "options": [
           "Because B maps all null space vectors to (0,0) — they produce zero output, so they're invisible",
-          "Because the output is too small...                                                        ",
-          "Because null space vectors are negative...                                                ",
-          "Because B is 2×2 — does not match                                                         "
+          "Because the output is too small...",
+          "Because null space vectors are negative...",
+          "Because B is 2×2 — does t match"
         ],
         "correct_option": "Because B maps all null space vectors to (0,0) — they produce zero output, so they're invisible",
         "explanation": "Step 1: B*(2,-1) = (0,0). Step 2: Any null space component contributes nothing to the output — it's lost forever."
@@ -303,9 +303,9 @@
         "question": "For an m×n matrix, the rank can be at most min(m,n). Why?",
         "options": [
           "Because the range is a subspace of Rᵐ and is spanned by n columns, so its dimension ≤ min(m,n)",
-          "Because rows are longer than columns...                                                  ",
-          "Because m is always bigger than n...                                                     ",
-          "By the Rank-Nullity Theorem only...                                                      "
+          "Because rows are longer than columns...",
+          "Because m is always bigger than n...",
+          "By the Rank-Nullity Theorem only..."
         ],
         "correct_option": "Because the range is a subspace of Rᵐ and is spanned by n columns, so its dimension ≤ min(m,n)",
         "explanation": "Step 1: The columns live in Rᵐ, so rank ≤ m. Step 2: There are only n columns, so rank ≤ n. Combining: rank ≤ min(m,n)."
@@ -327,9 +327,9 @@
         "question": "What is the relationship between rank-deficiency and dimension collapse?",
         "options": [
           "Rank-deficient (rank < n) means the matrix collapses at least one dimension of the input space",
-          "Rank-deficient means full rank...                                                        ",
-          "No relationship — does not match                                                         ",
-          "Only square matrices can be rank-deficient...                                            "
+          "Rank-deficient means full rank...",
+          "relationship — does t match",
+          "Only square matrices can be rank-deficient..."
         ],
         "correct_option": "Rank-deficient (rank < n) means the matrix collapses at least one dimension of the input space",
         "explanation": "Step 1: Rank-deficient means rank < n. Step 2: nullity = n-rank > 0, so at least one dimension is annihilated."
@@ -339,9 +339,9 @@
         "question": "If B: R³ → R² has rank 2, what does the Rank-Nullity Theorem tell us?",
         "options": [
           "nullity = 1 — one dimension of the 3D input is lost, mapping 3D → 2D",
-          "nullity = 0 — does not match                                   ",
-          "nullity = 2 — does not match                                   ",
-          "nullity = 3 — does not match                                   "
+          "nullity = 0 — does t match",
+          "nullity = 2 — does t match",
+          "nullity = 3 — does t match"
         ],
         "correct_option": "nullity = 1 — one dimension of the 3D input is lost, mapping 3D → 2D",
         "explanation": "Step 1: n=3 (columns), rank=2. Step 2: nullity = 3-2 = 1. One direction in R³ is annihilated."
@@ -351,9 +351,9 @@
         "question": "Consider the complete picture: B = [[1,2],[2,4]]. The null space is {(2,-1)t} and the range is {(1,2)t}. Together they form what?",
         "options": [
           "A basis for R² — every vector in R² can be uniquely decomposed into a range and null space component",
-          "A basis for R³ — does not match                                                                ",
-          "Two parallel lines — does not match                                                            ",
-          "The same line — does not match                                                                 "
+          "A basis for R³ — does t match",
+          "Two parallel lines — does t match",
+          "The same line — does t match"
         ],
         "correct_option": "A basis for R² — every vector in R² can be uniquely decomposed into a range and null space component",
         "explanation": "Step 1: (2,-1) and (1,2) are independent (not scalar multiples). Step 2: Two independent vectors in R² form a basis, so every vector has a unique decomposition."
@@ -363,9 +363,9 @@
         "question": "Why is the Rank-Nullity Theorem considered a 'bridge' between the input and output of a matrix?",
         "options": [
           "It quantifies exactly how much information is preserved (rank) and how much is lost (nullity) when the matrix acts on the input",
-          "It only works for square matrices...                                                                                      ",
-          "It only works for singular matrices...                                                                                    ",
-          "It relates rows to columns directly...                                                                                    "
+          "It only works for square matrices...",
+          "It only works for singular matrices...",
+          "It relates rows to columns directly..."
         ],
         "correct_option": "It quantifies exactly how much information is preserved (rank) and how much is lost (nullity) when the matrix acts on the input",
         "explanation": "Step 1: rank measures the 'useful' output dimension. Step 2: nullity measures the 'lost' input dimension. Together they account for the entire input space."
@@ -382,8 +382,8 @@
       "question": "When a camera collapses 3D to 2D, which dimension becomes the null space of the projection?",
       "options": [
         "The depth direction that vanishes in the 2D image",
-        "The horizontal direction",
-        "The vertical direction",
+        "The direction",
+        "The direction",
         "All dimensions are preserved"
       ],
       "correct_option": "The depth direction that vanishes in the 2D image",
@@ -400,7 +400,7 @@
         "It is lost — these dimensions become the null space of the summarisation",
         "It is preserved in the range",
         "It is doubled",
-        "Nothing happens"
+        "thing happens"
       ],
       "correct_option": "It is lost — these dimensions become the null space of the summarisation",
       "explanation": "Step 1: The summarisation maps n dimensions → 1 dimension. Step 2: rank=1, nullity=n-1. The discarded n-1 dimensions are the null space — their information is lost."
@@ -464,7 +464,7 @@
         "Fine details and high-frequency information — the null space of the downscaling",
         "The overall color palette",
         "The image dimensions",
-        "Nothing is lost"
+        "thing is lost"
       ],
       "correct_option": "Fine details and high-frequency information — the null space of the downscaling",
       "explanation": "Step 1: Downscaling maps many pixels → few pixels. Step 2: Fine details can't be distinguished in the low-resolution output — they're in the null space."

@@ -35,9 +35,9 @@
         "question": "Both (4,0) and (2,1) map to (4,8) under B = [[1,2],[2,4]]. Why?",
         "options": [
           "Both lie on the line 2y+x=4, which collapses to (4,8)",
-          "B always maps to (4,8)...                       ",
-          "They are the same point...                      ",
-          "B is the identity matrix...                     "
+          "B always maps to (4,8)...",
+          "They are the same point...",
+          "B is the identity matrix..."
         ],
         "correct_option": "Both lie on the line 2y+x=4, which collapses to (4,8)",
         "explanation": "Step 1: Check: 2(0)+4=4 and 2(1)+2=4. Step 2: Both points are on the line 2y+x=4, and B collapses this entire line to the single point (4,8). This visual collapse of a line to a point is the geometric meaning of a singular matrix — the null space direction has been squashed to zero."
@@ -82,10 +82,10 @@
         "id": "M3Q6E7",
         "question": "Does the line 2y+x=10 map to a single point under B?",
         "options": [
-          "Yes, to (10,20)                           ",
-          "No, it maps to a line...                ",
-          "Yes, to (0,0) — does not match          ",
-          "No, different points map to different outputs"
+          "to (10,20)",
+          "it maps to a line...",
+          "to (0,0) — does t match",
+          "different points map to different outputs"
         ],
         "correct_option": "Yes, to (10,20)",
         "explanation": "Step 1: For any (x,y) on 2y+x=10, B*(x,y) = (x+2y, 2x+4y) = (10, 20). Step 2: The entire line maps to the single point (10,20). This pattern — lines collapsing to points — is the signature of a rank-1 matrix in 2D."
@@ -95,9 +95,9 @@
         "question": "What does a zero determinant tell us about the matrix?",
         "options": [
           "The matrix is singular and collapses dimensions",
-          "The matrix is the identity...             ",
-          "The matrix has full rank...               ",
-          "The matrix maps everything to zero        "
+          "The matrix is the identity...",
+          "The matrix has full rank...",
+          "The matrix maps everything to zero"
         ],
         "correct_option": "The matrix is singular and collapses dimensions",
         "explanation": "Step 1: det=0 means the matrix is singular (not invertible). Step 2: A singular matrix maps the input space onto a lower-dimensional subspace, collapsing some dimensions. This is why zero determinant is equivalent to information loss."
@@ -133,9 +133,9 @@
         "question": "Why does B*(x,y) = (x+2y, 2(x+2y)) always have the form (a, 2a)?",
         "options": [
           "Because the second component is always exactly twice the first",
-          "Because B is diagonal...                                 ",
-          "Because the entries are 1,2,2,4...                       ",
-          "Because the determinant is 0...                          "
+          "Because B is diagonal...",
+          "Because the entries are 1,2,2,4...",
+          "Because the determinant is 0..."
         ],
         "correct_option": "Because the second component is always exactly twice the first",
         "explanation": "Step 1: B*(x,y) = (x+2y, 2x+4y) = (x+2y, 2(x+2y)). Step 2: The second component is always 2 times the first, so all outputs lie on the line y=2x (or direction (1,2)). This is why the range is a line, not a plane — the matrix forces every output into this single direction."
@@ -147,7 +147,7 @@
           "The line 2y+x=k maps to (k, 2k)",
           "All lines map to the same point",
           "Lines map to lines",
-          "There is no pattern"
+          "There is pattern"
         ],
         "correct_option": "The line 2y+x=k maps to (k, 2k)",
         "explanation": "Step 1: For any (x,y) on 2y+x=k, B*(x,y) = (x+2y, 2(x+2y)) = (k, 2k). Step 2: Each distinct k gives a distinct output point (k, 2k) on the range line. This rule — lines map to points — is the geometric essence of dimensional collapse."
@@ -156,10 +156,10 @@
         "id": "M3Q6M3",
         "question": "Are different values of k mapped to different output points (k, 2k)?",
         "options": [
-          "Yes — different k values give different points on the line t(1,2)",
-          "No — all map to the same point...                           ",
-          "Only for positive k — does not match                        ",
-          "Only for integers — does not match                          "
+          "— different k values give different points on the line t(1,2)",
+          "— all map to the same point...",
+          "Only for positive k — does t match",
+          "Only for integers — does t match"
         ],
         "correct_option": "Yes — different k values give different points on the line t(1,2)",
         "explanation": "Step 1: If k₁ ≠ k₂, then (k₁, 2k₁) ≠ (k₂, 2k₂). Step 2: Each parallel line 2y+x=k maps to a distinct point on the range, preserving information about which line the input was on. B loses information along the line (position within each parallel class) but retains information between lines."
@@ -170,8 +170,8 @@
         "options": [
           "Where exactly on the line the input was located",
           "The value of k (which line the input is on)",
-          "The output value — does not match",
-          "Nothing is lost — does not match"
+          "The output value — does t match",
+          "thing is lost — does t match"
         ],
         "correct_option": "Where exactly on the line the input was located",
         "explanation": "Step 1: All points on 2y+x=4 give the same output (4,8). Step 2: B loses the information about which specific point on the line was the input — the position along the direction perpendicular to (1,2) is lost. This is precisely the null space direction (2,-1)."
@@ -193,9 +193,9 @@
         "question": "What direction is the null space of B = [[1,2],[2,4]]?",
         "options": [
           "(2,-1) or any scalar multiple",
-          "(1,2) (incorrect)",
-          "(2,4) (incorrect)",
-          "(1,1) (incorrect)"
+          "(1,2))",
+          "(2,4))",
+          "(1,1))"
         ],
         "correct_option": "(2,-1) or any scalar multiple",
         "explanation": "Step 1: Solve B*(x,y) = (0,0): x+2y=0 -> x=-2y. Step 2: Setting y=-1 gives x=2, so the null space direction is (2,-1). Moving along this direction produces zero output — it is the 'blind spot' of the matrix."
@@ -204,10 +204,10 @@
         "id": "M3Q6M7",
         "question": "Is the null space direction (2,-1) perpendicular to the range direction (1,2)?",
         "options": [
-          "Yes — (2,-1)·(1,2) = 2-2 = 0",
-          "No — not correct here",
+          "— (2,-1)·(1,2) = 2-2 = 0",
+          "— t here",
           "Only approximately",
-          "Cannot determine"
+          "Cant determine"
         ],
         "correct_option": "Yes — (2,-1)·(1,2) = 2-2 = 0",
         "explanation": "Step 1: (2,-1)·(1,2) = 2(1)+(-1)(2) = 2-2 = 0. Step 2: The null space and range are always perpendicular — this is a fundamental property. The direction that gets collapsed is always orthogonal to the direction that survives."
@@ -217,9 +217,9 @@
         "question": "If B collapses 2D to 1D, how many dimensions are lost?",
         "options": [
           "1 (the null space direction)",
-          "2 — not correct here",
-          "0 — not correct here",
-          "All of them — does not match"
+          "2 — t here",
+          "0 — t here",
+          "All of them — does t match"
         ],
         "correct_option": "1 (the null space direction)",
         "explanation": "Step 1: The input is 2D and the output is 1D. Step 2: 2-1 = 1 dimension is lost — exactly the dimension of the null space. This is the rank-nullity theorem in action: what you lose (nullity) plus what you keep (rank) equals what you started with."
@@ -228,10 +228,10 @@
         "id": "M3Q6M9",
         "question": "Why can't we recover the original input from B*(x,y)?",
         "options": [
-          "Because many different inputs give the same output (not one-to-one)",
-          "Because B is always zero...                                   ",
-          "Because the output is always positive...                      ",
-          "Because B is the identity...                                  "
+          "Because many different inputs give the same output (t one-to-one)",
+          "Because B is always zero...",
+          "Because the output is always positive...",
+          "Because B is the identity..."
         ],
         "correct_option": "Because many different inputs give the same output (not one-to-one)",
         "explanation": "Step 1: All points on a line 2y+x=k map to the same output (k,2k). Step 2: From the output alone, you can determine k but not which specific point on the line was the input. This non-invertibility is why singular matrices cannot be undone."
@@ -240,10 +240,10 @@
         "id": "M3Q6M10",
         "question": "The range of B is the line t(1,2). Is this line the same as the column space of B?",
         "options": [
-          "Yes — the range and column space are the same thing",
-          "No — they are different...                    ",
-          "Only if B is square — does not match          ",
-          "Only for invertible matrices...               "
+          "— the range and column space are the same thing",
+          "— they are different...",
+          "Only if B is square — does t match",
+          "Only for invertible matrices..."
         ],
         "correct_option": "Yes — the range and column space are the same thing",
         "explanation": "Step 1: The column space is span{(1,2),(2,4)} = span{(1,2)} since (2,4)=2(1,2). Step 2: The range is {B*(x,y)} = {t(1,2)}. They are identical. The column space is just another name for the range — the set of all possible outputs."
@@ -255,9 +255,9 @@
         "question": "Prove that all points on the line 2y+x=k map to the same point under B = [[1,2],[2,4]].",
         "options": [
           "For any (x,y) with x+2y=k: B*(x,y) = (x+2y, 2(x+2y)) = (k, 2k), which is the same for all such (x,y)",
-          "This is only true for k=4...                                                                   ",
-          "Only integer points map to the same point...                                                   ",
-          "This is a coincidence...                                                                       "
+          "This is only true for k=4...",
+          "Only integer points map to the same point...",
+          "This is a coincidence..."
         ],
         "correct_option": "For any (x,y) with x+2y=k: B*(x,y) = (x+2y, 2(x+2y)) = (k, 2k), which is the same for all such (x,y)",
         "explanation": "Step 1: B*(x,y) = (x+2y, 2x+4y) = (x+2y, 2(x+2y)). Step 2: If x+2y=k, then B*(x,y) = (k, 2k) regardless of which specific (x,y) on the line is used. This proof shows why singular matrices collapse lines: the matrix only 'sees' the component along (1,2), not the component along (2,-1)."
@@ -267,9 +267,9 @@
         "question": "Why does B lose information specifically along the direction (2,-1)?",
         "options": [
           "Because (2,-1) is the null space direction — B*(2,-1) = (0,0), so any displacement along this direction is invisible in the output",
-          "Because (2,-1) has negative components...                                                                                    ",
-          "Because B can't handle negative numbers...                                                                                   ",
-          "Because the diagonal entries are positive...                                                                                 "
+          "Because (2,-1) has negative components...",
+          "Because B can't handle negative numbers...",
+          "Because the diagonal entries are positive..."
         ],
         "correct_option": "Because (2,-1) is the null space direction — B*(2,-1) = (0,0), so any displacement along this direction is invisible in the output",
         "explanation": "Step 1: B*(2,-1) = (2-2, 4-4) = (0,0). Step 2: Moving along (2,-1) produces zero output, so B cannot distinguish between points that differ only in this direction. The null space direction is the dimension that is completely invisible to the matrix."
@@ -279,9 +279,9 @@
         "question": "How many distinct parallel lines 2y+x=k are there, and how many distinct output points do they map to?",
         "options": [
           "Infinitely many lines, each mapping to a distinct point (k,2k) on the range line",
-          "Infinitely many lines, all mapping to one point...                         ",
-          "Finitely many lines — does not match                                       ",
-          "One line mapping to one point...                                           "
+          "Infinitely many lines, all mapping to one point...",
+          "Finitely many lines — does t match",
+          "One line mapping to one point..."
         ],
         "correct_option": "Infinitely many lines, each mapping to a distinct point (k,2k) on the range line",
         "explanation": "Step 1: k can be any real number, giving infinitely many parallel lines. Step 2: Each k maps to a unique point (k,2k), so there are infinitely many distinct output points, one per line. This one-to-one correspondence between parallel lines and output points is how the matrix preserves some information while losing other information."
@@ -302,10 +302,10 @@
         "id": "M3Q6H5",
         "question": "Can a non-singular (invertible) matrix ever collapse a line to a single point?",
         "options": [
-          "No — non-singular matrices are one-to-one and preserve dimensions",
-          "Yes, always — does not match                                ",
-          "Only for special lines...                                   ",
-          "Only in 3D (incorrect)                                      "
+          "— n-singular matrices are one-to-one and preserve dimensions",
+          "always — does t match",
+          "Only for special lines...",
+          "Only in 3D)"
         ],
         "correct_option": "No — non-singular matrices are one-to-one and preserve dimensions",
         "explanation": "Step 1: A non-singular matrix has det!=0 and full rank. Step 2: It maps distinct inputs to distinct outputs (one-to-one), so no information is lost and dimensions are preserved. This is the key distinction: non-singular matrices are invertible, singular matrices are not."
@@ -315,9 +315,9 @@
         "question": "If the range of B is 1D and the input is 2D, what is the rank-nullity relationship?",
         "options": [
           "rank(1) + nullity(1) = 2 = dimension of input",
-          "rank(2) + nullity(0) = 2...             ",
-          "rank(0) + nullity(2) = 2...             ",
-          "rank(1) + nullity(0) = 2...             "
+          "rank(2) + nullity(0) = 2...",
+          "rank(0) + nullity(2) = 2...",
+          "rank(1) + nullity(0) = 2..."
         ],
         "correct_option": "rank(1) + nullity(1) = 2 = dimension of input",
         "explanation": "Step 1: Rank = dim(range) = 1. Step 2: Nullity = dim(null space) = 1. By rank-nullity: 1+1=2 = n. The input dimension is split between what the matrix keeps (rank) and what it destroys (nullity)."
@@ -326,10 +326,10 @@
         "id": "M3Q6H7",
         "question": "What would B = [[1,2],[2,4]] look like if we changed it to [[1,2],[2,5]]?",
         "options": [
-          "It would no longer be singular — det=1≠0, so it would be invertible and preserve dimensions",
-          "It would still be singular...                                                         ",
-          "It would map everything to zero...                                                    ",
-          "It would have rank 0 — does not match                                                 "
+          "It would longer be singular — det=1≠0, so it would be invertible and preserve dimensions",
+          "It would still be singular...",
+          "It would map everything to zero...",
+          "It would have rank 0 — does t match"
         ],
         "correct_option": "It would no longer be singular — det=1≠0, so it would be invertible and preserve dimensions",
         "explanation": "Step 1: det([[1,2],[2,5]]) = 5-4 = 1 != 0. Step 2: With non-zero determinant, the matrix is invertible, one-to-one, and maps R² onto R² — no collapsing. This shows how a tiny change (4 to 5) can completely eliminate dimensional collapse."
@@ -339,9 +339,9 @@
         "question": "Geometrically, what does B = [[1,2],[2,4]] do to the unit square in R²?",
         "options": [
           "It squishes the square flat onto the line t(1,2), collapsing one dimension",
-          "It rotates the square...                                             ",
-          "It reflects the square...                                            ",
-          "It scales the square uniformly...                                    "
+          "It rotates the square...",
+          "It reflects the square...",
+          "It scales the square uniformly..."
         ],
         "correct_option": "It squishes the square flat onto the line t(1,2), collapsing one dimension",
         "explanation": "Step 1: The unit square has corners at (0,0), (1,0), (0,1), (1,1). Step 2: B maps these to (0,0), (1,2), (2,4), (3,6) — all on the line t(1,2). The square collapses to a line segment, showing how area (2D) becomes length (1D)."
@@ -351,9 +351,9 @@
         "question": "If B maps 2D to 1D, what does B² map to?",
         "options": [
           "Still 1D — once collapsed, further applications can't collapse more",
-          "0D (a point) — does not match                                 ",
-          "2D — not correct here                                         ",
-          "3D — not correct here                                         "
+          "0D (a point) — does t match",
+          "2D — t here",
+          "3D — t here"
         ],
         "correct_option": "Still 1D — once collapsed, further applications can't collapse more",
         "explanation": "Step 1: B already maps everything onto the 1D line t(1,2). Step 2: Applying B again just maps points on this line to points on the same line — it can't collapse further since it's already 1D. Once a dimension is lost, it stays lost: B² has the same rank as B."
@@ -363,9 +363,9 @@
         "question": "Why is the ability of a singular matrix to 'collapse' dimensions significant in applications?",
         "options": [
           "It represents irreversible information loss — compression, projection, and dimensionality reduction all rely on this",
-          "It makes computations faster...                                                                                ",
-          "It always produces zeros...                                                                                    ",
-          "It makes the matrix invertible...                                                                              "
+          "It makes computations faster...",
+          "It always produces zeros...",
+          "It makes the matrix invertible..."
         ],
         "correct_option": "It represents irreversible information loss — compression, projection, and dimensionality reduction all rely on this",
         "explanation": "Step 1: Singular matrices map higher-dimensional data to lower dimensions. Step 2: This irreversible loss is exactly what happens in image compression, 3D-to-2D projection, and PCA — useful features are kept, redundant information is collapsed. Understanding which dimensions collapse and which survive is the key to mastering linear algebra."
@@ -416,7 +416,7 @@
         "It is collapsed — points at different depths produce the same shadow point",
         "It is preserved",
         "It is doubled",
-        "Nothing happens"
+        "thing happens"
       ],
       "correct_option": "It is collapsed — points at different depths produce the same shadow point",
       "explanation": "Step 1: The shadow projection maps 3D points to 2D. Step 2: Points along the light direction (the null space of the projection) all produce the same shadow point — the depth is lost. This is why shadows cannot show the full shape of an object."
@@ -448,7 +448,7 @@
         "It is collapsed — individual differences are lost in the aggregation",
         "It is preserved exactly",
         "It is amplified",
-        "Nothing changes"
+        "thing changes"
       ],
       "correct_option": "It is collapsed — individual differences are lost in the aggregation",
       "explanation": "Step 1: The summary operation maps many data points to a few statistics. Step 2: Individual responses that differ but have the same average produce the same output — like points on a line collapsing to one point. This is why averages alone cannot reveal the full story."

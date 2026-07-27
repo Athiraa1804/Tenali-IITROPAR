@@ -61,7 +61,7 @@
           "A line through the origin",
           "A plane through the origin",
           "A single point",
-          "All of R³ (incorrect)"
+          "All of R³)"
         ],
         "correct_option": "A line through the origin",
         "explanation": "Step 1: Two independent equations in 3 unknowns leave 3−2=1 free parameter. Step 2: One free parameter describes a line through the origin. Step 3: The dimension formula dim(W) + dim(W⊥) = 3 gives 2 + 1 = 3, confirming the null space is 1-dimensional. Step 4: Geometrically, the null space is the line perpendicular to the plane W — it is exactly the normal direction to the plane, pointing straight out of it."
@@ -70,10 +70,10 @@
         "id": "M3Q3E6",
         "question": "Is (1,1,-3) in the span of {(1,2,1),(2,7,3)}?",
         "options": [
-          "No, it is perpendicular to the span",
-          "Yes — not correct here",
-          "Only if scaled — does not match",
-          "Cannot determine — does not match"
+          "it is perpendicular to the span",
+          "— t here",
+          "Only if scaled — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "No, it is perpendicular to the span",
         "explanation": "Step 1: If (1,1,−3) were in the span, it would be a linear combination of (1,2,1) and (2,7,3). Step 2: But it is perpendicular to both, so it cannot be a non-trivial combination of them. Step 3: A non-zero vector cannot be both in a subspace W and in its orthogonal complement W⊥ — that would require v·v = 0, implying v = 0. Step 4: This clean separation between W and W⊥ (they intersect only at 0) is what makes the decomposition v = v_W + v_W⊥ unique."
@@ -118,10 +118,10 @@
         "id": "M3Q3E10",
         "question": "Does the null space of W contain the zero vector?",
         "options": [
-          "Yes, (0,0,0) is perpendicular to everything",
-          "No — not correct here                 ",
-          "Only if W is a line — does not match",
-          "Only in R² (incorrect)                "
+          "(0,0,0) is perpendicular to everything",
+          "— t here",
+          "Only if W is a line — does t match",
+          "Only in R²)"
         ],
         "correct_option": "Yes, (0,0,0) is perpendicular to everything",
         "explanation": "Step 1: (0,0,0)·(1,2,1) = 0 and (0,0,0)·(2,7,3) = 0. Step 2: The zero vector trivially satisfies both equations, so it is in the null space. Step 3: The zero vector is always in every subspace — it is the 'anchor' point that all subspaces share. Step 4: For null spaces specifically, the zero vector is the unique vector that maps to zero under ANY linear transformation, and its presence guarantees the null space satisfies the first subspace axiom."
@@ -132,10 +132,10 @@
         "id": "M3Q3M1",
         "question": "How do you find the null space of a set of vectors?",
         "options": [
-          "Solve the system where each basis vector's dot product with the unknown equals 0",
-          "Find the cross product of all vectors...                                   ",
-          "Multiply the vectors together...                                           ",
-          "Add all vectors and set to zero...                                         "
+          "Solve the system where each basis vector's dot product with the unkwn equals 0",
+          "Find the cross product of all vectors...",
+          "Multiply the vectors together...",
+          "Add all vectors and set to zero..."
         ],
         "correct_option": "Solve the system where each basis vector's dot product with the unknown equals 0",
         "explanation": "Step 1: The null space consists of vectors perpendicular to all basis vectors. Step 2: This means solving v₁·x=0, v₂·x=0, ..., which is a system of linear equations. Step 3: Each spanning vector vᵢ contributes one equation vᵢ·x=0. If W has k independent spanning vectors in Rⁿ, the null space is found by solving k equations in n unknowns, giving an (n−k)-dimensional solution space. Step 4: This systematic method works for any subspace in any dimension and is the standard algebraic approach to finding orthogonal complements."
@@ -156,8 +156,8 @@
         "id": "M3Q3M3",
         "question": "Is the null space of W = span{(1,2,1),(2,7,3)} perpendicular to every vector in W?",
         "options": [
-          "Yes, by definition of null space",
-          "No — not correct here",
+          "by definition of null space",
+          "— t here",
           "Only to the basis vectors",
           "Only in special cases"
         ],
@@ -183,7 +183,7 @@
           "dim(W) + dim(null space) = 3",
           "dim(W) = dim(null space)",
           "dim(W) - dim(null space) = 3",
-          "No relationship"
+          "relationship"
         ],
         "correct_option": "dim(W) + dim(null space) = 3",
         "explanation": "Step 1: By the orthogonal complement theorem for subspaces in Rⁿ, dim(W) + dim(W⊥) = n. Step 2: Here n=3, so dim(W) + dim(null space) = 3. Step 3: This formula is the geometric backbone of the rank-nullity theorem — it tells us that dimensions are 'conserved.' If W takes up d dimensions, its perpendicular complement takes up the remaining n−d dimensions. Step 4: No dimensions are 'wasted' or 'duplicated' between a subspace and its complement."
@@ -193,9 +193,9 @@
         "question": "To verify a vector is in the null space of W, you must check:",
         "options": [
           "Its dot product with every basis vector of W is 0",
-          "Its magnitude equals 1...                   ",
-          "It has positive components...               ",
-          "It lies in the same plane as W...           "
+          "Its magnitude equals 1...",
+          "It has positive components...",
+          "It lies in the same plane as W..."
         ],
         "correct_option": "Its dot product with every basis vector of W is 0",
         "explanation": "Step 1: Being in the null space means being perpendicular to all of W. Step 2: It suffices to check perpendicularity with the basis vectors, since any vector in W is a combination of them. Step 3: This is a powerful computational shortcut: instead of checking infinitely many vectors (every point in W), you only check a finite number (the basis vectors). Step 4: If the vector is perpendicular to the basis, it is perpendicular to the entire subspace by linearity of the dot product."
@@ -206,8 +206,8 @@
         "options": [
           "A plane through the origin",
           "A line through the origin",
-          "A point (incorrect)",
-          "All of R³ (incorrect)"
+          "A point)",
+          "All of R³)"
         ],
         "correct_option": "A plane through the origin",
         "explanation": "Step 1: W is 1-dimensional (a line). Step 2: The null space has dimension 3−1=2, forming a plane. It satisfies one equation: (1,2,1)·(x,y,z) = x+2y+z = 0. Step 3: This is the same structure from Mission 22 — the perpendicular set of a single vector in R³ is a 2D plane. Step 4: The formula dim(W) + dim(W⊥) = 3 gives 1 + 2 = 3, confirming the line and its perpendicular plane together span all of R³."
@@ -216,8 +216,8 @@
         "id": "M3Q3M8",
         "question": "Is the null space of W = span{(1,2,1),(2,7,3)} a subspace of R³?",
         "options": [
-          "Yes — it's a line through the origin",
-          "No — it's not closed under addition",
+          "— it's a line through the origin",
+          "— it's t closed under addition",
           "Only if it passes through the origin",
           "Subspaces can't be null spaces"
         ],
@@ -228,9 +228,9 @@
         "id": "M3Q3M9",
         "question": "If you add a third vector to W = span{(1,2,1),(2,7,3)} that lies in the plane, does the null space change?",
         "options": [
-          "No — the span is still the same plane",
-          "Yes — the null space gets smaller",
-          "Yes — the null space gets larger",
+          "— the span is still the same plane",
+          "— the null space gets smaller",
+          "— the null space gets larger",
           "The null space disappears"
         ],
         "correct_option": "No — the span is still the same plane",
@@ -240,10 +240,10 @@
         "id": "M3Q3M10",
         "question": "Is every vector in the null space perpendicular to every vector in W?",
         "options": [
-          "Yes — that's exactly what null space means",
-          "No — only to the basis vectors       ",
+          "— that's exactly what null space means",
+          "— only to the basis vectors",
           "Only if W passes through the origin",
-          "Only in 2D (incorrect)               "
+          "Only in 2D)"
         ],
         "correct_option": "Yes — that's exactly what null space means",
         "explanation": "Step 1: The null space W⊥ is defined as {x : x·w = 0 for all w ∈ W}. Step 2: This means every null space vector is perpendicular to every vector in W, not just the basis. Step 3: The definition uses 'for all w ∈ W,' not just the basis vectors. However, checking basis vectors is sufficient for verification because of linearity — if n is perpendicular to the basis, it is perpendicular to all their linear combinations. Step 4: This distinction between definition and verification is crucial in mathematical reasoning."
@@ -255,9 +255,9 @@
         "question": "Show that the null space of W = span{(1,2,1),(2,7,3)} is closed under addition. If n₁ and n₂ are both perpendicular to all of W, why is n₁+n₂ also perpendicular to all of W?",
         "options": [
           "(n₁+n₂)·w = n₁·w + n₂·w = 0+0 = 0 by linearity of dot product",
-          "It's not necessarily closed...                          ",
-          "Only if n₁ = n₂ — does not match                        ",
-          "Only in R² (incorrect)                                  "
+          "It's t necessarily closed...",
+          "Only if n₁ = n₂ — does t match",
+          "Only in R²)"
         ],
         "correct_option": "(n₁+n₂)·w = n₁·w + n₂·w = 0+0 = 0 by linearity of dot product",
         "explanation": "Step 1: For any w in W, (n₁+n₂)·w = n₁·w + n₂·w by the distributive property of the dot product. Step 2: Since n₁·w=0 and n₂·w=0, the sum is 0+0=0, so n₁+n₂ is also perpendicular to every w in W. Step 3: This closure under addition is one of the three subspace axioms. Combined with closure under scalar multiplication (proved similarly: (cn)·w = c(n·w) = c·0 = 0) and containing the zero vector, it proves the null space is a genuine subspace. Step 4: This triple verification — zero vector, addition closure, scalar closure — is the standard test for any subset to be a subspace."
@@ -267,9 +267,9 @@
         "question": "If W is a subspace of Rⁿ, prove that dim(W) + dim(W⊥) = n.",
         "options": [
           "The row space and null space of a matrix with rows forming a basis for W have complementary dimensions summing to n",
-          "This is always true by inspection...                                                                          ",
-          "Only works for n=3 — does not match                                                                           ",
-          "It's an approximation...                                                                                      "
+          "This is always true by inspection...",
+          "Only works for n=3 — does t match",
+          "It's an approximation..."
         ],
         "correct_option": "The row space and null space of a matrix with rows forming a basis for W have complementary dimensions summing to n",
         "explanation": "Step 1: Form a matrix A whose rows are a basis for W. Step 2: By the rank-nullity theorem, rank(A) + nullity(A) = n. Since rank(A) = dim(W) and nullity(A) = dim(W⊥), we get dim(W) + dim(W⊥) = n. Step 3: This proof reveals the deep connection between the rank-nullity theorem and orthogonal complements — the row space IS the subspace W, and the null space of A IS W⊥. Step 4: The rank-nullity theorem is really a statement about how dimensions split between a subspace and its perpendicular partner, one of the most fundamental results in linear algebra."
@@ -302,10 +302,10 @@
         "id": "M3Q3H5",
         "question": "Can a vector be in both W and its null space simultaneously (other than the zero vector)?",
         "options": [
-          "No — if v is in W and in W⊥, then v·v = 0, so v = 0",
-          "Yes, always — does not match                  ",
-          "Only if W is all of R³...                     ",
-          "Only in R² (incorrect)                        "
+          "— if v is in W and in W⊥, then v·v = 0, so v = 0",
+          "always — does t match",
+          "Only if W is all of R³...",
+          "Only in R²)"
         ],
         "correct_option": "No — if v is in W and in W⊥, then v·v = 0, so v = 0",
         "explanation": "Step 1: If v ∈ W and v ∈ W⊥, then v is perpendicular to every vector in W, including itself. Step 2: v·v = ‖v‖² = 0 implies v = 0 by the positive definiteness of the dot product. So only the zero vector can be in both. Step 3: This is a fundamental property: W ∩ W⊥ = {0}. The only vector that is perpendicular to itself is the zero vector. Step 4: This clean separation between W and W⊥ is what makes the decomposition v = v_W + v_W⊥ unique and is essential for orthogonal projections."
@@ -315,9 +315,9 @@
         "question": "If W = span{(1,2,1),(2,7,3)} and n = t(1,1,-3), what is the projection of n onto W?",
         "options": [
           "The zero vector — n is perpendicular to W",
-          "n itself (incorrect)                ",
-          "(1,2,1) (incorrect)                 ",
-          "(2,7,3) (incorrect)                 "
+          "n itself)",
+          "(1,2,1))",
+          "(2,7,3))"
         ],
         "correct_option": "The zero vector — n is perpendicular to W",
         "explanation": "Step 1: The projection of a vector onto a subspace measures how much of it lies in that subspace. Step 2: Since n is in W⊥, its projection onto W is the zero vector — it has no component in W. Step 3: This is the geometric meaning of orthogonality: vectors in W⊥ are 'invisible' to W. The projection formula proj_W(n) = 0 because every term n·vᵢ = 0. Step 4: This zero projection is the algebraic signature of perpendicularity and is the foundation of Gram-Schmidt orthogonalization, where we subtract projections to create orthogonal vectors."
@@ -327,9 +327,9 @@
         "question": "Why does the null space of W = span{(1,2,1),(2,7,3)} give the 'missing direction' in R³?",
         "options": [
           "Because W is 2D and R³ is 3D, so exactly one independent direction is missing",
-          "Because null spaces always add missing directions...                    ",
-          "Because (1,1,-3) is special...                                          ",
-          "Because R³ needs 3 vectors...                                           "
+          "Because null spaces always add missing directions...",
+          "Because (1,1,-3) is special...",
+          "Because R³ needs 3 vectors..."
         ],
         "correct_option": "Because W is 2D and R³ is 3D, so exactly one independent direction is missing",
         "explanation": "Step 1: W is a 2D plane, leaving one dimension unaccounted for in R³. Step 2: The null space provides this missing direction (1,1,−3), completing the basis for R³. Step 3: Any vector in R³ can be uniquely decomposed as v = v_W + v_W⊥, where v_W is in the plane and v_W⊥ is along the normal. Step 4: This decomposition principle is the geometric heart of the Fundamental Theorem of Linear Algebra — every vector splits uniquely into a component in a subspace and one in its orthogonal complement."
@@ -350,10 +350,10 @@
         "id": "M3Q3H9",
         "question": "Can two different 2D planes in R³ have the same null space?",
         "options": [
-          "Yes — if they are the same plane, they have the same null space",
-          "No — different planes always have different null spaces",
-          "Only if parallel — does not match                         ",
-          "Only in R² (incorrect)                                    "
+          "— if they are the same plane, they have the same null space",
+          "— different planes always have different null spaces",
+          "Only if parallel — does t match",
+          "Only in R²)"
         ],
         "correct_option": "Yes — if they are the same plane, they have the same null space",
         "explanation": "Step 1: Two planes have the same null space if and only if they are the same plane (same normal direction). Step 2: Different planes (different normals) have different null spaces, because the null space direction equals the normal. Step 3: This reveals a one-to-one correspondence between 2D subspaces and their 1D orthogonal complements in R³ — the subspace uniquely determines its complement, and vice versa. Step 4: This pairing is fundamental to understanding the structure of vector spaces and is the geometric insight behind the orthogonality relationships in the Fundamental Theorem."
@@ -363,9 +363,9 @@
         "question": "What is the geometric interpretation of the fact that dim(W) + dim(W⊥) = 3 in R³?",
         "options": [
           "A plane (2D) and its perpendicular line (1D) together account for all 3 dimensions of R³",
-          "The null space is always bigger...                                                 ",
-          "W and W⊥ always have equal dimensions...                                           ",
-          "Three dimensions can only be split 1+2...                                          "
+          "The null space is always bigger...",
+          "W and W⊥ always have equal dimensions...",
+          "Three dimensions can only be split 1+2..."
         ],
         "correct_option": "A plane (2D) and its perpendicular line (1D) together account for all 3 dimensions of R³",
         "explanation": "Step 1: W is 2D and W⊥ is 1D, with 2+1=3. Step 2: Together they account for all dimensions of R³ — every vector in R³ can be uniquely decomposed as a sum of a vector in W and a vector in W⊥. Step 3: This decomposition is an orthogonal direct sum: R³ = W ⊕ W⊥. The uniqueness of this decomposition is guaranteed by the perpendicularity — there is only one way to split a vector into a 'plane component' and a 'normal component.' Step 4: This is the 3D version of the Pythagorean theorem for vector decomposition and is the geometric essence of the Fundamental Theorem of Linear Algebra."
@@ -413,10 +413,10 @@
       "story": "When you push on a beam perpendicular to its length, you are not stretching or compressing it — you are bending it. Forces in the null space of the beam's axial direction do no work along the beam's length.",
       "question": "What happens when a force is applied in the null space of a beam's axial direction?",
       "options": [
-        "It does no work along the beam's length — it bends rather than stretches",
+        "It does work along the beam's length — it bends rather than stretches",
         "It stretches the beam maximally",
         "It compresses the beam",
-        "It has no effect at all"
+        "It has effect at all"
       ],
       "correct_option": "It does no work along the beam's length — it bends rather than stretches",
       "explanation": "Step 1: Forces along the beam's axis cause stretching or compression. Step 2: Forces perpendicular to the axis (in the null space) cause bending but no axial deformation — they are independent effects. Step 3: Engineers decompose forces into axial (range) and transverse (null space) components to analyze different types of stress separately. Step 4: The orthogonality of these components means they do not interfere — stretching and bending can be computed independently, which is the engineering application of perpendicular subspaces."

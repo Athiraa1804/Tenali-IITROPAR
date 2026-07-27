@@ -82,10 +82,10 @@
         "id": "M4Q3E7",
         "question": "For M = [[1,2],[3,6]], verify: is (-3,1) perpendicular to (1,3)?",
         "options": [
-          "Yes: (-3,1)·(1,3) = -3+3 = 0",
-          "No: (-3,1)·(1,3) = -3+1 = -2",
-          "No: (-3,1)·(1,3) = 3+3 = 6",
-          "Yes: (-3,1)·(1,3) = -3+1 = 0"
+          "(-3,1)·(1,3) = -3+3 = 0",
+          "(-3,1)·(1,3) = -3+1 = -2",
+          "(-3,1)·(1,3) = 3+3 = 6",
+          "(-3,1)·(1,3) = -3+1 = 0"
         ],
         "correct_option": "Yes: (-3,1)·(1,3) = -3+3 = 0",
         "explanation": "Step 1: (-3,1) ∈ N(Mᵀ) and (1,3) ∈ C(M). Step 2: Their dot product is (-3)(1) + (1)(3) = 0, confirming perpendicularity. Step 3: This is C(M) ⊥ N(Mᵀ), the second Fundamental Theorem orthogonality pair. Together with R(M) ⊥ N(M), it completes the four-subspace orthogonal structure."
@@ -118,10 +118,10 @@
         "id": "M4Q3E10",
         "question": "Is N(M) the same as N(Mᵀ) for M = [[1,2],[3,6]]?",
         "options": [
-          "Yes, both are t(-2,1)...",
-          "Yes, both are t(-3,1)...",
-          "No, N(M)=t(-2,1) and N(Mᵀ)=t(-3,1)",
-          "No, N(M) is a line and N(Mᵀ) is a plane"
+          "both are t(-2,1)...",
+          "both are t(-3,1)...",
+          "N(M)=t(-2,1) and N(Mᵀ)=t(-3,1)",
+          "N(M) is a line and N(Mᵀ) is a plane"
         ],
         "correct_option": "No, N(M)=t(-2,1) and N(Mᵀ)=t(-3,1)",
         "explanation": "Step 1: N(M) = t(-2,1) solves Mv = 0, while N(Mᵀ) = t(-3,1) solves Mᵀv = 0. Step 2: These are different lines because M ≠ Mᵀ (M is not symmetric). Step 3: The null space and left null space are generally different — they capture input annihilation (N(M)) versus output unreliability (N(Mᵀ)). Only for symmetric matrices are they guaranteed to coincide."
@@ -192,10 +192,10 @@
         "id": "M4Q3M6",
         "question": "For M = [[1,2],[3,6]], the column space is t(1,3) and the left null space is t(-3,1). Both are 1D lines in R². What is their relationship?",
         "options": [
-          "They are the same line...                    ",
+          "They are the same line...",
           "They are perpendicular lines that together span R²",
-          "They are parallel lines...                   ",
-          "They intersect at 45°...                     "
+          "They are parallel lines...",
+          "They intersect at 45°..."
         ],
         "correct_option": "They are perpendicular lines that together span R²",
         "explanation": "Step 1: C(M) = t(1,3) and N(Mᵀ) = t(-3,1) with (1,3)·(-3,1) = 0, confirming perpendicularity. Step 2: Two perpendicular 1D lines in R² have dimensions summing to 2 = dim(R²). Step 3: They form an orthogonal decomposition R² = C(M) ⊕ N(Mᵀ) — every output vector splits uniquely into a reachable component (column space) and an unreachable component (left null space)."
@@ -228,10 +228,10 @@
         "id": "M4Q3M9",
         "question": "Which statement correctly describes the relationship between N(M) and the columns of M?",
         "options": [
-          "N(M) is parallel to the columns...                ",
+          "N(M) is parallel to the columns...",
           "Every vector in N(M) is perpendicular to every row of M",
-          "N(M) equals the column space...                   ",
-          "N(M) contains the columns of M...                 "
+          "N(M) equals the column space...",
+          "N(M) contains the columns of M..."
         ],
         "correct_option": "Every vector in N(M) is perpendicular to every row of M",
         "explanation": "Step 1: If v ∈ N(M), then Mv = 0, meaning the jth component of Mv is rowⱼ(M) · v = 0. Step 2: This means v is perpendicular to every row of M, and hence to the entire row space R(M). Step 3: This is the proof of R(M) ⊥ N(M) — it follows directly from the definition of matrix-vector multiplication and is the key relationship connecting null space vectors to row space structure."
@@ -255,9 +255,9 @@
         "question": "For M = [[1,2],[3,6]], prove that N(Mᵀ) ⊥ C(M) by showing every column of M is perpendicular to (-3,1).",
         "options": [
           "(1,3)·(-3,1) = -3+3 = 0 ✓ and (2,6)·(-3,1) = -6+6 = 0 ✓",
-          "Only (1,3)·(-3,1) = 0, but (2,6)·(-3,1) ≠ 0       ",
-          "Neither dot product is zero...                    ",
-          "(1,3)·(-3,1) = 3+3 = 6 ≠ 0...                     "
+          "Only (1,3)·(-3,1) = 0, but (2,6)·(-3,1) ≠ 0",
+          "Neither dot product is zero...",
+          "(1,3)·(-3,1) = 3+3 = 6 ≠ 0..."
         ],
         "correct_option": "(1,3)·(-3,1) = -3+3 = 0 ✓ and (2,6)·(-3,1) = -6+6 = 0 ✓",
         "explanation": "Step 1: Column 1 of M is (1,3): (1,3)·(-3,1) = 0 ✓. Column 2 is (2,6): (2,6)·(-3,1) = 0 ✓. Step 2: Both columns are perpendicular to the left null space direction. Step 3: Since (-3,1) is perpendicular to every column, it is perpendicular to every linear combination of columns — the entire column space. This is the standard proof of C(M) ⊥ N(Mᵀ), the second Fundamental Theorem orthogonality."
@@ -267,9 +267,9 @@
         "question": "Why does N(Mᵀ) ⊥ C(M) hold for any matrix M?",
         "options": [
           "Because Mᵀy = 0 means y is perpendicular to every column of M",
-          "Because Mᵀ always equals M...                           ",
+          "Because Mᵀ always equals M...",
           "Because C(M) always has the same dimension as N(Mᵀ)",
-          "It only holds for square matrices...                    "
+          "It only holds for square matrices..."
         ],
         "correct_option": "Because Mᵀy = 0 means y is perpendicular to every column of M",
         "explanation": "Step 1: If y ∈ N(Mᵀ), then Mᵀy = 0. Step 2: The jth component of Mᵀy is colⱼ(M) · y = 0, so y ⊥ colⱼ(M) for every j. Step 3: Since y is perpendicular to every column, y ⊥ C(M). This proof uses only the definition of matrix-vector multiplication, making it universally valid for any m×n matrix."
@@ -278,10 +278,10 @@
         "id": "M4Q3H3",
         "question": "For M = [[1,2,3],[4,5,6],[7,8,9]] (3×3, rank 2), both N(M) and N(Mᵀ) are 1D lines. Are they the same line?",
         "options": [
-          "Yes, both equal t(1,-2,1)",
-          "No, they are different lines",
-          "Yes, because M = Mᵀ",
-          "Cannot determine without computing"
+          "both equal t(1,-2,1)",
+          "they are different lines",
+          "because M = Mᵀ",
+          "Cant determine without computing"
         ],
         "correct_option": "Yes, both equal t(1,-2,1)",
         "explanation": "Step 1: N(M) = t(1,-2,1) from solving Mv = 0. Step 2: Aᵀ = [[1,4,7],[2,5,8],[3,6,9]], and N(Aᵀ) = t(1,-2,1) from solving Aᵀv = 0. Step 3: They are the same because this matrix's row dependency (row3 = 2·row2 - row1) and column dependency (col3 = 2·col2 - col1) happen to produce the same null direction. This is a coincidence of this matrix, not a general rule."
@@ -291,9 +291,9 @@
         "question": "If A is m×n with rank r, how does the dimension of N(A) compare to the dimension of N(Aᵀ)?",
         "options": [
           "dim(N(A)) = n-r, dim(N(Aᵀ)) = m-r, generally different",
-          "They are always equal...                         ",
-          "dim(N(A)) always exceeds dim(N(Aᵀ))...           ",
-          "dim(N(Aᵀ)) always exceeds dim(N(A))...           "
+          "They are always equal...",
+          "dim(N(A)) always exceeds dim(N(Aᵀ))...",
+          "dim(N(Aᵀ)) always exceeds dim(N(A))..."
         ],
         "correct_option": "dim(N(A)) = n-r, dim(N(Aᵀ)) = m-r, generally different",
         "explanation": "Step 1: By Rank-Nullity on A: nullity(A) = n - r. Step 2: By Rank-Nullity on Aᵀ: rank(Aᵀ) = r (rank is invariant under transpose), so nullity(Aᵀ) = m - r. Step 3: These are equal only when m = n (square matrices). For rectangular matrices, the two null spaces generally have different dimensions — reflecting the asymmetry between input and output spaces."
@@ -305,7 +305,7 @@
           "0° (same direction)",
           "90° (perpendicular)",
           "About 8.1°",
-          "45° — not correct here"
+          "45° — t here"
         ],
         "correct_option": "About 8.1°",
         "explanation": "Step 1: cos(θ) = (1,2)·(1,3)/(|(1,2)||(1,3)|) = 7/(√5·√10) = 7/√50 ≈ 0.990. Step 2: θ = arccos(0.990) ≈ 8.1°. Step 3: The row space and column space are NOT generally perpendicular to each other. The guaranteed orthogonality pairs are R(M) ⊥ N(M) and C(M) ⊥ N(Mᵀ) — not R(M) ⊥ C(M). This is a common misconception about the four subspaces."
@@ -316,8 +316,8 @@
         "options": [
           "R(A) and N(A) both live in Rⁿ; C(A) and N(Aᵀ) both live in Rᵐ",
           "R(A) and C(A) both live in Rᵐ; N(A) and N(Aᵀ) both live in Rⁿ",
-          "All four live in Rⁿ — does not match                    ",
-          "All four live in Rᵐ — does not match                    "
+          "All four live in Rⁿ — does t match",
+          "All four live in Rᵐ — does t match"
         ],
         "correct_option": "R(A) and N(A) both live in Rⁿ; C(A) and N(Aᵀ) both live in Rᵐ",
         "explanation": "Step 1: R(A) = span of rows (each with n entries) → R(A) ⊂ Rⁿ. N(A) = {x : Ax = 0} → x has n entries → N(A) ⊂ Rⁿ. Step 2: C(A) = span of columns (each with m entries) → C(A) ⊂ Rᵐ. N(Aᵀ) = {y : Aᵀy = 0} → y has m entries → N(Aᵀ) ⊂ Rᵐ. Step 3: The two orthogonal pairs live in different spaces: input space Rⁿ and output space Rᵐ. This separation is what makes the four-subspace framework work for rectangular matrices."
@@ -338,10 +338,10 @@
         "id": "M4Q3H8",
         "question": "Can N(M) and N(Mᵀ) ever be the same subspace for a non-symmetric matrix?",
         "options": [
-          "Never — they are always different for non-symmetric matrices",
-          "Yes — it depends on the rank structure, not just symmetry",
-          "Only if the matrix is the zero matrix...               ",
-          "Only for 1×1 matrices...                               "
+          "Never — they are always different for n-symmetric matrices",
+          "— it depends on the rank structure, t just symmetry",
+          "Only if the matrix is the zero matrix...",
+          "Only for 1×1 matrices..."
         ],
         "correct_option": "Yes — it depends on the rank structure, not just symmetry",
         "explanation": "Step 1: Symmetry guarantees N(M) = N(Mᵀ), but it is not necessary. Step 2: Consider M = [[1,2,3],[4,5,6],[7,8,9]], which is NOT symmetric, yet N(M) = N(Mᵀ) = t(1,-2,1). Step 3: What matters is whether M and Mᵀ share the same null direction — this can happen even without symmetry when the row and column dependencies coincidentally align."
@@ -350,10 +350,10 @@
         "id": "M4Q3H9",
         "question": "For a 2×2 matrix with rank 1, N(M) and N(Mᵀ) are both 1D lines in R². Must they be different lines?",
         "options": [
-          "Yes, always — they can never coincide for rank-1 matrices",
-          "No — they could be the same line depending on the matrix entries",
-          "Yes, because M ≠ Mᵀ implies different null spaces          ",
-          "Only if the determinant is nonzero...                      "
+          "always — they can never coincide for rank-1 matrices",
+          "— they could be the same line depending on the matrix entries",
+          "because M ≠ Mᵀ implies different null spaces",
+          "Only if the determinant is nzero..."
         ],
         "correct_option": "No — they could be the same line depending on the matrix entries",
         "explanation": "Step 1: For 2×2 rank-1 matrices, both null spaces are 1D lines. Step 2: They are the same line when M and Mᵀ happen to share the same null direction. Step 3: For M = [[1,2],[3,6]], N(M) = t(-2,1) ≠ t(-3,1) = N(Mᵀ), so they differ here. But other rank-1 matrices can have identical null spaces — it depends on the specific entries, not just the rank."
@@ -401,7 +401,7 @@
       "id": "M4Q3R3",
       "question": "Error-correcting codes use the null space of a parity-check matrix to define valid codewords. If N(Mᵀ) helps detect errors, what happens when a received message is NOT in the expected pattern?",
       "options": [
-        "The message is guaranteed correct",
+        "The message is guaranteed",
         "An error has occurred during transmission",
         "The message is encrypted",
         "The system shuts down"
@@ -428,7 +428,7 @@
         "All sensors are working perfectly",
         "Two combinations of sensor readings always sum to zero — indicating redundant or faulty sensors",
         "The network has exactly 2 sensors",
-        "The data is noise-free"
+        "The data is ise-free"
       ],
       "correct_option": "Two combinations of sensor readings always sum to zero — indicating redundant or faulty sensors",
       "explanation": "Step 1: N(Aᵀ) captures linear dependencies among the rows (sensor readings). Step 2: Dimension 2 means there are 2 independent ways the sensors can cancel each other out. Step 3: This reveals redundancy (two sensors measuring the same thing) or systematic faults (sensors giving correlated wrong readings) — the left null space as a diagnostic tool for sensor networks."

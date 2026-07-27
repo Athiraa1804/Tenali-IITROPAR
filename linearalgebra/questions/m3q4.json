@@ -34,10 +34,10 @@
         "id": "M3Q4E3",
         "question": "Is (1,-2,1) in the null space of A = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
-          "Yes, because A*(1,-2,1) = (0,0,0)",
-          "No — not correct here",
-          "Only partially — does not match",
-          "Cannot determine — does not match"
+          "because A*(1,-2,1) = (0,0,0)",
+          "— t here",
+          "Only partially — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "Yes, because A*(1,-2,1) = (0,0,0)",
         "explanation": "Step 1: Multiply A by (1,−2,1): row1 gives 1−4+3=0, row2 gives 4−10+6=0, row3 gives 7−16+9=0. Step 2: All three outputs are zero, confirming the vector is in the null space. Step 3: The direction (1,−2,1) is completely invisible to the matrix — it is crushed to zero. Step 4: This is the essence of what a null space captures: every direction that the matrix maps to the zero vector, representing lost information when the transformation is applied."
@@ -82,10 +82,10 @@
         "id": "M3Q4E7",
         "question": "Does the null space of A = [[1,2,3],[4,5,6],[7,8,9]] contain non-zero vectors?",
         "options": [
-          "Yes, e.g., t(1,-2,1)",
-          "No, only the zero vector",
+          "e.g., t(1,-2,1)",
+          "only the zero vector",
           "Only (1,0,0)",
-          "Cannot determine"
+          "Cant determine"
         ],
         "correct_option": "Yes, e.g., t(1,-2,1)",
         "explanation": "Step 1: Since det(A) = 0, the matrix is singular and cannot be inverted. Step 2: Singular matrices always have non-trivial null spaces containing non-zero vectors like t(1,−2,1). Step 3: If the null space only contained the zero vector, A would be invertible — so a non-trivial null space is the signature of a singular matrix. Step 4: This connection between invertibility and null space triviality is a cornerstone of linear algebra: a matrix is invertible if and only if its null space is {0}."
@@ -96,7 +96,7 @@
         "options": [
           "A line through the origin",
           "A plane through the origin",
-          "All of R³ (incorrect)",
+          "All of R³)",
           "A single point"
         ],
         "correct_option": "A line through the origin",
@@ -133,9 +133,9 @@
         "question": "To find the null space of A = [[1,2,3],[4,5,6],[7,8,9]], you solve Ax = 0. Which rows should you use?",
         "options": [
           "Only the first two (since Row3 is redundant)",
-          "All three rows — does not match        ",
-          "Only Row3 (incorrect)                  ",
-          "Only Row1 (incorrect)                  "
+          "All three rows — does t match",
+          "Only Row3)",
+          "Only Row1)"
         ],
         "correct_option": "Only the first two (since Row3 is redundant)",
         "explanation": "Step 1: Row3 is a linear combination of Rows 1 and 2, so it adds no new information. Step 2: Solving the first two equations gives the complete null space. Step 3: In practice, row-reducing to echelon form systematically identifies which rows are independent — a technique you will use repeatedly to find null spaces efficiently. Step 4: The key insight is that redundant equations do not affect the solution set, so you can always discard them to simplify the system."
@@ -204,8 +204,8 @@
         "id": "M3Q4M7",
         "question": "Is the matrix A = [[1,2,3],[4,5,6],[7,8,9]] invertible?",
         "options": [
-          "No, because det(A) = 0",
-          "Yes, always",
+          "because det(A) = 0",
+          "always",
           "Only if augmented",
           "Depends on the context"
         ],
@@ -216,10 +216,10 @@
         "id": "M3Q4M8",
         "question": "If A is singular, what does Ax=b always have?",
         "options": [
-          "Either no solution or infinitely many solutions",
-          "Exactly one solution — does not match",
-          "No solution at all — does not match       ",
-          "Exactly two solutions...                  "
+          "Either solution or infinitely many solutions",
+          "Exactly one solution — does t match",
+          "solution at all — does t match",
+          "Exactly two solutions..."
         ],
         "correct_option": "Either no solution or infinitely many solutions",
         "explanation": "Step 1: A singular matrix has a non-trivial null space. Step 2: If Ax=b has a solution x₀, you can add any null space vector n to get another solution x₀+n, giving infinitely many. Step 3: If no solution exists (b is not in the column space), there are zero solutions. Step 4: This dichotomy — either no solutions or infinitely many — is a fundamental property of singular systems and explains why we can have 'free variables' in underdetermined systems."
@@ -229,9 +229,9 @@
         "question": "What is the rank-nullity theorem applied to A = [[1,2,3],[4,5,6],[7,8,9]]?",
         "options": [
           "rank(2) + nullity(1) = 3 (number of columns)",
-          "rank(3) + nullity(0) = 3...            ",
-          "rank(1) + nullity(2) = 3...            ",
-          "rank(0) + nullity(3) = 3...            "
+          "rank(3) + nullity(0) = 3...",
+          "rank(1) + nullity(2) = 3...",
+          "rank(0) + nullity(3) = 3..."
         ],
         "correct_option": "rank(2) + nullity(1) = 3 (number of columns)",
         "explanation": "Step 1: The rank-nullity theorem states rank(A) + nullity(A) = n. Step 2: For this 3×3 matrix, rank = 2 and nullity = 1, so 2 + 1 = 3 = n. Step 3: This theorem is the bridge between the row space (rank) and null space (nullity) — together they account for every dimension of the input space. Step 4: Rank tells you how many dimensions are preserved, and nullity tells you how many are lost — their sum is always the dimension of the input space."
@@ -255,9 +255,9 @@
         "question": "Prove that if x is in the null space of A, then cx is also in the null space for any scalar c.",
         "options": [
           "A(cx) = c(Ax) = c·0 = 0, so cx is in the null space",
-          "Only if c=1 — does not match                  ",
-          "Only for positive c — does not match          ",
-          "Not always true — does not match              "
+          "Only if c=1 — does t match",
+          "Only for positive c — does t match",
+          "t always true — does t match"
         ],
         "correct_option": "A(cx) = c(Ax) = c·0 = 0, so cx is in the null space",
         "explanation": "Step 1: Matrix multiplication is linear, so A(cx) = c(Ax). Step 2: Since Ax=0 for null space vectors, c(Ax) = c·0 = 0, so cx is also in the null space. Step 3: This closure under scalar multiplication is one of the three requirements for the null space to be a vector subspace — the others being closure under addition and containing the zero vector. Step 4: The proof relies entirely on the linearity of matrix multiplication, showing that null spaces inherit their subspace structure from the underlying linearity of the transformation."
@@ -267,9 +267,9 @@
         "question": "Prove that if x₁ and x₂ are both in the null space of A, then x₁+x₂ is also in the null space.",
         "options": [
           "A(x₁+x₂) = Ax₁+Ax₂ = 0+0 = 0 by linearity",
-          "Only if x₁=x₂ — does not match      ",
-          "Not necessarily — does not match",
-          "Only in R² (incorrect)              "
+          "Only if x₁=x₂ — does t match",
+          "t necessarily — does t match",
+          "Only in R²)"
         ],
         "correct_option": "A(x₁+x₂) = Ax₁+Ax₂ = 0+0 = 0 by linearity",
         "explanation": "Step 1: A(x₁+x₂) = Ax₁ + Ax₂ by the distributive property of matrix multiplication. Step 2: Since Ax₁=0 and Ax₂=0, the sum is 0+0=0, so x₁+x₂ also satisfies A(x₁+x₂)=0. Step 3: This closure under addition is the second requirement for the null space to be a subspace — combining this with scalar closure and the zero vector gives a complete vector subspace. Step 4: These three properties (zero vector, addition closure, scalar closure) are the standard subspace test, and the null space passes all of them."
@@ -279,9 +279,9 @@
         "question": "For A = [[1,2,3],[4,5,6],[7,8,9]], verify that every row of A is perpendicular to the null space direction (1,-2,1).",
         "options": [
           "Row1·(1,-2,1) = 0, Row2·(1,-2,1) = 0, Row3·(1,-2,1) = 0 — all zero",
-          "Only Row1 is perpendicular...                                ",
-          "None are perpendicular...                                    ",
-          "Only Row3 is perpendicular...                                "
+          "Only Row1 is perpendicular...",
+          "ne are perpendicular...",
+          "Only Row3 is perpendicular..."
         ],
         "correct_option": "Row1·(1,-2,1) = 0, Row2·(1,-2,1) = 0, Row3·(1,-2,1) = 0 — all zero",
         "explanation": "Step 1: Row1·(1,−2,1) = 1−4+3 = 0. Row2·(1,−2,1) = 4−10+6 = 0. Step 2: Row3·(1,−2,1) = 7−16+9 = 0. Every row is perpendicular to the null space direction. Step 3: This confirms the Fundamental Theorem of Linear Algebra: the null space is always orthogonal to the row space. Step 4: The orthogonality is not coincidental — it follows directly from the fact that Ax=0 means each row·x=0, so every null space vector is perpendicular to every row, and by linearity, to every linear combination of rows."
@@ -291,9 +291,9 @@
         "question": "If A has rank 2 in R³, what can you say about the geometric relationship between the row space and null space?",
         "options": [
           "They are perpendicular complements: row space is a plane, null space is a line perpendicular to it",
-          "They are parallel — does not match                                                           ",
-          "They are identical — does not match                                                          ",
-          "They don't intersect — does not match                                                        "
+          "They are parallel — does t match",
+          "They are identical — does t match",
+          "They don't intersect — does t match"
         ],
         "correct_option": "They are perpendicular complements: row space is a plane, null space is a line perpendicular to it",
         "explanation": "Step 1: Rank 2 means the row space is a 2D plane in R³. Step 2: The null space is a 1D line perpendicular to this plane (by the Fundamental Theorem), and together they account for all 3 dimensions. Step 3: This perpendicular complement — plane plus its normal line — is a beautiful geometric picture that generalizes to any dimension. Step 4: The row space and null space are orthogonal complements: they are perpendicular, intersect only at the origin, and together span the entire input space R³."
@@ -314,10 +314,10 @@
         "id": "M3Q4H6",
         "question": "Can a 3×3 matrix with nullity 2 exist? If so, what is its rank?",
         "options": [
-          "Yes, with rank 1",
-          "No, impossible",
-          "Yes, with rank 3",
-          "Yes, with rank 0"
+          "with rank 1",
+          "impossible",
+          "with rank 3",
+          "with rank 0"
         ],
         "correct_option": "Yes, with rank 1",
         "explanation": "Step 1: By rank-nullity: rank + 2 = 3, so rank = 1. Step 2: A rank-1 matrix like [[1,2,3],[2,4,6],[3,6,9]] has nullity 2 — its null space is a plane. Step 3: Low-rank matrices have large null spaces, which is why they lose so much information and appear frequently in data compression. Step 4: The rank-nullity theorem guarantees that rank and nullity always trade off — more null space means less rank, and vice versa."
@@ -326,10 +326,10 @@
         "id": "M3Q4H7",
         "question": "Why does the null space of A = [[1,2,3],[4,5,6],[7,8,9]] equal the null space of [[1,2,3],[4,5,6]] (the first two rows only)?",
         "options": [
-          "Because Row3 is a linear combination of Rows 1 and 2, so it adds no new constraints",
-          "Because Row3 is always redundant...                                           ",
-          "Because 3×3 matrices always have this property...                             ",
-          "Because the null space ignores row operations...                              "
+          "Because Row3 is a linear combination of Rows 1 and 2, so it adds new constraints",
+          "Because Row3 is always redundant...",
+          "Because 3×3 matrices always have this property...",
+          "Because the null space igres row operations..."
         ],
         "correct_option": "Because Row3 is a linear combination of Rows 1 and 2, so it adds no new constraints",
         "explanation": "Step 1: Row3 = 2×Row2 − Row1, so the third equation Ax₃=0 is automatically satisfied when the first two are. Step 2: The third equation is not independent — it adds no new constraint on the null space. Step 3: This is why row reduction works: redundant rows can be discarded without changing the solution set. Step 4: Row-equivalent matrices have the same null space — this invariance is fundamental to Gaussian elimination and the theory of linear systems."
@@ -350,10 +350,10 @@
         "id": "M3Q4H9",
         "question": "Is the null space of A² always at least as large as the null space of A?",
         "options": [
-          "Yes — if Ax=0, then A²x = A(Ax) = A(0) = 0",
-          "No, always smaller — does not match",
-          "Always the same size — does not match",
-          "Depends on A — does not match"
+          "— if Ax=0, then A²x = A(Ax) = A(0) = 0",
+          "always smaller — does t match",
+          "Always the same size — does t match",
+          "Depends on A — does t match"
         ],
         "correct_option": "Yes — if Ax=0, then A²x = A(Ax) = A(0) = 0",
         "explanation": "Step 1: If x is in the null space of A, then Ax=0. Step 2: Then A²x = A(Ax) = A(0) = 0, so x is also in the null space of A². Thus null(A) ⊆ null(A²). Step 3: The null space can only grow or stay the same when you apply the matrix again — it never shrinks. Step 4: This chain of inclusions null(A) ⊆ null(A²) ⊆ null(A³) ⊆ ... eventually stabilizes and is key to understanding the Jordan canonical form and nilpotent matrices."
@@ -363,9 +363,9 @@
         "question": "For A = [[1,2,3],[4,5,6],[7,8,9]], what is the geometric meaning of the null space direction (1,-2,1)?",
         "options": [
           "It is the direction perpendicular to the plane spanned by the rows of A",
-          "It is the direction of the rows...                                ",
-          "It is the diagonal of A...                                        ",
-          "It is the direction of steepest ascent...                         "
+          "It is the direction of the rows...",
+          "It is the diagonal of A...",
+          "It is the direction of steepest ascent..."
         ],
         "correct_option": "It is the direction perpendicular to the plane spanned by the rows of A",
         "explanation": "Step 1: The row space of A is a plane spanned by (1,2,3) and (4,5,6). Step 2: The null space direction (1,−2,1) is perpendicular to both row vectors, forming the normal to the row space plane. Step 3: This geometric picture — a line perpendicular to a plane — is the three-dimensional version of the perpendicular complement you saw in 2D in Mission 22. Step 4: The null space is the orthogonal complement of the row space: every vector in the null space is perpendicular to every vector in the row space, and together they span all of R³."
@@ -397,7 +397,7 @@
       "story": "When you remove background noise from an audio recording, you are filtering out specific frequency components. The noise lives in the null space of the desired signal — it is orthogonal to the clean audio.",
       "question": "In audio noise removal, what does the null space of the filtering operation contain?",
       "options": [
-        "The filtered-out noise",
+        "The filtered-out ise",
         "The clean audio signal",
         "The volume level",
         "The recording duration"
@@ -413,7 +413,7 @@
       "story": "When engineers analyse how a bridge vibrates, they compute the stiffness matrix of the structure. The null space represents vibration modes that require zero energy — the structure can move in these patterns without any restoring force.",
       "question": "What do the zero-energy modes in the null space of a stiffness matrix represent?",
       "options": [
-        "Rigid body modes that require no energy to excite",
+        "Rigid body modes that require energy to excite",
         "The strongest vibration modes",
         "Modes that destroy the structure",
         "The natural frequency of the bridge"

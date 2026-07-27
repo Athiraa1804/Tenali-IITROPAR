@@ -135,7 +135,7 @@
           "(1,2).(-2,1) = -2+2 = 0",
           "(1,2).(-2,1) = -2+2 = 1",
           "(1,2).(-2,1) = 2+2 = 4",
-          "They are not orthogonal"
+          "They are t orthogonal"
         ],
         "correct_option": "(1,2).(-2,1) = -2+2 = 0",
         "explanation": "Step 1: Compute (1,2).(-2,1) = 1(-2) + 2(1) = -2 + 2 = 0. Step 2: The dot product is zero, confirming R(M) perpendicular to N(M). Step 3: In R^2, these are two perpendicular lines: the row space (the direction that matters) and the null space (the direction that is lost). This orthogonality is not a coincidence but a theorem (R(A) perpendicular to N(A) for all matrices), arising from the definition of matrix-vector multiplication as dot products of rows with x."
@@ -145,9 +145,9 @@
         "question": "Find the Left Null Space N(M^T) for M = [[2,4],[1,2],[3,6]]. Solve M^T y = 0 where M^T = [[2,1,3],[4,2,6]].",
         "options": [
           "span{(1,-2,0)} and span{(3,0,-1)} -- a plane",
-          "span{(1,2,3)} -- a line...             ",
-          "{0} -- trivial — does not match        ",
-          "All of R^3 (incorrect)                 "
+          "span{(1,2,3)} -- a line...",
+          "{0} -- trivial — does t match",
+          "All of R^3)"
         ],
         "correct_option": "span{(1,-2,0)} and span{(3,0,-1)} -- a plane",
         "explanation": "Step 1: M^T y = 0 gives 2y1 + y2 + 3y3 = 0 and 4y1 + 2y2 + 6y3 = 0, which both reduce to 2y1 + y2 + 3y3 = 0. Step 2: Setting y1 = s, y3 = t: y2 = -2s - 3t, giving y = s(1,-2,0) + t(3,0,-2). Step 3: N(M^T) is a 2D plane in R^3, orthogonal to C(M) = span{(2,1,3)}. Verification: (2,1,3).(1,-2,0) = 2-2+0 = 0 and (2,1,3).(3,0,-2) = 6+0-6 = 0, confirming C(M) perpendicular to N(M^T)."
@@ -156,10 +156,10 @@
         "id": "M5Q4M3",
         "question": "For M = [[2,4],[1,2],[3,6]], verify that (2,1,3) (a column of M) is orthogonal to the Left Null Space.",
         "options": [
-          "Yes: (2,1,3).(1,-2,0) = 0 and (2,1,3).(0,-3,1) = 0",
-          "No: the dot products are non-zero...         ",
-          "Only the first dot product is zero...        ",
-          "Cannot verify without computing...           "
+          "(2,1,3).(1,-2,0) = 0 and (2,1,3).(0,-3,1) = 0",
+          "the dot products are n-zero...",
+          "Only the first dot product is zero...",
+          "Cant verify without computing..."
         ],
         "correct_option": "Yes: (2,1,3).(1,-2,0) = 0 and (2,1,3).(0,-3,1) = 0",
         "explanation": "Step 1: (2,1,3).(1,-2,0) = 2-2+0 = 0 and (2,1,3).(0,-3,1) = 0-3+3 = 0. Step 2: Both dot products are zero, confirming C(M) perpendicular to N(M^T). Step 3: This is the output-side orthogonality: every reachable output direction (in C(M)) is perpendicular to every unreachable direction (in N(M^T)). The same proof that gives R(M) perpendicular to N(M) from Mx = 0 gives C(M) perpendicular to N(M^T) from M^T y = 0, revealing the deep symmetry of the four-subspace framework."
@@ -216,10 +216,10 @@
         "id": "M5Q4M8",
         "question": "If we multiply M by the vector (1,2)^T (which is in R(M)), what do we get?",
         "options": [
-          "(10,5,15)^T -- a non-zero vector in C(M)",
-          "(0,0,0)^T -- the zero vector       ",
-          "(1,2,3)^T (incorrect)              ",
-          "(2,4,6)^T (incorrect)              "
+          "(10,5,15)^T -- a n-zero vector in C(M)",
+          "(0,0,0)^T -- the zero vector",
+          "(1,2,3)^T)",
+          "(2,4,6)^T)"
         ],
         "correct_option": "(10,5,15)^T -- a non-zero vector in C(M)",
         "explanation": "Step 1: M(1,2)^T = (2+8, 1+4, 3+12)^T = (10,5,15)^T. Step 2: This equals 5(2,1,3), confirming it lies in C(M) = span{(2,1,3)}. Step 3: The transformation maps row-space vectors to non-zero outputs in the column space -- this is the 'useful' part of the input-output relationship. The row space R(M) maps bijectively onto the column space C(M), while the null space N(M) maps to zero. This is the fundamental action of any linear transformation: preserve the row space (mapped to C(M)) and destroy the null space (mapped to zero)."
@@ -229,9 +229,9 @@
         "question": "If we multiply M by (-2,1)^T (which is in N(M)), what do we get?",
         "options": [
           "(0,0,0)^T -- the zero vector",
-          "(-2,1,0)^T (incorrect)",
-          "(2,-1,0)^T (incorrect)",
-          "(0,0,1)^T (incorrect)"
+          "(-2,1,0)^T)",
+          "(2,-1,0)^T)",
+          "(0,0,1)^T)"
         ],
         "correct_option": "(0,0,0)^T -- the zero vector",
         "explanation": "Step 1: M(-2,1)^T = (-4+4, -2+2, -6+6)^T = (0,0,0)^T. Step 2: This confirms (-2,1) is in N(M). Step 3: Null-space vectors are annihilated by the transformation -- they carry information that is completely destroyed. This is the definition of the null space and the geometric meaning of rank deficiency: the transformation cannot distinguish between any two inputs that differ by a null-space vector. In applications, this means those input directions are 'invisible' to the system."
@@ -255,9 +255,9 @@
         "question": "For M = [[2,4],[1,2],[3,6]], verify ALL four fundamental relationships: (1) R(M) perpendicular to N(M), (2) C(M) perpendicular to N(M^T), (3) rank + nullity = n, (4) rank + left nullity = m.",
         "options": [
           "All four verified: (1,2).(-2,1)=0, (2,1,3).(1,-2,0)=0, 1+1=2, 1+2=3",
-          "Only (1) and (3) hold...                                      ",
-          "Only (2) and (4) hold...                                      ",
-          "None hold for this matrix...                                  "
+          "Only (1) and (3) hold...",
+          "Only (2) and (4) hold...",
+          "ne hold for this matrix..."
         ],
         "correct_option": "All four verified: (1,2).(-2,1)=0, (2,1,3).(1,-2,0)=0, 1+1=2, 1+2=3",
         "explanation": "Step 1: R(M) perpendicular to N(M): (1,2).(-2,1) = -2+2 = 0. Step 2: C(M) perpendicular to N(M^T): (2,1,3).(1,-2,0) = 2-2+0 = 0. Step 3: rank + nullity = 1+1 = 2 = n; rank + left nullity = 1+2 = 3 = m. All four relationships hold. This is the complete verification of the four-subspace framework for a specific matrix: two orthogonality results and two dimension-counting results, all interconnected through the rank parameter. Every matrix, regardless of size or rank, satisfies all four relationships."
@@ -267,9 +267,9 @@
         "question": "Project b = (1,0,0)^T onto C(M) and N(M^T). What are the components?",
         "options": [
           "proj_C = (2/14)(2,1,3) = (2/7, 1/14, 3/14); residual in N(M^T)",
-          "proj_C = (1,0,0); residual = 0...                        ",
-          "proj_C = 0; residual = (1,0,0)...                        ",
-          "Cannot project onto a line...                            "
+          "proj_C = (1,0,0); residual = 0...",
+          "proj_C = 0; residual = (1,0,0)...",
+          "Cant project onto a line..."
         ],
         "correct_option": "proj_C = (2/14)(2,1,3) = (2/7, 1/14, 3/14); residual in N(M^T)",
         "explanation": "Step 1: C(M) = span{(2,1,3)}. Step 2: proj = [(1,0,0).(2,1,3)/|(2,1,3)|^2](2,1,3) = (2/14)(2,1,3) = (4/14, 2/14, 6/14). Step 3: Residual = (1,0,0)-(4/14,2/14,6/14) = (10/14,-2/14,-6/14), which is orthogonal to (2,1,3) and lies in N(M^T). This is the four-subspace decomposition in action: b = b_C + b_N with b_C in C(M) and b_N in N(M^T), the foundation of least-squares approximation."
@@ -290,10 +290,10 @@
         "id": "M5Q4H4",
         "question": "If we add a 4th column to M making it M' = [[2,4,6],[1,2,3],[3,6,9]], what happens to rank, nullity, and the four subspaces?",
         "options": [
-          "rank stays 1, nullity increases from 1 to 2; N(M') is now a plane in R^3",
-          "rank increases to 2, nullity stays 1...                            ",
-          "rank stays 1, nullity stays 1...                                   ",
-          "rank becomes 3, nullity becomes 0...                               "
+          "rank stays 1, nullity increases from 1 to 2; N(M') is w a plane in R^3",
+          "rank increases to 2, nullity stays 1...",
+          "rank stays 1, nullity stays 1...",
+          "rank becomes 3, nullity becomes 0..."
         ],
         "correct_option": "rank stays 1, nullity increases from 1 to 2; N(M') is now a plane in R^3",
         "explanation": "Step 1: Column 3 = (6,3,9) = 3(2,1,3), so it is dependent on column 1. Step 2: Rank stays 1. Step 3: nullity = 3 - 1 = 2 (increased from 1). The null space is now a 2D plane in R^3 containing more redundant input directions. Adding a dependent column does not increase rank but does increase nullity -- the Rank-Nullity Theorem (1+2=3=n) captures this tradeoff. This illustrates a practical principle: adding redundant variables to a model increases nullity without increasing information."
@@ -305,7 +305,7 @@
           "v_R = [(v.(1,2))/5](1,2), v_N = v - v_R",
           "v_R = v, v_N = 0 always...",
           "v_R = 0, v_N = v always...",
-          "Cannot decompose arbitrary vectors"
+          "Cant decompose arbitrary vectors"
         ],
         "correct_option": "v_R = [(v.(1,2))/5](1,2), v_N = v - v_R",
         "explanation": "Step 1: R(M) = span{(1,2)} with |(1,2)|^2 = 5. Step 2: Orthogonal projection onto R(M): v_R = [(v.(1,2))/5](1,2). Step 3: The null-space component v_N = v - v_R is perpendicular to (1,2), so v_N is in N(M) = span{(-2,1)}. This unique decomposition R^2 = R(M) + N(M) is guaranteed by the orthogonality R(M) perpendicular to N(M) and the dimension count 1+1 = 2. It provides the explicit formula for separating any input into its surviving and lost parts."
@@ -315,9 +315,9 @@
         "question": "For M = [[2,4],[1,2],[3,6]], the Least Squares solution to Mx = b for b = (1,0,0)^T exists because:",
         "options": [
           "b can be decomposed as b_C + b_N where b_C is in C(M) and we solve Mx = b_C",
-          "M is invertible — does not match                                      ",
-          "b is already in C(M) — does not match                                 ",
-          "The system is consistent...                                           "
+          "M is invertible — does t match",
+          "b is already in C(M) — does t match",
+          "The system is consistent..."
         ],
         "correct_option": "b can be decomposed as b_C + b_N where b_C is in C(M) and we solve Mx = b_C",
         "explanation": "Step 1: b = (1,0,0)^T is not in C(M) = span{(2,1,3)}, so Mx = b has no exact solution. Step 2: Project b onto C(M) to get b_C = (4/14, 2/14, 6/14). Step 3: Solve Mx = b_C instead -- this is the least-squares solution, minimizing |b - Mx|^2. The four-subspace framework guarantees this decomposition exists for any b: b = b_C + b_N with b_C in C(M) (reachable) and b_N in N(M^T) (unreachable). The least-squares solution solves for the reachable part and accepts the unreachable part as the minimum possible error."
@@ -327,9 +327,9 @@
         "question": "If M is viewed as a linear transformation T: R^2 to R^3, describe the geometric action.",
         "options": [
           "T maps the entire plane R^2 onto a single line in R^3, squashing one dimension",
-          "T maps R^2 onto a plane in R^3...                                        ",
-          "T maps R^2 bijectively onto R^3...                                       ",
-          "T maps R^2 to a single point...                                          "
+          "T maps R^2 onto a plane in R^3...",
+          "T maps R^2 bijectively onto R^3...",
+          "T maps R^2 to a single point..."
         ],
         "correct_option": "T maps the entire plane R^2 onto a single line in R^3, squashing one dimension",
         "explanation": "Step 1: rank = 1, so C(M) is a 1D line in R^3. Step 2: nullity = 1, so one dimension (N(M) = span{(-2,1)}) is collapsed to zero. Step 3: The transformation compresses 2D input onto a 1D line, losing one dimension of information. The surviving input direction (R(M) = span{(1,2)}) is mapped to the output line (C(M) = span{(2,1,3)}), while the lost direction (N(M)) is squashed to zero. This is the geometric essence of rank deficiency: the transformation's action is completely determined by how it treats the row space (preserved) versus the null space (destroyed)."
@@ -339,9 +339,9 @@
         "question": "For M = [[2,4],[1,2],[3,6]], what is the pseudo-inverse M+ and what does it do?",
         "options": [
           "M+ maps R^3 back to R^2, inverting the transformation on C(M) and mapping N(M^T) to 0",
-          "M+ doesn't exist because M is not square...                                     ",
-          "M+ = M^T always — does not match                                                ",
-          "M+ is the same as M^-1...                                                       "
+          "M+ doesn't exist because M is t square...",
+          "M+ = M^T always — does t match",
+          "M+ is the same as M^-1..."
         ],
         "correct_option": "M+ maps R^3 back to R^2, inverting the transformation on C(M) and mapping N(M^T) to 0",
         "explanation": "Step 1: M is not invertible (not square, rank-deficient). Step 2: The pseudo-inverse M+ = M^T(MM^T)+ exists and maps outputs back to inputs. Step 3: M+ acts as a true inverse on C(M) (reversing the transformation on reachable outputs) but maps N(M^T) to zero (unreachable outputs are sent to the null space). The pseudo-inverse is the four-subspace-aware generalization of the inverse: it undoes the transformation where possible (on C(M)) and gracefully handles the impossible (N(M^T))."
@@ -351,9 +351,9 @@
         "question": "For M = [[2,4],[1,2],[3,6]], the four subspaces have dimensions 1, 1, 1, 2. What pattern do you notice?",
         "options": [
           "dim(R) = dim(C) = rank, dim(N) = n-rank, dim(N^T) = m-rank",
-          "All dimensions are equal...                          ",
-          "dim(R) + dim(C) = dim(N) + dim(N^T)...               ",
-          "dim(R) = dim(N^T) and dim(C) = dim(N)...             "
+          "All dimensions are equal...",
+          "dim(R) + dim(C) = dim(N) + dim(N^T)...",
+          "dim(R) = dim(N^T) and dim(C) = dim(N)..."
         ],
         "correct_option": "dim(R) = dim(C) = rank, dim(N) = n-rank, dim(N^T) = m-rank",
         "explanation": "Step 1: dim(R(M)) = dim(C(M)) = rank = 1. Step 2: dim(N(M)) = n - rank = 2-1 = 1. Step 3: dim(N(M^T)) = m - rank = 3-1 = 2. This is the universal pattern: rank determines all four dimensions. The row space and column space always have the same dimension (rank), while the null spaces absorb the remaining dimensions on each side. This pattern, codified in the Rank-Nullity Theorem and its output-side analog, is the complete dimensional anatomy of any linear transformation."
@@ -363,9 +363,9 @@
         "question": "For M = [[2,4],[1,2],[3,6]], verify that every vector in C(M) is reachable and every vector in N(M^T) is unreachable. Which vectors in R^3 can M produce as output?",
         "options": [
           "Only scalar multiples of (2,1,3) -- the 1D column space",
-          "All vectors in R^3 — does not match               ",
-          "All vectors perpendicular to (2,1,3)...           ",
-          "Only the zero vector — does not match             "
+          "All vectors in R^3 — does t match",
+          "All vectors perpendicular to (2,1,3)...",
+          "Only the zero vector — does t match"
         ],
         "correct_option": "Only scalar multiples of (2,1,3) -- the 1D column space",
         "explanation": "Step 1: Mx = x1(2,1,3) + x2(4,2,6) = (x1+2x2)(2,1,3). Step 2: Every output is a scalar multiple of (2,1,3). Step 3: Only the 1D line span{(2,1,3)} is reachable -- the other 2 dimensions of R^3 (in N(M^T)) are impossible outputs. The column space is the set of all reachable outputs, and the left null space is the set of all unreachable directions. Together they partition R^3: every vector in R^3 has a component in C(M) (reachable) and a component in N(M^T) (unreachable), a direct consequence of C(M) perpendicular to N(M^T)."

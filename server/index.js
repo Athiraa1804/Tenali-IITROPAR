@@ -12271,6 +12271,12 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
       const unseen = pool.filter(q => !seenIds.has(q.id));
       const questions = unseen.length > 0 ? unseen : pool;
       const q = questions[Math.floor(Math.random() * questions.length)];
+      // Shuffle the MCQ choices per request so the user can't guess the
+      // answer by length/position. The check route matches by exact
+      // (normalized) text, so we keep `answer` as the literal correct text.
+      const correctText = q.correct_option;
+      const opts = Array.isArray(q.options) ? q.options.slice() : [];
+      const shuffled = shuffleArray(opts);
       return res.json({
         id,
         missionId,
@@ -12278,14 +12284,20 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
         type: 'mcq_' + q.id,
         answerType: 'mcq',
         prompt: q.question,
-        choices: q.options,
-        answer: q.correct_option,
-        display: q.correct_option,
+        choices: shuffled,
+        answer: correctText,
+        display: correctText,
         explanation: q.explanation,
       });
     }
     // Fallback to algorithmic generation
     const q = MQ(missionId, difficulty, seen);
+    // Shuffle MCQ choices so the user can't guess the answer by length/position.
+    // Check route (line 12303+) matches by exact (normalized) text, so we keep
+    // `answer`/`display` as literal correct text.
+    if (q && Array.isArray(q.choices) && q.choices.length > 1) {
+      q.choices = shuffleArray(q.choices.slice());
+    }
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
     console.error('Mission quiz question error:', e);

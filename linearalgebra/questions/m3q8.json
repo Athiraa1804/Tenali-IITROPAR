@@ -35,9 +35,9 @@
         "question": "Since (1,1,-3) is perpendicular to both (1,2,1) and (2,7,3), it is:",
         "options": [
           "Perpendicular to every vector in the plane W",
-          "Parallel to the plane...               ",
-          "In the plane — does not match          ",
-          "The zero vector — does not match       "
+          "Parallel to the plane...",
+          "In the plane — does t match",
+          "The zero vector — does t match"
         ],
         "correct_option": "Perpendicular to every vector in the plane W",
         "explanation": "Step 1: Any vector in W is a combination α(1,2,1)+β(2,7,3). Step 2: (1,1,-3)·(αv₁+βv₂) = α(0)+β(0) = 0, so it's perpendicular to all of W."
@@ -48,8 +48,8 @@
         "options": [
           "A line through the origin",
           "A plane through the origin",
-          "A point (incorrect)",
-          "All of R³ (incorrect)"
+          "A point)",
+          "All of R³)"
         ],
         "correct_option": "A line through the origin",
         "explanation": "Step 1: Two equations in 3 unknowns leave 1 free parameter. Step 2: One free parameter describes a line through the origin."
@@ -58,10 +58,10 @@
         "id": "M3Q8E5",
         "question": "Does the null space direction (1,1,-3) satisfy x+2y+z=0?",
         "options": [
-          "Yes, because 1+2-3=0",
-          "No — not correct here",
+          "because 1+2-3=0",
+          "— t here",
           "Only approximately",
-          "Cannot determine"
+          "Cant determine"
         ],
         "correct_option": "Yes, because 1+2-3=0",
         "explanation": "Step 1: x=1, y=1, z=-3. Step 2: Compute x+2y+z = 1+2(1)+(-3) = 1+2-3 = 0. Step 3: Since it satisfies the first plane equation, (1,1,-3) lies in the null space."
@@ -70,10 +70,10 @@
         "id": "M3Q8E6",
         "question": "Does the null space direction (1,1,-3) satisfy 2x+7y+3z=0?",
         "options": [
-          "Yes, because 2+7-9=0",
-          "No — not correct here",
+          "because 2+7-9=0",
+          "— t here",
           "Only if scaled",
-          "Cannot determine"
+          "Cant determine"
         ],
         "correct_option": "Yes, because 2+7-9=0",
         "explanation": "Step 1: 2(1)+7(1)+3(-3) = 2+7-9 = 0. Step 2: It satisfies both equations, confirming it's in the null space."
@@ -83,9 +83,9 @@
         "question": "How many equations are needed to find the null space of a plane in R³?",
         "options": [
           "2 (one for each spanning vector)",
-          "1 — not correct here",
-          "3 — not correct here",
-          "0 — not correct here"
+          "1 — t here",
+          "3 — t here",
+          "0 — t here"
         ],
         "correct_option": "2 (one for each spanning vector)",
         "explanation": "Step 1: Each spanning vector gives one perpendicularity condition. Step 2: Two spanning vectors give two equations, reducing 3 unknowns to 1 free parameter."
@@ -94,10 +94,10 @@
         "id": "M3Q8E8",
         "question": "Is (1,1,-3) perpendicular to the plane W?",
         "options": [
-          "Yes — it is perpendicular to every vector in W",
-          "No — not correct here                    ",
-          "Only to the basis vectors...             ",
-          "Only in special cases...                 "
+          "— it is perpendicular to every vector in W",
+          "— t here",
+          "Only to the basis vectors...",
+          "Only in special cases..."
         ],
         "correct_option": "Yes — it is perpendicular to every vector in W",
         "explanation": "Step 1: Perpendicularity to the basis vectors implies perpendicularity to all their combinations. Step 2: Therefore (1,1,-3) is perpendicular to the entire plane."
@@ -109,7 +109,7 @@
           "Orthogonal complement",
           "Parallel complement",
           "Tangent space",
-          "Normal space"
+          "rmal space"
         ],
         "correct_option": "Orthogonal complement",
         "explanation": "Step 1: The null space consists of all vectors perpendicular to W. Step 2: This perpendicular set is formally called the orthogonal complement of W."
@@ -192,10 +192,10 @@
         "id": "M3Q8M6",
         "question": "Is the null space of W the same as the normal vector to the plane?",
         "options": [
-          "Yes — the null space direction (1,1,-3) is the normal to the plane",
-          "No — they are different...                                   ",
-          "Only in R² (incorrect)                                       ",
-          "Only for perpendicular planes...                             "
+          "— the null space direction (1,1,-3) is the rmal to the plane",
+          "— they are different...",
+          "Only in R²)",
+          "Only for perpendicular planes..."
         ],
         "correct_option": "Yes — the null space direction (1,1,-3) is the normal to the plane",
         "explanation": "Step 1: The normal to a plane is perpendicular to every vector in the plane. Step 2: The null space direction (1,1,-3) satisfies this, so it IS the normal."
@@ -205,9 +205,9 @@
         "question": "How many independent directions are perpendicular to the plane W in R³?",
         "options": [
           "1 (the null space line)",
-          "2 — not correct here",
-          "3 — not correct here",
-          "0 — not correct here"
+          "2 — t here",
+          "3 — t here",
+          "0 — t here"
         ],
         "correct_option": "1 (the null space line)",
         "explanation": "Step 1: The null space is 1-dimensional. Step 2: There is exactly one independent direction perpendicular to the plane — the normal direction."
@@ -216,10 +216,10 @@
         "id": "M3Q8M8",
         "question": "Is the null space of W a subspace of R³?",
         "options": [
-          "Yes — it's a line through the origin, satisfying all subspace conditions",
-          "No — not correct here                                              ",
-          "Only if it passes through the origin...                            ",
-          "Subspaces can't be null spaces...                                  "
+          "— it's a line through the origin, satisfying all subspace conditions",
+          "— t here",
+          "Only if it passes through the origin...",
+          "Subspaces can't be null spaces..."
         ],
         "correct_option": "Yes — it's a line through the origin, satisfying all subspace conditions",
         "explanation": "Step 1: The null space contains (0,0,0), is closed under + and scalar ×. Step 2: These are the three subspace conditions, all satisfied."
@@ -228,10 +228,10 @@
         "id": "M3Q8M9",
         "question": "What is the equation of the plane containing W = span{(1,2,1),(2,7,3)}?",
         "options": [
-          "x+y-3z=0 (using normal (1,1,-3))",
-          "x+2y+z=0 (incorrect)",
-          "2x+7y+3z=0 (incorrect)",
-          "x+y+z=0 (incorrect)"
+          "x+y-3z=0 (using rmal (1,1,-3))",
+          "x+2y+z=0)",
+          "2x+7y+3z=0)",
+          "x+y+z=0)"
         ],
         "correct_option": "x+y-3z=0 (using normal (1,1,-3))",
         "explanation": "Step 1: The normal to the plane is (1,1,-3). Step 2: The plane equation is 1·x+1·y+(-3)·z = 0, or x+y-3z=0."
@@ -240,10 +240,10 @@
         "id": "M3Q8M10",
         "question": "If you know the null space direction is (1,1,-3), can you write the plane equation without solving the system?",
         "options": [
-          "Yes — the plane is perpendicular to (1,1,-3), so x+y-3z=0",
-          "No — you always need to solve...                    ",
-          "Only approximately — does not match                 ",
-          "Only for special planes...                          "
+          "— the plane is perpendicular to (1,1,-3), so x+y-3z=0",
+          "— you always need to solve...",
+          "Only approximately — does t match",
+          "Only for special planes..."
         ],
         "correct_option": "Yes — the plane is perpendicular to (1,1,-3), so x+y-3z=0",
         "explanation": "Step 1: The null space direction IS the normal to the plane. Step 2: The plane equation is n·(x,y,z)=0, giving x+y-3z=0 directly."
@@ -255,9 +255,9 @@
         "question": "Prove that the null space of W is perpendicular to EVERY vector in W, not just the basis vectors.",
         "options": [
           "For any w=αv₁+βv₂ in W: n·w = α(n·v₁)+β(n·v₂) = α·0+β·0 = 0",
-          "Only perpendicular to basis vectors...                ",
-          "Not necessarily perpendicular...                      ",
-          "Only true for special vectors...                      "
+          "Only perpendicular to basis vectors...",
+          "t necessarily perpendicular...",
+          "Only true for special vectors..."
         ],
         "correct_option": "For any w=αv₁+βv₂ in W: n·w = α(n·v₁)+β(n·v₂) = α·0+β·0 = 0",
         "explanation": "Step 1: Any w in W is w = αv₁+βv₂. Step 2: n·w = α(n·v₁)+β(n·v₂) = 0+0 = 0 by linearity of the dot product."
@@ -266,10 +266,10 @@
         "id": "M3Q8H2",
         "question": "If the null space direction were (2,2,-6) instead of (1,1,-3), would it still be perpendicular to W?",
         "options": [
-          "Yes — (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
-          "No — different vector...                                  ",
-          "Only if scaled — does not match                           ",
-          "Cannot determine — does not match                         "
+          "— (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
+          "— different vector...",
+          "Only if scaled — does t match",
+          "Cant determine — does t match"
         ],
         "correct_option": "Yes — (2,2,-6) = 2(1,1,-3), same direction, still perpendicular",
         "explanation": "Step 1: (2,2,-6) is a scalar multiple of (1,1,-3). Step 2: Any scalar multiple of a perpendicular vector is also perpendicular — scaling doesn't change the direction."
@@ -279,9 +279,9 @@
         "question": "Why does two equations in three unknowns give a line (1D) rather than a plane (2D)?",
         "options": [
           "Two independent equations remove 2 degrees of freedom from 3, leaving 1",
-          "Because lines are simpler...                                      ",
-          "Because R³ is 3D — does not match                                 ",
-          "Because equations always reduce by 1...                           "
+          "Because lines are simpler...",
+          "Because R³ is 3D — does t match",
+          "Because equations always reduce by 1..."
         ],
         "correct_option": "Two independent equations remove 2 degrees of freedom from 3, leaving 1",
         "explanation": "Step 1: R³ has 3 degrees of freedom. Step 2: Each independent equation removes 1 degree of freedom. Two equations leave 3-2=1 free parameter, describing a line."
@@ -290,10 +290,10 @@
         "id": "M3Q8H4",
         "question": "Can two different planes in R³ have the same null space (perpendicular line)?",
         "options": [
-          "Yes — if they are the same plane, they have the same normal",
-          "No — different planes always have different normals",
-          "Only if parallel — does not match                     ",
-          "Only in R² (incorrect)                                "
+          "— if they are the same plane, they have the same rmal",
+          "— different planes always have different rmals",
+          "Only if parallel — does t match",
+          "Only in R²)"
         ],
         "correct_option": "Yes — if they are the same plane, they have the same normal",
         "explanation": "Step 1: The null space direction equals the plane's normal. Step 2: Two planes with the same normal and passing through the origin are the same plane."
@@ -303,9 +303,9 @@
         "question": "What is the projection of the vector (1,0,0) onto the null space direction (1,1,-3)?",
         "options": [
           "[(1,0,0)·(1,1,-3)/(1,1,-3)·(1,1,-3)](1,1,-3) = (1/11)(1,1,-3)",
-          "(1,1,-3) (incorrect)                                    ",
-          "(0,0,0) (incorrect)                                     ",
-          "(1,0,0) (incorrect)                                     "
+          "(1,1,-3))",
+          "(0,0,0))",
+          "(1,0,0))"
         ],
         "correct_option": "[(1,0,0)·(1,1,-3)/(1,1,-3)·(1,1,-3)](1,1,-3) = (1/11)(1,1,-3)",
         "explanation": "Step 1: (1,0,0)·(1,1,-3) = 1, and (1,1,-3)·(1,1,-3) = 1+1+9 = 11. Step 2: The projection is (1/11)(1,1,-3) = (1/11, 1/11, -3/11)."
@@ -314,10 +314,10 @@
         "id": "M3Q8H6",
         "question": "If W is a 2D plane in R³ with null space direction n, what is the distance from a point p to the plane?",
         "options": [
-          "|p·n| / ||n|| (projection of p onto normal divided by normal's length)",
-          "|p| / |n| (incorrect)                                            ",
-          "p·n — not correct here                                           ",
-          "||p|| (incorrect)                                                "
+          "|p·n| / ||n|| (projection of p onto rmal divided by rmal's length)",
+          "|p| / |n|)",
+          "p·n — t here",
+          "||p||)"
         ],
         "correct_option": "|p·n| / ||n|| (projection of p onto normal divided by normal's length)",
         "explanation": "Step 1: The distance from point p to plane n·x=0 is |n·p|/||n||. Step 2: This is the absolute value of the projection of p onto the normal direction, divided by the normal's magnitude."
@@ -339,9 +339,9 @@
         "question": "Is the null space direction (1,1,-3) unique? Could you have chosen a different direction?",
         "options": [
           "The direction is unique up to scalar multiples — any t(1,1,-3) works",
-          "The direction is exactly unique...                             ",
-          "Any direction works — does not match                           ",
-          "No direction works — does not match                            "
+          "The direction is exactly unique...",
+          "Any direction works — does t match",
+          "direction works — does t match"
         ],
         "correct_option": "The direction is unique up to scalar multiples — any t(1,1,-3) works",
         "explanation": "Step 1: The null space is the line {t(1,1,-3)}. Step 2: Any non-zero scalar multiple is in the same direction — (2,2,-6), (-1,-1,3), etc. all work."
@@ -350,10 +350,10 @@
         "id": "M3Q8H9",
         "question": "If W is the plane x+y-3z=0, what is the angle between the normal (1,1,-3) and the plane?",
         "options": [
-          "90 degrees — the normal is always perpendicular to the plane",
-          "0 degrees (incorrect)                                  ",
-          "45 degrees (incorrect)                                 ",
-          "Depends on the point — does not match                  "
+          "90 degrees — the rmal is always perpendicular to the plane",
+          "0 degrees)",
+          "45 degrees)",
+          "Depends on the point — does t match"
         ],
         "correct_option": "90 degrees — the normal is always perpendicular to the plane",
         "explanation": "Step 1: By definition, the normal vector is perpendicular to the plane. Step 2: The angle between the normal and any vector in the plane is 90 degrees."
@@ -363,9 +363,9 @@
         "question": "How does the null space direction (1,1,-3) relate to the plane equation x+y-3z=0?",
         "options": [
           "The coefficients of the plane equation ARE the components of the null space direction",
-          "They are unrelated — does not match                                             ",
-          "Only the x-coefficient matches...                                               ",
-          "They are always different...                                                    "
+          "They are unrelated — does t match",
+          "Only the x-coefficient matches...",
+          "They are always different..."
         ],
         "correct_option": "The coefficients of the plane equation ARE the components of the null space direction",
         "explanation": "Step 1: The plane ax+by+cz=0 has normal (a,b,c). Step 2: The null space direction is exactly (a,b,c) = (1,1,-3), so the plane equation coefficients and null space direction are the same."
@@ -397,10 +397,10 @@
       "story": "When you apply a force perpendicular to a beam (like pushing sideways on a diving board), that force does not stretch or compress the beam along its length. The perpendicular force is in the null space of the beam's axial direction.",
       "question": "What happens to a beam when a force is applied in the null space of its axial direction?",
       "options": [
-        "It bends without stretching — no work along the axis",
+        "It bends without stretching — work along the axis",
         "It stretches maximally",
         "It compresses",
-        "Nothing happens"
+        "thing happens"
       ],
       "correct_option": "It bends without stretching — no work along the axis",
       "explanation": "Step 1: The beam's axial direction defines a 1D subspace. Step 2: Forces in the null space (perpendicular to the axis) cause bending, not stretching — they do no work along the beam's length."
@@ -413,7 +413,7 @@
       "story": "PCA finds the principal components — the directions of maximum variance. The null space of the data matrix contains directions of minimum or zero variance. These low-variance directions represent noise that can be discarded.",
       "question": "In PCA, what do the low-variance directions in the null space of the data represent?",
       "options": [
-        "Noise or redundant features that can be discarded",
+        "ise or redundant features that can be discarded",
         "The most important patterns",
         "The mean of the data",
         "The data range"
@@ -429,7 +429,7 @@
       "story": "The Earth's magnetic field lines are perpendicular to the equipotential surfaces (surfaces of constant magnetic potential). The field direction is the null space of the equipotential surface — it points straight through the surface.",
       "question": "Why are magnetic field lines perpendicular to equipotential surfaces?",
       "options": [
-        "Because the field direction is the null space (normal) of the equipotential surface",
+        "Because the field direction is the null space (rmal) of the equipotential surface",
         "Because they are parallel",
         "Because they coincide",
         "By coincidence"

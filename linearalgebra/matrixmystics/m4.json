@@ -2612,6 +2612,7 @@
       }
     },
     {
+      "module": 4,
       "topicId": "Q4.7",
       "title": "Range of A contains S, T",
       "topic": "Showing range is closed under scalar multiplication and addition (linearity).",
@@ -2619,429 +2620,429 @@
         "easy": [
           {
             "id": "M4Q7E1",
-            "question": "A: ℝ³ → ℝ³ is a linear map. If (a,b,c) ∈ Range(A), then for α ∈ ℝ:",
+            "question": "For a linear map A: ℝ³ → ℝ³, what is the codomain of A?",
             "options": [
-              "α·(a,b,c) may not be in Range(A)",
-              "α·(a,b,c) is in Range(A)",
-              "Only positive scalars work",
-              "α must be an integer"
+              "The real line ℝ",
+              "The space ℝ³",
+              "The plane ℝ²",
+              "The space ℝ⁴"
             ],
-            "correct_option": "α·(a,b,c) is in Range(A)",
-            "explanation": "A·(αx) = α·(Ax) = α·(a,b,c), so scalar multiples stay in range."
+            "correct_option": "The space ℝ³",
+            "explanation": "The codomain of A: ℝ³ → ℝ³ is ℝ³, which is where all output vectors including those in Range(A) live."
           },
           {
             "id": "M4Q7E2",
-            "question": "If (a,b,c) ∈ Range(A) and (d,e,f) ∈ Range(A), then (a,b,c)+(d,e,f) is:",
+            "question": "If (a, b, c) is in Range(A), which statement must be true?",
             "options": [
-              "Not necessarily in Range(A)",
-              "Always in Range(A)",
-              "Only in Range(A) if A is invertible",
-              "Only if A is symmetric"
+              "A is zero mapping",
+              "(a, b, c) all zero",
+              "Some input x works",
+              "A has full rank"
             ],
-            "correct_option": "Always in Range(A)",
-            "explanation": "A·(x+y) = Ax + Ay = (a,b,c)+(d,e,f)."
+            "correct_option": "Some input x works",
+            "explanation": "By definition, (a, b, c) ∈ Range(A) means there exists some input x with A·x = (a, b, c)."
           },
           {
             "id": "M4Q7E3",
-            "question": "Range(A) is closed under scalar multiplication because:",
+            "question": "The identity A·(α·x) = α·(A·x) holds because A is:",
             "options": [
-              "A is square",
-              "A·(αx) = α·(A·x) by linearity",
-              "A has rank 3",
-              "A is symmetric"
+              "A linear map",
+              "A scalar only",
+              "A zero matrix",
+              "A row vector"
             ],
-            "correct_option": "A·(αx) = α·(A·x) by linearity",
-            "explanation": "Linearity of A guarantees scalar multiples stay in range."
+            "correct_option": "A linear map",
+            "explanation": "Homogeneity (A·(α·x) = α·A·x) is one of the two defining properties of a linear map."
           },
           {
             "id": "M4Q7E4",
-            "question": "Range(A) is closed under addition because:",
+            "question": "From A·(α·x) = α·(a, b, c) we conclude Range(A) is closed under:",
             "options": [
-              "A is invertible",
-              "A·(x+y) = A·x + A·y by linearity",
-              "A is 3×3",
-              "A has determinant 1"
+              "Multiplying by matrix",
+              "Adding output vectors",
+              "Taking matrix transposes",
+              "Real scalar multiplication"
             ],
-            "correct_option": "A·(x+y) = A·x + A·y by linearity",
-            "explanation": "Linearity of A guarantees sums stay in range."
+            "correct_option": "Real scalar multiplication",
+            "explanation": "If (a, b, c) is a Range output then so is α·(a, b, c) for any scalar α: that is closure under scalar multiplication."
           },
           {
             "id": "M4Q7E5",
-            "question": "The set S = {α·(a,b,c) : α ∈ ℝ} is:",
+            "question": "If (d, e, f) is in Range(A), there exists a vector y such that:",
             "options": [
-              "A plane",
-              "A line through origin",
-              "All of ℝ³",
-              "Just the origin"
+              "Ay is zero vector",
+              "Ay equals (d, e, f)",
+              "Ay equals scalar one",
+              "Ay equals matrix form"
             ],
-            "correct_option": "A line through origin",
-            "explanation": "Scalar multiples of a non-zero vector form a line through origin."
+            "correct_option": "Ay equals (d, e, f)",
+            "explanation": "Membership in Range(A) of (d, e, f) means exactly that some input y maps to it under A."
           },
           {
             "id": "M4Q7E6",
-            "question": "The set T = {α·(a,b,c)+β·(d,e,f) : α,β ∈ ℝ} for independent vectors is:",
+            "question": "The identity A·(x + y) = A·x + A·y is which property of A?",
             "options": [
-              "A line",
-              "A plane through origin",
-              "All of ℝ³",
-              "Just the origin"
+              "Additivity of A",
+              "Invertibility of A",
+              "Commutativity of A",
+              "Transpose of A"
             ],
-            "correct_option": "A plane through origin",
-            "explanation": "Span of two independent vectors is a 2D plane."
+            "correct_option": "Additivity of A",
+            "explanation": "Additivity (A·(x+y) = A·x + A·y) is the second defining property of a linear map, alongside homogeneity."
           },
           {
             "id": "M4Q7E7",
-            "question": "If (a,b,c) ∈ Range(A), there exists some x with:",
+            "question": "From A·(x + y) = (a, b, c) + (d, e, f) we conclude that this sum lies in:",
             "options": [
-              "A·x = x",
-              "A·x = (a,b,c)",
-              "A = (a,b,c)",
-              "x = (a,b,c)"
+              "Null space of A",
+              "Kernel of A",
+              "Range of A",
+              "Row space of A"
             ],
-            "correct_option": "A·x = (a,b,c)",
-            "explanation": "By definition of range, (a,b,c) = Ax for some x."
+            "correct_option": "Range of A",
+            "explanation": "Since (x + y) is a valid input, the output (a, b, c) + (d, e, f) is by definition in Range(A)."
           },
           {
             "id": "M4Q7E8",
-            "question": "A set closed under linear combinations is called a:",
+            "question": "Closure under addition means: if v, w ∈ Range(A), then which is also in Range(A)?",
             "options": [
-              "Basis",
-              "Subspace",
-              "Span",
-              "Matrix"
+              "Vector w alone only",
+              "Scalar v alone only",
+              "Vector v alone there",
+              "Sum of the two"
             ],
-            "correct_option": "Subspace",
-            "explanation": "Subspaces are closed under linear combinations."
+            "correct_option": "Sum of the two",
+            "explanation": "Closure under addition is the statement that the sum of any two Range vectors is again a Range vector."
           },
           {
             "id": "M4Q7E9",
-            "question": "Range(A) for a linear map A: ℝ³ → ℝ³ is always:",
+            "question": "The set S = {α·(a, b, c) : α ∈ ℝ} geometrically describes a:",
             "options": [
-              "A matrix",
-              "A subspace of ℝ³",
-              "A scalar",
-              "A vector"
+              "Line through origin",
+              "Plane in 3D space",
+              "Full 3D vector space",
+              "Single point at origin"
             ],
-            "correct_option": "A subspace of ℝ³",
-            "explanation": "Range of a linear map is always a subspace."
+            "correct_option": "Line through origin",
+            "explanation": "All scalar multiples of a single nonzero vector trace out the 1D line through the origin in that direction."
           },
           {
             "id": "M4Q7E10",
-            "question": "If (a,b,c) ∈ Range(A), then 3·(a,b,c) is:",
+            "question": "The set T = {α·(a, b, c) + β·(d, e, f)} geometrically describes a:",
             "options": [
-              "Not in Range(A)",
-              "In Range(A)",
-              "Only if A is invertible",
-              "Depends on A"
+              "Single point at origin",
+              "Plane through origin",
+              "Line in 3D space",
+              "Disconnected 3D set"
             ],
-            "correct_option": "In Range(A)",
-            "explanation": "Closure under scalar multiplication: 3·(a,b,c) = A·(3x)."
+            "correct_option": "Plane through origin",
+            "explanation": "Linear combinations of two vectors span either a 1D line (if dependent) or a 2D plane through the origin."
           }
         ],
         "medium": [
           {
             "id": "M4Q7M1",
-            "question": "S is the line through origin in direction (a,b,c). If (a,b,c) ≠ 0, S is:",
+            "question": "S is the line through origin in the direction of (a, b, c), assuming (a, b, c) is:",
             "options": [
-              "0D",
-              "1D",
-              "2D",
-              "3D"
+              "A complex vector form",
+              "A row vector only",
+              "Nonzero vector in ℝ³",
+              "Always unit length one"
             ],
-            "correct_option": "1D",
-            "explanation": "A non-zero scalar multiple set is 1-dimensional."
+            "correct_option": "Nonzero vector in ℝ³",
+            "explanation": "S is genuinely a 1D line only when the spanning vector (a, b, c) is not the zero vector."
           },
           {
             "id": "M4Q7M2",
-            "question": "T = {α(a,b,c)+β(d,e,f)} for independent vectors is:",
+            "question": "T is the plane through origin spanned by (a, b, c) and (d, e, f), assuming they are:",
             "options": [
-              "1D line",
-              "2D plane",
-              "3D space",
-              "0D point"
+              "Two independent vectors",
+              "Both of unit length",
+              "Equal as vector form",
+              "Two dependent vectors"
             ],
-            "correct_option": "2D plane",
-            "explanation": "Two independent vectors span a 2D plane."
+            "correct_option": "Two independent vectors",
+            "explanation": "Two vectors span a 2D plane precisely when they are linearly independent; otherwise they only span a line."
           },
           {
             "id": "M4Q7M3",
-            "question": "If (a,b,c) and (d,e,f) are linearly dependent, T =:",
+            "question": "If (a, b, c) and (d, e, f) are linearly dependent, the relationship between T and S is:",
             "options": [
-              "A 2D plane",
-              "S (a line)",
-              "All of ℝ³",
-              "Just the origin"
+              "T contains S only",
+              "T equals S exactly",
+              "S contains T strictly",
+              "T and S disjoint"
             ],
-            "correct_option": "S (a line)",
-            "explanation": "Dependent vectors span the same line."
+            "correct_option": "T equals S exactly",
+            "explanation": "Linear dependence means (d, e, f) is a scalar multiple of (a, b, c), so their spans coincide: T = S."
           },
           {
             "id": "M4Q7M4",
-            "question": "Part (a): show S ⊂ Range(A). We showed this using:",
+            "question": "If (a, b, c) and (d, e, f) are linearly independent, then the set T is:",
             "options": [
-              "Closure under addition",
-              "Closure under scalar multiplication",
-              "Determinant is non-zero",
-              "Matrix inversion"
+              "Zero dimensional origin",
+              "One dimensional line",
+              "Full 3D vector space",
+              "Two dimensional plane"
             ],
-            "correct_option": "Closure under scalar multiplication",
-            "explanation": "S consists of scalar multiples of one range element."
+            "correct_option": "Two dimensional plane",
+            "explanation": "Two independent spanning vectors in ℝ³ produce a 2D plane (a 2-dimensional subspace)."
           },
           {
             "id": "M4Q7M5",
-            "question": "Part (b): show T ⊂ Range(A). We showed this using:",
+            "question": "To show S ⊂ Range(A) we relied on Range(A) being closed under:",
             "options": [
-              "Closure under scalar multiplication",
-              "Closure under addition (and scalar mult.)",
-              "Matrix is symmetric",
-              "Rank-nullity"
+              "Scalar mult outputs only",
+              "Inner products only",
+              "Matrix inverse op form",
+              "Transpose operations only"
             ],
-            "correct_option": "Closure under addition (and scalar mult.)",
-            "explanation": "T is a linear combination of two range elements."
+            "correct_option": "Scalar mult outputs only",
+            "explanation": "S consists of all scalar multiples of a Range vector; closure under scalar multiplication ensures all of S lies in Range(A)."
           },
           {
             "id": "M4Q7M6",
-            "question": "Range(A) contains the linear span of any two of its points because:",
+            "question": "To show T ⊂ Range(A) we relied on Range(A) being closed under:",
             "options": [
-              "A is square",
-              "A is a linear map",
-              "A is invertible",
-              "A has rank 3"
+              "Scalar multiplication acts",
+              "Taking determinants only",
+              "Addition of vectors here",
+              "Transpose operations only"
             ],
-            "correct_option": "A is a linear map",
-            "explanation": "Linearity guarantees closure under linear combinations."
+            "correct_option": "Addition of vectors here",
+            "explanation": "T is built from linear combinations, so closure under both addition and scalar multiplication places T inside Range(A)."
           },
           {
             "id": "M4Q7M7",
-            "question": "More generally, Range(A) is closed under:",
+            "question": "Range(A) contains not just two points but the entire linear span of:",
             "options": [
-              "Multiplication only",
-              "Linear combinations",
-              "Subtraction only",
-              "Division"
+              "Their transposes only",
+              "Any two of them",
+              "Single vector only",
+              "The zero set alone"
             ],
-            "correct_option": "Linear combinations",
-            "explanation": "Range of a linear map is closed under all linear combinations."
+            "correct_option": "Any two of them",
+            "explanation": "By the closure arguments, Range(A) contains the span of any two (in fact any finite number of) its vectors."
           },
           {
             "id": "M4Q7M8",
-            "question": "Since Range(A) is closed under linear combinations, it is a:",
+            "question": "Range(A) being closed under linear combinations is a hallmark of being:",
             "options": [
-              "Matrix",
-              "Subspace of ℝ³",
-              "Scalar",
-              "Basis"
+              "A square matrix shape",
+              "A diagonal matrix form",
+              "A nonsingular map form",
+              "A subspace of ℝ³"
             ],
-            "correct_option": "Subspace of ℝ³",
-            "explanation": "Closure under linear combinations defines a subspace."
+            "correct_option": "A subspace of ℝ³",
+            "explanation": "A subspace is precisely a set closed under linear combinations, so this property identifies Range(A) as a subspace."
           },
           {
             "id": "M4Q7M9",
-            "question": "If (a,b,c) = (0,0,0), the set S = {α·(0,0,0)} is:",
+            "question": "From the closure properties we established, Range(A) is a subspace of:",
             "options": [
-              "A line",
-              "A plane",
-              "The origin only",
-              "All of ℝ³"
+              "The space ℝ³",
+              "The integers ℤ",
+              "An empty set",
+              "The space ℂ⁴"
             ],
-            "correct_option": "The origin only",
-            "explanation": "Scalar multiples of zero are just zero."
+            "correct_option": "The space ℝ³",
+            "explanation": "Since A: ℝ³ → ℝ³, all outputs live in ℝ³, so Range(A) ⊂ ℝ³ and is itself a subspace there."
           },
           {
             "id": "M4Q7M10",
-            "question": "T is 2D iff (a,b,c) and (d,e,f) are:",
+            "question": "Even when (a, b, c) and (d, e, f) are linearly independent, T may still be 1D if:",
             "options": [
-              "Equal",
-              "Linearly independent",
-              "Perpendicular",
-              "Both zero"
+              "Both nonzero still",
+              "They are orthogonal",
+              "One of two zero",
+              "Same length norm"
             ],
-            "correct_option": "Linearly independent",
-            "explanation": "Two independent vectors span a 2D plane."
+            "correct_option": "One of two zero",
+            "explanation": "If one of the two vectors is the zero vector, independence fails and the span collapses to a 1D line."
           }
         ],
         "hard": [
           {
             "id": "M4Q7H1",
-            "question": "The proof of (a): A·(αx) = α·(Ax) uses which property?",
+            "question": "The proof of (a) — that α·(a, b, c) ∈ Range(A) — uses which property of A?",
             "options": [
-              "Associativity",
-              "Linearity of A",
-              "Commutativity",
-              "Invertibility"
+              "A is invertible matrix",
+              "Homogeneity of A",
+              "A is symmetric matrix",
+              "A is diagonal matrix"
             ],
-            "correct_option": "Linearity of A",
-            "explanation": "Linearity means A(αx) = αA(x)."
+            "correct_option": "Homogeneity of A",
+            "explanation": "A·(α·x) = α·(A·x) = α·(a, b, c) is precisely the homogeneity condition A inherits from being linear."
           },
           {
             "id": "M4Q7H2",
-            "question": "The proof of (b): A·(x+y) = A·x + A·y uses:",
+            "question": "The proof of (b) — that (a, b, c) + (d, e, f) ∈ Range(A) — uses which property?",
             "options": [
-              "Matrix multiplication rules",
-              "Linearity of A",
-              "Determinant = 0",
-              "Rank-nullity theorem"
+              "Determinant rule of A",
+              "Rank condition of A",
+              "Inverse relation of A",
+              "Additivity property A"
             ],
-            "correct_option": "Linearity of A",
-            "explanation": "Linearity means A(x+y) = Ax + Ay."
+            "correct_option": "Additivity property A",
+            "explanation": "A·(x + y) = A·x + A·y = (a, b, c) + (d, e, f) is the additivity half of A being linear."
           },
           {
             "id": "M4Q7H3",
-            "question": "Range(A) is a subspace because it is closed under:",
+            "question": "Combining the two closure proofs, we conclude Range(A) is a:",
             "options": [
-              "Matrix multiplication",
-              "Linear combinations",
-              "Determinant computation",
-              "Row reduction"
+              "Subspace ℝ³ form here",
+              "Single point set kind",
+              "Plain scalar multiple",
+              "Plain nonsingular matrix A"
             ],
-            "correct_option": "Linear combinations",
-            "explanation": "Closure under linear combinations defines a subspace."
+            "correct_option": "Subspace ℝ³ form here",
+            "explanation": "Closure under both scalar multiplication and addition is exactly the definition of a subspace, and outputs live in ℝ³."
           },
           {
             "id": "M4Q7H4",
-            "question": "T is 2D iff (a,b,c) and (d,e,f) are linearly independent. If dependent:",
+            "question": "S = {α·(a, b, c)} is the line through the origin and (a, b, c), unless:",
             "options": [
-              "T is 3D",
-              "T = S (1D)",
-              "T is 0D",
-              "T is undefined"
+              "(a, b, c) is nonzero",
+              "α equals zero case",
+              "(a, b, c) is zero",
+              "α is negative scalar"
             ],
-            "correct_option": "T = S (1D)",
-            "explanation": "Dependent vectors span the same line as one of them."
+            "correct_option": "(a, b, c) is zero",
+            "explanation": "When (a, b, c) = 0 the set S collapses to {0} — just the origin rather than a true 1D line."
           },
           {
             "id": "M4Q7H5",
-            "question": "Example: (1,0,0) and (2,0,0) give T =:",
+            "question": "T = span{(a, b, c), (d, e, f)} is geometrically a plane through the origin when:",
             "options": [
-              "The xy-plane",
-              "The x-axis (1D)",
-              "The origin",
-              "ℝ³"
+              "Both vectors are zero",
+              "Vectors independent pair",
+              "Vectors dependent pair",
+              "Vectors are equal pair"
             ],
-            "correct_option": "The x-axis (1D)",
-            "explanation": "(2,0,0) = 2·(1,0,0), so they span the same line."
+            "correct_option": "Vectors independent pair",
+            "explanation": "Two linearly independent vectors in ℝ³ span a 2D plane (a 2-dimensional subspace) through the origin."
           },
           {
             "id": "M4Q7H6",
-            "question": "Example: (1,0,0) and (0,1,0) give T =:",
+            "question": "T is 2-dimensional if and only if (a, b, c) and (d, e, f) are:",
             "options": [
-              "The x-axis",
-              "The y-axis",
-              "The xy-plane",
-              "ℝ³"
+              "Both zero vectors pair",
+              "Equal length vector pair",
+              "Orthogonal to other vector",
+              "Independent vector pair"
             ],
-            "correct_option": "The xy-plane",
-            "explanation": "Independent vectors spanning a 2D plane."
+            "correct_option": "Independent vector pair",
+            "explanation": "The dimension of a span equals the number of independent vectors; independence of two vectors gives dim = 2."
           },
           {
             "id": "M4Q7H7",
-            "question": "The 'rank' of a set of vectors is the dimension of:",
+            "question": "If (a, b, c) and (d, e, f) are linearly dependent, the common dimension of T and S is:",
             "options": [
-              "Their sum",
-              "Their span",
-              "Their product",
-              "Their intersection"
+              "One line through origin",
+              "Two plane through origin",
+              "Three full 3D space",
+              "Zero just origin point"
             ],
-            "correct_option": "Their span",
-            "explanation": "Rank of vectors = dim(span{vectors})."
+            "correct_option": "One line through origin",
+            "explanation": "Dependence means one vector is a scalar multiple of the other, so their span is just a 1D line."
           },
           {
             "id": "M4Q7H8",
-            "question": "T might be 1D even with two vectors if:",
+            "question": "For (a, b, c) = (1, 0, 0) and (d, e, f) = (2, 0, 0), the set T equals:",
             "options": [
-              "They are perpendicular",
-              "One is the zero vector",
-              "They are in ℝ⁴",
-              "A is not square"
+              "The y-axis only",
+              "The xy-plane full",
+              "The full x-axis",
+              "The z-axis only"
             ],
-            "correct_option": "One is the zero vector",
-            "explanation": "Zero vector adds no new direction, so T = S."
+            "correct_option": "The full x-axis",
+            "explanation": "Both vectors lie on the x-axis, are dependent, and span exactly the entire x-axis (1D)."
           },
           {
             "id": "M4Q7H9",
-            "question": "If both (a,b,c) = 0 and (d,e,f) = 0, then T =:",
+            "question": "For (a, b, c) = (1, 0, 0) and (d, e, f) = (0, 1, 0), the set T is the:",
             "options": [
-              "A line",
-              "A plane",
-              "The origin only",
-              "ℝ³"
+              "Full 3D vector space",
+              "Entire xy-plane area",
+              "Standard z-axis only",
+              "Standard x-axis only"
             ],
-            "correct_option": "The origin only",
-            "explanation": "Span of two zero vectors is just {0}."
+            "correct_option": "Entire xy-plane area",
+            "explanation": "These two standard basis vectors are independent and span the 2D xy-plane inside ℝ³."
           },
           {
             "id": "M4Q7H10",
-            "question": "The fact that Range(A) is a subspace (not just a set) follows from A being:",
+            "question": "The rank of a set of vectors is defined as the dimension of their:",
             "options": [
-              "Square",
-              "A linear map",
-              "Invertible",
-              "Symmetric"
+              "Image under A here",
+              "Sum with zero vector",
+              "Determinant form only",
+              "Linear span subspace"
             ],
-            "correct_option": "A linear map",
-            "explanation": "Linearity of A is the essential property."
+            "correct_option": "Linear span subspace",
+            "explanation": "Rank of a vector set equals the number of linearly independent vectors, which is the dimension of their span."
           }
         ],
         "real_life_application": [
           {
             "id": "M4Q7R1",
-            "question": "The range of a linear map is always a subspace. The key reason is:",
+            "question": "The range of any linear map is always a subspace, because the map is itself:",
             "options": [
-              "The map is square",
-              "The map is linear",
-              "The map is invertible",
-              "The map has integer entries"
+              "Linear in nature",
+              "Strictly diagonal map",
+              "Always surjective map",
+              "Just a scalar field"
             ],
-            "correct_option": "The map is linear",
-            "explanation": "Linearity guarantees closure under linear combinations."
+            "correct_option": "Linear in nature",
+            "explanation": "Linearity forces the image to be closed under addition and scalar multiplication, so the range is always a subspace."
           },
           {
             "id": "M4Q7R2",
-            "question": "In quantum mechanics, the range of an observable relates to:",
+            "question": "In quantum mechanics, the range of an observable equals the set of:",
             "options": [
-              "The Hamiltonian",
-              "The set of measurable values",
-              "The wave function",
-              "The commutator"
+              "Pure quantum states",
+              "Hamiltonian energies only",
+              "Measurable scalar values",
+              "Eigenvectors of operator"
             ],
-            "correct_option": "The set of measurable values",
-            "explanation": "The range of an observable is the set of possible measurement outcomes."
+            "correct_option": "Measurable scalar values",
+            "explanation": "The spectrum of a Hermitian operator is the range of measurable outcomes, all real scalars by the spectral theorem."
           },
           {
             "id": "M4Q7R3",
-            "question": "In control theory, the reachable set is the range of:",
+            "question": "In control theory, the reachable set is the range of which map?",
             "options": [
-              "The cost function",
-              "The controllability map",
-              "The state observer",
-              "The Kalman filter"
+              "Identity map of system",
+              "Controllability map here",
+              "Zero map of systems",
+              "Projection map of system"
             ],
-            "correct_option": "The controllability map",
-            "explanation": "Reachability is determined by the range of the controllability matrix."
+            "correct_option": "Controllability map here",
+            "explanation": "The reachable set of a control system is precisely the column space (range) of its controllability matrix."
           },
           {
             "id": "M4Q7R4",
-            "question": "In signal processing, the output space is:",
+            "question": "In signal processing, the output space of a linear system is the range of:",
             "options": [
-              "The range of the system map",
-              "The null space of the system",
-              "The kernel of the filter",
-              "The trace of the system matrix"
+              "The transpose of A",
+              "The kernel of A",
+              "Zero map of A",
+              "The system map A"
             ],
-            "correct_option": "The range of the system map",
-            "explanation": "All possible outputs form the range of the system's linear map."
+            "correct_option": "The system map A",
+            "explanation": "All possible outputs of a linear system form the range of its transfer / system map A acting on inputs."
           },
           {
             "id": "M4Q7R5",
-            "question": "In computer graphics, projecting a 3D scene onto a 2D screen uses a map whose range is:",
+            "question": "In computer graphics, the 2D image of a 3D scene is a 2D subspace living inside the:",
             "options": [
-              "3D",
-              "2D",
-              "1D",
-              "4D"
+              "Full 3D screen",
+              "One 1D line only",
+              "Zero pixel set only",
+              "Empty 2D space"
             ],
-            "correct_option": "2D",
-            "explanation": "The projection maps 3D to a 2D image on the screen."
+            "correct_option": "Full 3D screen",
+            "explanation": "A perspective projection maps 3D world points into a 2D plane (subspace) of the 3D screen coordinate system."
           }
         ]
       }

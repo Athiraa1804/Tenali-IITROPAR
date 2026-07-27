@@ -900,34 +900,18 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
   const [hintText, setHintText] = useState('');
   const [revealedConcept, setRevealedConcept] = useState(''); // "That's Area!" or "That's Perimeter!"
 
-  // Layer 3 state
-  const [q1Answer, setQ1Answer] = useState(null); // 'unanswered', 'correct', 'wrong'
-  const [q2Answer, setQ2Answer] = useState(null); // 'unanswered', 'correct', 'wrong'
-  const [q3Answer, setQ3Answer] = useState(null); // 'unanswered', 'correct', 'wrong'
-  const [selectedQOption, setSelectedQOption] = useState(null);
 
-  // Q4 Sorting state
-  const [q4Tasks, setQ4Tasks] = useState([
-    { id: 'carpet', label: '📐 Carpet a room', category: 'Area' },
-    { id: 'fence', label: '📏 Fence a playground', category: 'Perimeter' },
-    { id: 'paint', label: '🖌️ Paint a wall', category: 'Area' },
-    { id: 'ribbon', label: '🎀 Put ribbon around a gift', category: 'Perimeter' }
-  ]);
-  const [activeTask, setActiveTask] = useState(null);
-  const [q4Sorted, setQ4Sorted] = useState({ Area: [], Perimeter: [] });
-  const [q4Feedback, setQ4Feedback] = useState('');
 
   // Helper to determine the active step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-area' || subStep === 'vd-perimeter') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3_1' || subStep === 'r3_2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2' || subStep === 'q3' || subStep === 'q4') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -1041,101 +1025,19 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
     setRevealedConcept('');
 
     // Reset Layer 3
-    setQ1Answer(null);
-    setQ2Answer(null);
-    setQ3Answer(null);
-    setSelectedQOption(null);
   }, [subStep]);
 
   // Q1 handling
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === 'Perimeter') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Before choosing a formula, first identify what is being measured. A fence goes around the garden, so you need the Perimeter.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Not quite. Remember, a fence surrounding the outer edge measures the boundary, which is the Perimeter.");
-    }
-  };
 
   // Q2 handling
-  const handleQ2Select = (option) => {
-    if (q2Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === '96 m²') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! Laying grass turf covers the entire surface area. Area = 12 m × 8 m = 96 m².");
-    } else {
-      setQ2Answer('wrong');
-      if (option === '40 m') {
-        setFeedbackText("Not quite. 40 m is the distance around (perimeter). Laying grass turf covers the surface inside, which is the Area (Length × Width).");
-      } else {
-        setFeedbackText("Not quite. Laying grass turf covers the space inside, so we measure Area: 12 m × 8 m = 96 m².");
-      }
-    }
-  };
 
   // Q3 handling
-  const handleQ3Select = (option) => {
-    if (q3Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === '40 m') {
-      setQ3Answer('correct');
-      setFeedbackText("Correct! Lights around the boundary require the distance around the edge. Perimeter = 2 × (12 + 8) = 40 m.");
-    } else {
-      setQ3Answer('wrong');
-      if (option === '96 m²') {
-        setFeedbackText("Not quite. 96 m² is the inside space (Area). Decorative lights need to surround the outer boundary, which is the Perimeter.");
-      } else {
-        setFeedbackText("Not quite. Placing lights around the boundary edge requires the distance around (Perimeter): 2 × (12 + 8) = 40 m.");
-      }
-    }
-  };
 
   // Q4 handling
-  const handleTaskClick = (task) => {
-    const inArea = q4Sorted.Area.find(t => t.id === task.id);
-    const inPerimeter = q4Sorted.Perimeter.find(t => t.id === task.id);
 
-    if (inArea || inPerimeter) {
-      setQ4Sorted(prev => ({
-        Area: prev.Area.filter(t => t.id !== task.id),
-        Perimeter: prev.Perimeter.filter(t => t.id !== task.id)
-      }));
-      setQ4Feedback('');
-      return;
-    }
 
-    setActiveTask(task);
-  };
-
-  const handleBucketPlace = (bucketName) => {
-    if (!activeTask) return;
-
-    if (activeTask.category !== bucketName) {
-      setQ4Feedback(`Not quite. "${activeTask.label}" belongs in ${activeTask.category} because it measures ${activeTask.category === 'Area' ? 'inside space' : 'around the boundary'}.`);
-      setActiveTask(null);
-      return;
-    }
-
-    setQ4Sorted(prev => ({
-      ...prev,
-      [bucketName]: [...prev[bucketName], activeTask]
-    }));
-    setActiveTask(null);
-    setQ4Feedback('Correct placement!');
-  };
-
-  const allQ4Placed = (q4Sorted.Area.length + q4Sorted.Perimeter.length) === 4;
 
   // Mark as completed immediately when Q4 is fully sorted
-  useEffect(() => {
-    if (allQ4Placed) {
-      onMarkComplete?.();
-    }
-  }, [allQ4Placed, onMarkComplete]);
 
   const handleRegionClick = (clickedRegion) => {
     if (answerState === 'correct') return;
@@ -1219,10 +1121,7 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r2') setSubStep('r3_1');
     else if (subStep === 'r3_1') setSubStep('r3_2');
     else if (subStep === 'r3_2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('q3');
-    else if (subStep === 'q3') setSubStep('q4');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const hoverStyles = `
@@ -1366,78 +1265,31 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
             AREA
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the inside of the shapes fill up.
+            Area measures the amount of space inside a flat shape.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-area" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-                <linearGradient id="area-grad" x1="0%" y1="100%" x2="0%" y2="0%">
-                  <stop offset="0%" stopColor="var(--clr-correct)" />
-                  <stop offset="100%" stopColor="#81c784" />
-                </linearGradient>
-                <clipPath id="clip-rect">
-                  <rect x="30" y="30" width="260" height="260" rx="16" />
-                </clipPath>
-                <clipPath id="clip-tri">
-                  <polygon points="160,30 30,290 290,290" />
-                </clipPath>
-                <clipPath id="clip-circle">
-                  <circle cx="160" cy="160" r="130" />
-                </clipPath>
-              </defs>
-
-              {/* Shape 1: Rectangle (visible 0s to 5s in 15s loop) */}
-              <g className="shape1-group">
-                <rect x="30" y="30" width="260" height="260" rx="16" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
-                <rect x="30" y="30" width="260" height="260" rx="16" fill="url(#grid-pattern-area)" />
-                <rect
-                  x="30"
-                  y="30"
-                  width="260"
-                  height="260"
-                  fill="url(#area-grad)"
-                  opacity="0.8"
-                  clipPath="url(#clip-rect)"
-                  className="area-solid-fill"
-                />
-              </g>
-
-              {/* Shape 2: Triangle (visible 5s to 10s in 15s loop) */}
-              <g className="shape2-group">
-                <polygon points="160,30 30,290 290,290" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
-                <polygon points="160,30 30,290 290,290" fill="url(#grid-pattern-area)" />
-                <rect
-                  x="30"
-                  y="30"
-                  width="260"
-                  height="260"
-                  fill="url(#area-grad)"
-                  opacity="0.8"
-                  clipPath="url(#clip-tri)"
-                  className="area-solid-fill"
-                />
-              </g>
-
-              {/* Shape 3: Circle (visible 10s to 15s in 15s loop) */}
-              <g className="shape3-group">
-                <circle cx="160" cy="160" r="130" fill="rgba(92, 184, 122, 0.08)" stroke="var(--clr-border)" strokeWidth="2" />
-                <circle cx="160" cy="160" r="130" fill="url(#grid-pattern-area)" />
-                <rect
-                  x="30"
-                  y="30"
-                  width="260"
-                  height="260"
-                  fill="url(#area-grad)"
-                  opacity="0.8"
-                  clipPath="url(#clip-circle)"
-                  className="area-solid-fill"
-                />
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              overflow: 'hidden',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <img
+                src="/contrast/area.png"
+                alt="Area illustration"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -1459,74 +1311,31 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
             PERIMETER
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the path trace along the outer border.
+            Perimeter measures the distance around the outer boundary of a shape.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-peri" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-                <linearGradient id="peri-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="var(--clr-accent)" />
-                  <stop offset="100%" stopColor="#ffb74d" />
-                </linearGradient>
-              </defs>
-
-              {/* Shape 1: Rectangle (visible 0s to 5s in 15s loop) */}
-              <g className="shape1-group">
-                <rect x="30" y="30" width="260" height="260" rx="16" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
-                <rect
-                  x="30"
-                  y="30"
-                  width="260"
-                  height="260"
-                  rx="16"
-                  fill="none"
-                  stroke="url(#peri-grad)"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                  strokeDasharray="1040"
-                  strokeDashoffset="1040"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
-                  className="perimeter-rect-draw"
-                />
-              </g>
-
-              {/* Shape 2: Triangle (visible 5s to 10s in 15s loop) */}
-              <g className="shape2-group">
-                <polygon points="160,30 30,290 290,290" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
-                <path
-                  d="M160,30 L290,290 L30,290 Z"
-                  fill="none"
-                  stroke="url(#peri-grad)"
-                  strokeWidth="6"
-                  strokeLinecap="round"
-                  strokeDasharray="850"
-                  strokeDashoffset="850"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
-                  className="perimeter-tri-draw"
-                />
-              </g>
-
-              {/* Shape 3: Circle (visible 10s to 15s in 15s loop) */}
-              <g className="shape3-group">
-                <circle cx="160" cy="160" r="130" fill="url(#grid-pattern-peri)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3.5" strokeDasharray="6 6" />
-                <circle
-                  cx="160"
-                  cy="160"
-                  r="130"
-                  fill="none"
-                  stroke="url(#peri-grad)"
-                  strokeWidth="6"
-                  strokeDasharray="820"
-                  strokeDashoffset="820"
-                  style={{ filter: 'drop-shadow(0 0 4px rgba(232, 134, 74, 0.4))' }}
-                  className="perimeter-circle-draw"
-                />
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              overflow: 'hidden',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <img
+                src="/contrast/perimeter.png"
+                alt="Perimeter illustration"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 40px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -1754,11 +1563,10 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
                 <strong>Measures:</strong> The space inside a shape.
               </p>
               <div style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
-                <strong>Common Formulas:</strong>
+                <strong>Examples:</strong>
                 <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px', fontSize: '0.92rem' }}>
-                  <li>Rectangle: Length × Width</li>
-                  <li>Triangle: ½ × Base × Height</li>
-                  <li>Circle: π × Radius²</li>
+                  <li>Paint for a wall</li>
+                  <li>Carpet for a room</li>
                 </ul>
               </div>
               <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
@@ -1786,11 +1594,10 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
                 <strong>Measures:</strong> The distance around a shape.
               </p>
               <div style={{ margin: '0 0 12px 0', fontSize: '0.98rem', lineHeight: '1.5' }}>
-                <strong>Common Formulas:</strong>
+                <strong>Examples:</strong>
                 <ul style={{ margin: '4px 0 0 0', paddingLeft: '20px', fontSize: '0.92rem' }}>
-                  <li>Rectangle: 2 × (Length + Width)</li>
-                  <li>Triangle: Sum of all side lengths</li>
-                  <li>Circle (Circumference): 2 × π × Radius</li>
+                  <li>Photo frame for a picture</li>
+                  <li>Decorating the border of a table</li>
                 </ul>
               </div>
               <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
@@ -1829,360 +1636,12 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
-            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Apply the Rule */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 4: Recognition</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.2rem', lineHeight: '1.6', margin: '0 0 16px 0', fontWeight: '500' }}>
-              A rectangular garden has:<br />
-              <strong>Length = 10 m</strong><br />
-              <strong>Breadth = 6 m</strong>
-            </p>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '20px' }}>
-              The owner wants to build a fence around it. What should you calculate first?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {['Area', 'Perimeter'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ1Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 4: Concept + Calculation</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-              <svg width="320" height="160" viewBox="0 0 320 160" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                <rect x="40" y="35" width="200" height="100" fill="none" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                <text x="140" y="25" textAnchor="middle" fontSize="13" fill="var(--clr-text-soft)" fontWeight="600">Length = 12 m</text>
-                <text x="248" y="90" textAnchor="start" fontSize="13" fill="var(--clr-text-soft)" fontWeight="600">Breadth = 8 m</text>
-              </svg>
-            </div>
-
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '20px' }}>
-              The owner wants to lay grass turf over the entire garden floor. Find the required value.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              {['40 m', '96 m²', '20 m', '48 m²'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ2Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {subStep === 'q3' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 3 of 4: Reverse Confusion</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-              <svg width="320" height="160" viewBox="0 0 320 160" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                <rect x="40" y="35" width="200" height="100" fill="none" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                <text x="140" y="25" textAnchor="middle" fontSize="13" fill="var(--clr-text-soft)" fontWeight="600">Length = 12 m</text>
-                <text x="248" y="90" textAnchor="start" fontSize="13" fill="var(--clr-text-soft)" fontWeight="600">Breadth = 8 m</text>
-              </svg>
-            </div>
-
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '20px' }}>
-              Decorative lights need to be placed around the boundary of the same garden. Find the required value.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              {['96 m²', '40 m', '20 m', '24 m'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ3Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q3Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q3Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q3Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q3Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q3Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q3Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {subStep === 'q4' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '16px' }}>Question 4 of 4: Real-Life Decisions</p>
-          <p style={{ color: 'var(--clr-text)', fontSize: '1.05rem', marginBottom: '24px' }}>
-            Click a task card to select it, then click its correct category bucket.
-          </p>
-
-          {/* Cards to sort */}
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
-            {q4Tasks.map(task => {
-              const isSorted = q4Sorted.Area.find(t => t.id === task.id) || q4Sorted.Perimeter.find(t => t.id === task.id);
-              const isActive = activeTask?.id === task.id;
-
-              return (
-                <button
-                  key={task.id}
-                  onClick={() => handleTaskClick(task)}
-                  className="option-card"
-                  style={{
-                    padding: '12px 18px',
-                    fontSize: '0.98rem',
-                    background: isSorted ? 'transparent' : isActive ? 'var(--clr-accent-soft)' : 'var(--clr-card)',
-                    border: isSorted ? '1.5px dashed var(--clr-border)' : isActive ? '2px solid var(--clr-accent)' : '1.5px solid var(--clr-border)',
-                    opacity: isSorted ? 0.4 : 1,
-                    cursor: 'pointer',
-                    transition: 'all 0.18s ease'
-                  }}
-                  disabled={!!isSorted}
-                >
-                  {task.label}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Buckets */}
-          <div style={{ display: 'flex', gap: '24px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '24px' }}>
-            {['Area', 'Perimeter'].map(bucketName => {
-              const isBucketTarget = !!activeTask;
-              return (
-                <div
-                  key={bucketName}
-                  onClick={() => handleBucketPlace(bucketName)}
-                  style={{
-                    flex: '1 1 240px',
-                    maxWidth: '280px',
-                    minHeight: '160px',
-                    padding: '20px',
-                    background: 'var(--clr-surface)',
-                    border: `2px ${isBucketTarget ? 'dashed' : 'solid'} ${isBucketTarget ? 'var(--clr-accent)' : 'var(--clr-border)'}`,
-                    borderRadius: 'var(--radius-sm)',
-                    cursor: isBucketTarget ? 'pointer' : 'default',
-                    transition: 'all 0.18s ease',
-                    boxShadow: 'var(--shadow-btn)'
-                  }}
-                >
-                  <h4 style={{ margin: '0 0 12px 0', fontSize: '1.2rem', color: bucketName === 'Area' ? 'var(--clr-correct)' : 'var(--clr-accent)', fontFamily: 'var(--font-display)' }}>
-                    {bucketName} Tasks
-                  </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                    {q4Sorted[bucketName].map(task => (
-                      <span
-                        key={task.id}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleTaskClick(task);
-                        }}
-                        style={{
-                          padding: '6px 12px',
-                          background: 'var(--clr-card)',
-                          borderRadius: '4px',
-                          border: '1px solid var(--clr-border)',
-                          fontSize: '0.9rem',
-                          fontWeight: '600',
-                          cursor: 'pointer'
-                        }}
-                      >
-                        {task.label} ✅
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {q4Feedback && (
-            <div style={{
-              padding: '12px 18px',
-              background: q4Feedback.startsWith('Correct') ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-              borderRadius: 'var(--radius-sm)',
-              borderLeft: `4px solid ${q4Feedback.startsWith('Correct') ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-              textAlign: 'center',
-              maxWidth: '500px',
-              margin: '0 auto 24px auto',
-              fontSize: '0.95rem'
-            }}>
-              {q4Feedback}
-            </div>
-          )}
-
-          {allQ4Placed && (
-            <div>
-              <p style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.15rem', marginBottom: '16px' }}>
-                🎉 Magnificent! All tasks are sorted correctly!
-              </p>
-              <button onClick={() => setSubStep('practice-redirect')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -2253,22 +1712,17 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
   // Layer 2
   const [comparisonMode, setComparisonMode] = useState('both'); // radius, diameter, both
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
-  const [selectedQOption, setSelectedQOption] = useState(null);
 
   // Helper to determine step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-radius' || subStep === 'vd-diameter') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -2397,17 +1851,9 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
     setWrongAttempts(0);
 
     // Reset Layer 3
-    setQ1Answer(null);
-    setQ2Answer(null);
-    setSelectedQOption(null);
   }, [subStep]);
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Answer === 'correct') {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const svgRef = useRef(null);
 
@@ -2505,38 +1951,10 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === '18 cm') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! The diameter is always twice the radius: d = 2 × r. So, 2 × 9 cm = 18 cm.");
-    } else {
-      setQ1Answer('wrong');
-      if (option === '4.5 cm') {
-        setFeedbackText("Not quite. 4.5 cm is half the radius. The diameter is twice the length of the radius (2 × Radius).");
-      } else {
-        setFeedbackText("Not quite. Diameter is twice the length of the radius: d = 2 × r. So, 2 × 9 cm = 18 cm.");
-      }
-    }
-  };
 
-  const handleQ2Select = (option) => {
-    if (q2Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === 'Circle A and Circle B') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! Circle A's radius is 5 cm, making its diameter 10 cm. Circle B also has a diameter of 10 cm. They are identical in size!");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Not quite. Calculate the diameter of each: Circle A's diameter = 2 × 5 = 10 cm. Circle B's diameter = 10 cm. Circle C's diameter = 20 cm.");
-    }
-  };
 
   const drawInteractiveCircle = () => (
     <svg
@@ -2646,20 +2064,29 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
             RADIUS
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Distance from the center to the edge. Watch the line grow.
+            Observe the highlighted line segment extending from the center of the circle to its outer edge.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              <g className="circle-fade">
-                <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-                <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
-                <text x="150" y="120" textAnchor="middle" fill="var(--clr-accent)" fontSize="11" fontWeight="600">Center</text>
-
-                {/* Radius line grows at a 45 degree angle */}
-                <line x1="150" y1="100" x2="200" y2="50" stroke="var(--clr-accent)" strokeWidth="3.5" className="radius-line-grow" strokeLinecap="round" />
-              </g>
-            </svg>
+            <div style={{
+              width: '300px',
+              height: '200px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-sm)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/radius.png"
+                alt="Radius representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -2681,20 +2108,29 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
             DIAMETER
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Distance across the circle passing through the center. Watch the line grow.
+            Observe the highlighted line segment that cuts completely across the circle directly through the center.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="300" height="200" viewBox="0 0 300 200" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              <g className="circle-fade">
-                <circle cx="150" cy="100" r="70" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-                <circle cx="150" cy="100" r="6" fill="var(--clr-accent)" />
-                <text x="150" y="120" textAnchor="middle" fill="var(--clr-accent)" fontSize="11" fontWeight="600">Center</text>
-
-                {/* Diameter line grows across the entire horizontal line */}
-                <line x1="80" y1="100" x2="220" y2="100" stroke="var(--clr-correct)" strokeWidth="3.5" className="diameter-line-grow" strokeLinecap="round" />
-              </g>
-            </svg>
+            <div style={{
+              width: '300px',
+              height: '200px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-sm)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/diameter.png"
+                alt="Diameter representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -2879,205 +2315,12 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Calculation</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
-              <svg width="240" height="150" viewBox="0 0 240 150" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                <circle cx="120" cy="75" r="50" fill="none" stroke="var(--clr-border)" strokeWidth="2.5" />
-                <circle cx="120" cy="75" r="4.5" fill="var(--clr-accent)" />
-                <line x1="120" y1="75" x2="170" y2="75" stroke="#4ba3e3" strokeWidth="3" />
-
-                {q1Answer === 'correct' && (
-                  <line x1="120" y1="75" x2="70" y2="75" stroke="var(--clr-correct)" strokeWidth="3.5" style={{ transition: 'all 0.5s ease' }} />
-                )}
-
-                <text x="145" y="65" textAnchor="middle" fontSize="12" fill="#4ba3e3" fontWeight="bold">r = 9 cm</text>
-              </svg>
-            </div>
-
-            <p style={{ fontSize: '1.25rem', color: 'var(--clr-text)', marginBottom: '20px', fontWeight: '500' }}>
-              If a circle has a <strong>Radius = 9 cm</strong>, find its diameter.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              {['4.5 cm', '9 cm', '18 cm', '27 cm'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ1Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Mixed Understanding</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', justifyContent: 'space-around', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
-              <div style={{ textAlign: 'center' }}>
-                <svg width="120" height="120" viewBox="0 0 120 120" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                  <circle cx="60" cy="60" r="30" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-                  <circle cx="60" cy="60" r="3" fill="var(--clr-accent)" />
-                  <line x1="60" y1="60" x2="90" y2="60" stroke="#4ba3e3" strokeWidth="2.5" />
-                  <text x="75" y="53" textAnchor="middle" fontSize="9" fill="#4ba3e3" fontWeight="bold">r = 5 cm</text>
-                </svg>
-                <p style={{ margin: '8px 0 0 0', fontWeight: 'bold', fontSize: '0.9rem' }}>Circle A</p>
-              </div>
-
-              <div style={{ textAlign: 'center' }}>
-                <svg width="120" height="120" viewBox="0 0 120 120" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                  <circle cx="60" cy="60" r="30" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-                  <circle cx="60" cy="60" r="3" fill="var(--clr-accent)" />
-                  <line x1="30" y1="60" x2="90" y2="60" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                  <text x="60" y="53" textAnchor="middle" fontSize="9" fill="var(--clr-correct)" fontWeight="bold">d = 10 cm</text>
-                </svg>
-                <p style={{ margin: '8px 0 0 0', fontWeight: 'bold', fontSize: '0.9rem' }}>Circle B</p>
-              </div>
-
-              <div style={{ textAlign: 'center' }}>
-                <svg width="120" height="120" viewBox="0 0 120 120" style={{ background: 'var(--clr-card)', borderRadius: '6px', border: '1px solid var(--clr-border)' }}>
-                  <circle cx="60" cy="60" r="45" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-                  <circle cx="60" cy="60" r="3" fill="var(--clr-accent)" />
-                  <line x1="15" y1="60" x2="105" y2="60" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                  <text x="60" y="53" textAnchor="middle" fontSize="9" fill="var(--clr-correct)" fontWeight="bold">d = 20 cm</text>
-                </svg>
-                <p style={{ margin: '8px 0 0 0', fontWeight: 'bold', fontSize: '0.9rem' }}>Circle C</p>
-              </div>
-            </div>
-
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '20px', fontWeight: '500' }}>
-              Which two circles are the same size?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                'Circle A and Circle B',
-                'Circle B and Circle C',
-                'Circle A and Circle C'
-              ].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ2Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -3126,7 +2369,7 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-radius')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -3146,12 +2389,11 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-hcf' || subStep === 'vd-lcm') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -3373,10 +2615,6 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
   const [numKits, setNumKits] = useState(6);
   const [leftovers, setLeftovers] = useState({ nuts: 0, bolts: 0 });
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
-  const [selectedQOption, setSelectedQOption] = useState(null);
 
   // LCM simulation tick timer
   useEffect(() => {
@@ -3407,9 +2645,6 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
     setHintText('');
     setSimTime(0);
     setIsSimRunning(false);
-    setQ1Answer(null);
-    setQ2Answer(null);
-    setSelectedQOption(null);
   }, [subStep]);
 
   const handleStartStop = () => {
@@ -3460,11 +2695,6 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
   };
 
   // Save progress automatically when Q2 is finished
-  useEffect(() => {
-    if (q2Answer === 'correct') {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const handleNext = () => {
     if (subStep === 'vd-hcf') setSubStep('vd-lcm');
@@ -3472,34 +2702,10 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === 'HCF') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! We are dividing the apples and oranges into the largest possible identical boxes (equal groups), so we must find the Highest Common Factor (HCF).");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Not quite. Remember: when splitting items into equal groups or dividing shapes, we look for factors (HCF). We are not waiting for repeating events to meet.");
-    }
-  };
 
-  const handleQ2Select = (option) => {
-    if (q2Answer !== null) return;
-    setSelectedQOption(option);
-    if (option === 'LCM') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! We are waiting for two repeating intervals (10 and 15 minutes) to synchronize and happen together, which requires the Least Common Multiple (LCM).");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Not quite. Remember: when events repeat and meet together in the future, we find the common multiple (LCM).");
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -3536,85 +2742,29 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
             HIGHEST COMMON FACTOR (HCF)
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the factors align and the highest shared factor glow.
+            Examine the factor lines for 12 and 18 to see how they highlight the greatest common divisor.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-hcf" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-hcf)" />
-
-              {/* HCF visual container */}
-              <g transform="translate(0, 10)">
-                {/* Left section: 12 */}
-                <g transform="translate(75, 40)">
-                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
-                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">12</text>
-                </g>
-
-                {/* Right section: 18 */}
-                <g transform="translate(245, 40)">
-                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
-                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">18</text>
-                </g>
-
-                {/* Factors lists rows */}
-                <g transform="translate(75, 95)">
-                  {[1, 2, 3, 4, 6, 12].map((f, idx) => {
-                    const isCommon = [1, 2, 3, 6].includes(f);
-                    const isGreatest = f === 6;
-                    let className = "hcf-f12-item";
-                    if (isGreatest) className += " hcf-greatest-glow";
-                    else if (isCommon) className += " hcf-common-high";
-                    return (
-                      <g key={idx} transform={`translate(0, ${idx * 28})`}>
-                        <g className={className} style={{ animationDelay: `${idx * 0.15}s` }}>
-                          <rect x="-28" y="-12" width="56" height="24" rx="6" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
-                          <text x="0" y="6" textAnchor="middle" fontSize="15" fontWeight="bold" fill="var(--clr-text)">{f}</text>
-                        </g>
-                      </g>
-                    );
-                  })}
-                </g>
-
-                <g transform="translate(245, 95)">
-                  {[1, 2, 3, 6, 9, 18].map((f, idx) => {
-                    const isCommon = [1, 2, 3, 6].includes(f);
-                    const isGreatest = f === 6;
-                    let className = "hcf-f18-item";
-                    if (isGreatest) className += " hcf-greatest-glow";
-                    else if (isCommon) className += " hcf-common-high";
-                    return (
-                      <g key={idx} transform={`translate(0, ${idx * 28})`}>
-                        <g className={className} style={{ animationDelay: `${0.9 + idx * 0.15}s` }}>
-                          <rect x="-28" y="-12" width="56" height="24" rx="6" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
-                          <text x="0" y="6" textAnchor="middle" fontSize="15" fontWeight="bold" fill="var(--clr-text)">{f}</text>
-                        </g>
-                      </g>
-                    );
-                  })}
-                </g>
-
-                {/* Connecting lines */}
-                <g className="hcf-lines">
-                  <line x1="103" y1="95" x2="217" y2="95" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
-                  <line x1="103" y1="123" x2="217" y2="123" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
-                  <line x1="103" y1="151" x2="217" y2="151" stroke="var(--clr-correct)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.6" />
-                  <line x1="103" y1="207" x2="217" y2="179" stroke="var(--clr-correct)" strokeWidth="2.5" opacity="0.9" />
-                </g>
-
-                {/* HCF Summary Overlay */}
-                <g className="hcf-summary-overlay">
-                  <rect x="50" y="255" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
-                  <text x="160" y="276" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">HCF (12, 18) = 6</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/hcf.png"
+                alt="HCF representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -3636,76 +2786,29 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
             LEAST COMMON MULTIPLE (LCM)
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the multiples grow and find the first matching number.
+            Look at the lists of multiples for 12 and 18 to locate the smallest matching value they share.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-lcm" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-lcm)" />
-
-              {/* LCM visual container */}
-              <g transform="translate(0, 10)">
-                {/* Left section: 12 */}
-                <g transform="translate(75, 40)">
-                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
-                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">12</text>
-                </g>
-
-                {/* Right section: 18 */}
-                <g transform="translate(245, 40)">
-                  <circle cx="0" cy="0" r="26" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="3" />
-                  <text x="0" y="8" textAnchor="middle" fill="var(--clr-accent)" fontSize="20" fontWeight="bold">18</text>
-                </g>
-
-                {/* Multiples lists rows */}
-                <g transform="translate(75, 95)">
-                  {[12, 24, 36, 48].map((m, idx) => {
-                    const isMatch = m === 36;
-                    let className = "lcm-m12-item";
-                    if (isMatch) className += " lcm-match-node";
-                    return (
-                      <g key={idx} transform={`translate(0, ${idx * 38})`}>
-                        <g className={className} style={{ animationDelay: `${idx * 0.4}s` }}>
-                          <rect x="-28" y="-16" width="56" height="32" rx="8" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
-                          <text x="0" y="6" textAnchor="middle" fontSize="16" fontWeight="bold" fill="var(--clr-text)">{m}</text>
-                        </g>
-                      </g>
-                    );
-                  })}
-                </g>
-
-                <g transform="translate(245, 95)">
-                  {[18, 36, 54].map((m, idx) => {
-                    const isMatch = m === 36;
-                    let className = "lcm-m18-item";
-                    if (isMatch) className += " lcm-match-node";
-                    return (
-                      <g key={idx} transform={`translate(0, ${idx * 38})`}>
-                        <g className={className} style={{ animationDelay: `${0.2 + idx * 0.45}s` }}>
-                          <rect x="-28" y="-16" width="56" height="32" rx="8" fill="var(--clr-card)" stroke="var(--clr-border)" strokeWidth="1.5" />
-                          <text x="0" y="6" textAnchor="middle" fontSize="16" fontWeight="bold" fill="var(--clr-text)">{m}</text>
-                        </g>
-                      </g>
-                    );
-                  })}
-                </g>
-
-                {/* Connecting line */}
-                <line x1="103" y1="171" x2="217" y2="133" stroke="var(--clr-correct)" strokeWidth="3" className="lcm-match-line" />
-
-                {/* LCM Summary Overlay */}
-                <g className="lcm-summary-overlay">
-                  <rect x="50" y="255" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
-                  <text x="160" y="276" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">LCM (12, 18) = 36</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/lcm.png"
+                alt="LCM representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -4123,159 +3226,12 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Recognition</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.2rem', color: 'var(--clr-text)', marginBottom: '20px', lineHeight: '1.6' }}>
-              <strong>Scenario:</strong> 18 apples and 24 oranges need to be packed into the largest possible identical boxes with no leftovers.
-              <br /><br />
-              What concept should you use to find the box size?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {['HCF', 'LCM'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ1Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Recognition</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.2rem', color: 'var(--clr-text)', marginBottom: '20px', lineHeight: '1.6' }}>
-              <strong>Scenario:</strong> One alarm rings every 10 minutes. Another alarm rings every 15 minutes. When will they ring together next?
-              <br /><br />
-              What concept should you use to find the time?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {['HCF', 'LCM'].map(opt => {
-                const isSelected = selectedQOption === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ2Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -4324,7 +3280,7 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-hcf')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -4338,18 +3294,19 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+  const [factorsFrame, setFactorsFrame] = useState(0);
+  const [multiplesFrame, setMultiplesFrame] = useState(0);
 
   // Helper to determine step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-factors' || subStep === 'vd-multiples') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'discovery') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -4546,8 +3503,6 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
   // Discovery
   const [discoverySelection, setDiscoverySelection] = useState(null);
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
   const [selectedQ1Option, setSelectedQ1Option] = useState(null);
 
   // Q2: Sorting Game checkboxes for number 10
@@ -4559,7 +3514,6 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
     25: { factor: false, multiple: false },
     50: { factor: false, multiple: false }
   });
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Trigger machine shake on wrong input
   const triggerShake = () => {
@@ -4614,9 +3568,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
     setIsGeneratingMultiples(false);
     setShow5Option(true);
     setDiscoverySelection(null);
-    setQ1Answer(null);
     setSelectedQ1Option(null);
-    setQ2Answer(null);
     setStudentSelections({
       2: { factor: false, multiple: false },
       5: { factor: false, multiple: false },
@@ -4625,14 +3577,32 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
       25: { factor: false, multiple: false },
       50: { factor: false, multiple: false }
     });
+    setFactorsFrame(0);
+    setMultiplesFrame(0);
   }, [subStep]);
 
-  // Save progress automatically when Q2 is finished
   useEffect(() => {
-    if (q2Answer === 'correct') {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
+    if (subStep !== 'vd-factors') return;
+
+    const delay = factorsFrame === 1 ? 3000 : 1500;
+    const timerId = setTimeout(() => {
+      setFactorsFrame(prev => (prev + 1) % 3);
+    }, delay);
+
+    return () => clearTimeout(timerId);
+  }, [subStep, factorsFrame]);
+
+  useEffect(() => {
+    if (subStep !== 'vd-multiples') return;
+
+    const timerId = setTimeout(() => {
+      setMultiplesFrame(prev => (prev + 1) % 4);
+    }, 1500);
+
+    return () => clearTimeout(timerId);
+  }, [subStep, multiplesFrame]);
+
+  // Save progress automatically when Q2 is finished
 
   const handleNext = () => {
     if (subStep === 'vd-factors') setSubStep('vd-multiples');
@@ -4641,9 +3611,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('discovery');
     else if (subStep === 'discovery') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleDiscoverySubmit = (val) => {
@@ -4657,62 +3625,8 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQ1Option(option);
-    if (option === 6) {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! 6 is a factor of 18 because 18 ÷ 6 = 3 (it divides exactly). 36 is a multiple of 18, and 4 and 20 are neither.");
-    } else {
-      setQ1Answer('wrong');
-      if (option === 36) {
-        setFeedbackText("Not quite. 36 is a MULTIPLE of 18 (18 × 2 = 36). The question asks for a FACTOR (a number that divides 18 exactly).");
-      } else {
-        setFeedbackText("Not quite. A factor must divide 18 exactly. Try checking which option divides 18 without any remainder.");
-      }
-    }
-  };
 
-  const toggleSelection = (num, type) => {
-    if (q2Answer !== null) return;
-    setStudentSelections(prev => ({
-      ...prev,
-      [num]: {
-        ...prev[num],
-        [type]: !prev[num][type]
-      }
-    }));
-  };
 
-  const checkSelections = () => {
-    // Correct answers mapping
-    const correctMap = {
-      2: { factor: true, multiple: false },
-      5: { factor: true, multiple: false },
-      10: { factor: true, multiple: true },
-      20: { factor: false, multiple: true },
-      25: { factor: false, multiple: false },
-      50: { factor: false, multiple: true }
-    };
-
-    let isCorrect = true;
-    for (const key of Object.keys(correctMap)) {
-      const student = studentSelections[key];
-      const correct = correctMap[key];
-      if (student.factor !== correct.factor || student.multiple !== correct.multiple) {
-        isCorrect = false;
-        break;
-      }
-    }
-
-    if (isCorrect) {
-      setQ2Answer('correct');
-      setFeedbackText("Magnificent! You sorted them perfectly. Notice that 10 is both a factor of itself (10 ÷ 10 = 1) and the first multiple of itself (10 × 1 = 10)!");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Not quite! Remember that 10 divides itself exactly (making it a factor) AND you obtain it by multiplying 10 by 1 (making it a multiple). Double check your selections.");
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -4784,50 +3698,58 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-facs" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-facs)" />
-
-              {/* Equations and status texts replacing each other */}
-              <g className="factor-eq-1">
-                <text x="160" y="55" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold">18</text>
-                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">Let's find all factors of 18.</text>
-              </g>
-              <g className="factor-eq-2">
-                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">1 × 18 = 18</text>
-                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">1 group of 18 dots (no remainder!)</text>
-              </g>
-              <g className="factor-eq-3">
-                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">2 × 9 = 18</text>
-                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">2 rows of 9 dots (no remainder!)</text>
-              </g>
-              <g className="factor-eq-4">
-                <text x="160" y="55" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">3 × 6 = 18</text>
-                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">3 rows of 6 dots (no remainder!)</text>
-              </g>
-              <g className="factor-eq-5">
-                <text x="160" y="55" textAnchor="middle" fill="var(--clr-correct)" fontSize="22" fontWeight="bold">Factors: 1, 2, 3, 6, 9, 18</text>
-                <text x="160" y="275" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="15" fontWeight="500">These numbers divide 18 exactly!</text>
-              </g>
-
-              {/* The 18 moving factor dots */}
-              {Array.from({ length: 18 }).map((_, idx) => (
-                <circle
-                  key={idx}
-                  cx="160"
-                  cy="150"
-                  r="6.5"
-                  fill="var(--clr-correct)"
-                  className={`factor-dot-${idx}`}
-                  style={{ filter: 'drop-shadow(0 0 2px rgba(92,184,122,0.4))' }}
-                />
-              ))}
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/factors-first.png"
+                alt="Factors stage 1"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: factorsFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/factors-middle.png"
+                alt="Factors stage 2"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: factorsFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/factors-end.png"
+                alt="Factors stage 3"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: factorsFrame === 2 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -4853,79 +3775,72 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-mults" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mults)" />
-
-              {/* Equations replacing each other */}
-              <g className="mult-eq-1">
-                <text x="160" y="75" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold">18</text>
-              </g>
-              <g className="mult-eq-2">
-                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">1 × 18 = 18</text>
-              </g>
-              <g className="mult-eq-3">
-                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">2 × 18 = 36</text>
-              </g>
-              <g className="mult-eq-4">
-                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">3 × 18 = 54</text>
-              </g>
-              <g className="mult-eq-5">
-                <text x="160" y="75" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontWeight="bold">4 × 18 = 72</text>
-              </g>
-
-              {/* Growing number sequence */}
-              <g transform="translate(0, 160)">
-                <line x1="30" y1="20" x2="290" y2="20" stroke="var(--clr-border)" strokeWidth="2.5" strokeDasharray="4 4" />
-
-                {/* Multiple 18 */}
-                <g className="mult-node-1">
-                  <circle cx="50" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                  <text x="50" y="26" textAnchor="middle" fill="var(--clr-accent)" fontSize="16" fontWeight="bold">18</text>
-                </g>
-
-                {/* Arrow 1 to 36 */}
-                <g className="mult-arrow-1">
-                  <path d="M 75,20 L 102,20 M 96,15 L 102,20 L 96,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <text x="88" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
-                </g>
-
-                {/* Multiple 36 */}
-                <g className="mult-node-2">
-                  <circle cx="125" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                  <text x="125" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">36</text>
-                </g>
-
-                {/* Arrow 2 to 54 */}
-                <g className="mult-arrow-2">
-                  <path d="M 150,20 L 177,20 M 171,15 L 177,20 L 171,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <text x="163" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
-                </g>
-
-                {/* Multiple 54 */}
-                <g className="mult-node-3">
-                  <circle cx="200" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                  <text x="200" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">54</text>
-                </g>
-
-                {/* Arrow 3 to 72 */}
-                <g className="mult-arrow-3">
-                  <path d="M 225,20 L 252,20 M 246,15 L 252,20 L 246,25" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <text x="238" y="10" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="10" fontWeight="bold">+18</text>
-                </g>
-
-                {/* Multiple 72 */}
-                <g className="mult-node-4">
-                  <circle cx="270" cy="20" r="22" fill="var(--clr-card)" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                  <text x="270" y="26" textAnchor="middle" fill="var(--clr-correct)" fontSize="16" fontWeight="bold">72</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/multiples-first.png"
+                alt="Multiples stage 1"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: multiplesFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/multiples-2.png"
+                alt="Multiples stage 2"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: multiplesFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/multiples-3.png"
+                alt="Multiples stage 3"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: multiplesFrame === 2 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/multiples-end.png"
+                alt="Multiples stage 4"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: multiplesFrame === 3 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -5291,249 +4206,12 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Calculation</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.25rem', color: 'var(--clr-text)', marginBottom: '20px', fontWeight: '500' }}>
-              Which of these is a <strong>factor</strong> of 18?
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              {[4, 6, 20, 36].map(opt => {
-                const isSelected = selectedQ1Option === opt;
-                return (
-                  <button
-                    key={opt}
-                    onClick={() => handleQ1Select(opt)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Sorting Challenge</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '8px', fontWeight: '500' }}>
-              Target Number: <strong style={{ color: 'var(--clr-accent)', fontSize: '1.35rem' }}>10</strong>
-            </p>
-            <p style={{ color: 'var(--clr-text-soft)', fontSize: '0.98rem', marginBottom: '20px' }}>
-              For each card below, select whether it is a <strong>Factor of 10</strong>, a <strong>Multiple of 10</strong>, or <strong>neither</strong> (leave unchecked).
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[2, 5, 10, 20, 25, 50].map((num) => {
-                const isFactor = studentSelections[num]?.factor;
-                const isMultiple = studentSelections[num]?.multiple;
-
-                // Define visual styles based on correct mapping after submission
-                const getBtnStyle = (type, isSelected) => {
-                  const correctMap = {
-                    2: { factor: true, multiple: false },
-                    5: { factor: true, multiple: false },
-                    10: { factor: true, multiple: true },
-                    20: { factor: false, multiple: true },
-                    25: { factor: false, multiple: false },
-                    50: { factor: false, multiple: true }
-                  };
-                  const isCorrect = correctMap[num][type];
-
-                  if (q2Answer !== null) {
-                    if (isSelected && isCorrect) {
-                      return {
-                        background: 'rgba(92, 184, 122, 0.15)',
-                        color: 'var(--clr-correct)',
-                        border: '2px solid var(--clr-correct)',
-                        fontWeight: '600'
-                      };
-                    } else if (isSelected && !isCorrect) {
-                      return {
-                        background: 'rgba(235, 94, 85, 0.15)',
-                        color: 'var(--clr-wrong)',
-                        border: '2px solid var(--clr-wrong)',
-                        fontWeight: '600'
-                      };
-                    } else if (!isSelected && isCorrect) {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-correct)',
-                        border: '2px dashed var(--clr-correct)',
-                        opacity: 0.85
-                      };
-                    } else {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-text-soft)',
-                        border: '1.5px solid var(--clr-border)',
-                        opacity: 0.5
-                      };
-                    }
-                  } else {
-                    if (isSelected) {
-                      return {
-                        background: type === 'factor' ? '#4ba3e3' : 'var(--clr-correct)',
-                        color: '#fff',
-                        border: `1.5px solid ${type === 'factor' ? '#4ba3e3' : 'var(--clr-correct)'}`
-                      };
-                    }
-                    return {
-                      background: 'var(--clr-surface)',
-                      color: 'var(--clr-text)',
-                      border: '1.5px solid var(--clr-border)',
-                      cursor: 'pointer'
-                    };
-                  }
-                };
-
-                return (
-                  <div
-                    key={num}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                      background: 'var(--clr-card)',
-                      border: '1px solid var(--clr-border)',
-                      padding: '12px 20px',
-                      borderRadius: '8px'
-                    }}
-                  >
-                    <span style={{ fontSize: '1.35rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>
-                      {num}
-                    </span>
-
-                    <div style={{ display: 'flex', gap: '10px' }}>
-                      <button
-                        onClick={() => toggleSelection(num, 'factor')}
-                        disabled={q2Answer !== null}
-                        style={{
-                          padding: '8px 14px',
-                          fontSize: '0.9rem',
-                          borderRadius: 'var(--radius-sm)',
-                          ...getBtnStyle('factor', isFactor)
-                        }}
-                      >
-                        {isFactor ? '✓ Factor' : 'Factor'}
-                      </button>
-                      <button
-                        onClick={() => toggleSelection(num, 'multiple')}
-                        disabled={q2Answer !== null}
-                        style={{
-                          padding: '8px 14px',
-                          fontSize: '0.9rem',
-                          borderRadius: 'var(--radius-sm)',
-                          ...getBtnStyle('multiple', isMultiple)
-                        }}
-                      >
-                        {isMultiple ? '✓ Multiple' : 'Multiple'}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {q2Answer === null && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-                <button
-                  onClick={checkSelections}
-                  style={{ padding: '12px 32px', fontSize: '1.05rem' }}
-                >
-                  Submit Sorting
-                </button>
-              </div>
-            )}
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -5582,7 +4260,7 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-factors')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -5596,18 +4274,18 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+  const [simFrame, setSimFrame] = useState(0);
 
   // Helper to determine the active step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-congruence' || subStep === 'vd-similarity') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -5745,8 +4423,6 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
   const [discoverQAnswered, setDiscoverQAnswered] = useState(false);
   const [selectedDiscoveryOption, setSelectedDiscoveryOption] = useState(null);
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
   const [selectedQ1Option, setSelectedQ1Option] = useState(null);
 
   // Classification Grid Game
@@ -5758,7 +4434,6 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
     'Enlarged pentagon': null,
     'Triangle with different angles': null
   });
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Reset states between subSteps
   useEffect(() => {
@@ -5769,9 +4444,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
     setInspectorSolved(false);
     setDiscoverQAnswered(false);
     setSelectedDiscoveryOption(null);
-    setQ1Answer(null);
     setSelectedQ1Option(null);
-    setQ2Answer(null);
     setClassifications({
       'Rotated square': null,
       'Enlarged triangle': null,
@@ -5780,6 +4453,8 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
       'Enlarged pentagon': null,
       'Triangle with different angles': null
     });
+
+    setSimFrame(0);
 
     // Set initial offsets for candidate shape to rotate/resize
     if (subStep === 'r1') {
@@ -5797,12 +4472,15 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   }, [subStep]);
 
-  // Mark as completed immediately when Q2 is successfully answered
   useEffect(() => {
-    if (q2Answer === 'correct') {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
+    if (subStep !== 'vd-similarity') return;
+    const interval = setInterval(() => {
+      setSimFrame(prev => (prev + 1) % 3);
+    }, 1500);
+    return () => clearInterval(interval);
+  }, [subStep]);
+
+  // Mark as completed immediately when Q2 is successfully answered
 
   const handleNext = () => {
     if (subStep === 'vd-congruence') setSubStep('vd-similarity');
@@ -5811,9 +4489,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleRotate = () => {
@@ -5910,56 +4586,8 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQ1Option(option);
-    if (option === 'similar') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! The sides of Triangle B are exactly twice the size of Triangle A (scale factor = 2). Since they have the same shape but different sizes, they are Similar Only.");
-    } else {
-      setQ1Answer('wrong');
-      if (option === 'congruent') {
-        setFeedbackText("Not quite. Congruent shapes must have the exact same size. Triangle B is twice as large as Triangle A!");
-      } else {
-        setFeedbackText("Not quite. They have the exact same right-angle shape, and their sides are proportional (3:6, 4:8, 5:10), so they are similar!");
-      }
-    }
-  };
 
-  const handleSelectClass = (item, category) => {
-    if (q2Answer !== null) return;
-    setClassifications(prev => ({
-      ...prev,
-      [item]: category
-    }));
-  };
 
-  const checkClassification = () => {
-    const correctMap = {
-      'Rotated square': 'congruent',
-      'Enlarged triangle': 'similar',
-      'Mirror-image rectangle': 'congruent',
-      'Rectangle vs square': 'neither',
-      'Enlarged pentagon': 'similar',
-      'Triangle with different angles': 'neither'
-    };
-
-    let isCorrect = true;
-    for (const key of Object.keys(correctMap)) {
-      if (classifications[key] !== correctMap[key]) {
-        isCorrect = false;
-        break;
-      }
-    }
-
-    if (isCorrect) {
-      setQ2Answer('correct');
-      setFeedbackText("Magnificent! You classified all pairs perfectly! Rotating and mirroring keep shapes congruent, enlarging makes them similar, and changing shapes or angles makes them neither.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Not quite! Some shapes are classified incorrectly. Check which transformations preserve size (congruent) and which only preserve shape (similar).");
-    }
-  };
 
   // Helper to draw SVGs side-by-side
   const renderShapeCanvas = () => {
@@ -6057,35 +4685,31 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
             CONGRUENCE
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the shapes match perfectly without resizing.
+            Congruent shapes match size and shape exactly.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-cong" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              {/* Grid pattern background inside the card */}
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-cong)" />
-
-              {/* Left Reference static outline (dashed shape) */}
-              <path d="M 40,100 L 160,220 L 40,220 Z" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3" strokeDasharray="6 6" />
-
-              {/* Right Reference base outline (dotted returning spot) */}
-              <path d="M 160,100 L 280,220 L 160,220 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2" strokeDasharray="4 4" />
-
-              {/* Sliding matching shape (with congruence green glow) */}
-              <path
-                d="M 160,100 L 280,220 L 160,220 Z"
-                fill="rgba(92, 184, 122, 0.15)"
-                stroke="var(--clr-correct)"
-                strokeWidth="3.5"
-                className="congruence-sliding-triangle"
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              overflow: 'hidden',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <img
+                src="/contrast/congruent.png"
+                alt="Congruence illustration"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
               />
-            </svg>
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -6111,31 +4735,58 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-sim" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              {/* Grid pattern background inside the card */}
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-sim)" />
-
-              {/* Left Reference static outline (large dashed shape) */}
-              <path d="M 40,100 L 160,220 L 40,220 Z" fill="rgba(255, 255, 255, 0.03)" stroke="rgba(255, 255, 255, 0.25)" strokeWidth="3" strokeDasharray="6 6" />
-
-              {/* Right Reference base outline (small candidate base returning spot) */}
-              <path d="M 160,160 L 220,220 L 160,220 Z" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(255, 255, 255, 0.12)" strokeWidth="2" strokeDasharray="4 4" />
-
-              {/* Scaling matching shape (with similarity blue glow) */}
-              <path
-                d="M 160,100 L 280,220 L 160,220 Z"
-                fill="rgba(75, 163, 227, 0.15)"
-                stroke="#4ba3e3"
-                strokeWidth="3.5"
-                className="similarity-growing-triangle"
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/similarity-first.png"
+                alt="Similarity stage 1"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: simFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
               />
-            </svg>
+              <img
+                src="/contrast/similarity-middle.png"
+                alt="Similarity stage 2"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: simFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/similarity-end.png"
+                alt="Similarity stage 3"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: simFrame === 2 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -6454,275 +5105,12 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Recognition</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.25rem', color: 'var(--clr-text)', marginBottom: '8px', fontWeight: '500' }}>
-              Compare two triangles:
-            </p>
-            <ul style={{ fontSize: '1.1rem', margin: '0 0 20px 20px', padding: 0 }}>
-              <li><strong>Triangle A:</strong> sides measuring 3 cm, 4 cm, 5 cm</li>
-              <li><strong>Triangle B:</strong> sides measuring 6 cm, 8 cm, 10 cm</li>
-            </ul>
-            <p style={{ fontSize: '1.15rem', fontWeight: '500', marginBottom: '16px' }}>
-              Choose the correct statement:
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'congruent', label: 'Congruent (And Similar)' },
-                { id: 'similar', label: 'Similar Only' },
-                { id: 'neither', label: 'Neither Congruent nor Similar' }
-              ].map(opt => {
-                const isSelected = selectedQ1Option === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => handleQ1Select(opt.id)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 Classification Grid */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Classification Challenge</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ color: 'var(--clr-text-soft)', fontSize: '0.98rem', marginBottom: '20px' }}>
-              Classify each shape transformation pair into their correct category:
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                'Rotated square',
-                'Enlarged triangle',
-                'Mirror-image rectangle',
-                'Rectangle vs square',
-                'Enlarged pentagon',
-                'Triangle with different angles'
-              ].map((item) => {
-                const selectedCat = classifications[item];
-
-                const getBtnStyle = (cat) => {
-                  const correctMap = {
-                    'Rotated square': 'congruent',
-                    'Enlarged triangle': 'similar',
-                    'Mirror-image rectangle': 'congruent',
-                    'Rectangle vs square': 'neither',
-                    'Enlarged pentagon': 'similar',
-                    'Triangle with different angles': 'neither'
-                  };
-                  const isCorrect = correctMap[item] === cat;
-                  const isSelected = selectedCat === cat;
-
-                  if (q2Answer !== null) {
-                    if (isSelected && isCorrect) {
-                      return {
-                        background: 'rgba(92, 184, 122, 0.15)',
-                        color: 'var(--clr-correct)',
-                        border: '2px solid var(--clr-correct)',
-                        fontWeight: '600'
-                      };
-                    } else if (isSelected && !isCorrect) {
-                      return {
-                        background: 'rgba(235, 94, 85, 0.15)',
-                        color: 'var(--clr-wrong)',
-                        border: '2px solid var(--clr-wrong)',
-                        fontWeight: '600'
-                      };
-                    } else if (!isSelected && isCorrect) {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-correct)',
-                        border: '2px dashed var(--clr-correct)',
-                        opacity: 0.85
-                      };
-                    } else {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-text-soft)',
-                        border: '1.5px solid var(--clr-border)',
-                        opacity: 0.5
-                      };
-                    }
-                  } else {
-                    if (isSelected) {
-                      return {
-                        background: 'var(--clr-accent)',
-                        color: '#fff',
-                        border: '1.5px solid var(--clr-accent)'
-                      };
-                    }
-                    return {
-                      background: 'var(--clr-surface)',
-                      color: 'var(--clr-text)',
-                      border: '1.5px solid var(--clr-border)',
-                      cursor: 'pointer'
-                    };
-                  }
-                };
-
-                return (
-                  <div
-                    key={item}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: '10px',
-                      background: 'var(--clr-card)',
-                      border: '1px solid var(--clr-border)',
-                      padding: '16px',
-                      borderRadius: '8px'
-                    }}
-                  >
-                    <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>
-                      {item}
-                    </span>
-
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                      <button
-                        onClick={() => handleSelectClass(item, 'congruent')}
-                        disabled={q2Answer !== null}
-                        style={{
-                          padding: '8px 6px',
-                          fontSize: '0.8rem',
-                          borderRadius: 'var(--radius-sm)',
-                          ...getBtnStyle('congruent')
-                        }}
-                      >
-                        Congruent
-                      </button>
-                      <button
-                        onClick={() => handleSelectClass(item, 'similar')}
-                        disabled={q2Answer !== null}
-                        style={{
-                          padding: '8px 6px',
-                          fontSize: '0.8rem',
-                          borderRadius: 'var(--radius-sm)',
-                          ...getBtnStyle('similar')
-                        }}
-                      >
-                        Similar Only
-                      </button>
-                      <button
-                        onClick={() => handleSelectClass(item, 'neither')}
-                        disabled={q2Answer !== null}
-                        style={{
-                          padding: '8px 6px',
-                          fontSize: '0.8rem',
-                          borderRadius: 'var(--radius-sm)',
-                          ...getBtnStyle('neither')
-                        }}
-                      >
-                        Neither
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {q2Answer === null && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-                <button
-                  onClick={checkClassification}
-                  style={{ padding: '12px 32px', fontSize: '1.05rem' }}
-                >
-                  Submit Classification
-                </button>
-              </div>
-            )}
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -6771,7 +5159,7 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-congruence')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -6796,8 +5184,6 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
     '12': null
   });
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
   const [selectedQ1Option, setSelectedQ1Option] = useState(null);
 
   // Q2 dimensions tapping challenge
@@ -6807,7 +5193,6 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
     '4x4': false,
     '1x3': false
   });
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Reset states between subSteps
   useEffect(() => {
@@ -6822,9 +5207,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
       C: null,
       '12': null
     });
-    setQ1Answer(null);
     setSelectedQ1Option(null);
-    setQ2Answer(null);
     setTappedDimensions({
       '2x2': false,
       '3x2': false,
@@ -6838,12 +5221,11 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-matrix' || subStep === 'vd-determinant') return 0;
     if (subStep === 'intro' || subStep === 'detective') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -7020,20 +5402,13 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
   `;
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Answer !== null) {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-matrix') setSubStep('vd-determinant');
     else if (subStep === 'vd-determinant') setSubStep('intro');
     else if (subStep === 'intro') setSubStep('detective');
     else if (subStep === 'detective') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleInspectCard = (cardId) => {
@@ -7084,41 +5459,8 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
     inspectedStatus.C === 'correct' &&
     inspectedStatus['12'] === 'correct';
 
-  const handleQ1Select = (option) => {
-    if (q1Answer !== null) return;
-    setSelectedQ1Option(option);
-    if (option === 'matrix') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Brackets indicate a grid configuration of values, representing a Matrix.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. Vertical bar lines denote a determinant value calculation, whereas standard brackets indicate the matrix grid structure itself.");
-    }
-  };
 
-  const toggleDimension = (dim) => {
-    if (q2Answer !== null) return;
-    setTappedDimensions(prev => ({
-      ...prev,
-      [dim]: !prev[dim]
-    }));
-  };
 
-  const checkQ2Selection = () => {
-    const isCorrect =
-      tappedDimensions['2x2'] === true &&
-      tappedDimensions['3x2'] === false &&
-      tappedDimensions['4x4'] === true &&
-      tappedDimensions['1x3'] === false;
-
-    if (isCorrect) {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! Only square matrices (same row and column count, like 2x2 and 4x4) can have determinants computed.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Not quite. Remember that determinants are only defined for square dimensions where number of rows equals the number of columns.");
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -7192,36 +5534,29 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
             MATRIX
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the rectangular grid fill with numbers and glow as a single system.
+            Observe the rectangular grid layout of numbers organized into rows and columns.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-matrix" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-matrix)" />
-
-              {/* Square brackets for matrix */}
-              <g className="mat-brackets">
-                {/* Left bracket */}
-                <path d="M 105,95 L 90,95 L 90,185 L 105,185" fill="none" stroke="var(--clr-text)" strokeWidth="3" />
-                {/* Right bracket */}
-                <path d="M 215,95 L 230,95 L 230,185 L 215,185" fill="none" stroke="var(--clr-text)" strokeWidth="3" />
-              </g>
-
-              {/* Numbers filling in */}
-              <text x="125" y="135" className="mat-num-1" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">2</text>
-              <text x="195" y="135" className="mat-num-2" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">1</text>
-              <text x="125" y="170" className="mat-num-3" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">3</text>
-              <text x="195" y="170" className="mat-num-4" textAnchor="middle" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold">4</text>
-
-              {/* Grid Highlight glow */}
-              <rect x="80" y="85" width="160" height="110" rx="8" fill="rgba(232, 134, 74, 0.08)" stroke="var(--clr-accent)" strokeWidth="2.5" className="mat-highlight" />
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/matrix.png"
+                alt="Matrix representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -7243,59 +5578,29 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
             DETERMINANT
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the diagonal values multiply and subtract to reduce the matrix to a single number.
+            Study the diagonal multiplication lines that show how to reduce the grid of numbers to a single value.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-det" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-det)" />
-
-              {/* Determinant straight bars */}
-              <g className="det-bars">
-                <line x1="95" y1="70" x2="95" y2="160" stroke="var(--clr-text)" strokeWidth="3" />
-                <line x1="225" y1="70" x2="225" y2="160" stroke="var(--clr-text)" strokeWidth="3" />
-              </g>
-
-              {/* Numbers */}
-              <text x="125" y="105" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">2</text>
-              <text x="195" y="105" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">1</text>
-              <text x="125" y="145" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">3</text>
-              <text x="195" y="145" fill="var(--clr-text)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="middle">4</text>
-
-              {/* Diagonal lines */}
-              {/* Main diagonal (2 * 4) */}
-              <line x1="130" y1="110" x2="190" y2="140" stroke="var(--clr-correct)" strokeWidth="2.5" strokeDasharray="60" strokeDashoffset="60" className="det-diag-1" strokeLinecap="round" />
-              {/* Anti diagonal (1 * 3) */}
-              <line x1="190" y1="110" x2="130" y2="140" stroke="var(--clr-accent)" strokeWidth="2.5" strokeDasharray="60" strokeDashoffset="60" className="det-diag-2" strokeLinecap="round" />
-
-              {/* Calculation step 1: (2 x 4) - (1 x 3) */}
-              <g className="det-step-1">
-                <text x="160" y="195" fill="var(--clr-text)" fontSize="18" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
-                  (2 × 4) − (1 × 3)
-                </text>
-              </g>
-
-              {/* Calculation step 2: 8 - 3 */}
-              <g className="det-step-2">
-                <text x="160" y="225" fill="var(--clr-text-soft)" fontSize="18" fontWeight="bold" textAnchor="middle">↓</text>
-                <text x="160" y="248" fill="var(--clr-text)" fontSize="18" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
-                  8 − 3
-                </text>
-              </g>
-
-              {/* Final Step: 5 */}
-              <g className="det-step-3">
-                <text x="160" y="275" fill="var(--clr-correct)" fontSize="28" fontFamily="monospace" fontWeight="bold" textAnchor="middle">
-                  5
-                </text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/determinants.png"
+                alt="Determinant representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -7637,218 +5942,12 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Recognition</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.25rem', color: 'var(--clr-text)', marginBottom: '16px', fontWeight: '500' }}>
-              What is shown here?
-            </p>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '24px' }}>
-              <div className="matrix-bracket" style={{ fontSize: '1.3rem', padding: '8px 16px' }}>
-                3 &nbsp; 2<br />1 &nbsp; 4
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'matrix', label: 'Matrix' },
-                { id: 'determinant', label: 'Determinant' }
-              ].map(opt => {
-                const isSelected = selectedQ1Option === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => handleQ1Select(opt.id)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 Square Matrix Challenge */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Square Matrix Challenge</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '8px', fontWeight: '500' }}>
-              Tap every matrix dimension size that can have a determinant:
-            </p>
-            <p style={{ color: 'var(--clr-text-soft)', fontSize: '0.95rem', marginBottom: '20px' }}>
-              You may select multiple cards before submitting your selection.
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px' }}>
-              {['2x2', '3x2', '4x4', '1x3'].map((dim) => {
-                const isSelected = tappedDimensions[dim];
-
-                const getCardStyle = () => {
-                  const correctMap = {
-                    '2x2': true,
-                    '3x2': false,
-                    '4x4': true,
-                    '1x3': false
-                  };
-                  const isCorrect = correctMap[dim];
-
-                  if (q2Answer !== null) {
-                    if (isSelected && isCorrect) {
-                      return {
-                        background: 'rgba(92, 184, 122, 0.15)',
-                        color: 'var(--clr-correct)',
-                        border: '2px solid var(--clr-correct)',
-                        fontWeight: '600'
-                      };
-                    } else if (isSelected && !isCorrect) {
-                      return {
-                        background: 'rgba(235, 94, 85, 0.15)',
-                        color: 'var(--clr-wrong)',
-                        border: '2px solid var(--clr-wrong)',
-                        fontWeight: '600'
-                      };
-                    } else if (!isSelected && isCorrect) {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-correct)',
-                        border: '2px dashed var(--clr-correct)',
-                        opacity: 0.85
-                      };
-                    } else {
-                      return {
-                        background: 'var(--clr-surface)',
-                        color: 'var(--clr-text-soft)',
-                        border: '1.5px solid var(--clr-border)',
-                        opacity: 0.5
-                      };
-                    }
-                  } else {
-                    return {
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      border: isSelected ? '1.5px solid var(--clr-accent)' : '1.5px solid var(--clr-border)',
-                      cursor: 'pointer'
-                    };
-                  }
-                };
-
-                return (
-                  <div
-                    key={dim}
-                    onClick={() => toggleDimension(dim)}
-                    style={{
-                      padding: '20px',
-                      borderRadius: '8px',
-                      textAlign: 'center',
-                      fontSize: '1.25rem',
-                      fontWeight: 'bold',
-                      transition: 'all 0.2s ease',
-                      ...getCardStyle()
-                    }}
-                  >
-                    {dim.replace('x', ' × ')}
-                  </div>
-                );
-              })}
-            </div>
-
-            {q2Answer === null && (
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '24px' }}>
-                <button
-                  onClick={checkQ2Selection}
-                  style={{ padding: '12px 32px', fontSize: '1.05rem' }}
-                >
-                  Submit Selection
-                </button>
-              </div>
-            )}
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -7897,7 +5996,7 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-matrix')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -7916,9 +6015,6 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
   // Round 2 Outlier transition state
   const [r2Transitioned, setR2Transitioned] = useState(false);
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Trigger outlier slide transition in Round 2
   useEffect(() => {
@@ -7938,8 +6034,6 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
     setAnswerState('unanswered');
     setFeedbackText('');
     setHintText('');
-    setQ1Answer(null);
-    setQ2Answer(null);
   }, [subStep]);
 
   // Helper to determine step index (0-3)
@@ -7947,12 +6041,11 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-mean' || subStep === 'vd-median' || subStep === 'vd-mode') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -8158,11 +6251,6 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
   `;
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Answer !== null) {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-mean') setSubStep('vd-median');
@@ -8172,9 +6260,7 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -8210,27 +6296,7 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleQ1Select = (opt) => {
-    if (q1Answer !== null) return;
-    if (opt === 'mean') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Since the values 12, 14, 15, 17, 18 are closely clustered with no extreme values, the Mean represents the center of the dataset best.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. For balanced datasets without outliers, the Mean is the standard statistical average.");
-    }
-  };
 
-  const handleQ2Select = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === 'median') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! The extreme outlier (90) pulls the Mean up significantly, but the Median remains completely unaffected at 15.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. The Mean is heavily affected by the outlier 90 (it increases the sum of all values significantly). The Median remains resistant because it only depends on the middle position.");
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -8321,44 +6387,29 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
             MEAN
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the values merge into a total sum and divide to find the average.
+            Study how the individual data heights are combined and divided equally.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-mean" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mean)" />
-
-              {/* Numbers that move */}
-              <text x="80" y="70" className="mean-n6" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">6</text>
-              <text x="120" y="70" className="mean-n8" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">8</text>
-              <text x="160" y="70" className="mean-n10" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">10</text>
-              <text x="200" y="70" className="mean-n12" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">12</text>
-              <text x="240" y="70" className="mean-n14" fill="var(--clr-text)" fontSize="22" fontFamily="sans-serif" fontWeight="600" textAnchor="middle">14</text>
-
-              {/* Box: Total = 50 */}
-              <g className="mean-total-box">
-                <rect x="80" y="90" width="160" height="50" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                <text x="160" y="121" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">Total = 50</text>
-              </g>
-
-              {/* Formula: 50 ÷ 5 = 10 */}
-              <g className="mean-formula">
-                <text x="160" y="185" fill="var(--clr-text-soft)" fontSize="20" fontWeight="bold" textAnchor="middle">↓</text>
-                <text x="160" y="215" fill="var(--clr-text)" fontSize="22" fontFamily="monospace" fontWeight="bold" textAnchor="middle">50 ÷ 5 = 10</text>
-              </g>
-
-              {/* Result display */}
-              <g className="mean-result">
-                <rect x="90" y="235" width="140" height="42" rx="6" fill="rgba(232, 134, 74, 0.15)" stroke="var(--clr-accent)" strokeWidth="2" />
-                <text x="160" y="264" fill="var(--clr-accent)" fontSize="24" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">10</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/mean.png"
+                alt="Mean representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -8380,38 +6431,29 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
             MEDIAN
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the numbers narrow down from both outer ends to reveal the middle value.
+            Observe how the numbers are arranged from smallest to largest, pointing directly to the center.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-median" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-median)" />
-
-              {/* Values row */}
-              <g className="med-fade-all">
-                {/* 6 (outer) */}
-                <text x="60" y="150" className="med-o1" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">6</text>
-                {/* 8 (inner-outer) */}
-                <text x="110" y="150" className="med-o2" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">8</text>
-
-                {/* 10 (middle) */}
-                <text x="160" y="150" className="med-center" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">10</text>
-
-                {/* 12 (inner-outer) */}
-                <text x="210" y="150" className="med-o2" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">12</text>
-                {/* 14 (outer) */}
-                <text x="260" y="150" className="med-o1" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">14</text>
-              </g>
-
-              {/* Explanatory arrows / paths */}
-              <path d="M 60,110 L 80,120 M 260,110 L 240,120" stroke="var(--clr-text-soft)" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/median.png"
+                alt="Median representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -8433,37 +6475,29 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
             MODE
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the most frequent value pulse to stand out from the rest.
+            Inspect the blocks to see which specific number appears with the highest frequency.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-mode" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-mode)" />
-
-              {/* Row: 4   7   7   9   11 */}
-              <g className="mod-normal">
-                <text x="70" y="110" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">4</text>
-
-                {/* Pulser 7s */}
-                <text x="130" y="110" className="mod-pulse-left" fill="var(--clr-text)" fontSize="28" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">7</text>
-                <text x="190" y="110" className="mod-pulse-right" fill="var(--clr-text)" fontSize="28" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">7</text>
-
-                <text x="250" y="110" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">9</text>
-                <text x="250" y="150" fill="var(--clr-text)" fontSize="26" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle" opacity="0.5">11</text>
-              </g>
-
-              {/* Mode = 7 banner */}
-              <g className="mod-result">
-                <rect x="80" y="210" width="160" height="50" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                <text x="160" y="242" fill="var(--clr-accent)" fontSize="20" fontFamily="sans-serif" fontWeight="bold" textAnchor="middle">Mode = 7</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/mode.png"
+                alt="Mode representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -8880,169 +6914,12 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Balanced Dataset</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Dataset: <strong>12, 14, 15, 17, 18</strong>
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which measure best represents the data?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'mean', label: 'Mean' },
-                { id: 'median', label: 'Median' },
-                { id: 'mode', label: 'Mode' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ1Select(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Outlier resistance</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Dataset: <strong>12, 14, 15, 17, 90</strong>
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which measure is least affected by the unusually high value (90)?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'mean', label: 'Mean' },
-                { id: 'median', label: 'Median' },
-                { id: 'mode', label: 'Mode' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Select(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -9091,7 +6968,7 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-mean')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -9114,19 +6991,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
   const [r3AAnswer, setR3AAnswer] = useState(null);
   const [r3BAnswer, setR3BAnswer] = useState(null);
 
-  // Layer 3
-  const [q1Answer, setQ1Answer] = useState(null);
 
-  // Sorting game state for Q2
-  const [sortDeck, setSortDeck] = useState([
-    { id: 'car_speed', text: 'Instantaneous speed of a car', category: 'differentiation' },
-    { id: 'curve_slope', text: 'Slope of a curve', category: 'differentiation' },
-    { id: 'hole_graph', text: 'Behaviour near a hole in a graph', category: 'limits' },
-    { id: 'discontinuity', text: 'Value approached near a discontinuity', category: 'limits' }
-  ]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const [sortedItems, setSortedItems] = useState({ limits: [], differentiation: [] });
-  const [sortingFinished, setSortingFinished] = useState(false);
 
   // Math function for the graph: y = 200 - 0.0018 * (x - 250)^2
   const getGraphY = (x) => {
@@ -9143,12 +7008,11 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
     if (subStep === 'vd-limits' || subStep === 'vd-differentiation') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -9282,7 +7146,6 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
     setAnswerState('unanswered');
     setFeedbackText('');
     setHintText('');
-    setQ1Answer(null);
     if (subStep === 'r1') {
       setSelectedTool('magnifying');
       setPointX(150);
@@ -9293,11 +7156,6 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
   }, [subStep]);
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (sortingFinished) {
-      onMarkComplete?.();
-    }
-  }, [sortingFinished, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-limits') setSubStep('vd-differentiation');
@@ -9306,9 +7164,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -9349,39 +7205,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
     }
   };
 
-  const handleQ1Submit = (opt) => {
-    if (q1Answer !== null) return;
-    if (opt === 'differentiation') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Instantaneous velocity represents the rate of change of distance with respect to time at one single instant, which is found using Differentiation.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. Velocity is a rate of change, which is the definition of Differentiation.");
-    }
-  };
 
-  const handleSortItem = (bucket) => {
-    const activeCard = sortDeck[activeSortIndex];
-    const isCorrect = activeCard.category === bucket;
-
-    if (bucket === 'limits') {
-      setSortedItems(prev => ({
-        ...prev,
-        limits: [...prev.limits, { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-      }));
-    } else {
-      setSortedItems(prev => ({
-        ...prev,
-        differentiation: [...prev.differentiation, { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-      }));
-    }
-
-    if (activeSortIndex < sortDeck.length - 1) {
-      setActiveSortIndex(activeSortIndex + 1);
-    } else {
-      setSortingFinished(true);
-    }
-  };
 
   // Calculate dynamic camera viewBox zoom near the hole at x = 250, y = 200
   const dist = Math.abs(pointX - 250);
@@ -9440,41 +7264,29 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
             LIMITS
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the point move closer to the target without touching it.
+            Observe the points on the curve approaching the empty hole from both the left and right sides.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-limits" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-limits)" />
-
-              {/* Curve line */}
-              <path d="M 60,240 C 130,240 190,80 260,80" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-
-              {/* Target point (Hole at 160, 160) */}
-              <circle cx="160" cy="160" r="6" fill="var(--clr-surface)" stroke="var(--clr-accent)" strokeWidth="2.5" />
-
-              {/* Left approaching point */}
-              <circle r="6" fill="var(--clr-accent)">
-                <animateMotion dur="4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.8;1" keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1" path="M 60,240 C 95,240 125,200 148,172" />
-              </circle>
-
-              {/* Right approaching point */}
-              <circle r="6" fill="var(--clr-accent)">
-                <animateMotion dur="4s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.8;1" keySplines="0.25 0.1 0.25 1; 0.25 0.1 0.25 1" path="M 260,80 C 225,80 195,120 172,148" />
-              </circle>
-
-              {/* Limit Summary Overlay */}
-              <g className="limit-summary-overlay">
-                <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
-                <text x="160" y="281" textAnchor="middle" fill="var(--clr-accent)" fontSize="15" fontWeight="bold">lim x→a f(x) = L</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/limit.png"
+                alt="Limit representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -10009,215 +7821,12 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Instantaneous Rates</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              A ball is thrown upward. You want to know its instantaneous velocity after 2 seconds.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which concept should you choose?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'limit', label: 'Limit' },
-                { id: 'differentiation', label: 'Differentiation' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ1Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 Sorter */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Situation Matcher</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            border: '1.5px solid var(--clr-border)',
-            borderRadius: '12px',
-            padding: '24px',
-            marginBottom: '24px',
-            minHeight: '160px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative'
-          }}>
-            {!sortingFinished ? (
-              <>
-                <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Situation Card ({activeSortIndex + 1} / {sortDeck.length})
-                </span>
-                <div style={{
-                  background: 'var(--clr-card)',
-                  padding: '20px 24px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--clr-border)',
-                  fontSize: '1.15rem',
-                  fontWeight: '500',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-btn)',
-                  maxWidth: '440px',
-                  width: '100%',
-                  marginBottom: '20px',
-                  color: 'var(--clr-accent)'
-                }}>
-                  {sortDeck[activeSortIndex].text}
-                </div>
-
-                <div style={{ display: 'flex', gap: '16px' }}>
-                  <button onClick={() => handleSortItem('limits')} style={{ padding: '10px 20px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-accent)' }}>
-                    Sort to: 🔍 Limit
-                  </button>
-                  <button onClick={() => handleSortItem('differentiation')} style={{ padding: '10px 20px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-correct)' }}>
-                    Sort to: 📐 Differentiation
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                🎉 Matcher sorting complete! Review your placements below.
-              </div>
-            )}
-          </div>
-
-          {/* Sorted columns */}
-          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '24px', justifyContent: 'center' }}>
-            {/* Limit Zone */}
-            <div style={{
-              background: 'var(--clr-surface)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '16px',
-              border: '1.5px dashed var(--clr-accent)',
-              flex: '1 1 260px',
-              maxWidth: '340px',
-              minHeight: '180px'
-            }}>
-              <strong style={{ display: 'block', color: 'var(--clr-accent)', fontSize: '1.1rem', marginBottom: '12px' }}>🔍 Limit Zone</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {sortedItems.limits.map((item, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '8px 12px',
-                      background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)',
-                      borderRadius: '4px',
-                      fontSize: '0.88rem',
-                      borderLeft: `4px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                      textAlign: 'left'
-                    }}
-                  >
-                    {item.text} {item.status === 'correct' ? '✓' : '✗'}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Differentiation Zone */}
-            <div style={{
-              background: 'var(--clr-surface)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '16px',
-              border: '1.5px dashed var(--clr-correct)',
-              flex: '1 1 260px',
-              maxWidth: '340px',
-              minHeight: '180px'
-            }}>
-              <strong style={{ display: 'block', color: 'var(--clr-correct)', fontSize: '1.1rem', marginBottom: '12px' }}>📐 Differentiation Zone</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {sortedItems.differentiation.map((item, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '8px 12px',
-                      background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)',
-                      borderRadius: '4px',
-                      fontSize: '0.88rem',
-                      borderLeft: `4px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                      textAlign: 'left'
-                    }}
-                  >
-                    {item.text} {item.status === 'correct' ? '✓' : '✗'}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {sortingFinished && (
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Continue</button>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -10266,7 +7875,7 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-limits')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -10282,18 +7891,19 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+  const [diffFrame, setDiffFrame] = useState(0);
+  const [integFrame, setIntegFrame] = useState(0);
 
   // Helper to determine active step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-differentiation' || subStep === 'vd-integration') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2' || subStep === 'q3') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -10423,19 +8033,8 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
   `;
 
   // Layer 3 MCQs
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Sorting game state for Q3
-  const [sortDeck, setSortDeck] = useState([
-    { id: 'car_speed', text: 'Instantaneous speed of a car', category: 'differentiation' },
-    { id: 'total_rain', text: 'Total rainfall over 24 hours', category: 'integration' },
-    { id: 'curve_slope', text: 'Slope of a graph', category: 'differentiation' },
-    { id: 'area_under', text: 'Total area under a curve', category: 'integration' }
-  ]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const [sortedItems, setSortedItems] = useState({ differentiation: [], integration: [] });
-  const [sortingFinished, setSortingFinished] = useState(false);
 
   // Math curve: y = 230 - 0.0018 * (x - 100)^2 (rising from x=100 to x=400)
   const getGraphY = (x) => {
@@ -10463,17 +8062,28 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
     setAnswerState('unanswered');
     setFeedbackText('');
     setHintText('');
-    setQ1Answer(null);
-    setQ2Answer(null);
     setPointX(150);
+    setDiffFrame(0);
+    setIntegFrame(0);
+  }, [subStep]);
+
+  useEffect(() => {
+    if (subStep !== 'vd-differentiation') return;
+    const interval = setInterval(() => {
+      setDiffFrame(prev => (prev + 1) % 3);
+    }, 1500);
+    return () => clearInterval(interval);
+  }, [subStep]);
+
+  useEffect(() => {
+    if (subStep !== 'vd-integration') return;
+    const interval = setInterval(() => {
+      setIntegFrame(prev => (prev + 1) % 3);
+    }, 1500);
+    return () => clearInterval(interval);
   }, [subStep]);
 
   // Save progress automatically when Q3 is finished
-  useEffect(() => {
-    if (sortingFinished) {
-      onMarkComplete?.();
-    }
-  }, [sortingFinished, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-differentiation') setSubStep('vd-integration');
@@ -10481,10 +8091,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('q3');
-    else if (subStep === 'q3') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -10509,50 +8116,8 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
     }
   };
 
-  const handleQ1Submit = (opt) => {
-    if (q1Answer !== null) return;
-    if (opt === 'differentiation') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Speed at exactly 5 seconds represents the rate of change of position at one single instant, which is Differentiation.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. Velocity is a rate of change, which is found via Differentiation.");
-    }
-  };
 
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === 'integration') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! Finding the total amount of water accumulated during an hour-long interval is an Integration calculation.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. We want the total accumulated sum of water over a period of time, which requires Integration.");
-    }
-  };
 
-  const handleSortItem = (bucket) => {
-    const activeCard = sortDeck[activeSortIndex];
-    const isCorrect = activeCard.category === bucket;
-
-    if (bucket === 'differentiation') {
-      setSortedItems(prev => ({
-        ...prev,
-        differentiation: [...prev.differentiation, { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-      }));
-    } else {
-      setSortedItems(prev => ({
-        ...prev,
-        integration: [...prev.integration, { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-      }));
-    }
-
-    if (activeSortIndex < sortDeck.length - 1) {
-      setActiveSortIndex(activeSortIndex + 1);
-    } else {
-      setSortingFinished(true);
-    }
-  };
 
   const currentY = getGraphY(pointX);
   const currentSlope = getGraphSlope(pointX);
@@ -10602,23 +8167,58 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-diff" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-diff)" />
-
-              {/* Water tap drawing at the top */}
-              <path d="M 80,50 L 160,50 L 160,80" fill="none" stroke="var(--clr-border)" strokeWidth="8" strokeLinecap="round" />
-              {/* Nozzle collar */}
-              <rect x="148" y="80" width="24" height="8" rx="2" fill="var(--clr-text-soft)" />
-
-              {/* Water Stream (animating thickness/speed) */}
-              <line x1="160" y1="88" x2="160" y2="280" className="tap-water-stream" strokeWidth="4" />
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/diff-first.png"
+                alt="Differentiation stage 1"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: diffFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/diff-middle.png"
+                alt="Differentiation stage 2"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: diffFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/diff-end.png"
+                alt="Differentiation stage 3"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: diffFrame === 2 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -10644,29 +8244,58 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-integ" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-integ)" />
-
-              {/* Water tap drawing at the top */}
-              <path d="M 80,50 L 160,50 L 160,80" fill="none" stroke="var(--clr-border)" strokeWidth="8" strokeLinecap="round" />
-              {/* Nozzle collar */}
-              <rect x="148" y="80" width="24" height="8" rx="2" fill="var(--clr-text-soft)" />
-
-              {/* Water in bucket (scales up bottom-to-top) */}
-              <path d="M 112,212 L 125,274 L 195,274 L 208,212 Z" fill="#4ba3e3" opacity="0.8" className="water-in-bucket" />
-
-              {/* Bucket Outline */}
-              <path d="M 110,210 L 125,275 L 195,275 L 210,210 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3.5" />
-
-              {/* Water Stream (animating thickness/speed) entering the bucket */}
-              <line x1="160" y1="88" x2="160" y2="212" className="tap-water-stream" strokeWidth="4" />
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/integration-first.png"
+                alt="Integration stage 1"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: integFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/integration-middle.png"
+                alt="Integration stage 2"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: integFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+              <img
+                src="/contrast/integration-end.png"
+                alt="Integration stage 3"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: integFrame === 2 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -11019,294 +8648,12 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 3: Instantaneous Speed</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              A car's position graph is given. You want to know its speed at exactly 5 seconds.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which calculus branch do you use?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'differentiation', label: 'Differentiation' },
-                { id: 'integration', label: 'Integration' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ1Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 3: Volume Accumulation</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Water flows into a tank. You want to know how much water entered during the last hour.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which calculus branch do you use?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'differentiation', label: 'Differentiation' },
-                { id: 'integration', label: 'Integration' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q3 Sorter */}
-      {subStep === 'q3' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 3 of 3: Situation Matcher</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            border: '1.5px solid var(--clr-border)',
-            borderRadius: '12px',
-            padding: '24px',
-            marginBottom: '24px',
-            minHeight: '160px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative'
-          }}>
-            {!sortingFinished ? (
-              <>
-                <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Situation Card ({activeSortIndex + 1} / {sortDeck.length})
-                </span>
-                <div style={{
-                  background: 'var(--clr-card)',
-                  padding: '20px 24px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--clr-border)',
-                  fontSize: '1.15rem',
-                  fontWeight: '500',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-btn)',
-                  maxWidth: '440px',
-                  width: '100%',
-                  marginBottom: '20px',
-                  color: 'var(--clr-accent)'
-                }}>
-                  {sortDeck[activeSortIndex].text}
-                </div>
-
-                <div style={{ display: 'flex', gap: '16px' }}>
-                  <button onClick={() => handleSortItem('differentiation')} style={{ padding: '10px 20px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-accent)' }}>
-                    Sort to: 📐 Differentiation
-                  </button>
-                  <button onClick={() => handleSortItem('integration')} style={{ padding: '10px 20px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-correct)' }}>
-                    Sort to: 🪣 Integration
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                🎉 Placements complete! Review your matched situations below.
-              </div>
-            )}
-          </div>
-
-          {/* Sorted columns */}
-          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', marginTop: '24px', justifyContent: 'center' }}>
-            {/* Differentiation Zone */}
-            <div style={{
-              background: 'var(--clr-surface)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '16px',
-              border: '1.5px dashed var(--clr-accent)',
-              flex: '1 1 260px',
-              maxWidth: '340px',
-              minHeight: '180px'
-            }}>
-              <strong style={{ display: 'block', color: 'var(--clr-accent)', fontSize: '1.1rem', marginBottom: '12px' }}>📐 Differentiation Zone</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {sortedItems.differentiation.map((item, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '8px 12px',
-                      background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)',
-                      borderRadius: '4px',
-                      fontSize: '0.88rem',
-                      borderLeft: `4px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                      textAlign: 'left'
-                    }}
-                  >
-                    {item.text} {item.status === 'correct' ? '✓' : '✗'}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Integration Zone */}
-            <div style={{
-              background: 'var(--clr-surface)',
-              borderRadius: 'var(--radius-sm)',
-              padding: '16px',
-              border: '1.5px dashed var(--clr-correct)',
-              flex: '1 1 260px',
-              maxWidth: '340px',
-              minHeight: '180px'
-            }}>
-              <strong style={{ display: 'block', color: 'var(--clr-correct)', fontSize: '1.1rem', marginBottom: '12px' }}>🪣 Integration Zone</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {sortedItems.integration.map((item, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: '8px 12px',
-                      background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)',
-                      borderRadius: '4px',
-                      fontSize: '0.88rem',
-                      borderLeft: `4px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                      textAlign: 'left'
-                    }}
-                  >
-                    {item.text} {item.status === 'correct' ? '✓' : '✗'}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {sortingFinished && (
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Continue</button>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -11355,7 +8702,7 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-differentiation')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -11371,18 +8718,18 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
   const [answerState, setAnswerState] = useState('unanswered'); // unanswered, correct, wrong
   const [feedbackText, setFeedbackText] = useState('');
   const [hintText, setHintText] = useState('');
+  const [decFrame, setDecFrame] = useState(0);
 
   // Helper to determine the active step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-fraction' || subStep === 'vd-decimal') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -11532,7 +8879,6 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
   const [q1Finished, setQ1Finished] = useState(false);
 
   // Layer 3 Q2 MCQ
-  const [q2Answer, setQ2Answer] = useState(null);
 
   const leftOptions = ['1/2', '3/4', '1/5'];
   const rightOptions = ['0.75', '0.2', '0.5'];
@@ -11553,15 +8899,18 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
     setSelectedLeft(null);
     setMatchedPairs([]);
     setQ1Finished(false);
-    setQ2Answer(null);
+    setDecFrame(0);
+  }, [subStep]);
+
+  useEffect(() => {
+    if (subStep !== 'vd-decimal') return;
+    const interval = setInterval(() => {
+      setDecFrame(prev => (prev + 1) % 2);
+    }, 1500);
+    return () => clearInterval(interval);
   }, [subStep]);
 
   // Mark as completed immediately when Q2 is successfully answered
-  useEffect(() => {
-    if (q2Answer === 'correct') {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-fraction') setSubStep('vd-decimal');
@@ -11570,9 +8919,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -11633,16 +8980,6 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === '4/5') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! 0.8 represents 8/10, which simplifies to 4/5.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. 0.8 is equal to 8/10. Simplify this fraction to find the correct answer.");
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -11682,40 +9019,27 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-frac" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-frac)" />
-
-              {/* The Chocolate Bar Frame */}
-              <rect x="60" y="40" width="200" height="200" rx="8" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-
-              {/* Grid divisions */}
-              <rect x="60" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-              <rect x="160" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-              <rect x="160" y="140" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-
-              {/* Highlighted square */}
-              <rect
-                x="60"
-                y="140"
-                width="100"
-                height="100"
-                fill="rgba(255, 255, 255, 0.02)"
-                stroke="var(--clr-border)"
-                strokeWidth="1.5"
-                className="frac-pulse-piece"
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              overflow: 'hidden',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}>
+              <img
+                src="/contrast/fraction.png"
+                alt="Fraction illustration"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
               />
-
-              {/* Fraction label 1/4 */}
-              <text x="160" y="285" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold" className="frac-label-fade">
-                1/4
-              </text>
-            </svg>
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -11741,43 +9065,44 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-dec" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-dec)" />
-
-              {/* The Chocolate Bar Frame */}
-              <rect x="60" y="40" width="200" height="200" rx="8" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-
-              {/* Grid divisions */}
-              <rect x="60" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-              <rect x="160" y="40" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-              <rect x="160" y="140" width="100" height="100" fill="rgba(255, 255, 255, 0.02)" stroke="var(--clr-border)" strokeWidth="1.5" />
-
-              {/* Highlighted square */}
-              <rect
-                x="60"
-                y="140"
-                width="100"
-                height="100"
-                fill="rgba(255, 255, 255, 0.02)"
-                stroke="var(--clr-border)"
-                strokeWidth="1.5"
-                className="frac-pulse-piece"
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/fraction.png"
+                alt="Fraction representation"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: decFrame === 0 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
               />
-
-              {/* Morphing text labels */}
-              <text x="160" y="285" textAnchor="middle" fill="var(--clr-accent)" fontSize="28" fontWeight="bold" className="morph-text-1">
-                1/4
-              </text>
-              <text x="160" y="285" textAnchor="middle" fill="#4ba3e3" fontSize="28" fontWeight="bold" className="morph-text-2">
-                0.25
-              </text>
-            </svg>
+              <img
+                src="/contrast/decimal.png"
+                alt="Decimal representation"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: decFrame === 1 ? 1 : 0,
+                  transition: 'opacity 0.6s ease-in-out'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -12209,189 +9534,12 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 Connections */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '20px 0' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Final Challenge</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Match Equivalent Pairs</p>
-          <p style={{ fontSize: '1.05rem', marginBottom: '20px' }}>Tap a fraction, then tap its equivalent decimal to link them together.</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '28px',
-            borderRadius: '12px',
-            border: '1.5px solid var(--clr-border)',
-            maxWidth: '560px',
-            margin: '0 auto 24px auto',
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: '40px'
-          }}>
-            {/* Fractions Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: '1' }}>
-              <span style={{ fontWeight: 'bold', color: 'var(--clr-accent)', marginBottom: '8px', display: 'block' }}>Fractions</span>
-              {leftOptions.map(leftVal => {
-                const isMatched = matchedPairs.some(p => p.startsWith(leftVal));
-                const isSelected = selectedLeft === leftVal;
-
-                return (
-                  <button
-                    key={leftVal}
-                    onClick={() => handleLeftSelect(leftVal)}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{
-                      padding: '16px',
-                      fontSize: '1.15rem',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      opacity: isMatched ? 0.4 : 1,
-                      border: isSelected ? '2px solid var(--clr-accent)' : '1px solid var(--clr-border)',
-                      cursor: isMatched ? 'not-allowed' : 'pointer'
-                    }}
-                    disabled={isMatched}
-                  >
-                    {leftVal}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Decimals Column */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', flex: '1' }}>
-              <span style={{ fontWeight: 'bold', color: 'var(--clr-correct)', marginBottom: '8px', display: 'block' }}>Decimals</span>
-              {rightOptions.map(rightVal => {
-                const isMatched = matchedPairs.some(p => p.endsWith(rightVal));
-                const isActiveOption = selectedLeft !== null;
-
-                return (
-                  <button
-                    key={rightVal}
-                    onClick={() => handleRightSelect(rightVal)}
-                    className="option-card"
-                    style={{
-                      padding: '16px',
-                      fontSize: '1.15rem',
-                      fontWeight: 'bold',
-                      textAlign: 'center',
-                      opacity: isMatched ? 0.4 : 1,
-                      border: '1px solid var(--clr-border)',
-                      cursor: (!isActiveOption || isMatched) ? 'not-allowed' : 'pointer'
-                    }}
-                    disabled={!isActiveOption || isMatched}
-                  >
-                    {rightVal}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Matching Status */}
-          <div style={{ marginBottom: '24px', minHeight: '60px' }}>
-            {matchedPairs.length > 0 && matchedPairs.length < 3 && (
-              <div style={{ fontSize: '1rem', color: 'var(--clr-accent)', fontWeight: '500' }}>
-                Matched {matchedPairs.length} of 3 pairs... Keep matching!
-              </div>
-            )}
-            {q1Finished && (
-              <div style={{ marginBottom: '20px' }}>
-                <div style={{
-                  padding: '16px 20px',
-                  background: 'rgba(92, 184, 122, 0.1)',
-                  borderRadius: 'var(--radius-sm)',
-                  borderLeft: '5px solid var(--clr-correct)',
-                  textAlign: 'left',
-                  maxWidth: '500px',
-                  margin: '0 auto 16px auto'
-                }}>
-                  <strong style={{ display: 'block', marginBottom: '6px', color: 'var(--clr-correct)' }}>Matched!</strong>
-                  <p style={{ margin: 0, fontSize: '0.98rem' }}>{feedbackText}</p>
-                </div>
-                <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Final Challenge</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Switch the Representation</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', flexWrap: 'wrap', gap: '16px' }}>
-              <div>
-                <span style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Given Decimal</span>
-                <div style={{ fontSize: '2.2rem', fontWeight: 'bold', color: 'var(--clr-correct)' }}>0.8</div>
-              </div>
-              <div style={{ border: '1px dashed var(--clr-accent)', padding: '10px 16px', borderRadius: '8px', background: 'var(--clr-card)' }}>
-                <strong>Goal:</strong> Switch to equivalent fraction
-              </div>
-            </div>
-
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text)', marginBottom: '16px', fontWeight: '500' }}>
-              Choose the correct fraction form representing 0.8:
-            </p>
-
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
-              {[
-                { id: '4/5', label: '4/5' },
-                { id: '3/5', label: '3/5' },
-                { id: '2/5', label: '2/5' },
-                { id: '5/4', label: '5/4' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'center', padding: '16px', fontSize: '1.1rem', fontWeight: 'bold' }}
-                    disabled={q2Answer !== null}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -12440,7 +9588,7 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-fraction')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -12464,9 +9612,6 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
   const [selectedToppings, setSelectedToppings] = useState([]); // Array of strings: 'mushroom', 'pepper', 'cheese'
   const [toppingsSwapped, setToppingsSwapped] = useState(false);
 
-  // Layer 3 state
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Reset states on subStep changes
   useEffect(() => {
@@ -12478,28 +9623,20 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
     setPodiumSwapped(false);
     setSelectedToppings([]);
     setToppingsSwapped(false);
-    setQ1Answer(null);
-    setQ2Answer(null);
   }, [subStep]);
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Answer !== null) {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   // Helper to determine step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-permutation' || subStep === 'vd-combination') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -12608,9 +9745,7 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handlePlacePodium = (runner) => {
@@ -12667,27 +9802,7 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
     }
   };
 
-  const handleQ1Submit = (opt) => {
-    if (q1Answer !== null) return;
-    if (opt === 'permutation') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! Swapping Captain and Vice-Captain creates a different leadership structure. Order matters, so this is a Permutation.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. If Student A is Captain and Student B is Vice-Captain, that is a different outcome than Student B as Captain. Since order matters, it is a Permutation.");
-    }
-  };
 
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === 'combination') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! In a project team, every student has the same rank. Selecting Student A then B is the same team as B then A. Order doesn't matter, so this is a Combination.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. A project team has no distinct rankings or roles. Swapping selection order does not change the group of people, so it is a Combination.");
-    }
-  };
 
   const permCombStyles = `
     /* Permutation animations */
@@ -13275,168 +10390,12 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Team Leadership Roles</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Choosing a Captain and a Vice-Captain from a team of 10 students.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which concept does this selection represent?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'permutation', label: 'Permutation' },
-                { id: 'combination', label: 'Combination' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ1Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Group Selections</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Choosing 5 students to form a project team from a class of 20.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Which concept does this selection represent?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'permutation', label: 'Permutation' },
-                { id: 'combination', label: 'Combination' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    <span style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      width: '24px',
-                      height: '24px',
-                      background: isSelected ? 'var(--clr-accent)' : 'var(--clr-surface)',
-                      color: isSelected ? '#fff' : 'var(--clr-text)',
-                      borderRadius: '50%',
-                      marginRight: '12px',
-                      fontWeight: 'bold',
-                      flexShrink: 0
-                    }}>
-                      {isSelected ? '✓' : ''}
-                    </span>
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -13485,7 +10444,7 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-permutation')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -13506,21 +10465,9 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
   const [shakingKey, setShakingKey] = useState(null);
 
   // Layer 3 Sorter
-  const [sortDeck, setSortDeck] = useState([
-    { id: 'num_2', val: '2', category: 'prime' },
-    { id: 'num_9', val: '9', category: 'composite' },
-    { id: 'num_13', val: '13', category: 'prime' },
-    { id: 'num_18', val: '18', category: 'composite' },
-    { id: 'num_1', val: '1', category: 'neither' },
-    { id: 'num_25', val: '25', category: 'composite' }
-  ]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const [sortedItems, setSortedItems] = useState({ prime: [], composite: [], neither: [] });
-  const [sortingFinished, setSortingFinished] = useState(false);
 
   // Layer 3 Q2 MCQ State
   const [q2Part, setQ2Part] = useState('p1'); // p1 (15), p2 (29), finished
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Reset states on subStep changes
   useEffect(() => {
@@ -13530,11 +10477,7 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
     setHintText('');
     setTappedKeys([]);
     setShakingKey(null);
-    setActiveSortIndex(0);
-    setSortedItems({ prime: [], composite: [], neither: [] });
-    setSortingFinished(false);
     setQ2Part('p1');
-    setQ2Answer(null);
   }, [subStep]);
 
   // Save progress automatically when final practice step is completed
@@ -13549,12 +10492,11 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-prime' || subStep === 'vd-composite') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2' || subStep === 'r3') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -13664,9 +10606,7 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('r3');
     else if (subStep === 'r3') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleTapKey = (key, target, divisors) => {
@@ -13709,53 +10649,8 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
     setFeedbackText("Correct! 1 is neither prime nor composite because it has only one factor (itself). Prime numbers must have exactly 2 factors, and composite numbers must have more than 2.");
   };
 
-  const handleSortItem = (bucket) => {
-    const activeCard = sortDeck[activeSortIndex];
-    const isCorrect = activeCard.category === bucket;
 
-    setSortedItems(prev => ({
-      ...prev,
-      [bucket]: [...prev[bucket], { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-    }));
 
-    if (activeSortIndex < sortDeck.length - 1) {
-      setActiveSortIndex(activeSortIndex + 1);
-    } else {
-      setSortingFinished(true);
-    }
-  };
-
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-
-    if (q2Part === 'p1') {
-      if (opt === 'composite') {
-        setQ2Answer('correct');
-        setFeedbackText("Correct! 15 has factors 1, 3, 5, 15 (more than 2), which makes it a Composite Number.");
-      } else {
-        setQ2Answer('wrong');
-        setFeedbackText("Incorrect. 15 can be divided by 3 and 5 in addition to 1 and 15, so it has more than 2 factors.");
-      }
-    } else if (q2Part === 'p2') {
-      if (opt === 'prime') {
-        setQ2Answer('correct');
-        setFeedbackText("Correct! 29 has factors 1 and 29 (exactly 2), which makes it a Prime Number.");
-      } else {
-        setQ2Answer('wrong');
-        setFeedbackText("Incorrect. 29 has no other divisors besides 1 and 29, so it is a Prime Number.");
-      }
-    }
-  };
-
-  const handleQ2Next = () => {
-    setQ2Answer(null);
-    setSelectedOption(null);
-    if (q2Part === 'p1') {
-      setQ2Part('p2');
-    } else {
-      setQ2Part('finished');
-    }
-  };
 
   const primeCompStyles = `
     @keyframes shake {
@@ -13873,47 +10768,29 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
             PRIME NUMBER
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            The number 11 has exactly two factors. Watch them reveal.
+            Examine the factors of 11 to see why it has only two divisors.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-prime" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-prime)" />
-
-              {/* Main Number 11 Node */}
-              <g className="prime-node-num">
-                <circle cx="160" cy="65" r="28" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="3" />
-                <text x="160" y="73" fill="var(--clr-accent)" fontSize="24" fontWeight="bold" textAnchor="middle">11</text>
-              </g>
-
-              {/* Connecting branch lines */}
-              <line x1="160" y1="93" x2="110" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="prime-line-1" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="210" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="prime-line-2" strokeLinecap="round" />
-
-              {/* Factor 1 Circle */}
-              <g className="prime-fac-1">
-                <circle cx="110" cy="160" r="20" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="110" y="166" fill="var(--clr-text)" fontSize="16" fontWeight="bold" textAnchor="middle">1</text>
-              </g>
-
-              {/* Factor 11 Circle */}
-              <g className="prime-fac-2">
-                <circle cx="210" cy="160" r="20" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="210" y="166" fill="var(--clr-text)" fontSize="16" fontWeight="bold" textAnchor="middle">11</text>
-              </g>
-
-              {/* Badge: Only 2 factors */}
-              <g className="prime-badge-glow">
-                <rect x="80" y="225" width="160" height="40" rx="8" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
-                <text x="160" y="250" fill="var(--clr-accent)" fontSize="15" fontWeight="bold" textAnchor="middle">Only 2 factors</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/prime.png"
+                alt="Prime representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -13935,75 +10812,29 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
             COMPOSITE NUMBER
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            The number 18 has multiple factors. Watch them reveal.
+            Examine the factors of 18 to see why it has multiple divisors.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-comp" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-comp)" />
-
-              {/* Main Number 18 Node */}
-              <g className="comp-node-num">
-                <circle cx="160" cy="65" r="28" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="3" />
-                <text x="160" y="73" fill="var(--clr-correct)" fontSize="24" fontWeight="bold" textAnchor="middle">18</text>
-              </g>
-
-              {/* Connecting branch lines (6 branches) */}
-              <line x1="160" y1="93" x2="45" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="91" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="137" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="183" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="229" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-              <line x1="160" y1="93" x2="275" y2="155" stroke="var(--clr-border)" strokeWidth="2.5" className="comp-branch-line" strokeLinecap="round" />
-
-              {/* Factor 1 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="45" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="45" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">1</text>
-              </g>
-
-              {/* Factor 2 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="91" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="91" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">2</text>
-              </g>
-
-              {/* Factor 3 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="137" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="137" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">3</text>
-              </g>
-
-              {/* Factor 6 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="183" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="183" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">6</text>
-              </g>
-
-              {/* Factor 9 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="229" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="229" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">9</text>
-              </g>
-
-              {/* Factor 18 Circle */}
-              <g className="comp-fac-node">
-                <circle cx="275" cy="160" r="18" fill="var(--clr-card)" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                <text x="275" y="165" fill="var(--clr-text)" fontSize="13" fontWeight="bold" textAnchor="middle">18</text>
-              </g>
-
-              {/* Badge: More than 2 factors */}
-              <g className="comp-badge-glow">
-                <rect x="70" y="225" width="180" height="40" rx="8" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="2" />
-                <text x="160" y="250" fill="var(--clr-correct)" fontSize="15" fontWeight="bold" textAnchor="middle">More than 2 factors</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/composite.png"
+                alt="Composite representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -14477,225 +11308,12 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 Sorter */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Classification Deck Matcher</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            border: '1.5px solid var(--clr-border)',
-            borderRadius: '12px',
-            padding: '24px',
-            marginBottom: '24px',
-            minHeight: '160px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            position: 'relative'
-          }}>
-            {!sortingFinished ? (
-              <>
-                <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Number Card ({activeSortIndex + 1} / {sortDeck.length})
-                </span>
-                <div style={{
-                  background: 'var(--clr-card)',
-                  padding: '20px 24px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--clr-border)',
-                  fontSize: '1.5rem',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-btn)',
-                  maxWidth: '200px',
-                  width: '100%',
-                  marginBottom: '20px',
-                  color: 'var(--clr-accent)'
-                }}>
-                  {sortDeck[activeSortIndex].val}
-                </div>
-
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  <button onClick={() => handleSortItem('prime')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-accent)' }}>
-                    Prime
-                  </button>
-                  <button onClick={() => handleSortItem('composite')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-correct)' }}>
-                    Composite
-                  </button>
-                  <button onClick={() => handleSortItem('neither')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-text-soft)' }}>
-                    Neither
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                🎉 Placements complete! Review matched numbers below.
-              </div>
-            )}
-          </div>
-
-          {/* Columns */}
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '24px' }}>
-            {/* Prime bucket */}
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-accent)', flex: '1 1 200px', maxWidth: '250px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-accent)', fontSize: '1rem', marginBottom: '12px' }}> Prime</strong>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
-                {sortedItems.prime.map((item, idx) => (
-                  <span key={idx} style={{ padding: '4px 8px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                    {item.val}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Composite bucket */}
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-correct)', flex: '1 1 200px', maxWidth: '250px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-correct)', fontSize: '1rem', marginBottom: '12px' }}> Composite</strong>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
-                {sortedItems.composite.map((item, idx) => (
-                  <span key={idx} style={{ padding: '4px 8px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                    {item.val}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Neither bucket */}
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-text-soft)', flex: '1 1 200px', maxWidth: '250px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-text-soft)', fontSize: '1rem', marginBottom: '12px' }}> Neither</strong>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', justifyContent: 'center' }}>
-                {sortedItems.neither.map((item, idx) => (
-                  <span key={idx} style={{ padding: '4px 8px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.9rem', fontWeight: 'bold' }}>
-                    {item.val}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {sortingFinished && (
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Next Question →</button>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Factor Count Verification</p>
-
-          {q2Part === 'p1' && (
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '24px',
-              borderRadius: 'var(--radius-sm)',
-              border: '1.5px solid var(--clr-border)',
-              marginBottom: '24px',
-              textAlign: 'left'
-            }}>
-              <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-                The number <strong>15</strong> has factors: <strong>1, 3, 5, 15</strong>.
-              </p>
-              <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-                What type of number is 15?
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {[
-                  { id: 'prime', label: 'Prime Number' },
-                  { id: 'composite', label: 'Composite Number' }
-                ].map(opt => {
-                  const isSelected = selectedOption === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                      className={`option-card ${isSelected ? 'selected' : ''}`}
-                      style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                      disabled={q2Answer !== null}
-                    >
-                      {opt.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {q2Part === 'p2' && (
-            <div style={{
-              background: 'var(--clr-surface)',
-              padding: '24px',
-              borderRadius: 'var(--radius-sm)',
-              border: '1.5px solid var(--clr-border)',
-              marginBottom: '24px',
-              textAlign: 'left'
-            }}>
-              <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-                The number <strong>29</strong> has factors: <strong>1, 29</strong>.
-              </p>
-              <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-                What type of number is 29?
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {[
-                  { id: 'prime', label: 'Prime Number' },
-                  { id: 'composite', label: 'Composite Number' }
-                ].map(opt => {
-                  const isSelected = selectedOption === opt.id;
-                  return (
-                    <button
-                      key={opt.id}
-                      onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                      className={`option-card ${isSelected ? 'selected' : ''}`}
-                      style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                      disabled={q2Answer !== null}
-                    >
-                      {opt.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button
-                onClick={q2Part === 'p1' ? handleQ2Next : handleNextStep}
-                style={{ padding: '12px 24px', fontSize: '1.05rem' }}
-              >
-                {q2Part === 'p1' ? 'Next Part →' : 'Continue'}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -14744,7 +11362,7 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-prime')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -14761,25 +11379,14 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
   const [hintText, setHintText] = useState('');
 
   // Layer 3 Sorter
-  const [sortDeck, setSortDeck] = useState([
-    { id: 'tree', val: '📐 Height of a tree from angle of elevation', category: 'trig' },
-    { id: 'roof', val: '📐 Find the angle of a roof when two sides are known', category: 'invtrig' },
-    { id: 'shadow', val: '📐 Find the shadow length using a known angle', category: 'trig' },
-    { id: 'incline', val: '📐 Find the angle of inclination from side lengths', category: 'invtrig' }
-  ]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const [sortedItems, setSortedItems] = useState({ trig: [], invtrig: [] });
-  const [sortingFinished, setSortingFinished] = useState(false);
 
   // Layer 3 Q2
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Helper to determine step index (0-3)
   const getActiveStepIndex = () => {
     if (subStep === 'vd-trig' || subStep === 'vd-invtrig') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
@@ -14789,10 +11396,6 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
     setAnswerState('unanswered');
     setFeedbackText('');
     setHintText('');
-    setActiveSortIndex(0);
-    setSortedItems({ trig: [], invtrig: [] });
-    setSortingFinished(false);
-    setQ2Answer(null);
   }, [subStep]);
 
   useEffect(() => {
@@ -14807,9 +11410,7 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -14834,35 +11435,7 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleSortItem = (bucket) => {
-    const activeCard = sortDeck[activeSortIndex];
-    const isCorrect = activeCard.category === bucket;
 
-    setSortedItems(prev => ({
-      ...prev,
-      [bucket]: [...prev[bucket], { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-    }));
-
-    if (activeSortIndex < sortDeck.length - 1) {
-      setActiveSortIndex(activeSortIndex + 1);
-    } else {
-      setSortingFinished(true);
-    }
-  };
-
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === 'inv') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! To find the angle, you use the inverse sine function: sin⁻¹(4/8) which evaluates to 30°. Recall that sin⁻¹(x) is NOT 1/sin(x).");
-    } else if (opt === 'recip') {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. sin⁻¹(x) represents the inverse function (finding the angle), NOT the reciprocal 1/sin(x) (which is cosecant).");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. sin(30°) is equal to 4/8, but to represent the process of finding the angle from sides, we write θ = sin⁻¹(4/8).");
-    }
-  };
 
   const trigStyles = `
     @keyframes trigReveal {
@@ -14892,7 +11465,7 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
   `;
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -15003,44 +11576,26 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
             TRIGONOMETRY
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Uses a known angle to calculate a side ratio. Watch the flow.
+            Study the diagram showing how a known angle is used to determine a specific side ratio.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="240" viewBox="0 0 320 240" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              {/* Coordinate Grid Background */}
-              <defs>
-                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-
-              <g className="trig-fade">
-                {/* Right Triangle */}
-                <path d="M 60,180 L 260,180 L 260,64.5 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-                {/* Right angle marker */}
-                <path d="M 245,180 L 245,165 L 260,165" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-
-                {/* Angle Arc marker */}
-                <path d="M 90,180 A 30,30 0 0,0 86,165" fill="none" stroke="var(--clr-accent)" strokeWidth="2.5" />
-                <text x="105" y="172" fill="var(--clr-accent)" fontSize="14" fontWeight="bold">30°</text>
-
-                {/* Angle Arrow pointing down to side ratio */}
-                <g className="trig-arrow">
-                  <path d="M 125,160 L 125,120 L 140,120" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" markerEnd="url(#arrow)" />
-                  <text x="155" y="115" fill="var(--clr-text-soft)" fontSize="12" textAnchor="middle">angle to ratio</text>
-                  <path d="M 175,120 L 190,120 L 190,140" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <path d="M 190,140 L 187,135 M 190,140 L 193,135" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                </g>
-
-                {/* Output Ratio Box */}
-                <g className="trig-ratio">
-                  <rect x="145" y="145" width="90" height="32" rx="4" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
-                  <text x="190" y="166" textAnchor="middle" fill="var(--clr-accent)" fontSize="14" fontWeight="bold" className="trig-glow">sin = 0.5</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '440px',
+              height: '330px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/trigonometry.png"
+                alt="Trigonometry representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -15062,44 +11617,26 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
             INVERSE TRIGONOMETRY
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Uses a known side ratio to calculate the angle. Watch the flow.
+            Study the diagram showing how a known side ratio is used to find the missing angle.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="240" viewBox="0 0 320 240" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', boxShadow: 'var(--shadow-btn)' }}>
-              {/* Coordinate Grid Background */}
-              <defs>
-                <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255, 255, 255, 0.05)" strokeWidth="1" />
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-
-              <g className="trig-fade">
-                {/* Right Triangle */}
-                <path d="M 60,180 L 260,180 L 260,64.5 Z" fill="none" stroke="var(--clr-border)" strokeWidth="3" />
-                {/* Right angle marker */}
-                <path d="M 245,180 L 245,165 L 260,165" fill="none" stroke="var(--clr-border)" strokeWidth="2" />
-
-                {/* Input Ratio Box highlighted */}
-                <g className="trig-ratio">
-                  <rect x="145" y="145" width="90" height="32" rx="4" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="2" />
-                  <text x="190" y="166" textAnchor="middle" fill="var(--clr-correct)" fontSize="14" fontWeight="bold">sin = 0.5</text>
-                </g>
-
-                {/* Arrow pointing back from ratio to angle */}
-                <g className="trig-arrow">
-                  <path d="M 190,140 L 190,120 L 155,120" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <text x="155" y="115" fill="var(--clr-text-soft)" fontSize="12" textAnchor="middle">ratio to angle</text>
-                  <path d="M 125,120 L 125,150" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                  <path d="M 125,150 L 122,145 M 125,150 L 128,145" fill="none" stroke="var(--clr-text-soft)" strokeWidth="2" />
-                </g>
-
-                {/* Angle Arc marker output */}
-                <path d="M 90,180 A 30,30 0 0,0 86,165" fill="none" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                <text x="105" y="172" fill="var(--clr-correct)" fontSize="14" fontWeight="bold" className="trig-glow">30°</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '440px',
+              height: '330px',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/inv-trigonometry.png"
+                alt="Inverse Trigonometry representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -15339,163 +11876,12 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Situation Matcher</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            border: '1.5px solid var(--clr-border)',
-            borderRadius: '12px',
-            padding: '24px',
-            marginBottom: '24px',
-            minHeight: '160px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            {!sortingFinished ? (
-              <>
-                <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Situation ({activeSortIndex + 1} / {sortDeck.length})
-                </span>
-                <div style={{
-                  background: 'var(--clr-card)',
-                  padding: '20px 24px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--clr-border)',
-                  fontSize: '1.1rem',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-btn)',
-                  maxWidth: '480px',
-                  width: '100%',
-                  marginBottom: '20px'
-                }}>
-                  {sortDeck[activeSortIndex].val}
-                </div>
-
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  <button onClick={() => handleSortItem('trig')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-accent)' }}>
-                    📐 Trigonometry
-                  </button>
-                  <button onClick={() => handleSortItem('invtrig')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-correct)' }}>
-                    📐 Inverse Trig
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                🎉 Placements complete! Review matches below.
-              </div>
-            )}
-          </div>
-
-          {/* Columns */}
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '24px' }}>
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-accent)', flex: '1 1 240px', maxWidth: '300px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-accent)', fontSize: '1rem', marginBottom: '12px' }}>📐 Trigonometry</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
-                {sortedItems.trig.map((item, idx) => (
-                  <div key={idx} style={{ padding: '6px 10px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.85rem' }}>
-                    {item.val}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-correct)', flex: '1 1 240px', maxWidth: '300px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-correct)', fontSize: '1rem', marginBottom: '12px' }}>📐 Inverse Trig</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
-                {sortedItems.invtrig.map((item, idx) => (
-                  <div key={idx} style={{ padding: '6px 10px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.85rem' }}>
-                    {item.val}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {sortingFinished && (
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Next Question →</button>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Spot the Correct Expression</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.15rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              You know the opposite side is <strong>4</strong>, the hypotenuse is <strong>8</strong>, and you need the angle.
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Choose the mathematically correct expression to represent the missing angle.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'ratio', label: 'sin 30°' },
-                { id: 'inv', label: 'sin⁻¹(4/8)' },
-                { id: 'recip', label: '1/sin(4/8)' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '30px 0' }}>
           <div style={{
@@ -15599,9 +11985,6 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
   const [r2X, setR2X] = useState(140); // Slider controls X coordinate
   const [r2Glow, setR2Glow] = useState(false);
 
-  // Layer 3 state
-  const [q1Answer, setQ1Answer] = useState(null);
-  const [q2Answer, setQ2Answer] = useState(null);
 
   // Reset states on subStep changes
   useEffect(() => {
@@ -15612,8 +11995,6 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
     setR1X(80);
     setR2X(140);
     setR2Glow(false);
-    setQ1Answer(null);
-    setQ2Answer(null);
   }, [subStep]);
 
   // Check intersection glow in Round 2
@@ -15630,12 +12011,11 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-linear' || subStep === 'vd-simultaneous') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -15773,11 +12153,6 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
   `;
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Answer !== null) {
-      onMarkComplete?.();
-    }
-  }, [q2Answer, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-linear') setSubStep('vd-simultaneous');
@@ -15785,9 +12160,7 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleR1Submit = (opt) => {
@@ -15812,27 +12185,7 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleQ1Submit = (opt) => {
-    if (q1Answer !== null) return;
-    if (opt === 'linear') {
-      setQ1Answer('correct');
-      setFeedbackText("Correct! This is a single equation with one variable (x) representing a single linear statement.");
-    } else {
-      setQ1Answer('wrong');
-      setFeedbackText("Incorrect. This is a single equation. Simultaneous equations consist of two or more equations solved together.");
-    }
-  };
 
-  const handleQ2Submit = (opt) => {
-    if (q2Answer !== null) return;
-    if (opt === 'simultaneous') {
-      setQ2Answer('correct');
-      setFeedbackText("Correct! These are two equations with two variables (x and y) that must be solved together to find a common solution.");
-    } else {
-      setQ2Answer('wrong');
-      setFeedbackText("Incorrect. These are two distinct equations containing two variables, which together form a system of simultaneous equations.");
-    }
-  };
 
   // Line formulas
   // Line 1: y = -0.5 * x + 130
@@ -15876,39 +12229,29 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
             LINEAR EQUATION
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the single equation simplify step-by-step to find the unknown value.
+            Examine the step-by-step simplification of a single equation to isolate the unknown variable.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-linear" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-linear)" />
-
-              {/* Equation Step 1 */}
-              <g className="linear-step-1">
-                <text x="160" y="70" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold">5x − 7 = 18</text>
-              </g>
-
-              {/* Arrow 1 */}
-              <g className="linear-step-2">
-                <text x="160" y="120" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="22" fontWeight="bold">↓</text>
-                {/* Equation Step 2 */}
-                <text x="160" y="170" textAnchor="middle" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold">5x = 25</text>
-              </g>
-
-              {/* Arrow 2 */}
-              <g className="linear-step-3">
-                <text x="160" y="215" textAnchor="middle" fill="var(--clr-text-soft)" fontSize="22" fontWeight="bold">↓</text>
-                {/* Equation Step 3 */}
-                <rect x="90" y="240" width="140" height="42" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="2" />
-                <text x="160" y="269" textAnchor="middle" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold">x = 5</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/linear.png"
+                alt="Linear Equation representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -15930,40 +12273,29 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
             SIMULTANEOUS EQUATIONS
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the bracket join both equations to solve for multiple variables together.
+            Examine the bracket grouping two equations that are solved together to find a shared solution.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-sim" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-sim)" />
-
-              {/* Group A: Equations joined by a curly brace */}
-              <g className="sim-group-a" transform="translate(0, 0)">
-                {/* Bracket line */}
-                <path d="M 90,110 L 80,110 L 80,150 L 73,150 L 80,150 L 80,190 L 90,190" fill="none" stroke="var(--clr-correct)" strokeWidth="3.5" strokeLinecap="round" />
-                <text x="100" y="135" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold" textAnchor="start">2a + b = 9</text>
-                <text x="100" y="175" fill="var(--clr-text)" fontSize="24" fontFamily="monospace" fontWeight="bold" textAnchor="start">a − b = 0</text>
-
-                <text x="160" y="240" fill="var(--clr-text-soft)" fontSize="15" fontWeight="bold" textAnchor="middle">Two equations together</text>
-              </g>
-
-              {/* Group B: Solved values joined by a curly brace */}
-              <g className="sim-group-b" transform="translate(0, 0)">
-                {/* Bracket line */}
-                <path d="M 100,110 L 90,110 L 90,150 L 83,150 L 90,150 L 90,190 L 100,190" fill="none" stroke="var(--clr-accent)" strokeWidth="3.5" strokeLinecap="round" />
-                <text x="110" y="135" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="start">a = 3</text>
-                <text x="110" y="175" fill="var(--clr-accent)" fontSize="26" fontFamily="monospace" fontWeight="bold" textAnchor="start">b = 3</text>
-
-                <rect x="50" y="225" width="220" height="36" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
-                <text x="160" y="248" fill="var(--clr-accent)" fontSize="16" fontWeight="bold" textAnchor="middle">Common values found!</text>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/simultaneous.png"
+                alt="Simultaneous Equations representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -16261,139 +12593,12 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Statement Type</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.3rem', color: 'var(--clr-accent)', marginBottom: '16px', fontWeight: 'bold', fontFamily: 'monospace', textAlign: 'center' }}>
-              2x + 3 = 11
-            </p>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              What type of mathematical statement is this?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'linear', label: 'Linear Equation' },
-                { id: 'simultaneous', label: 'Simultaneous Equations' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ1Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q1Answer !== null}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q1Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q1Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                marginBottom: '20px'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q1Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q1Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next Question →</button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Statement Type</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginBottom: '16px' }}>
-              <code style={{ fontSize: '1.3rem', color: 'var(--clr-accent)', fontWeight: 'bold' }}>x + y = 6</code>
-              <code style={{ fontSize: '1.3rem', color: 'var(--clr-accent)', fontWeight: 'bold' }}>2x - y = 3</code>
-            </div>
-            <p style={{ fontSize: '1.05rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              What type of mathematical statement system is this?
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {[
-                { id: 'linear', label: 'Linear Equation' },
-                { id: 'simultaneous', label: 'Simultaneous Equations' }
-              ].map(opt => {
-                const isSelected = selectedOption === opt.id;
-                return (
-                  <button
-                    key={opt.id}
-                    onClick={() => { setSelectedOption(opt.id); handleQ2Submit(opt.id); }}
-                    className={`option-card ${isSelected ? 'selected' : ''}`}
-                    style={{ textAlign: 'left', padding: '16px 20px', fontSize: '1.05rem' }}
-                    disabled={q2Answer !== null}
-                  >
-                    {opt.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {q2Answer !== null && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: q2Answer === 'correct' ? 'rgba(92, 184, 122, 0.1)' : 'rgba(235, 94, 85, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: `5px solid ${q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`,
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: q2Answer === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)' }}>
-                  {q2Answer === 'correct' ? 'Correct!' : 'Incorrect'}
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>{feedbackText}</p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -16442,7 +12647,7 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-linear')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>
@@ -16463,12 +12668,11 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
     if (subStep === 'vd-interior' || subStep === 'vd-exterior') return 0;
     if (subStep === 'intro' || subStep === 'r1' || subStep === 'r2') return 1;
     if (subStep === 'comparison') return 2;
-    if (subStep === 'q1' || subStep === 'q2') return 3;
     return 4; // Finished / redirect
   };
 
   const activeIndex = getActiveStepIndex();
-  const steps = ['Learn', 'Challenge', 'Recap', 'Practice'];
+  const steps = ['Learn', 'Challenge', 'Recap'];
 
   const renderProgressBar = () => {
     return (
@@ -16654,20 +12858,7 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
   // Round 2 state
   const [extensionLength, setExtensionLength] = useState(0); // 0 to 60
 
-  // Layer 3 state
-  const [sortDeck, setSortDeck] = useState([
-    { id: 'room', val: '🏠 Angle inside a room', category: 'interior' },
-    { id: 'door', val: '🚪 Door opened outward', category: 'exterior' },
-    { id: 'poly', val: '∠ Angle inside a polygon', category: 'interior' },
-    { id: 'extend', val: '📐 Angle formed after extending a side', category: 'exterior' }
-  ]);
-  const [activeSortIndex, setActiveSortIndex] = useState(0);
-  const [sortedItems, setSortedItems] = useState({ interior: [], exterior: [] });
-  const [sortingFinished, setSortingFinished] = useState(false);
 
-  // Q2 state
-  const [q2Extension, setQ2Extension] = useState(0); // 0 to 60
-  const [q2Finished, setQ2Finished] = useState(false);
 
   // Reset states on subStep changes
   useEffect(() => {
@@ -16677,25 +12868,10 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
     setHintText('');
     setR1Filled(false);
     setExtensionLength(0);
-    setActiveSortIndex(0);
-    setSortedItems({ interior: [], exterior: [] });
-    setSortingFinished(false);
-    setQ2Extension(0);
-    setQ2Finished(false);
   }, [subStep]);
 
-  useEffect(() => {
-    if (subStep === 'q2' && q2Extension >= 50) {
-      setQ2Finished(true);
-    }
-  }, [q2Extension, subStep]);
 
   // Save progress automatically when final practice step is completed
-  useEffect(() => {
-    if (q2Finished) {
-      onMarkComplete?.();
-    }
-  }, [q2Finished, onMarkComplete]);
 
   const handleNextStep = () => {
     if (subStep === 'vd-interior') setSubStep('vd-exterior');
@@ -16703,9 +12879,7 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
     else if (subStep === 'intro') setSubStep('r1');
     else if (subStep === 'r1') setSubStep('r2');
     else if (subStep === 'r2') setSubStep('comparison');
-    else if (subStep === 'comparison') setSubStep('q1');
-    else if (subStep === 'q1') setSubStep('q2');
-    else if (subStep === 'q2') setSubStep('practice-redirect');
+    else if (subStep === 'comparison') { onMarkComplete?.(); setSubStep('practice-redirect'); }
   };
 
   const handleTapAngle = (type) => {
@@ -16730,21 +12904,6 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
     }
   };
 
-  const handleSortItem = (bucket) => {
-    const activeCard = sortDeck[activeSortIndex];
-    const isCorrect = activeCard.category === bucket;
-
-    setSortedItems(prev => ({
-      ...prev,
-      [bucket]: [...prev[bucket], { ...activeCard, status: isCorrect ? 'correct' : 'wrong' }]
-    }));
-
-    if (activeSortIndex < sortDeck.length - 1) {
-      setActiveSortIndex(activeSortIndex + 1);
-    } else {
-      setSortingFinished(true);
-    }
-  };
 
   return (
     <div style={{ maxWidth: '880px', margin: '0 auto', padding: '10px 10px 30px 10px', minHeight: '660px' }}>
@@ -16781,37 +12940,29 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
             INTERIOR ANGLES
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the inside angle color fill and glow within the shape.
+            Look at the inner corners of the shape to locate the angles formed inside.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-interior" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-interior)" />
-
-              {/* Pentagon shape */}
-              <g transform="translate(0, 0)">
-                {/* Outline */}
-                <polygon points="160,90 230,140 200,210 120,210 90,140" fill="none" stroke="var(--clr-border)" strokeWidth="3" strokeLinejoin="round" />
-
-                {/* Interior angle arc */}
-                <path d="M 165 210 A 35 35 0 0 1 213.8 177.8 L 200 210 Z" className="angle-interior-wedge" />
-
-                {/* Highlighted Vertex */}
-                <circle cx="200" cy="210" r="6" className="angle-vertex-interior" />
-
-                {/* Interior Summary Overlay */}
-                <g className="angle-interior-summary-overlay">
-                  <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(232, 134, 74, 0.12)" stroke="var(--clr-accent)" strokeWidth="1.5" />
-                  <text x="160" y="281" textAnchor="middle" fill="var(--clr-accent)" fontSize="15" fontWeight="bold">Interior Angle</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/interior.png"
+                alt="Interior angle representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -16833,41 +12984,29 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
             EXTERIOR ANGLES
           </h1>
           <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', margin: '0 0 25px 0', fontStyle: 'italic' }}>
-            Watch the side line extend outward to form the exterior angle.
+            Observe how extending a straight side outward forms a new angle with the adjacent outer edge.
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
-            <svg width="320" height="320" viewBox="0 0 320 320" style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-md)', boxShadow: 'var(--shadow-btn)' }}>
-              <defs>
-                <pattern id="grid-pattern-exterior" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <circle cx="10" cy="10" r="1.5" fill="var(--clr-border)" opacity="0.25" />
-                </pattern>
-              </defs>
-
-              <rect x="0" y="0" width="320" height="320" fill="url(#grid-pattern-exterior)" />
-
-              {/* Pentagon shape */}
-              <g transform="translate(0, 0)">
-                {/* Outline */}
-                <polygon points="160,90 230,140 200,210 120,210 90,140" fill="none" stroke="var(--clr-border)" strokeWidth="3" strokeLinejoin="round" />
-
-                {/* Extended line */}
-                <line x1="200" y1="210" x2="260" y2="210" stroke="var(--clr-correct)" strokeWidth="3" strokeDasharray="3 3" />
-                <line x1="200" y1="210" x2="260" y2="210" stroke="var(--clr-correct)" strokeWidth="3.5" className="angle-extend-line" />
-
-                {/* Exterior angle arc */}
-                <path d="M 213.8 177.8 A 35 35 0 0 1 235 210 L 200 210 Z" className="angle-exterior-wedge" />
-
-                {/* Highlighted Vertex */}
-                <circle cx="200" cy="210" r="6" className="angle-vertex-exterior" />
-
-                {/* Exterior Summary Overlay */}
-                <g className="angle-exterior-summary-overlay">
-                  <rect x="50" y="260" width="220" height="32" rx="6" fill="rgba(92, 184, 122, 0.12)" stroke="var(--clr-correct)" strokeWidth="1.5" />
-                  <text x="160" y="281" textAnchor="middle" fill="var(--clr-correct)" fontSize="15" fontWeight="bold">Exterior Angle</text>
-                </g>
-              </g>
-            </svg>
+            <div style={{
+              width: '320px',
+              height: '320px',
+              background: 'var(--clr-surface)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-btn)',
+              position: 'relative',
+              overflow: 'hidden'
+            }}>
+              <img
+                src="/contrast/exterior.png"
+                alt="Exterior angle representation"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
           </div>
 
           <p style={{ fontSize: '1.35rem', fontWeight: '600', color: 'var(--clr-text)', margin: '0 0 35px 0', padding: '0 20px', lineHeight: '1.4' }}>
@@ -17152,177 +13291,12 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Practice Rule ▶</button>
+            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Next →</button>
           </div>
         </div>
       )}
 
       {/* Layer 3: Practice Q1 */}
-      {subStep === 'q1' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 1 of 2: Situation Matcher</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            border: '1.5px solid var(--clr-border)',
-            borderRadius: '12px',
-            padding: '24px',
-            marginBottom: '24px',
-            minHeight: '160px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}>
-            {!sortingFinished ? (
-              <>
-                <span style={{ fontSize: '0.85rem', color: 'var(--clr-text-soft)', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
-                  Card ({activeSortIndex + 1} / {sortDeck.length})
-                </span>
-                <div style={{
-                  background: 'var(--clr-card)',
-                  padding: '20px 24px',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1.5px solid var(--clr-border)',
-                  fontSize: '1.15rem',
-                  fontWeight: 'bold',
-                  textAlign: 'center',
-                  boxShadow: 'var(--shadow-btn)',
-                  maxWidth: '480px',
-                  width: '100%',
-                  marginBottom: '20px'
-                }}>
-                  {sortDeck[activeSortIndex].val}
-                </div>
-
-                <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-                  <button onClick={() => handleSortItem('interior')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-accent)' }}>
-                    Interior
-                  </button>
-                  <button onClick={() => handleSortItem('exterior')} style={{ padding: '10px 16px', background: 'var(--clr-surface)', border: '1.5px solid var(--clr-correct)' }}>
-                    Exterior
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div style={{ color: 'var(--clr-correct)', fontWeight: 'bold', fontSize: '1.2rem' }}>
-                🎉 Match complete! Review categorized cards below.
-              </div>
-            )}
-          </div>
-
-          {/* Columns */}
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '24px' }}>
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-accent)', flex: '1 1 240px', maxWidth: '300px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-accent)', fontSize: '1rem', marginBottom: '12px' }}> Interior</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
-                {sortedItems.interior.map((item, idx) => (
-                  <div key={idx} style={{ padding: '6px 10px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.85rem' }}>
-                    {item.val}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ background: 'var(--clr-surface)', borderRadius: 'var(--radius-sm)', padding: '14px', border: '1.5px dashed var(--clr-correct)', flex: '1 1 240px', maxWidth: '300px', minHeight: '160px' }}>
-              <strong style={{ display: 'block', color: 'var(--clr-correct)', fontSize: '1rem', marginBottom: '12px' }}> Exterior</strong>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', textAlign: 'left' }}>
-                {sortedItems.exterior.map((item, idx) => (
-                  <div key={idx} style={{ padding: '6px 10px', background: item.status === 'correct' ? 'rgba(92,184,122,0.1)' : 'rgba(235,94,85,0.1)', border: `1px solid ${item.status === 'correct' ? 'var(--clr-correct)' : 'var(--clr-wrong)'}`, borderRadius: '4px', fontSize: '0.85rem' }}>
-                    {item.val}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {sortingFinished && (
-            <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem', marginTop: '32px' }}>Next Question →</button>
-          )}
-        </div>
-      )}
-
-      {/* Layer 3: Practice Q2 */}
-      {subStep === 'q2' && (
-        <div style={{ textAlign: 'center' }}>
-          <h3 style={{ fontFamily: 'var(--font-display)', color: 'var(--clr-accent)', marginBottom: '16px' }}>Apply the Concept</h3>
-          <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '24px' }}>Question 2 of 2: Build It</p>
-
-          <div style={{
-            background: 'var(--clr-surface)',
-            padding: '24px',
-            borderRadius: 'var(--radius-sm)',
-            border: '1.5px solid var(--clr-border)',
-            marginBottom: '24px',
-            textAlign: 'left'
-          }}>
-            <p style={{ fontSize: '1.1rem', color: 'var(--clr-text)', marginBottom: '12px', fontWeight: '500' }}>
-              Drag the slider below to extend the bottom edge of the triangle outward.
-            </p>
-            <p style={{ fontSize: '1rem', color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              Goal: Create an exterior angle.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '20px' }}>
-              {/* Triangle SVG */}
-              <svg width="240" height="160" viewBox="0 0 240 160" style={{ background: 'rgba(255,255,255,0.01)', borderRadius: '6px', border: '1px solid var(--clr-border)', marginBottom: '16px' }}>
-                {/* Triangle shape */}
-                <polygon points="120,30 160,110 80,110" fill="none" stroke="var(--clr-text)" strokeWidth="3" />
-
-                {/* Base extension line */}
-                {q2Extension > 0 && (
-                  <line x1="160" y1="110" x2={160 + q2Extension} y2="110" stroke="var(--clr-correct)" strokeWidth="3" strokeDasharray="4 3" />
-                )}
-
-                {/* Exterior Angle Arc */}
-                {q2Extension >= 45 && (
-                  <>
-                    <path d="M 180 110 A 20 20 0 0 0 170 92" fill="none" stroke="var(--clr-correct)" strokeWidth="2.5" />
-                    <circle cx="173" cy="100" r="4" fill="var(--clr-correct)" />
-                  </>
-                )}
-              </svg>
-
-              {/* Slider */}
-              <div style={{ width: '100%', maxWidth: '240px' }}>
-                <input
-                  type="range"
-                  min="0"
-                  max="60"
-                  value={q2Extension}
-                  onChange={(e) => setQ2Extension(Number(e.target.value))}
-                  style={{ width: '100%', cursor: 'pointer' }}
-                  disabled={q2Finished}
-                />
-              </div>
-            </div>
-          </div>
-
-          {q2Finished && (
-            <div style={{ marginBottom: '24px' }}>
-              <div style={{
-                padding: '16px 20px',
-                background: 'rgba(92, 184, 122, 0.1)',
-                borderRadius: 'var(--radius-sm)',
-                borderLeft: '5px solid var(--clr-correct)',
-                textAlign: 'left',
-                maxWidth: '560px',
-                margin: '0 auto 20px auto'
-              }}>
-                <strong style={{ display: 'block', marginBottom: '6px', color: 'var(--clr-correct)' }}>
-                  Success!
-                </strong>
-                <p style={{ margin: 0, fontSize: '0.98rem', lineHeight: '1.5' }}>
-                  Great! You created an exterior angle by extending one side.
-                </p>
-              </div>
-              <button onClick={handleNextStep} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Continue</button>
-            </div>
-          )}
-        </div>
-      )}
-
       {subStep === 'practice-redirect' && (
         <div style={{ textAlign: 'center', padding: '20px 0' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
@@ -17371,7 +13345,7 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
-            <button className="secondary" onClick={() => setSubStep('vd-interior')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
+            <button className="secondary" onClick={() => setSubStep('intro')} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Try Again</button>
             <button onClick={onComplete} style={{ padding: '12px 24px', fontSize: '1.05rem', background: 'var(--clr-correct)', color: '#fff', border: 'none', borderRadius: '6px', cursor: 'pointer', fontWeight: '600' }}>Finish Challenge ✓</button>
           </div>
         </div>

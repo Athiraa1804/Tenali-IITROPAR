@@ -44141,10 +44141,10 @@ function App() {
     funcgym: FuncGymApp,           // Functions Gym — polynomial evaluation (MCQ)
     dotprodgym: DotProdGymApp,     // DotProducts Gym — 2D/3D dot products (MCQ)
     fracaddgym: FracAddGymApp,     // Fractions-add-gym — add fractions (MCQ)
-    lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
+    lineqgym: LineEqGymApp,        // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
-    matrixmystics: MatrixMysticsApp,  // Matrix Mystics — comprehensive linear algebra MCQ test bank
+    // matrixmystics mode removed — Matrix Mystics content now embedded in LinearAlgebraApp's mission quiz
     trackProgress: null,
   }
 
@@ -44420,8 +44420,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'lineqgym', name: 'LinearEquations-Gym', subtitle: 'Solve linear equations (MCQ)', color: 'blue' },
     { key: 'indicesgym', name: 'Indices-Gym', subtitle: 'Index laws (MCQ)', color: 'green' },
     { key: 'polygym', name: 'Polynomials Gym', subtitle: 'Arithmetic → monomial algebra (MCQ)', color: 'blue' },
-    { key: 'matrixmystics', name: 'Matrix Mystics', subtitle: 'Linear Algebra — 6 modules, 53 topics (MCQ)', color: 'violet' },
-  ]
+  ] // end regularApps (MatrixMystics tile removed — uses LinearAlgebraApp via linearalgebra mode)
 
   // Combined list for search filtering
   const allApps = [...hamburgerApps, ...regularApps]

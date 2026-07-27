@@ -2648,24 +2648,6 @@ function LinearAlgebraApp({ onBack }) {
   const mqSeenRef = useRef(new Set());
   const [mqExplanation, setMqExplanation] = useState([]);
 
-  // ── 5-question Real-Life Application phase (unlocks on Phase 1 pass ≥ 7/10) ──
-  const [rlaStarted, setRlaStarted] = useState(false);
-  const [rlaFinished, setRlaFinished] = useState(false);
-  const [rlaQuestion, setRlaQuestion] = useState(null);
-  const [rlaAnswer, setRlaAnswer] = useState('');
-  const [rlaScore, setRlaScore] = useState(0);
-  const [rlaQNum, setRlaQNum] = useState(0);
-  const RLA_TOTAL = 5;
-  const [rlaFeedback, setRlaFeedback] = useState('');
-  const [rlaIsCorrect, setRlaIsCorrect] = useState(null);
-  const [rlaLoading, setRlaLoading] = useState(false);
-  const [rlaLoadError, setRlaLoadError] = useState('');
-  const [rlaRevealed, setRlaRevealed] = useState(false);
-  const [rlaResults, setRlaResults] = useState([]);
-  const [rlaSeenIds, setRlaSeenIds] = useState(new Set());
-  const rlaSubmittedRef = useRef(false);
-  const rlaAdvancedRef = useRef(false);
-
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -2842,72 +2824,6 @@ function LinearAlgebraApp({ onBack }) {
     if (mqQNum >= mqTotal) setMqFinished(true); else setMqQNum(n => n + 1);
   };
   mqAdvanceRef.current = mqAdvance;
-
-  // ── Real-Life Application (RLA) phase handlers ──────────────────────────
-  // Loaded from matrixmystics-api, scoped to the current module's topics.
-  // Pass criterion for Phase 1 (≥7/10) lives in the parent rendering block.
-  const rlaStart = () => {
-    setRlaStarted(true); setRlaFinished(false); setRlaScore(0);
-    setRlaQNum(1); setRlaResults([]); setRlaSeenIds(new Set());
-    rlaSubmittedRef.current = false; rlaAdvancedRef.current = false;
-  };
-  const rlaReset = () => {
-    setRlaStarted(false); setRlaFinished(false);
-    setRlaQuestion(null); setRlaAnswer(''); setRlaScore(0); setRlaQNum(0);
-    setRlaResults([]); setRlaSeenIds(new Set());
-    setRlaFeedback(''); setRlaIsCorrect(null); setRlaRevealed(false); setRlaLoadError('');
-    rlaSubmittedRef.current = false; rlaAdvancedRef.current = false;
-  };
-  const loadRlaQuestion = async () => {
-    if (rlaFinished) return;
-    setRlaLoading(true); setRlaLoadError('');
-    try {
-      const seenParam = rlaSeenIds.size > 0 ? '&seen=' + encodeURIComponent([...rlaSeenIds].join(',')) : '';
-      const r = await fetch(`${API}/matrixmystics-api/question?difficulty=hard&phase=realapp&module=${currentModule}${seenParam}`);
-      if (!r.ok) throw new Error(`Server returned ${r.status}`);
-      const data = await r.json();
-      if (!data || !data.options || !Array.isArray(data.options)) throw new Error('No options in question payload');
-      if (data.id) setRlaSeenIds(prev => new Set([...prev, data.id]));
-      setRlaQuestion(data); setRlaAnswer('');
-      setRlaFeedback(''); setRlaIsCorrect(null); setRlaRevealed(false);
-      rlaSubmittedRef.current = false; rlaAdvancedRef.current = false;
-    } catch (e) {
-      setRlaQuestion(null);
-      setRlaLoadError(`Couldn't load real-life question (${e.message}).`);
-    }
-    setRlaLoading(false);
-  };
-  const rlaSubmit = async (overrideAnswer) => {
-    const ans = overrideAnswer || rlaAnswer;
-    if (!rlaQuestion || rlaRevealed || !String(ans).trim() || rlaSubmittedRef.current) return;
-    rlaSubmittedRef.current = true;
-    const payload = { ...rlaQuestion, selectedOption: String(ans).trim() };
-    try {
-      const r = await fetch(`${API}/matrixmystics-api/check`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
-      const data = await r.json();
-      setRlaIsCorrect(data.correct); setRlaRevealed(true);
-      if (data.correct) setRlaScore(s => s + 1);
-      const correctText = data.correctDisplay || (rlaQuestion.options.find(o => o.option === data.correctOption)?.text) || '';
-      setRlaFeedback(data.correct ? `✓ Correct! ${correctText}` : `✗ Incorrect. Answer: ${data.correctOption}. ${correctText}`);
-      setRlaResults(prev => [...prev, {
-        prompt: rlaQuestion.prompt,
-        userAnswer: String(ans).trim(),
-        correctAnswer: data.correctOption + (correctText ? `: ${correctText}` : ''),
-        correct: data.correct,
-      }]);
-    } catch { rlaSubmittedRef.current = false; }
-  };
-  const rlaAdvance = () => {
-    if (rlaAdvancedRef.current) return;
-    rlaAdvancedRef.current = true;
-    if (rlaQNum >= RLA_TOTAL) setRlaFinished(true); else setRlaQNum(n => n + 1);
-  };
-  // Auto-load RLA question when entering a new slot (skip when finished).
-  useEffect(() => { if (rlaStarted && !rlaFinished && rlaQNum > 0) loadRlaQuestion(); }, [rlaQNum, rlaStarted, rlaFinished]); // eslint-disable-line react-hooks/exhaustive-deps, react-hooks/set-state-in-effect
 
   useEffect(() => { if (phase === 'missionquiz' && mqStarted && !mqFinished && mqQNum > 0) loadMqQuestion(); }, [phase, mqStarted, mqQNum, mqFinished]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -3433,7 +3349,7 @@ function LinearAlgebraApp({ onBack }) {
           <h3 style={{ textAlign: 'center', margin: '12px 0 4px' }}>Mission {currentMission} Quiz</h3>
           {!mqStarted && !mqFinished && (
             <div style={{ textAlign: 'center', padding: '16px 0' }}>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-dim)', marginBottom: 12 }}>Test your understanding of this mission with 10 adaptive questions. Pass (≥7/10) to unlock 5 real-life applications.</p>
+              <p style={{ fontSize: '0.9rem', color: 'var(--clr-dim)', marginBottom: 12 }}>Test your understanding of this mission with 10 adaptive questions. Pass (≥7/10) to unlock real-life applications.</p>
               <button className="la-quiz-next-btn" onClick={mqStart} style={{ maxWidth: 250, margin: '0 auto' }}>Start Quiz</button>
             </div>
           )}
@@ -3531,102 +3447,15 @@ function LinearAlgebraApp({ onBack }) {
                 )}
                 <div className="button-row" style={{ marginTop: 12 }}>
                   {passed && hasNext && (
-                    <button onClick={() => { nextMission(); setMqStarted(false); setMqFinished(false); rlaReset(); }} style={{ background: 'linear-gradient(135deg, #4caf50, #2e7d32)', color: '#fff', border: 'none' }}>Next Mission &rarr;</button>
+                    <button onClick={() => { nextMission(); setMqStarted(false); setMqFinished(false); }} style={{ background: 'linear-gradient(135deg, #4caf50, #2e7d32)', color: '#fff', border: 'none' }}>Next Mission &rarr;</button>
                   )}
                   {!passed && <button onClick={() => { setMqStarted(false); setMqFinished(false); }}>Try Again</button>}
                   <button onClick={() => setPhase('intro')} style={{ background: 'transparent', border: '1px solid var(--clr-accent)', color: 'var(--clr-accent)' }}>Back to Mission</button>
                 </div>
               </div>
-
-              {/* ── Phase 2: 5 Real-Life Application MCQs (unlocks on Phase 1 pass) ── */}
               {passed && (
-                <div className="la-mission" style={{ marginTop: 16 }}>
-                  <div className="la-reallife-title" style={{ textAlign: 'center', marginBottom: 12 }}>Real-Life Applications</div>
-                  {!rlaStarted && !rlaFinished && (
-                    <div style={{ textAlign: 'center', padding: '12px 0' }}>
-                      <p style={{ fontSize: '0.9rem', color: 'var(--clr-dim)', marginBottom: 12 }}>You passed the quiz ({mqScore}/{mqTotal}). Apply what you learned to 5 real-world scenarios from module {currentModule}.</p>
-                      <button className="la-quiz-next-btn" onClick={rlaStart} style={{ maxWidth: 280, margin: '0 auto' }}>Begin Real-Life Applications</button>
-                    </div>
-                  )}
-                  {rlaStarted && !rlaFinished && (
-                    <div style={{ textAlign: 'center' }}>
-                      <div className="progress-pill center" style={{ marginBottom: 8 }}>Real-Life Question {rlaQNum}/{RLA_TOTAL} · Score: {rlaScore}</div>
-                      {rlaLoading && <div style={{ padding: 20, color: 'var(--clr-text-soft)' }}>Loading…</div>}
-                      {!rlaLoading && rlaLoadError && (
-                        <div style={{ padding: 16, color: 'var(--clr-wrong)' }}>
-                          {rlaLoadError} <button onClick={loadRlaQuestion}>Retry</button>
-                        </div>
-                      )}
-                      {rlaQuestion && (
-                        <div>
-                          <div style={{ fontSize: '0.78rem', color: 'var(--clr-dim)', marginBottom: 6, fontStyle: 'italic' }}>Real-world application</div>
-                          <div style={{ fontSize: '1.1rem', margin: '12px 0', lineHeight: 1.5 }}>{rlaQuestion.prompt}</div>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center', margin: '12px 0' }}>
-                            {rlaQuestion.options.map(opt => {
-                              const selected = rlaAnswer === opt.option;
-                              const showResult = rlaRevealed;
-                              const isCorrectOpt = opt.option === rlaQuestion.correctOption;
-                              let bg = 'var(--clr-card)';
-                              let border = '1px solid var(--clr-border)';
-                              let color = 'var(--clr-text)';
-                              if (showResult && isCorrectOpt) { bg = 'rgba(76,175,80,0.2)'; border = '2px solid #4caf50'; color = '#4caf50'; }
-                              else if (showResult && selected && !isCorrectOpt) { bg = 'rgba(244,67,54,0.2)'; border = '2px solid #f44336'; color = '#f44336'; }
-                              else if (selected) { bg = 'rgba(33,150,243,0.15)'; border = '2px solid var(--clr-accent)'; }
-                              return (
-                                <button key={opt.option} disabled={rlaRevealed}
-                                  onClick={() => { if (!rlaRevealed) { setRlaAnswer(opt.option); setRlaFeedback(''); } }}
-                                  style={{ padding: '10px 18px', borderRadius: 8, background: bg, border, color, cursor: rlaRevealed ? 'default' : 'pointer', fontSize: '0.95rem', fontWeight: 500, minWidth: 90, transition: 'all 0.15s' }}>
-                                  <strong style={{ marginRight: 6 }}>{opt.option}.</strong>{opt.text}
-                                </button>
-                              );
-                            })}
-                          </div>
-                          {rlaFeedback && (
-                            <div style={{ margin: '12px 0', padding: '10px 16px', borderRadius: 8, background: rlaIsCorrect ? 'rgba(76,175,80,0.12)' : 'rgba(244,67,54,0.12)', color: rlaIsCorrect ? 'var(--clr-correct)' : 'var(--clr-wrong)', fontWeight: 600 }}>
-                              {rlaFeedback}
-                            </div>
-                          )}
-                          <div className="button-row" style={{ marginTop: 8 }}>
-                            {!rlaRevealed ? (
-                              <button onClick={() => rlaSubmit()} disabled={rlaLoading || !rlaAnswer.trim()}>Submit</button>
-                            ) : (
-                              <button onClick={rlaAdvance}>{rlaQNum >= RLA_TOTAL ? 'Finish Real-Life' : 'Next Real-Life Question'}</button>
-                            )}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                  {rlaFinished && (
-                    <div style={{ textAlign: 'center', padding: '16px 0' }}>
-                      <h4>Real-Life Applications Complete</h4>
-                      <p style={{ fontSize: '1.15rem', fontWeight: 700, margin: '8px 0' }}>Score: {rlaScore}/{RLA_TOTAL}</p>
-                      {rlaResults.length > 0 && (
-                        <table style={{ width: '100%', borderCollapse: 'collapse', margin: '12px auto', fontSize: '0.85rem' }}>
-                          <thead><tr style={{ borderBottom: '2px solid var(--clr-border)' }}><th style={{ textAlign: 'left', padding: 6 }}>#</th><th style={{ textAlign: 'left', padding: 6 }}>Question</th><th style={{ padding: 6 }}>Result</th></tr></thead>
-                          <tbody>{rlaResults.map((r, i) => (
-                            <tr key={i} style={{ borderBottom: '1px solid var(--clr-border)' }}>
-                              <td style={{ padding: 6 }}>{i + 1}</td>
-                              <td style={{ textAlign: 'left', padding: 6, maxWidth: 350, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{r.prompt}</td>
-                              <td style={{ padding: 6, color: r.correct ? 'var(--clr-correct)' : 'var(--clr-wrong)', fontWeight: 600 }}>{r.correct ? '✓' : '✗'}</td>
-                            </tr>
-                          ))}</tbody>
-                        </table>
-                      )}
-                      <div className="button-row" style={{ marginTop: 12 }}>
-                        <button onClick={rlaStart}>Try Again</button>
-                        {hasNext && <button onClick={() => { nextMission(); setMqStarted(false); setMqFinished(false); rlaReset(); }} style={{ background: 'linear-gradient(135deg, #4caf50, #2e7d32)', color: '#fff', border: 'none' }}>Next Mission &rarr;</button>}
-                        <button onClick={() => setPhase('intro')} style={{ background: 'transparent', border: '1px solid var(--clr-accent)', color: 'var(--clr-accent)' }}>Back to Mission</button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Original real-life section from MISSIONS data (kept for reference, only shown after RLA finishes) */}
-              {passed && rlaFinished && (
                 <div className="la-mission">
-                  <div className="la-reallife-title" style={{ textAlign: 'center', marginBottom: 12 }}>Mission Notes</div>
+                  <div className="la-reallife-title" style={{ textAlign: 'center', marginBottom: 12 }}>Real-Life Applications</div>
                   {realLifeSection()}
                 </div>
               )}

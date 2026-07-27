@@ -22,7 +22,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tenali';
-const JWT_SECRET = process.env.JWT_SECRET || require('crypto').randomBytes(32).toString('hex');
 const DEFAULT_DEV_SECRET = 'tenali-dev-secret-change-me';
 const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_DEV_SECRET;
 

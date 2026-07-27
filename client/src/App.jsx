@@ -44141,7 +44141,7 @@ function App() {
     funcgym: FuncGymApp,           // Functions Gym — polynomial evaluation (MCQ)
     dotprodgym: DotProdGymApp,     // DotProducts Gym — 2D/3D dot products (MCQ)
     fracaddgym: FracAddGymApp,     // Fractions-add-gym — add fractions (MCQ)
-    lineqgym: LineEqGymApp,        // LinearEquations-Gym — solve linear equations (MCQ)
+    lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
     // matrixmystics mode removed — Matrix Mystics content now embedded in LinearAlgebraApp's mission quiz

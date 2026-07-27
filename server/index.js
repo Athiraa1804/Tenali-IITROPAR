@@ -12411,6 +12411,7 @@ app.get('/matrixmystics-api/question', (req, res) => {
     const difficulty = req.query.difficulty || 'easy';
     const module = req.query.module ? Number(req.query.module) : null;
     const topic = req.query.topic || null;
+    const phase = req.query.phase || null; // 'realapp' to restrict to real_life_application tier
     const diffKey = difficulty === 'extrahard' ? 'hard' : difficulty;
 
     // Collect questions matching the filter
@@ -12421,14 +12422,26 @@ app.get('/matrixmystics-api/question', (req, res) => {
       const data = mmQuestionBank[key];
       if (!data) continue;
       if (topic && data.topicId !== topic) continue;
+      if (phase === 'realapp') {
+        // Phase 2: only draw from real_life_application pool
+        const pool = data.real_life_application || [];
+        if (pool.length > 0) {
+          for (const q of pool) {
+            candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+          }
+        }
+        continue;
+      }
       const pool = data.mcqs && data.mcqs[diffKey];
       if (pool && pool.length > 0) {
         for (const q of pool) {
           candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
         }
       }
-      // Also include real_life_application at hard/extrahard tiers
-      if ((diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
+      // Also include real_life_application at hard/extrahard tiers (only when
+      // not explicitly requesting Phase 1 — Phase 2 must use the phase=realapp
+      // flag to keep its pool separate).
+      if (phase !== 'realapp' && (diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
         for (const q of data.real_life_application) {
           candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
         }

@@ -379,41 +379,57 @@ export default function ContrastChallengeApp({ studentName, onBack }) {
                 style={{
                   position: 'relative',
                   cursor: 'pointer',
-                  opacity: 1
+                  opacity: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  padding: '20px 16px'
                 }}
               >
-                <span className="menu-title" style={{ width: '100%' }}>{pair.title}</span>
-                <span className="menu-subtitle" style={{ minHeight: 'unset', marginTop: '12px', display: 'block' }}>
-                  {isCompleted ? (
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      padding: '6px 14px',
-                      borderRadius: '20px',
-                      background: 'rgba(92, 184, 122, 0.1)',
-                      color: 'var(--clr-correct)',
-                      fontWeight: '600',
-                      fontSize: '0.8rem',
-                      border: '1.5px solid rgba(92, 184, 122, 0.2)'
-                    }}>
-                      <CheckIcon /> Done
-                    </span>
-                  ) : (
-                    <span style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      padding: '6px 16px',
-                      borderRadius: '20px',
-                      background: 'var(--clr-accent)',
-                      color: '#ffffff',
-                      fontWeight: '600',
-                      fontSize: '0.8rem',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)'
-                    }}>
-                      Start
-                    </span>
-                  )}
+                {isCompleted && (
+                  <div style={{
+                    position: 'absolute',
+                    top: '12px',
+                    right: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '22px',
+                    height: '22px',
+                    borderRadius: '50%',
+                    background: 'rgba(92, 184, 122, 0.15)',
+                    border: '1.5px solid var(--clr-correct)',
+                    color: 'var(--clr-correct)',
+                    zIndex: 2
+                  }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                  </div>
+                )}
+                <span 
+                  className="menu-title" 
+                  style={{ 
+                    width: '90%',
+                    height: 'auto',
+                    minHeight: '44px',
+                    background: 'var(--clr-badge)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    padding: '8px 12px',
+                    borderRadius: '8px',
+                    margin: '0 auto',
+                    fontSize: '0.92rem',
+                    lineHeight: '1.2',
+                    fontWeight: '700',
+                    color: 'var(--clr-text)',
+                    boxSizing: 'border-box'
+                  }}
+                >
+                  {pair.title}
                 </span>
               </button>
             );
@@ -683,6 +699,7 @@ export function QuizLayoutExtension({ children }) {
             <div
               key={id}
               style={{
+                position: 'relative',
                 padding: '16px',
                 borderRadius: '8px',
                 background: 'var(--clr-surface)',
@@ -690,9 +707,12 @@ export function QuizLayoutExtension({ children }) {
                 boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '140px',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                textAlign: 'center'
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
@@ -707,42 +727,46 @@ export function QuizLayoutExtension({ children }) {
                 window.dispatchEvent(new CustomEvent('tenali-change-mode', { detail: 'contrastlist' }));
               }}
             >
-              <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <span style={{
-                    fontSize: '0.75rem',
-                    fontWeight: '600',
-                    padding: '2px 6px',
-                    borderRadius: '4px',
-                    background: isCompleted ? 'rgba(92, 184, 122, 0.1)' : 'var(--clr-accent-soft)',
-                    color: isCompleted ? 'var(--clr-correct)' : 'var(--clr-accent)',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    {isCompleted ? <><CheckIcon /> Done</> : 'Start'}
-                  </span>
+              {isCompleted && (
+                <div style={{
+                  position: 'absolute',
+                  top: '12px',
+                  right: '12px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: '22px',
+                  height: '22px',
+                  borderRadius: '50%',
+                  background: 'rgba(92, 184, 122, 0.15)',
+                  border: '1.5px solid var(--clr-correct)',
+                  color: 'var(--clr-correct)',
+                  zIndex: 2
+                }}>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                  </svg>
                 </div>
-                <h4 style={{ margin: '0 0 12px 0', fontSize: '1rem', color: 'var(--clr-text)', fontWeight: '600' }}>
-                  {title}
-                </h4>
-              </div>
-              <button
-                style={{
-                  width: '100%',
-                  background: isCompleted ? 'var(--clr-correct)' : 'var(--clr-accent)',
-                  color: '#fff',
-                  border: 'none',
-                  padding: '8px 12px',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontWeight: '600',
-                  fontSize: '0.85rem',
-                  pointerEvents: 'none'
-                }}
-              >
-                {isCompleted ? 'Review Challenge' : 'Start Challenge'}
-              </button>
+              )}
+              <h4 style={{ 
+                margin: '0 auto', 
+                fontSize: '0.92rem', 
+                color: 'var(--clr-text)', 
+                fontWeight: '700',
+                lineHeight: '1.2',
+                width: '90%',
+                minHeight: '44px',
+                background: 'var(--clr-badge)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                textAlign: 'center',
+                padding: '8px 12px',
+                borderRadius: '8px',
+                boxSizing: 'border-box'
+              }}>
+                {title}
+              </h4>
             </div>
           );
         })}
@@ -1234,25 +1258,86 @@ function AreaPerimeterChallenge({ onBack, onComplete, onMarkComplete }) {
       {renderProgressBar()}
 
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🟩</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Inside Space (Area)</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measuring the total space inside a shape.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔲</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Outer Edge (Perimeter)</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measuring the distance around a shape.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            The same shape requires different measurements depending on the task. Let's find out!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Area</strong> or <strong>Perimeter</strong>.
           </p>
-
-          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNext} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -2144,25 +2229,86 @@ function RadiusDiameterChallenge({ onBack, onComplete, onMarkComplete }) {
       )}
 
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>⭕</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Radius</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>The distance from the center point to the outer edge.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>↔️</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Diameter</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>The straight distance across through the center point.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Circles have unique lines that measure them. Let's trace and recognize them!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Radius</strong> or <strong>Diameter</strong>.
           </p>
-
-          <button onClick={handleNext} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNext} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -2823,23 +2969,86 @@ function HcfLcmChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '24px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔩</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Dividing into Groups</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Splitting resources evenly with no leftovers.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>⏰</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Synchronizing Events</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Finding when repeating items meet together.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            HCF and LCM are mathematical tools for grouping and timing. Let's explore how they work in real situations!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>HCF</strong> or <strong>LCM</strong>.
           </p>
-          <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNext} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -3855,23 +4064,86 @@ function FactorsMultiplesChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '500px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '24px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔢</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: '#4ba3e3' }}>Factors</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers that divide a value exactly.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '200px' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>✖️</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Multiples</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers obtained by multiplying.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-          <p style={{ fontSize: '1.2rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '24px' }}>
-            Let's interact with a math machine to see the difference between factors and multiples!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Factors</strong> or <strong>Multiples</strong>.
           </p>
-          <button onClick={handleNext} style={{ padding: '12px 24px', fontSize: '1.05rem' }}>Start Machine</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNext} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -4801,25 +5073,86 @@ function CongruenceSimilarityChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Congruence</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Identical shapes with the exact same size and angle measures.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔍</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Similarity</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Matching shapes scaled larger or smaller proportionally.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Can shapes look similar without being congruent? Let's check them!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Congruence</strong> or <strong>Similarity</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -5615,25 +5948,86 @@ function MatricesDeterminantsChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📦</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Matrix Grid</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>A rectangular array of numbers inside brackets.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔢</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Determinant Value</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>A single calculated number from a square grid.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Only square matrices have determinants. Let's start the scanner and inspect them!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Matrices</strong> or <strong>Determinants</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -6512,30 +6906,86 @@ function MeanMedianModeChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>⚖️</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Balancing Data</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the average balance point of the set.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📍</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Finding the Center</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the exact middle position value.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '180px', maxWidth: '220px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: '#4ba3e3' }}>Spotting Frequency</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the most common matching value.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Each average represents a different center point. Let's see them in action with real data!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Mean</strong>, <strong>Median</strong>, or <strong>Mode</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -7351,25 +7801,86 @@ function LimitsDifferentiationChallenge({ onBack, onComplete, onMarkComplete }) 
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🎯</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Approaching Limits</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the height a curve approaches near a point.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Calculating Slopes</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the exact rate of change at a single point.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Calculus helps us understand dynamic graphs. Let's explore how limits and derivatives work!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Limits</strong> or <strong>Differentiation</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -8310,25 +8821,86 @@ function DifferentiationIntegrationChallenge({ onBack, onComplete, onMarkComplet
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📈</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Differentiation</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measures the rate of change or slope at one specific point.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🪣</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Integration</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Measures the total accumulated amount under a curve.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Calculus links rates of change with accumulation. Let's compare both concepts!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Differentiation</strong> or <strong>Integration</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -9117,25 +9689,86 @@ function DecimalsFractionsChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🍰</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Fractions</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Representing parts of a whole using numerator and denominator ratios.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔍</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Decimals</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Representing parts of a whole in base-10 with a decimal point.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Fractions and decimals are two ways to write the same value. Let's compare them!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Decimals</strong> or <strong>Fractions</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -10020,25 +10653,86 @@ function PermutationCombinationChallenge({ onBack, onComplete, onMarkComplete })
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🏆</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Podium Positions</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Arrangements where order of choice matters.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🤝</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Team Selection</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Group selections where order does not matter.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Does the arrangement order change the final result? Let's check real scenarios!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Permutation</strong> or <strong>Combination</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -10849,25 +11543,86 @@ function PrimeCompositeChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔒</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Prime Numbers</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers with exactly two factors: 1 and itself.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>🔓</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Composite Numbers</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Numbers with more than two factors.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Let's sort numbers by finding their divisors and counting their factors!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether a number is <strong>Prime</strong> or <strong>Composite</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -11651,25 +12406,86 @@ function TrigInverseTrigChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Finding Side Lengths</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Use a known angle to calculate a missing side.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📐</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Finding Angles</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Use side ratios to calculate a missing angle.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Trigonometry and Inverse Trig are tools for right triangles. Let's find which one solves the mystery!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Trigonometry</strong> or <strong>Inverse Trig</strong>.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -12310,25 +13126,86 @@ function LinearSimultaneousChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>➖</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Single Line Solutions</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find infinite coordinate points along a single line.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>✖️</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Intersection Points</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>Find the single common solution shared by two lines.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Equations represent spatial arrangements. Let's solve them to find their unknown values!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Linear</strong> or <strong>Simultaneous</strong> Equations.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 
@@ -13021,25 +13898,86 @@ function InteriorExteriorChallenge({ onBack, onComplete, onMarkComplete }) {
 
       {/* Intro SubStep */}
       {subStep === 'intro' && (
-        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-start', minHeight: '520px', padding: '30px 0 10px 0' }}>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '24px', flexWrap: 'wrap', marginBottom: '32px' }}>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📥</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-accent)' }}>Interior Angle</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>An angle formed inside a polygon between two adjacent side lines.</p>
-            </div>
-            <div style={{ background: 'var(--clr-surface)', padding: '20px', borderRadius: 'var(--radius-sm)', border: '1px solid var(--clr-border)', minWidth: '220px', maxWidth: '260px', boxShadow: 'var(--shadow-btn)' }}>
-              <span style={{ fontSize: '2rem', display: 'block', marginBottom: '8px' }}>📤</span>
-              <strong style={{ display: 'block', fontSize: '1.1rem', color: 'var(--clr-correct)' }}>Exterior Angle</strong>
-              <p style={{ fontSize: '0.9rem', color: 'var(--clr-text-soft)', margin: '6px 0 0 0' }}>An angle formed outside a polygon when a side line is extended.</p>
-            </div>
+        <div style={{ 
+          textAlign: 'center', 
+          display: 'flex', 
+          flexDirection: 'column', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          minHeight: '400px', 
+          padding: '40px 20px',
+          background: 'var(--clr-surface)',
+          borderRadius: '12px',
+          border: '1px solid var(--clr-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.06)',
+          maxWidth: '520px',
+          margin: '20px auto'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'var(--clr-accent)',
+            marginBottom: '16px',
+            boxShadow: '0 4px 12px rgba(232, 134, 74, 0.2)'
+          }}>
+            <img 
+              src="/contrast/mission.svg" 
+              alt="Mission" 
+              style={{ 
+                width: '32px', 
+                height: '32px', 
+                filter: 'brightness(0) invert(1)'
+              }} 
+            />
           </div>
-
-          <p style={{ fontSize: '1.15rem', lineHeight: '1.6', color: 'var(--clr-text)', marginBottom: '32px', maxWidth: '600px' }}>
-            Every polygon vertex has interior and exterior angles. Let's trace them!
+          <h2 style={{ 
+            fontFamily: 'var(--font-display)', 
+            fontSize: '1.8rem', 
+            fontWeight: '700', 
+            color: 'var(--clr-accent)',
+            margin: '0 0 16px 0'
+          }}>
+            Your Mission
+          </h2>
+          <p style={{ 
+            fontSize: '1.15rem', 
+            lineHeight: '1.6', 
+            color: 'var(--clr-text)', 
+            marginBottom: '24px', 
+            maxWidth: '440px' 
+          }}>
+            You'll face situations where you must decide whether to use <strong>Interior</strong> or <strong>Exterior</strong> Angles.
           </p>
-
-          <button onClick={handleNextStep} style={{ padding: '12px 30px', fontSize: '1.1rem', fontWeight: 'bold' }}>Start Challenge</button>
+          <p style={{ 
+            fontSize: '1rem', 
+            color: 'var(--clr-text-soft)', 
+            marginBottom: '32px',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}>
+            Think carefully before choosing!
+          </p>
+          <button 
+            onClick={handleNextStep} 
+            style={{ 
+              padding: '12px 40px', 
+              fontSize: '1.1rem', 
+              fontWeight: 'bold',
+              borderRadius: '30px',
+              background: 'var(--clr-accent)',
+              color: '#ffffff',
+              border: 'none',
+              cursor: 'pointer',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+              transition: 'transform 0.2s ease, boxShadow 0.2s ease'
+            }}
+          >
+            Start Challenge
+          </button>
         </div>
       )}
 

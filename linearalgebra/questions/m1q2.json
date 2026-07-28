@@ -83,8 +83,8 @@
         "question": "Does the point D(4,3) satisfy the equation y = x - 1?",
         "options": [
           "Yes, because 3 = 4 - 1",
-          "No, because 3 ≠ 4 - 1",
-          "Cannot be determined",
+          "because 3 ≠ 4 - 1",
+          "Cant be determined",
           "Only approximately"
         ],
         "correct_option": "Yes, because 3 = 4 - 1",
@@ -119,9 +119,9 @@
         "question": "Is the displacement from C to D the same as from B to C?",
         "options": [
           "Yes, both are (1,1)",
-          "No, they are different",
+          "they are different",
           "Only if the slope is the same",
-          "Cannot be determined"
+          "Cant be determined"
         ],
         "correct_option": "Yes, both are (1,1)",
         "explanation": "Step 1: C to D displacement = (4-3, 3-2) = (1,1). Step 2: B to C displacement = (3-2, 2-1) = (1,1). Step 3: They are identical, which is why the points are equally spaced along the line."
@@ -145,9 +145,9 @@
         "question": "Why does checking that slope BC = slope CD guarantee collinearity of three points?",
         "options": [
           "Because two equal slopes mean all three points share the same line equation",
-          "Because equal slopes always pass through the origin...                ",
-          "Because the midpoint formula requires it...                           ",
-          "Because parallel lines always intersect...                            "
+          "Because equal slopes always pass through the origin",
+          "Because the midpoint formula requires it",
+          "Because parallel lines always intersect"
         ],
         "correct_option": "Because two equal slopes mean all three points share the same line equation",
         "explanation": "Step 1: If slope BC = slope CD, both segments have the same rate of change. Step 2: Two line segments with the same slope sharing a common point (C) must lie on the same line. Step 3: Therefore B, C, and D all satisfy a single line equation."
@@ -157,8 +157,8 @@
         "question": "Suppose instead Divya walked right 1, up 2 from C(3,2). Would the three points still be collinear?",
         "options": [
           "No, because the new slope would differ",
-          "Yes, because they still share point C",
-          "Yes, because slopes don't matter",
+          "because they still share point C",
+          "because slopes don't matter",
           "Only if the line passes through the origin"
         ],
         "correct_option": "No, because the new slope would differ",
@@ -193,7 +193,7 @@
         "question": "Can you determine if a fourth point E = (5,5) lies on the same line as B, C, and D?",
         "options": [
           "Yes: slope from D to E must also be 1",
-          "No, we need more information",
+          "we need more information",
           "Only if E is between B and D",
           "Only if E has integer coordinates"
         ],
@@ -206,7 +206,7 @@
         "options": [
           "B and C would have the same y-coordinate",
           "B and C would have the same x-coordinate",
-          "The line would be vertical",
+          "The line would be",
           "The line would pass through the origin"
         ],
         "correct_option": "B and C would have the same y-coordinate",
@@ -229,9 +229,9 @@
         "question": "If you plot all points satisfying y = x - 1 for x ≥ 2, what geometric object do you get?",
         "options": [
           "A ray starting from (2,1) extending right and upward",
-          "A complete infinite line...                    ",
-          "A line segment from (2,1) to (4,3)...          ",
-          "A parabola (incorrect)                         "
+          "A complete infinite line",
+          "A line segment from (2,1) to (4,3)",
+          "A parabola)"
         ],
         "correct_option": "A ray starting from (2,1) extending right and upward",
         "explanation": "Step 1: y = x - 1 is a full line. Step 2: Restricting to x ≥ 2 means we only take the portion from (2,1) rightward. Step 3: Starting at (2,1) and extending infinitely in one direction defines a ray."
@@ -254,10 +254,10 @@
         "id": "M1Q2H1",
         "question": "Using vectors, if B = (2,1), C = (3,2), D = (4,3), can you express D as a linear combination of B and C?",
         "options": [
-          "Yes: D = 2C - B                 ",
-          "Yes: D = B + C — does not match",
-          "No, D is not in the span of B and C",
-          "Yes: D = B - C — does not match"
+          "Yes: D = 2C - B",
+          "D = B + C — does t match",
+          "D is t in the span of B and C",
+          "D = B - C — does t match"
         ],
         "correct_option": "Yes: D = 2C - B",
         "explanation": "Step 1: Compute 2C - B = 2(3,2) - (2,1) = (6,4) - (2,1) = (4,3) = D. Step 2: This works because the points are collinear and equally spaced. Step 3: Since D lies in span{B, C}, the set {B, C, D} is linearly dependent in ℝ²."
@@ -279,9 +279,9 @@
         "question": "Is the set S = {(x,y) : y = x - 1} a subspace of ℝ²?",
         "options": [
           "No, because it does not contain the origin (0,0)",
-          "Yes, because it is a line...                       ",
-          "Yes, because it is closed under addition...        ",
-          "No, because it is not closed under scalar multiplication"
+          "because it is a line",
+          "because it is closed under addition",
+          "because it is t closed under scalar multiplication"
         ],
         "correct_option": "No, because it does not contain the origin (0,0)",
         "explanation": "Step 1: Check if (0,0) is in S: does 0 = 0 - 1? No, 0 ≠ -1. Step 2: A subspace must contain the zero vector. Step 3: Since S fails this condition, it is not a subspace — it is an affine subset (a shifted line), not a vector subspace."
@@ -291,9 +291,9 @@
         "question": "If we translate the line so it passes through the origin (using y = x instead), is the resulting set a subspace of ℝ²?",
         "options": [
           "Yes, because y = x passes through origin and is closed under addition and scalar multiplication",
-          "No, lines cannot be subspaces...                                                          ",
-          "Only if the slope is 1...                                                                 ",
-          "Only for rational points...                                                               "
+          "lines cant be subspaces",
+          "Only if the slope is 1",
+          "Only for rational points"
         ],
         "correct_option": "Yes, because y = x passes through origin and is closed under addition and scalar multiplication",
         "explanation": "Step 1: The line y = x contains (0,0). Step 2: If (a,a) and (b,b) are on the line, their sum (a+b, a+b) is also on the line (closed under addition). Step 3: Scalar c(a,a) = (ca, ca) is also on the line (closed under scalar multiplication). All three subspace conditions are satisfied."
@@ -302,10 +302,10 @@
         "id": "M1Q2H5",
         "question": "If B = (2,1) and C = (3,2), what is the rank of the matrix with columns B and C?",
         "options": [
-          "1                ",
-          "2 — not correct here",
-          "0 — not correct here",
-          "Cannot be determined"
+          "1",
+          "2 — t here",
+          "0 — t here",
+          "Cant be determined"
         ],
         "correct_option": "1",
         "explanation": "Step 1: Form matrix M = [[2, 3], [1, 2]]. Step 2: det(M) = 2×2 - 3×1 = 1 ≠ 0. Wait — actually the rank is 2 since the determinant is non-zero. But let's reconsider: the points are (2,1) and (3,2), which are NOT scalar multiples. Step 3: Actually the rank is 2 since (2,1) and (3,2) are linearly independent vectors."
@@ -315,9 +315,9 @@
         "question": "A fourth person Eria walks from D(4,3) with displacement (1,1). What are her coordinates, and are all four points (B,C,D,E) still collinear?",
         "options": [
           "E = (5,4), yes all four are collinear",
-          "E = (5,4), no they are not",
-          "E = (4,4), yes all four are collinear",
-          "E = (5,5), no they are not"
+          "E = (5,4), they are t",
+          "E = (4,4), all four are collinear",
+          "E = (5,5), they are t"
         ],
         "correct_option": "E = (5,4), yes all four are collinear",
         "explanation": "Step 1: E = D + (1,1) = (4+1, 3+1) = (5,4). Step 2: Check slope from D to E: (4-3)/(5-4) = 1/1 = 1. Step 3: This matches the line slope, so E lies on the same line. All four points are collinear."
@@ -339,9 +339,9 @@
         "question": "Can three non-collinear points in ℝ² always define a unique triangle? What linear algebra concept does this relate to?",
         "options": [
           "Yes — three non-collinear points span all of ℝ² and form a basis",
-          "No — you always need four points...                        ",
-          "Yes — but only if they pass through the origin...          ",
-          "No — only parallel points form triangles...                "
+          "— you always need four points",
+          "— but only if they pass through the origin",
+          "— only parallel points form triangles"
         ],
         "correct_option": "Yes — three non-collinear points span all of ℝ² and form a basis",
         "explanation": "Step 1: Non-collinear points mean at least two of the displacement vectors between them are not parallel. Step 2: Two non-parallel vectors in ℝ² are linearly independent and span all of ℝ². Step 3: This means any point in the plane can be reached, and the three points define a unique triangle."
@@ -350,7 +350,7 @@
         "id": "M1Q2H9",
         "question": "What is the area of the triangle formed by B(2,1), C(3,2), and the origin O(0,0)?",
         "options": [
-          "0",
+          "0 (x)",
           "0.5",
           "1",
           "2"
@@ -434,9 +434,9 @@
       "question": "Are Holes A(3,2), B(5,4), C(7,6) on a straight line?",
       "options": [
         "Yes, slope = 1",
-        "Yes, slope = 2",
-        "No, they form a curve",
-        "Yes, slope = 0.5"
+        "slope = 2",
+        "they form a curve",
+        "slope = 0.5"
       ],
       "answer": "Yes, slope = 1",
       "explanation": "Step 1: Slope AB = (4-2)/(5-3) = 1. Step 2: Slope BC = (6-4)/(7-5) = 1. Step 3: Equal slopes confirm collinearity with slope 1, meaning the CNC pattern is perfectly linear."

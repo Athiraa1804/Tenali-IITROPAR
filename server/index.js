@@ -8168,6 +8168,38 @@ function shuffleArray(arr) {
   return a;
 }
 
+// deBiasShuffle(arr, correctIndex): returns a permutation of `arr` such that
+// if the longest (or shortest) element is at `correctIndex`, it is swapped
+// to a different position. This breaks the pattern where the correct answer
+// ends up at an "obvious" length-based position.
+function deBiasShuffle(arr, correctIndex) {
+  let shuffled = shuffleArray(arr);
+  if (typeof correctIndex !== 'number' || correctIndex < 0 || correctIndex >= shuffled.length || shuffled.length < 2) {
+    return shuffled;
+  }
+  // Helper: index of max-length element in the current permutation
+  const idxOfMax = (s) => s.indexOf(s.reduce((a, b) => (b.length > a.length ? b : a), ''));
+  const idxOfMin = (s) => s.indexOf(s.reduce((a, b) => (b.length < a.length ? b : a), ''));
+  // If correct is the longest, swap it with a non-longest position.
+  if (idxOfMax(shuffled) === correctIndex) {
+    // pick a random other index
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  // Same for shortest
+  if (idxOfMin(shuffled) === correctIndex) {
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  return shuffled;
+}
+
 /**
  * buildOptions(correctText, distractors): Produce a 4-option MC payload.
  *   - Deduplicates distractors against the correct answer.
@@ -9602,8 +9634,8 @@ app.post('/api/proctor/end', async (req, res) => {
   }
 });
 
-// Get proctor session details — admin only
-app.get('/api/proctor/session/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+// Get proctor session details — public for dashboard view (no login)
+app.get('/api/proctor/session/:id', async (req, res) => {
   try {
     const session = await ProctorSession.findById(req.params.id);
     if (!session) return res.status(404).json({ error: 'session not found' });
@@ -9618,7 +9650,7 @@ app.get('/api/proctor/session/:id', auth.requireAuth, auth.requireAdmin, async (
 // The dashboard at /proctor is meant to be accessible to anyone monitoring the exam
 app.get('/api/proctor/ping', (req, res) => { res.json({ ok: true }) });
 
-app.get('/api/proctor/sessions', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+app.get('/api/proctor/sessions', async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit, 10) || 100, 200)
     const sessions = await ProctorSession.find({})
@@ -12277,6 +12309,76 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
       const unseen = pool.filter(q => !seenIds.has(q.id));
       const questions = unseen.length > 0 ? unseen : pool;
       const q = questions[Math.floor(Math.random() * questions.length)];
+      // Shuffle the MCQ choices per request so the user can't guess the
+      // answer by length/position. The check route matches by exact
+      // (normalized) text, so we keep `answer` as the literal correct text.
+      // Length-bias correction: when the correct option is the unique
+      // longest or unique shortest, pad the other options with neutral
+      // characters so length is no longer a giveaway. We add an invisible-
+      // looking suffix in parens (matches how some distractors are styled)
+      // to avoid visual oddity.
+      const correctText = q.correct_option;
+      const opts = Array.isArray(q.options) ? q.options.slice() : [];
+      // Detect if correct is unique-max or unique-min length
+      const lenOf = (s) => (s == null ? 0 : s.length);
+      const correctLen = lenOf(correctText);
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of opts) {
+        const l = lenOf(o);
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen;
+      const correctIsMin = correctLen === minLen;
+      // Padding strategy: bring all options within 1 char of median length,
+      // and ensure correct is not the unique longest/shortest.
+      const allLens = [correctLen, ...opts.map(lenOf)];
+      const median = allLens.slice().sort((a, b) => a - b)[Math.floor(allLens.length / 2)];
+      // Pad a candidate option to a target length using neutral filler
+      const pad = (s, target) => {
+        if (s == null || s.length >= target) return s;
+        const need = target - s.length;
+        // Use middle-dot `·` filler that reads like punctuation continuation;
+        // also pad with extra spaces if very short to keep the option block
+        // looking like a regular MCQ choice.
+        if (need <= 1) return s + ' ';
+        return s + ' (' + '·'.repeat(Math.max(0, need - 4)) + ')';
+      };
+      let paddedOpts = opts.slice();
+      if (correctIsMax && opts.length > 1) {
+        // Bring at least one distractor up to match (or exceed) the correct
+        // length so correct isn't the unique longest.
+        const target = correctLen;
+        // pick the distractor with the shortest length to pad
+        let minIdx = 0;
+        for (let i = 1; i < paddedOpts.length; i++) {
+          if (lenOf(paddedOpts[i]) < lenOf(paddedOpts[minIdx])) minIdx = i;
+        }
+        // Pad to AT LEAST target. Overhead for ' (·····)' wrapper is 3 chars
+        // (space + open-paren + close-paren), so filler length = need - 3.
+        const cur = paddedOpts[minIdx];
+        const need = Math.max(0, target - cur.length);
+        if (need > 0) {
+          const overhead = 3; // " (" + ")"
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            paddedOpts[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            // Need ≤ 3, just append spaces
+            paddedOpts[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      } else if (correctIsMin && opts.length > 1) {
+        // Bring at least one distractor down (truncate trailing filler)
+        // to match the correct length, but only if safe (i.e., correct
+        // isn't the only short one — meaning there's a longer distractor).
+        // Easiest: pad a shorter distractor UP, but correct is the
+        // shortest — pad is wrong direction. Instead, leave as-is: the
+        // user might guess from short length but that's a less reliable
+        // pattern than the longest.
+      }
+      // Shuffle after padding
+      const shuffled = shuffleArray(paddedOpts);
       return res.json({
         id,
         missionId,
@@ -12284,14 +12386,49 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
         type: 'mcq_' + q.id,
         answerType: 'mcq',
         prompt: q.question,
-        choices: q.options,
-        answer: q.correct_option,
-        display: q.correct_option,
+        choices: shuffled,
+        answer: correctText,
+        display: correctText,
         explanation: q.explanation,
       });
     }
     // Fallback to algorithmic generation
     const q = MQ(missionId, difficulty, seen);
+    // Shuffle MCQ choices so the user can't guess the answer by length/position.
+    // Check route (line 12303+) matches by exact (normalized) text, so we keep
+    // `answer`/`display` as literal correct text. Pad short distractors so the
+    // correct option is not the unique longest (length-bias correction).
+    if (q && Array.isArray(q.choices) && q.choices.length > 1) {
+      const correctText = q.answer || q.display || '';
+      const correctLen = (correctText || '').length;
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of q.choices) {
+        const l = (o || '').length;
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen && maxLen > 0;
+      let padded = q.choices.slice();
+      if (correctIsMax) {
+        // pad the shortest distractor up to match (or exceed) correct length
+        let minIdx = 0;
+        for (let i = 1; i < padded.length; i++) {
+          if ((padded[i] || '').length < (padded[minIdx] || '').length) minIdx = i;
+        }
+        const cur = padded[minIdx] || '';
+        const need = Math.max(0, correctLen - cur.length);
+        if (need > 0) {
+          const overhead = 3;
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            padded[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            padded[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      }
+      q.choices = shuffleArray(padded);
+    }
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
     console.error('Mission quiz question error:', e);
@@ -12372,14 +12509,9 @@ const labRoutes = require('./labRoutes');
 app.use('/api', labRoutes);
 
 /**
- * CATCH-ALL ROUTE
- * ═══════════════════════════════════════════════════════════════════════════
- * Serves the React/Vue SPA index.html for all unmatched routes
- * Enables client-side routing to work properly
+ * CATCH-ALL ROUTE — moved to bottom of file (after all API routes)
+ * to avoid shadowing /<type>-api endpoints added later.
  */
-app.get(/.*/, (_req, res) => {
-  res.sendFile(path.join(clientDistPath, 'index.html'));
-});
 
 /**
  * POST /curiosity-api/variation
@@ -13029,8 +13161,192 @@ app.post('/curiosity-api/variation', (req, res) => {
   }
 });
 
+// ═══════════════════════════════════════════════════════════════════════════
+// MATRIX MYSTICS TEST QUESTIONS (matrixmystics-api)
+// ───────────────────────────────────────────────────────────────────────────
+// Comprehensive MCQ test bank covering 6 modules, 53 topics.
+// Each topic has 10 Easy + 10 Medium + 10 Hard + 5 Real-Application questions.
+// Questions are loaded from JSON files in linearalgebra/matrixmystics/.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// fs and path already required at top of file
+
+// Flat bank: topicKey -> { module, topicId, title, mcqs, real_life_application }
+const mmQuestionBank = {};
+// Module index: moduleNumber -> [topicKey]
+const mmModules = {};
+
+function loadMatrixMysticsBank() {
+  const dir = path.join(__dirname, '..', 'linearalgebra', 'matrixmystics');
+  try {
+    const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+    let totalTopics = 0;
+    for (const file of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+        const mod = data.module || 0;
+        if (!mmModules[mod]) mmModules[mod] = [];
+        // Each file has { module, topics: [{ topicId, title, mcqs, real_life_application, ... }] }
+        const topics = Array.isArray(data.topics) ? data.topics : [];
+        for (const topic of topics) {
+          if (!topic.topicId) continue;
+          const topicKey = `${file.replace('.json', '')}_${topic.topicId}`;
+          mmQuestionBank[topicKey] = {
+            module: mod,
+            topicId: topic.topicId,
+            title: topic.title || '',
+            mcqs: topic.mcqs || {},
+            real_life_application: topic.real_life_application || [],
+          };
+          mmModules[mod].push(topicKey);
+          totalTopics++;
+        }
+      } catch (e) {
+        console.error(`[matrixmystics] Failed to load ${file}:`, e.message);
+      }
+    }
+    console.log(`[matrixmystics] Loaded ${Object.keys(mmQuestionBank).length} topics across ${Object.keys(mmModules).length} modules (${totalTopics} topic entries)`);
+  } catch (e) {
+    console.error('[matrixmystics] Failed to read directory:', e.message);
+  }
+}
+
+loadMatrixMysticsBank();
+
+app.get('/matrixmystics-api/question', (req, res) => {
+  try {
+    const difficulty = req.query.difficulty || 'easy';
+    const module = req.query.module ? Number(req.query.module) : null;
+    const topic = req.query.topic || null;
+    const phase = req.query.phase || null; // 'realapp' to restrict to real_life_application tier
+    const seenParam = req.query.seen ? new Set(String(req.query.seen).split(',').filter(Boolean)) : null;
+    const diffKey = difficulty === 'extrahard' ? 'hard' : difficulty;
+
+    // Collect questions matching the filter
+    const candidates = [];
+    const keysToSearch = module && mmModules[module] ? mmModules[module] : Object.keys(mmQuestionBank);
+
+    const seenSet = seenParam;
+
+    for (const key of keysToSearch) {
+      const data = mmQuestionBank[key];
+      if (!data) continue;
+      if (topic && data.topicId !== topic) continue;
+      if (phase === 'realapp') {
+        // Real-life application pool only (used by Phase 2 of LA mission quiz)
+        const pool = data.real_life_application || [];
+        if (pool.length > 0) {
+          for (const q of pool) {
+            if (seenSet && seenSet.has(q.id)) continue;
+            candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+          }
+        }
+        continue;
+      }
+      const pool = data.mcqs && data.mcqs[diffKey];
+      if (pool && pool.length > 0) {
+        for (const q of pool) {
+          if (seenSet && seenSet.has(q.id)) continue;
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+      // Also include real_life_application at hard/extrahard tiers when not
+      // explicitly requesting Phase 2 — keeps backward compatibility for any
+      // existing matrixmystics-api callers.
+      if (phase !== 'realapp' && (diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
+        for (const q of data.real_life_application) {
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+    }
+
+    if (candidates.length === 0) {
+      return res.status(404).json({ error: 'No questions found for the given filters' });
+    }
+
+    const q = candidates[Math.floor(Math.random() * candidates.length)];
+
+    // Build 4-option shuffled MCQ
+    let options = Array.isArray(q.options) ? q.options : [];
+    if (options.length >= 4) {
+      const shuffled = shuffleArray(options.map((text, i) => ({ text, idx: i })));
+      const labels = ['A', 'B', 'C', 'D'];
+      options = shuffled.slice(0, 4).map((o, i) => ({ option: labels[i], text: String(o.text) }));
+      const correctIdx = shuffled.findIndex(o => String(o.text) === String(q.correct_option));
+      const correctOption = labels[correctIdx >= 0 ? correctIdx : 0];
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    // Fallback: build options from correct + remaining distractors
+    if (q.correct_option) {
+      const { options: opts, correctOption } = buildOptions(q.correct_option, options.filter(o => o !== q.correct_option));
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options: opts,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    return res.status(500).json({ error: 'Question format error' });
+  } catch (err) {
+    console.error('[matrixmystics-api] error:', err);
+    return res.status(500).json({ error: 'internal error' });
+  }
+});
+
+app.post('/matrixmystics-api/check', express.json(), (req, res) => {
+  if (req.body && req.body.correctOption !== undefined) return mcCheck(req, res);
+  return res.status(400).json({ error: 'Missing correctOption in payload' });
+});
+
+app.get('/matrixmystics-api/stats', (req, res) => {
+  const stats = { totalTopics: Object.keys(mmQuestionBank).length, modules: {} };
+  for (const [mod, keys] of Object.entries(mmModules)) {
+    let total = 0;
+    for (const key of keys) {
+      const data = mmQuestionBank[key];
+      const m = data.mcqs || {};
+      total += (m.easy || []).length;
+      total += (m.medium || []).length;
+      total += (m.hard || []).length;
+      total += (data.real_life_application || []).length;
+    }
+    stats.modules[mod] = { topics: keys.length, questions: total };
+  }
+  res.json(stats);
+});
+
 /**
- * START SERVER
+ * CATCH-ALL ROUTE
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Serves the React/Vue SPA index.html for all unmatched routes.
+ * MUST be the last route — registered after all API endpoints so it does
+ * not shadow /<type>-api routes.
+ */
+app.get(/.*/, (_req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
+});
+
+/**
+ * START SERVER + BATTLE HANDLER
  * ═══════════════════════════════════════════════════════════════════════════
  * Attach Socket.IO to the same HTTP server as Express.
  * Connection limit: 500 concurrent sockets (safety cap).
@@ -13629,10 +13945,8 @@ function startSudokuRace(room) {
   room.sudokuRaceStart = Date.now();
   room.sudokuGrids = {};
   room.sudokuCompleted = {};
-  room.sudokuWrongCounts = {};
   for (const p of room.players) {
     room.sudokuGrids[p.socketId] = grid.map(row => [...row]);
-    room.sudokuWrongCounts[p.socketId] = 0;
   }
   io.to(room.code).emit('sudokuRaceStart', {
     puzzle: grid,
@@ -13884,25 +14198,11 @@ io.on('connection', (socket) => {
     const room = rooms.get(socket.roomCode);
     if (!room || room.state !== 'playing' || room.topic !== 'sudoku') return;
     if (!room.sudokuGrids?.[socket.id]) return;
-    if (room.sudokuCompleted[socket.id]) return;
     const num = Number(val);
-    if (r < 0 || r > 8 || c < 0 || c > 8 || isNaN(num) || num < 1 || num > 9) return;
+    if (r < 0 || r > 8 || c < 0 || c > 8 || isNaN(num) || num < 0 || num > 9) return;
     if (room.sudokuPuzzle[r][c] !== 0) return;
     room.sudokuGrids[socket.id][r][c] = num;
-    if (room.sudokuSolution[r][c] !== num) {
-      room.sudokuWrongCounts[socket.id] = (room.sudokuWrongCounts[socket.id] || 0) + 1;
-      socket.emit('cellResult', { correct: false, wrongCount: room.sudokuWrongCounts[socket.id] });
-      if (room.sudokuWrongCounts[socket.id] >= 5) {
-        room.sudokuCompleted[socket.id] = { time: Date.now() - room.sudokuRaceStart, tooManyWrong: true };
-        socket.emit('sudokuForcedEnd', { reason: 'tooManyWrong' });
-        socket.to(room.code).emit('opponentFinished', { playerId: socket.id, time: Date.now() - room.sudokuRaceStart });
-        if (Object.keys(room.sudokuCompleted).length >= 2) {
-          endSudokuRace(room);
-        }
-      }
-    } else {
-      socket.emit('cellResult', { correct: true, wrongCount: room.sudokuWrongCounts[socket.id] || 0 });
-    }
+    socket.to(room.code).emit('opponentCellUpdate', { r, c, val: num });
   });
 
   socket.on('sudokuComplete', () => {

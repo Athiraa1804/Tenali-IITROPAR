@@ -22,7 +22,7 @@
         "id": "M4Q5E2",
         "question": "What is the null space direction of A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
-          "(1,2,3)",
+          "(1,2,3) ()",
           "(1,-2,1)",
           "(1,1,1)",
           "(3,2,1)"
@@ -59,9 +59,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], is N(A) = N(Aᵀ)?",
         "options": [
           "Yes, both are t(1,-2,1)",
-          "No, they are different",
+          "they are different",
           "N(A) is a line and N(Aᵀ) is a plane",
-          "N(A) is empty — does not match"
+          "N(A) is empty — does t match"
         ],
         "correct_option": "Yes, both are t(1,-2,1)",
         "explanation": "Step 1: N(A) = t(1,-2,1) from solving Av = 0. Step 2: Aᵀ = [[1,2,3],[4,5,6],[7,8,9]], and N(Aᵀ) = t(1,-2,1) from solving Aᵀv = 0. Step 3: Both null spaces are the same line — a coincidence of this matrix where the row and column dependencies produce the same null direction. This is NOT true for all matrices."
@@ -71,7 +71,7 @@
         "question": "What is the Rank-Nullity check for A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
           "rank(2) + nullity(1) = 3 ✓",
-          "rank(2) + nullity(2) = 3 ✓",
+          "rank(2) + nullity(2) = 3 ✓x",
           "rank(3) + nullity(0) = 3 ✓",
           "rank(1) + nullity(1) = 3 ✓"
         ],
@@ -82,10 +82,10 @@
         "id": "M4Q5E7",
         "question": "Is (1,-2,1) perpendicular to the row (1,4,7)?",
         "options": [
-          "Yes: 1-8+7 = 0                    ",
-          "No: 1-8+7 = 0 but this is coincidence",
-          "No: 1+8+7 = 16 ≠ 0 — does not match",
-          "Yes: 1+4+7 = 12 ≠ 0 — does not match"
+          "Yes: 1-8+7 = 0",
+          "1-8+7 = 0 but this is coincidence",
+          "1+8+7 = 16 ≠ 0 — does t match",
+          "1+4+7 = 12 ≠ 0 — does t match"
         ],
         "correct_option": "Yes: 1-8+7 = 0",
         "explanation": "Step 1: (1,4,7)·(1,-2,1) = 1 - 8 + 7 = 0. Step 2: This confirms (1,-2,1) ⊥ row 1. Step 3: It also holds for rows 2 and 3: (2,5,8)·(1,-2,1) = 0 and (3,6,9)·(1,-2,1) = 0. The null space vector is perpendicular to every row — this is the R(A) ⊥ N(A) orthogonality in action."
@@ -96,8 +96,8 @@
         "options": [
           "The line lies in the plane",
           "The line is perpendicular to the plane",
-          "They are parallel — does not match",
-          "They are the same — does not match"
+          "They are parallel — does t match",
+          "They are the same — does t match"
         ],
         "correct_option": "The line is perpendicular to the plane",
         "explanation": "Step 1: R(A) ⊥ N(A) by the Fundamental Theorem. Step 2: A 1D line perpendicular to a 2D plane means every direction in the plane is perpendicular to the line direction. Step 3: (1,-2,1) is perpendicular to both basis vectors (1,4,7) and (2,5,8) of the row space, confirming the geometric picture of the orthogonal decomposition."
@@ -119,9 +119,9 @@
         "question": "Which vector is NOT in the row space of A = [[1,4,7],[2,5,8],[3,6,9]]?",
         "options": [
           "(3,9,15) = (1,4,7)+(2,5,8)",
-          "(1,-2,1)               ",
-          "(0,0,0) (incorrect)",
-          "(1,4,7) (incorrect)"
+          "(1,-2,1)",
+          "(0,0,0))",
+          "(1,4,7))"
         ],
         "correct_option": "(1,-2,1)",
         "explanation": "Step 1: The row space is the plane spanned by (1,4,7) and (2,5,8). Step 2: (1,-2,1) is the null space direction, perpendicular to the row space. Step 3: Since (1,-2,1) is not a linear combination of the row space basis vectors (it is perpendicular to both), it lies outside R(A). Vectors perpendicular to a subspace cannot be in it."
@@ -132,7 +132,7 @@
         "id": "M4Q5M1",
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], the column space C(A) is a 2D plane in R³. What is its normal vector?",
         "options": [
-          "(1,4,7)",
+          "(1,4,7) ()",
           "(1,-2,1)",
           "(1,2,3)",
           "(3,6,9)"
@@ -144,10 +144,10 @@
         "id": "M4Q5M2",
         "question": "The row space R(A) is a plane with normal (1,-2,1). The column space C(A) is also a plane. What is its normal?",
         "options": [
-          "(1,2,3) (incorrect)",
-          "(1,-2,1)                 ",
-          "(1,4,7) (incorrect)",
-          "Different from R(A)'s normal"
+          "(1,2,3))",
+          "(1,-2,1)",
+          "(1,4,7))",
+          "Different from R(A)'s rmal"
         ],
         "correct_option": "(1,-2,1)",
         "explanation": "Step 1: C(A) ⊥ N(Aᵀ), and N(Aᵀ) = t(1,-2,1). Step 2: The normal to the column space plane is the left null space direction. Step 3: Both planes happen to have the same normal because N(A) = N(Aᵀ) = t(1,-2,1) for this particular matrix — a coincidence, not a general rule."
@@ -193,9 +193,9 @@
         "question": "Can you decompose any vector v ∈ R³ as v = v_row + v_null where v_row ∈ R(A) and v_null ∈ N(A)?",
         "options": [
           "Yes, this is the orthogonal decomposition theorem",
-          "No, only if v is in the row space...        ",
-          "Only for specific vectors...                ",
-          "Only if A is invertible...                  "
+          "only if v is in the row space",
+          "Only for specific vectors",
+          "Only if A is invertible"
         ],
         "correct_option": "Yes, this is the orthogonal decomposition theorem",
         "explanation": "Step 1: R(A) and N(A) are orthogonal subspaces of R³. Step 2: dim(R(A)) + dim(N(A)) = 2 + 1 = 3 = dim(R³). Step 3: Any vector v can be uniquely decomposed as v = v_row + v_null. The row space component survives A; the null space component is killed — this is the operational meaning of the orthogonal decomposition."
@@ -255,9 +255,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], N(A) = N(Aᵀ) = t(1,-2,1). Is this typical for all 3×3 rank-2 matrices?",
         "options": [
           "No — it is a special coincidence of this matrix's structure",
-          "Yes — all rank-2 matrices have equal null spaces      ",
-          "Only for symmetric matrices...                        ",
-          "Only when rank equals n-1...                          "
+          "— all rank-2 matrices have equal null spaces",
+          "Only for symmetric matrices",
+          "Only when rank equals n-1"
         ],
         "correct_option": "No — it is a special coincidence of this matrix's structure",
         "explanation": "Step 1: For most 3×3 rank-2 matrices, N(A) ≠ N(Aᵀ). Step 2: This happens because row dependency (row3 = 2·row2 - row1) and column dependency (col3 = 2·col2 - col1) produce the same null direction. Step 3: For a generic rank-2 matrix, the row and column dependencies would differ, giving different null spaces. This matrix has a special symmetry in its dependencies."
@@ -279,9 +279,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], the column space is spanned by (1,2,3) and (4,5,6). Verify these are independent.",
         "options": [
           "They are independent: neither is a scalar multiple of the other",
-          "They are dependent: (4,5,6) = 2(1,2,3) - (-2,-1,0)        ",
-          "They are dependent: (4,5,6) = 4(1,2,3) - (0,3,6)          ",
-          "Cannot determine without computing det...                 "
+          "They are dependent: (4,5,6) = 2(1,2,3) - (-2,-1,0)",
+          "They are dependent: (4,5,6) = 4(1,2,3) - (0,3,6)",
+          "Cant determine without computing det"
         ],
         "correct_option": "They are independent: neither is a scalar multiple of the other",
         "explanation": "Step 1: Check if (4,5,6) = α(1,2,3): this requires α = 4, α = 2.5, α = 2 simultaneously — impossible. Step 2: Since neither is a scalar multiple of the other, they are linearly independent. Step 3: Two non-collinear vectors in R³ span a 2D plane, confirming C(A) is 2D."
@@ -291,9 +291,9 @@
         "question": "If A is 3×3 with rank 2, then R(A) = C(A) = 2D planes. Are these the SAME plane?",
         "options": [
           "Not necessarily — R(A) and C(A) can be different planes even with the same dimension",
-          "Yes, always — row and column spaces are identical...                           ",
-          "Only if A is symmetric...                                                      ",
-          "Only when rank = n — does not match                                            "
+          "always — row and column spaces are identical",
+          "Only if A is symmetric",
+          "Only when rank = n — does t match"
         ],
         "correct_option": "Not necessarily — R(A) and C(A) can be different planes even with the same dimension",
         "explanation": "Step 1: R(A) = span{(1,4,7),(2,5,8)} — a plane. Step 2: C(A) = span{(1,2,3),(4,5,6)} — also a plane. Step 3: For this matrix they happen to be the same plane (both satisfy x-2y+z=0 because N(A) = N(Aᵀ)). But in general, R(A) and C(A) are different subspaces — they are equal only when A is symmetric."
@@ -327,9 +327,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], the row space equation is x - 2y + z = 0. What does this mean geometrically?",
         "options": [
           "The row space is a plane where the x-component minus twice the y-component plus the z-component equals zero",
-          "The row space is a line...                                                                            ",
-          "The row space contains all of R³...                                                                   ",
-          "The row space is empty...                                                                             "
+          "The row space is a line",
+          "The row space contains all of R³",
+          "The row space is empty"
         ],
         "correct_option": "The row space is a plane where the x-component minus twice the y-component plus the z-component equals zero",
         "explanation": "Step 1: x - 2y + z = 0 is the equation of a plane through the origin with normal (1,-2,1). Step 2: Every vector in R(A) satisfies this equation. Step 3: Every vector satisfying this equation is in R(A) (since R(A) is 2D and the plane is 2D). The equation completely characterizes the row space."
@@ -339,7 +339,7 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], both R(A) and C(A) are 2D planes in R³. Are they the same plane?",
         "options": [
           "Yes — both satisfy x - 2y + z = 0",
-          "No — they are different planes",
+          "— they are different planes",
           "R(A) is a plane but C(A) is a line",
           "They are perpendicular"
         ],
@@ -351,9 +351,9 @@
         "question": "For a 3×3 rank-2 matrix, prove that dim(R(A)) + dim(N(A)) = 3 using the Rank-Nullity Theorem.",
         "options": [
           "rank(2) + nullity(n-rank) = 3. The row echelon form has 2 pivots and 1 free variable.",
-          "This requires computing the determinant first...                                ",
-          "Only true for symmetric matrices...                                             ",
-          "This is false for rank-2 matrices...                                            "
+          "This requires computing the determinant first",
+          "Only true for symmetric matrices",
+          "This is false for rank-2 matrices"
         ],
         "correct_option": "rank(2) + nullity(n-rank) = 3. The row echelon form has 2 pivots and 1 free variable.",
         "explanation": "Step 1: Row reduce A: R2 - 2R1 → (0,-3,-6), R3 - 3R1 → (0,-6,-12). Step 2: R3 - 2·R2 → (0,0,0). Two pivots → rank = 2. Step 3: One free variable → nullity = 1. So 2 + 1 = 3. The Rank-Nullity Theorem is verified through Gaussian elimination."
@@ -363,9 +363,9 @@
         "question": "For A = [[1,4,7],[2,5,8],[3,6,9]], if b = (1,0,0) is NOT in C(A), find the closest point in C(A) to b.",
         "options": [
           "b - (1/6)(1,-2,1) = (5/6, 1/3, -1/6)",
-          "b itself (incorrect)           ",
-          "(0,0,0) (incorrect)            ",
-          "(1,-2,1) (incorrect)           "
+          "b itself)",
+          "(0,0,0))",
+          "(1,-2,1))"
         ],
         "correct_option": "b - (1/6)(1,-2,1) = (5/6, 1/3, -1/6)",
         "explanation": "Step 1: The projection onto C(A) is p = b - proj_{N(Aᵀ)}(b). Step 2: proj_{N(Aᵀ)}(b) = (1/6)(1,-2,1). Step 3: p = (1,0,0) - (1/6, -1/3, 1/6) = (5/6, 1/3, -1/6). This nearest point is the best approximation to b in the column space — the foundation of least-squares estimation."
@@ -413,7 +413,7 @@
       "id": "M4Q5R4",
       "question": "A 3D printer has 3 motors but the motion matrix has rank 2. One motor's effect is redundant. What does this mean for the printer's capabilities?",
       "options": [
-        "It can print in 3D normally",
+        "It can print in 3D rmally",
         "It can only move in a 2D plane — one direction is lost",
         "It can print faster",
         "It needs a 4th motor"
@@ -427,7 +427,7 @@
       "options": [
         "All observations are identical",
         "There is a linear dependency among the observations (rows)",
-        "The dataset has no useful information",
+        "The dataset has useful information",
         "The features are all independent"
       ],
       "correct_option": "There is a linear dependency among the observations (rows)",

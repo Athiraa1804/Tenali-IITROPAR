@@ -23,7 +23,7 @@
         "question": "What is the direction of the row space of M = [[1,2],[3,6]]?",
         "options": [
           "(1,2)",
-          "(1,3)",
+          "(1,3)x",
           "(2,6)",
           "(3,6)"
         ],
@@ -94,7 +94,7 @@
         "id": "M4Q1E8",
         "question": "Which of the following vectors is in the null space of M = [[1,2],[3,6]]?",
         "options": [
-          "(1,2)",
+          "(1,2) ()",
           "(2,-1)",
           "(1,-2)",
           "(3,1)"
@@ -118,10 +118,10 @@
         "id": "M4Q1E10",
         "question": "Is M = [[1,2],[3,6]] an invertible matrix?",
         "options": [
-          "Yes, because it has rank 2",
+          "because it has rank 2",
           "No, because its determinant is 0",
-          "Yes, because it is 2×2",
-          "No, because it has no null space"
+          "because it is 2×2",
+          "because it has null space"
         ],
         "correct_option": "No, because its determinant is 0",
         "explanation": "Step 1: det(M) = 1·6 - 2·3 = 0, confirming M is singular. Step 2: A zero determinant is equivalent to rank < n (here rank 1 < 2), meaning information is lost. Step 3: The nontrivial null space (dim 1) is the 'smoking gun' — M collapses the entire line t(-2,1) to zero, making inversion impossible. This connects rank, determinant, null space, and invertibility into one unified picture."
@@ -132,10 +132,10 @@
         "id": "M4Q1M1",
         "question": "For M = [[1,2],[3,6]], the row space and column space are both 1-dimensional. Are they the same subspace?",
         "options": [
-          "Yes, they are both t(1,2)...                 ",
+          "they are both t(1,2)",
           "No, row space is t(1,2) and column space is t(1,3)",
-          "Yes, they are both t(1,3)...                 ",
-          "No, row space is t(1,3) and column space is t(1,2)"
+          "they are both t(1,3)",
+          "row space is t(1,3) and column space is t(1,2)"
         ],
         "correct_option": "No, row space is t(1,2) and column space is t(1,3)",
         "explanation": "Step 1: R(M) = span{(1,2)} (from rows) and C(M) = span{(1,3)} (from columns) — different directions. Step 2: Both are 1-dimensional lines, but (1,2) and (1,3) are not parallel, so they are genuinely different subspaces of R². Step 3: A matrix's row space and column space can have the same dimension without being the same subspace — they live in different roles (input vs output), and only coincide for symmetric matrices."
@@ -144,10 +144,10 @@
         "id": "M4Q1M2",
         "question": "Why is the row space of M = [[1,2],[3,6]] a 1-dimensional line rather than a 2-dimensional plane?",
         "options": [
-          "Because M is a 2×2 matrix...                      ",
+          "Because M is a 2×2 matrix",
           "Because the two rows are scalar multiples of each other",
-          "Because the determinant is nonzero...             ",
-          "Because M has only one zero entry...              "
+          "Because the determinant is nzero",
+          "Because M has only one zero entry"
         ],
         "correct_option": "Because the two rows are scalar multiples of each other",
         "explanation": "Step 1: (3,6) = 3·(1,2), so the second row is a scalar multiple and adds no new direction. Step 2: The span of two collinear vectors remains a line (1D), not a plane (2D). Step 3: This linear dependence between rows directly reduces rank from 2 to 1, collapsing the row space dimension — a concrete illustration of how redundancy in a matrix limits its information capacity."
@@ -168,10 +168,10 @@
         "id": "M4Q1M4",
         "question": "The rank-1 matrix M = [[1,2],[3,6]] maps R² onto what geometric object?",
         "options": [
-          "A point (incorrect)",
+          "A point)",
           "A line through the origin",
           "A plane through the origin",
-          "All of R² (incorrect)"
+          "All of R²)"
         ],
         "correct_option": "A line through the origin",
         "explanation": "Step 1: The range (column space) of M is t(1,3), a 1-dimensional line. Step 2: Every possible output of M lies on this single line — the entire 2D input plane collapses to a 1D output. Step 3: This geometric flattening is the hallmark of rank-deficient matrices: rank < n means the matrix is not onto, mapping Rⁿ onto a lower-dimensional subspace."
@@ -204,9 +204,9 @@
         "id": "M4Q1M7",
         "question": "For a 2×2 matrix with rank 1, how many dimensions does the null space have?",
         "options": [
-          "0 — not correct here",
-          "1                    ",
-          "2 — not correct here",
+          "0 — t here",
+          "1",
+          "2 — t here",
           "It depends on the matrix"
         ],
         "correct_option": "1",
@@ -217,7 +217,7 @@
         "question": "If a matrix A has rank 3 and is 5×5, what is the dimension of its null space?",
         "options": [
           "2",
-          "3",
+          "3x",
           "5",
           "8"
         ],
@@ -255,8 +255,8 @@
         "question": "For M = [[1,2],[3,6]], the row space is t(1,2) and the null space is t(-2,1). Prove they are perpendicular using the dot product.",
         "options": [
           "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
-          "(1,2)·(-2,1) = 1·2+2·1 = 4, not perpendicular",
-          "(1,2)·(-2,1) = -2+1 = -1, not perpendicular",
+          "(1,2)·(-2,1) = 1·2+2·1 = 4, t perpendicular",
+          "(1,2)·(-2,1) = -2+1 = -1, t perpendicular",
           "The dot product is undefined for these vectors"
         ],
         "correct_option": "(1,2)·(-2,1) = -2+2 = 0, so they are perpendicular",
@@ -266,9 +266,9 @@
         "id": "M4Q1H2",
         "question": "If M = [[1,2],[3,6]] and v is any vector in the null space of M, which of the following is always true?",
         "options": [
-          "Mv is in the row space...        ",
-          "Mv = (0,0)                         ",
-          "v is in the column space         ",
+          "Mv is in the row space",
+          "Mv = (0,0)",
+          "v is in the column space",
           "v is perpendicular to the column space"
         ],
         "correct_option": "Mv = (0,0)",
@@ -279,7 +279,7 @@
         "question": "For the rank-1 matrix M = [[1,2],[3,6]], write M as an outer product of two vectors.",
         "options": [
           "(1,3)ᵀ × (1,2)",
-          "(1,2)ᵀ × (1,3)",
+          "(1,2)ᵀ × (1,3)x",
           "(3,6)ᵀ × (1,2)",
           "(1,2)ᵀ × (3,6)"
         ],
@@ -291,7 +291,7 @@
         "question": "Suppose A is a 4×4 matrix with rank 2. What are the dimensions of all four fundamental subspaces?",
         "options": [
           "R(A)=2D, C(A)=2D, N(A)=2D, N(Aᵀ)=2D",
-          "R(A)=2D, C(A)=2D, N(A)=1D, N(Aᵀ)=3D",
+          "R(A)=2D, C(A)=2D, N(A)=1D, N(Aᵀ)=3Dx",
           "R(A)=2D, C(A)=2D, N(A)=3D, N(Aᵀ)=1D",
           "R(A)=2D, C(A)=2D, N(A)=0D, N(Aᵀ)=4D"
         ],
@@ -302,10 +302,10 @@
         "id": "M4Q1H5",
         "question": "Can the row space and column space of a square matrix ever be the same subspace?",
         "options": [
-          "No, they always live in different spaces.....",
+          "they always live in different spaces",
           "Only if the matrix is symmetric",
-          "Only if the matrix is the zero matrix...  ...",
-          "Yes, for any diagonal matrix with equal di..."
+          "Only if the matrix is the zero matrix...",
+          "for any diagonal matrix with equal di"
         ],
         "correct_option": "Only if the matrix is symmetric",
         "explanation": "Step 1: For a general matrix A, R(A) ⊂ Rⁿ (input space) and C(A) ⊂ Rᵐ (output space) — they live in different spaces when m ≠ n. Step 2: For square matrices (m = n), they live in the same space and R(A) = C(A) exactly when A = Aᵀ (symmetric), because symmetry means rows equal columns. Step 3: This is a deep structural observation: only symmetric matrices have aligned row and column spaces. For non-symmetric matrices, the row and column spaces are generally distinct subspaces — as we saw with M = [[1,2],[3,6]]."
@@ -317,7 +317,7 @@
           "It is a plane through the origin",
           "It is a line through the origin",
           "It contains only the zero vector",
-          "It is all of R³ — does not match"
+          "It is all of R³ — does t match"
         ],
         "correct_option": "It contains only the zero vector",
         "explanation": "Step 1: Rank-Nullity: rank + nullity = n = 3. Step 2: With rank = 3, nullity = 0, so N(A) = {0}. Step 3: A trivial null space means no non-zero input is destroyed — the matrix is invertible, one-to-one, and preserves all information. This is the full-rank condition that connects invertibility, trivial null space, and the rank-nullity theorem into a single requirement."
@@ -326,10 +326,10 @@
         "id": "M4Q1H7",
         "question": "For M = [[1,2],[3,6]], is it possible for a vector to be in BOTH the row space and the null space (other than the origin)?",
         "options": [
-          "Yes, (1,2) is in both...                                                       ",
-          "Yes, (-2,1) is in both...                                                      ",
+          "(1,2) is in both",
+          "(-2,1) is in both",
           "No, because the row space and null space are perpendicular and share only the origin",
-          "Yes, any vector satisfying x+2y=0 is in both...                                "
+          "any vector satisfying x+2y=0 is in both"
         ],
         "correct_option": "No, because the row space and null space are perpendicular and share only the origin",
         "explanation": "Step 1: R(M) = t(1,2) and N(M) = t(-2,1) are perpendicular lines through the origin. Step 2: If v is in both, then v·v = 0 (by orthogonality), which implies |v|² = 0, so v = 0. Step 3: This proves that perpendicular subspaces intersect only at the origin — a fundamental property that underlies the orthogonal decomposition Rⁿ = R(A) ⊕ N(A), where every input vector splits uniquely into row space and null space components."
@@ -338,10 +338,10 @@
         "id": "M4Q1H8",
         "question": "What is the geometric interpretation of the fact that det(M) = 0 for M = [[1,2],[3,6]]?",
         "options": [
-          "M rotates vectors by 90°...                                ",
+          "M rotates vectors by 90°",
           "M scales area by a factor of 0, collapsing the plane onto a line",
-          "M reflects vectors across the x-axis...                    ",
-          "M has no effect on any vector...                           "
+          "M reflects vectors across the x-axis",
+          "M has effect on any vector"
         ],
         "correct_option": "M scales area by a factor of 0, collapsing the plane onto a line",
         "explanation": "Step 1: The determinant measures signed area scaling: det(M) = factor by which area changes under M. Step 2: det(M) = 0 means all 2D areas collapse to zero — the image has no area. Step 3: Geometrically, M flattens R² onto the line t(1,3), losing one dimension entirely. This is the geometric heart of rank deficiency: rank < n means the matrix cannot preserve the full dimensionality of the input, and det = 0 is the algebraic certificate of this collapse."
@@ -350,10 +350,10 @@
         "id": "M4Q1H9",
         "question": "For M = [[1,2],[3,6]], the null space is t(-2,1). If you take any vector v in R² and decompose it as v = v_row + v_null (row space component + null space component), what is Mv equal to?",
         "options": [
-          "Mv = 0 always — does not match             ",
+          "Mv = 0 always — does t match",
           "Mv = M·v_row (the null space component vanishes)",
           "Mv = M·v_null (the row space component vanishes)",
-          "Mv = v_row + v_null — does not match       "
+          "Mv = v_row + v_null — does t match"
         ],
         "correct_option": "Mv = M·v_row (the null space component vanishes)",
         "explanation": "Step 1: Any v ∈ R² decomposes uniquely as v = v_row + v_null where v_row ∈ R(M) and v_null ∈ N(M). Step 2: Mv = M(v_row + v_null) = Mv_row + Mv_null = Mv_row + 0 = Mv_row. Step 3: The null space component is annihilated by M, so only the row space component survives. This decomposition is the operational heart of the Fundamental Theorem — it tells us exactly what information M preserves and what it destroys."

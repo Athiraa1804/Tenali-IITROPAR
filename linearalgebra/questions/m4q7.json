@@ -11,9 +11,9 @@
         "question": "If (2,4,6) is in the range of A, must 3×(2,4,6) = (6,12,18) also be in the range?",
         "options": [
           "Yes, because scaling an input scales the output",
-          "No, only the original vector is guaranteed",
-          "Only if A is invertible...                ",
-          "Only if the scalar is positive...         "
+          "only the original vector is guaranteed",
+          "Only if A is invertible",
+          "Only if the scalar is positive"
         ],
         "correct_option": "Yes, because scaling an input scales the output",
         "explanation": "Step 1: If (2,4,6) = A(x), then A(3x) = 3A(x) = 3(2,4,6) = (6,12,18). Step 2: Since 3x is a valid input, (6,12,18) is in the range. Step 3: This works for ANY scalar α — the range contains the entire line through (2,4,6). This is the homogeneity property of linear maps applied to the range."
@@ -34,9 +34,9 @@
         "id": "M4Q7E3",
         "question": "If v is in the range of A, is -v also in the range?",
         "options": [
-          "Yes, with α = -1                        ",
-          "No, negative vectors are never in the range",
-          "Only if A is symmetric...             ",
+          "Yes, with α = -1",
+          "negative vectors are never in the range",
+          "Only if A is symmetric",
           "Only if v has positive components"
         ],
         "correct_option": "Yes, with α = -1",
@@ -46,10 +46,10 @@
         "id": "M4Q7E4",
         "question": "If (1,0,0) is in the range of A, which vectors must also be in the range?",
         "options": [
-          "Only (1,0,0) itself — does not match",
+          "Only (1,0,0) itself — does t match",
           "All scalar multiples t(1,0,0) for any real t",
-          "Only positive multiples...             ",
-          "Only integer multiples...              "
+          "Only positive multiples",
+          "Only integer multiples"
         ],
         "correct_option": "All scalar multiples t(1,0,0) for any real t",
         "explanation": "Step 1: If (1,0,0) = A(x), then A(tx) = tA(x) = t(1,0,0) for any real t. Step 2: Every scalar multiple is achievable. Step 3: The entire line {t(1,0,0) : t ∈ R} is contained in the range — this is the closure under scaling property."
@@ -58,10 +58,10 @@
         "id": "M4Q7E5",
         "question": "The range of a linear map is always a:",
         "options": [
-          "Line (incorrect)                       ",
+          "Line)",
           "Subspace (closed under scaling and addition)",
-          "Affine set (incorrect)                 ",
-          "Convex set but not a subspace          "
+          "Affine set)",
+          "Convex set but t a subspace"
         ],
         "correct_option": "Subspace (closed under scaling and addition)",
         "explanation": "Step 1: The range contains the zero vector (A(0) = 0). Step 2: It is closed under scaling (homogeneity: A(αx) = αA(x)). Step 3: It is closed under addition (additivity: A(x+y) = A(x)+A(y)). These three properties make the range a subspace — a fundamental result connecting linearity to subspace structure."
@@ -83,7 +83,7 @@
         "question": "Does the range of A always contain the zero vector?",
         "options": [
           "Yes, because A(0) = 0",
-          "No, only if A is singular",
+          "only if A is singular",
           "Only if rank > 0",
           "It depends on A"
         ],
@@ -95,9 +95,9 @@
         "question": "If (3,6,9) is in the range of A, is (1,2,3) also in the range?",
         "options": [
           "Yes, because (1,2,3) = (1/3)(3,6,9) and the range is closed under scaling",
-          "No, dividing is not the same as scaling...                          ",
-          "Only if A is invertible...                                          ",
-          "Only if 1/3 is an integer...                                        "
+          "dividing is t the same as scaling",
+          "Only if A is invertible",
+          "Only if 1/3 is an integer"
         ],
         "correct_option": "Yes, because (1,2,3) = (1/3)(3,6,9) and the range is closed under scaling",
         "explanation": "Step 1: (3,6,9) = A(x) for some x. Step 2: A(x/3) = (1/3)A(x) = (1,2,3). Step 3: Since x/3 is a valid input, (1,2,3) is in the range. The scalar α = 1/3 works just like any other real number — closure under scaling applies to all scalars."
@@ -118,10 +118,10 @@
         "id": "M4Q7E10",
         "question": "For a linear map A : R³ → R³ with rank 1, the range is:",
         "options": [
-          "Just the origin — does not match",
+          "Just the origin — does t match",
           "A single line through the origin",
           "A plane through the origin",
-          "All of R³ (incorrect)"
+          "All of R³)"
         ],
         "correct_option": "A single line through the origin",
         "explanation": "Step 1: Rank = 1 means dim(range) = 1. Step 2: A 1-dimensional subspace through the origin is a line. Step 3: The range consists of all scalar multiples of one direction vector — the matrix can only produce outputs along a single line."
@@ -133,9 +133,9 @@
         "question": "Why does A(αx) = αA(x) guarantee that the range is a subspace?",
         "options": [
           "It proves closure under scalar multiplication, one of the three subspace requirements",
-          "It proves closure under addition...                                             ",
-          "It proves the range contains the zero vector...                                 ",
-          "It proves the range is finite-dimensional...                                    "
+          "It proves closure under addition",
+          "It proves the range contains the zero vector",
+          "It proves the range is finite-dimensional"
         ],
         "correct_option": "It proves closure under scalar multiplication, one of the three subspace requirements",
         "explanation": "Step 1: A subspace must: (1) contain zero, (2) be closed under addition, (3) be closed under scalar multiplication. Step 2: A(αx) = αA(x) gives property (3). Step 3: Property (1) follows from A(0) = 0, and property (2) from A(x+y) = A(x)+A(y). All three properties together make the range a subspace."
@@ -145,9 +145,9 @@
         "question": "If (1,2,3) and (4,5,6) are both in the range of A, is (5,7,9) also in the range?",
         "options": [
           "Yes, because (5,7,9) = (1,2,3) + (4,5,6) and the range is closed under addition",
-          "No, addition is not guaranteed...                                         ",
-          "Only if A is symmetric...                                                 ",
-          "Only for specific values...                                               "
+          "addition is t guaranteed",
+          "Only if A is symmetric",
+          "Only for specific values"
         ],
         "correct_option": "Yes, because (5,7,9) = (1,2,3) + (4,5,6) and the range is closed under addition",
         "explanation": "Step 1: If (1,2,3) = A(x) and (4,5,6) = A(y), then A(x+y) = A(x)+A(y) = (5,7,9). Step 2: Since x+y is a valid input, (5,7,9) is in the range. Step 3: This shows the range is closed under addition — combining with closure under scaling, the range is a full subspace."
@@ -156,10 +156,10 @@
         "id": "M4Q7M3",
         "question": "The range being a subspace means it satisfies closure under which operations?",
         "options": [
-          "Scalar multiplication only        ",
-          "Addition only — does not match",
+          "Scalar multiplication only",
+          "Addition only — does t match",
           "Both scalar multiplication and addition",
-          "Neither (incorrect)               "
+          "Neither)"
         ],
         "correct_option": "Both scalar multiplication and addition",
         "explanation": "Step 1: A(αx) = αA(x) gives closure under scalar multiplication. Step 2: A(x+y) = A(x)+A(y) gives closure under addition. Step 3: Together with containing zero, these make the range a full subspace — a fundamental property of linear maps."
@@ -180,9 +180,9 @@
         "id": "M4Q7M5",
         "question": "For A : R² → R² with A = [[1,2],[3,6]], if (1,3) is in the range, what other vectors must be in the range?",
         "options": [
-          "Only (1,3) (incorrect)",
+          "Only (1,3))",
           "All scalar multiples t(1,3) for t ∈ R",
-          "Only t(1,3) for t > 0...",
+          "Only t(1,3) for t > 0",
           "Only t(1,3) for integer t"
         ],
         "correct_option": "All scalar multiples t(1,3) for t ∈ R",
@@ -205,9 +205,9 @@
         "question": "If v is in the range of A and w is in the range of A, must v - w also be in the range?",
         "options": [
           "Yes — the range is a subspace, closed under subtraction",
-          "No — only addition is guaranteed...               ",
-          "Only if v and w are parallel...                   ",
-          "Only if A is invertible...                        "
+          "— only addition is guaranteed",
+          "Only if v and w are parallel",
+          "Only if A is invertible"
         ],
         "correct_option": "Yes — the range is a subspace, closed under subtraction",
         "explanation": "Step 1: v = A(x) and w = A(y). Step 2: A(x - y) = A(x) - A(y) = v - w. Step 3: Since x - y is a valid input, v - w is in the range. Subtraction follows from addition and scalar multiplication (v - w = v + (-1)w)."
@@ -216,10 +216,10 @@
         "id": "M4Q7M8",
         "question": "For A : R³ → R³, if the range contains (1,0,0) and (0,1,0), what does the range contain?",
         "options": [
-          "Only those two vectors...              ",
+          "Only those two vectors",
           "The xy-plane {t(1,0,0) + s(0,1,0) : t,s ∈ R}",
-          "All of R³ (incorrect)                  ",
-          "Just the origin — does not match       "
+          "All of R³)",
+          "Just the origin — does t match"
         ],
         "correct_option": "The xy-plane {t(1,0,0) + s(0,1,0) : t,s ∈ R}",
         "explanation": "Step 1: The range contains (1,0,0) and (0,1,0). Step 2: By closure under scaling and addition, it contains all linear combinations t(1,0,0) + s(0,1,0). Step 3: This is the xy-plane (2D subspace). The range could be larger if (0,0,1) is also included — closure under linear combinations builds up the range from known elements."
@@ -229,9 +229,9 @@
         "question": "Is the range of a linear map always a convex set?",
         "options": [
           "Yes — it is a subspace, and subspaces are convex",
-          "No — convexity is not guaranteed...        ",
-          "Only if the map is injective...            ",
-          "Only for finite-dimensional spaces         "
+          "— convexity is t guaranteed",
+          "Only if the map is injective",
+          "Only for finite-dimensional spaces"
         ],
         "correct_option": "Yes — it is a subspace, and subspaces are convex",
         "explanation": "Step 1: A subspace is closed under convex combinations: αv + (1-α)w for α ∈ [0,1]. Step 2: Since subspaces are closed under scalar multiplication and addition, any convex combination stays in the subspace. Step 3: Therefore every subspace (including the range) is convex — a useful geometric property."
@@ -240,10 +240,10 @@
         "id": "M4Q7M10",
         "question": "If A is the zero map (A(x) = 0 for all x), what is its range?",
         "options": [
-          "All of R³ (incorrect)",
+          "All of R³)",
           "A line through the origin",
           "Just the zero vector {0}",
-          "Undefined (incorrect)"
+          "Undefined)"
         ],
         "correct_option": "Just the zero vector {0}",
         "explanation": "Step 1: Every input maps to 0. Step 2: The only output is (0,0,0). Step 3: The range is {0}, a 0-dimensional subspace. This is the smallest possible range — the zero map destroys all information."
@@ -255,9 +255,9 @@
         "question": "Prove that if v is in the range of A, then the entire span{v} = {αv : α ∈ R} is in the range.",
         "options": [
           "A(αx) = αA(x) = αv, so every αv is achieved by input αx",
-          "This requires A to be invertible...               ",
-          "Only true for α > 0 — does not match              ",
-          "This is false in general...                       "
+          "This requires A to be invertible",
+          "Only true for α > 0 — does t match",
+          "This is false in general"
         ],
         "correct_option": "A(αx) = αA(x) = αv, so every αv is achieved by input αx",
         "explanation": "Step 1: v = A(x) for some x. Step 2: For any α ∈ R, A(αx) = αA(x) = αv. Step 3: Since αx is a valid input for every α, every point on the line through v is in the range. This is the direct proof that the range is closed under scalar multiplication."
@@ -281,7 +281,7 @@
           "Range is always equal to the codomain",
           "Range is always a subset of the codomain",
           "The codomain is always a subset of the range",
-          "They are unrelated — does not match"
+          "They are unrelated — does t match"
         ],
         "correct_option": "Range is always a subset of the codomain",
         "explanation": "Step 1: The codomain is Rᵐ — the space where outputs live. Step 2: The range is {Ax : x ∈ Rⁿ} ⊆ Rᵐ. Step 3: Range ⊆ codomain always. Range = codomain only when A is surjective (rank = m). The range tells you which part of the codomain is actually achieved."
@@ -292,7 +292,7 @@
         "options": [
           "Because rank limits the range dimension to 1",
           "Because R³ is too small for a plane",
-          "Because A maps 2D to 3D...             ",
+          "Because A maps 2D to 3D",
           "Because the null space takes up space"
         ],
         "correct_option": "Because rank limits the range dimension to 1",
@@ -303,9 +303,9 @@
         "question": "If A and B are both linear maps R³ → R³ with ranges that are lines, can A + B have a range that is a plane?",
         "options": [
           "Yes — the sum of two 1D ranges can span a 2D space",
-          "No — the sum of two lines is always a line",
-          "Only if the lines are perpendicular          ",
-          "Only if A = B — does not match               "
+          "— the sum of two lines is always a line",
+          "Only if the lines are perpendicular",
+          "Only if A = B — does t match"
         ],
         "correct_option": "Yes — the sum of two 1D ranges can span a 2D space",
         "explanation": "Step 1: If range(A) = t·v₁ and range(B) = t·v₂ where v₁, v₂ are independent, then (A+B) can produce αv₁ + βv₂. Step 2: The range of A+B contains all combinations of range(A) and range(B). Step 3: If v₁ and v₂ are independent, this gives a 2D plane. Two rank-1 maps can sum to a rank-2 map."
@@ -327,9 +327,9 @@
         "question": "Can the range of A : R³ → R³ be a curve (like a parabola)?",
         "options": [
           "No — the range of a linear map is always a subspace (straight)",
-          "Yes, if A is nonlinear...                                ",
-          "Only for specific matrices...                            ",
-          "Only in 2D (incorrect)                                   "
+          "if A is nlinear",
+          "Only for specific matrices",
+          "Only in 2D)"
         ],
         "correct_option": "No — the range of a linear map is always a subspace (straight)",
         "explanation": "Step 1: Linear maps satisfy A(αx) = αA(x) and A(x+y) = A(x)+A(y). Step 2: These force the range to be a subspace (lines, planes, etc. through the origin). Step 3: Curves like parabolas are NOT subspaces — they fail closure under addition and scaling. Linearity constrains the range to flat subspaces."
@@ -378,7 +378,7 @@
       "question": "An audio amplifier doubles the input volume when you turn the knob. If the amplifier is linear, doubling the input voltage also doubles the output. This scaling property means:",
       "options": [
         "The output is always proportional to the input",
-        "The amplifier adds noise",
+        "The amplifier adds ise",
         "The output is random",
         "The amplifier inverts the signal"
       ],
@@ -389,7 +389,7 @@
       "id": "M4Q7R2",
       "question": "When you zoom in on a digital image by factor k, every pixel coordinate is multiplied by k. This is a linear map. If the original image spans a certain region, zooming in by k spans a region k times larger. Why?",
       "options": [
-        "Because zooming is a nonlinear operation",
+        "Because zooming is a nlinear operation",
         "Because A(kx) = kA(x), so scaling coordinates scales the image linearly",
         "Because zooming adds new pixels",
         "Because zooming rotates the image"
@@ -402,7 +402,7 @@
       "question": "In a linear production model, doubling all inputs exactly doubles all outputs. If a factory can produce 100 units with inputs (5,3), can it produce 200 units?",
       "options": [
         "Yes, with inputs (10,6) — just double the inputs",
-        "No, 200 units requires different inputs",
+        "200 units requires different inputs",
         "Only with inputs (5,6)",
         "Only if the factory expands"
       ],

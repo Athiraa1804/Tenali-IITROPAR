@@ -36,7 +36,7 @@
         "options": [
           "The real number line (1D)",
           "The 2D plane",
-          "3D space (incorrect)",
+          "3D space)",
           "The set of complex numbers"
         ],
         "correct_option": "The real number line (1D)",
@@ -107,9 +107,9 @@
         "question": "How many axes does a coordinate system in ℝ² have?",
         "options": [
           "2 (x-axis and y-axis)",
-          "1 — not correct here",
-          "3 — not correct here",
-          "4 — not correct here"
+          "1 — t here",
+          "3 — t here",
+          "4 — t here"
         ],
         "correct_option": "2 (x-axis and y-axis)",
         "explanation": "Step 1: ℝ² has two independent directions. Step 2: These are represented by the x-axis and y-axis. Step 3: Every point in ℝ² is reached by moving along these two axes."
@@ -133,9 +133,9 @@
         "question": "What does ℝⁿ represent mathematically?",
         "options": [
           "The set of all ordered n-tuples of real numbers",
-          "The nth power of a real number...",
-          "An n-sided polygon — does not match",
-          "The nth root of a real number..."
+          "The nth power of a real number",
+          "An n-sided polygon — does t match",
+          "The nth root of a real number"
         ],
         "correct_option": "The set of all ordered n-tuples of real numbers",
         "explanation": "Step 1: ℝⁿ = {(x₁, x₂, ..., xₙ) : each xᵢ ∈ ℝ}. Step 2: Each element is an ordered list of n real numbers. Step 3: For n=2, this gives the familiar (x,y) plane; for n=3, 3D space."
@@ -145,9 +145,9 @@
         "question": "Why is ℝ³ called 3-dimensional?",
         "options": [
           "Because you need exactly 3 coordinates to specify any point",
-          "Because it has 3 axes drawn on paper...               ",
-          "Because space has 3 colours...                        ",
-          "Because physics only works in 3D...                   "
+          "Because it has 3 axes drawn on paper",
+          "Because space has 3 colours",
+          "Because physics only works in 3D"
         ],
         "correct_option": "Because you need exactly 3 coordinates to specify any point",
         "explanation": "Step 1: Dimension = number of independent coordinates needed. Step 2: In ℝ³, a point is (x, y, z) — three independent numbers. Step 3: No fewer coordinates can uniquely specify every point in this space."
@@ -157,9 +157,9 @@
         "question": "Can a point in ℝ² also be considered a point in ℝ³?",
         "options": [
           "Yes, by appending z = 0: (x, y) in ℝ² corresponds to (x, y, 0) in ℝ³",
-          "No, ℝ² and ℝ³ are completely separate...                       ",
-          "Only if x = y — does not match                                 ",
-          "Only for integer coordinates...                                "
+          "ℝ² and ℝ³ are completely separate",
+          "Only if x = y — does t match",
+          "Only for integer coordinates"
         ],
         "correct_option": "Yes, by appending z = 0: (x, y) in ℝ² corresponds to (x, y, 0) in ℝ³",
         "explanation": "Step 1: ℝ² can be embedded in ℝ³ as the plane z = 0. Step 2: Every point (x, y) maps to (x, y, 0). Step 3: This is like saying the 2D plane sits inside 3D space as a 'flat slice'."
@@ -205,9 +205,9 @@
         "question": "What is the difference between ℝ² and ℝ³ geometrically?",
         "options": [
           "ℝ² is a flat plane (2D), while ℝ³ is a volume (3D) with an extra dimension",
-          "They are the same thing...                                           ",
-          "ℝ² is circular while ℝ³ is square...                                 ",
-          "ℝ³ is a subset of ℝ² — does not match                                "
+          "They are the same thing",
+          "ℝ² is circular while ℝ³ is square",
+          "ℝ³ is a subset of ℝ² — does t match"
         ],
         "correct_option": "ℝ² is a flat plane (2D), while ℝ³ is a volume (3D) with an extra dimension",
         "explanation": "Step 1: ℝ² has length and width — a flat surface. Step 2: ℝ³ adds height/depth — a volume. Step 3: The extra dimension allows points to be at different heights, not just different horizontal positions."
@@ -217,9 +217,9 @@
         "question": "Why can we not directly visualize ℝ⁴ or higher?",
         "options": [
           "Because our physical world is 3-dimensional — we can only see up to 3 spatial dimensions",
-          "Because mathematics doesn't work in higher dimensions...                           ",
-          "Because ℝ⁴ doesn't exist...                                                        ",
-          "Because we need special glasses...                                                 "
+          "Because mathematics doesn't work in higher dimensions",
+          "Because ℝ⁴ doesn't exist",
+          "Because we need special glasses"
         ],
         "correct_option": "Because our physical world is 3-dimensional — we can only see up to 3 spatial dimensions",
         "explanation": "Step 1: Human vision is limited to 3 spatial dimensions. Step 2: ℝ⁴ requires 4 coordinates, which we can't directly picture. Step 3: However, the mathematical framework of ℝⁿ works for any n — we just can't draw it faithfully."
@@ -241,9 +241,9 @@
         "question": "What does the origin (0, 0, 0) represent in ℝ³?",
         "options": [
           "The point where all three axes meet — the reference point for all measurements",
-          "The center of a sphere...                                                ",
-          "The maximum point — does not match                                       ",
-          "An invalid coordinate...                                                 "
+          "The center of a sphere",
+          "The maximum point — does t match",
+          "An invalid coordinate"
         ],
         "correct_option": "The point where all three axes meet — the reference point for all measurements",
         "explanation": "Step 1: (0, 0, 0) means zero displacement along each axis. Step 2: It is the reference point from which all other positions are measured. Step 3: The origin is the zero vector in ℝ³."
@@ -267,9 +267,9 @@
         "question": "The standard basis for ℝ³ is {(1,0,0), (0,1,0), (0,0,1)}. Why is this a basis?",
         "options": [
           "These three vectors are linearly independent AND span all of ℝ³",
-          "They are all unit vectors...                              ",
-          "They sum to zero — does not match                         ",
-          "They are perpendicular to each other...                   "
+          "They are all unit vectors",
+          "They sum to zero — does t match",
+          "They are perpendicular to each other"
         ],
         "correct_option": "These three vectors are linearly independent AND span all of ℝ³",
         "explanation": "Step 1: Linear independence: no vector is a combination of the others (each has a unique non-zero position). Step 2: Spanning: any (a,b,c) = a(1,0,0) + b(0,1,0) + c(0,0,1). Step 3: Independence + spanning = basis."
@@ -279,9 +279,9 @@
         "question": "Can ℝ² be considered a subspace of ℝ³?",
         "options": [
           "Yes: ℝ² ≅ {(x,y,0) : x,y ∈ ℝ} is a subspace of ℝ³ (the z = 0 plane)",
-          "No, they are different spaces entirely...                     ",
-          "Only if we change the origin...                               ",
-          "Only for vector addition...                                   "
+          "they are different spaces entirely",
+          "Only if we change the origin",
+          "Only for vector addition"
         ],
         "correct_option": "Yes: ℝ² ≅ {(x,y,0) : x,y ∈ ℝ} is a subspace of ℝ³ (the z = 0 plane)",
         "explanation": "Step 1: Embed ℝ² as {(x,y,0) : x,y ∈ ℝ} in ℝ³. Step 2: This set contains (0,0,0), is closed under addition and scalar multiplication. Step 3: It is a 2-dimensional subspace of the 3-dimensional space ℝ³."
@@ -291,9 +291,9 @@
         "question": "What is the dimension of the set {(x,y,z) : x + y + z = 0} as a subspace of ℝ³?",
         "options": [
           "2 (it is a plane through the origin)",
-          "3 — not correct here           ",
-          "1 — not correct here           ",
-          "0 — not correct here           "
+          "3 — t here",
+          "1 — t here",
+          "0 — t here"
         ],
         "correct_option": "2 (it is a plane through the origin)",
         "explanation": "Step 1: x + y + z = 0 is one linear constraint on 3 variables. Step 2: The solution set is a 2D plane passing through the origin. Step 3: A basis is {(1,-1,0), (1,0,-1)} — two linearly independent vectors spanning the plane."
@@ -303,9 +303,9 @@
         "question": "The set of all polynomials of degree ≤ 2, denoted P₂, is isomorphic to ℝ³. Why?",
         "options": [
           "Because any polynomial a + bx + cx² is determined by 3 coefficients (a, b, c), just as a point in ℝ³ is determined by 3 coordinates",
-          "Because both involve the number 2...                                                                                          ",
-          "Because both have a basis of 2 elements...                                                                                    ",
-          "Because polynomials can be plotted in 3D...                                                                                   "
+          "Because both involve the number 2",
+          "Because both have a basis of 2 elements",
+          "Because polymials can be plotted in 3D"
         ],
         "correct_option": "Because any polynomial a + bx + cx² is determined by 3 coefficients (a, b, c), just as a point in ℝ³ is determined by 3 coordinates",
         "explanation": "Step 1: P₂ has basis {1, x, x²} — 3 elements. Step 2: ℝ³ has standard basis {(1,0,0), (0,1,0), (0,0,1)} — 3 elements. Step 3: Both are 3-dimensional vector spaces, so they are isomorphic (structurally identical)."
@@ -315,9 +315,9 @@
         "question": "In ℝ⁴, what is the subspace spanned by (1,0,0,1) and (0,1,1,0)?",
         "options": [
           "A 2-dimensional plane through the origin",
-          "A line (incorrect)                 ",
-          "All of ℝ⁴ (incorrect)              ",
-          "A 3-dimensional space...           "
+          "A line)",
+          "All of ℝ⁴)",
+          "A 3-dimensional space"
         ],
         "correct_option": "A 2-dimensional plane through the origin",
         "explanation": "Step 1: Two linearly independent vectors span a 2D subspace. Step 2: These vectors are not scalar multiples, so they're independent. Step 3: Their span is a plane through the origin in ℝ⁴."
@@ -327,9 +327,9 @@
         "question": "What is the rank-nullity theorem for a linear map T: ℝ³ → ℝ²?",
         "options": [
           "rank(T) + nullity(T) = 3 (dimension of the domain)",
-          "rank(T) + nullity(T) = 2...                  ",
-          "rank(T) + nullity(T) = 5...                  ",
-          "rank(T) = nullity(T) — does not match        "
+          "rank(T) + nullity(T) = 2",
+          "rank(T) + nullity(T) = 5",
+          "rank(T) = nullity(T) — does t match"
         ],
         "correct_option": "rank(T) + nullity(T) = 3 (dimension of the domain)",
         "explanation": "Step 1: The rank-nullity theorem states: rank(T) + nullity(T) = dim(domain). Step 2: Domain is ℝ³, so dim = 3. Step 3: For any T: ℝ³ → ℝ², rank + nullity = 3."
@@ -339,9 +339,9 @@
         "question": "A dataset has 100 samples, each with 50 features. The data matrix is 100 × 50. Each data point lives in which space?",
         "options": [
           "ℝ⁵⁰ (50-dimensional feature space)",
-          "ℝ¹⁰⁰ (incorrect)             ",
-          "ℝ⁵⁰⁰⁰ (incorrect)            ",
-          "ℝ² — not correct here        "
+          "ℝ¹⁰⁰)",
+          "ℝ⁵⁰⁰⁰)",
+          "ℝ² — t here"
         ],
         "correct_option": "ℝ⁵⁰ (50-dimensional feature space)",
         "explanation": "Step 1: Each sample is a row vector with 50 entries. Step 2: 50 features → 50 coordinates → ℝ⁵⁰. Step 3: The 100 samples are 100 different points in this 50-dimensional space."
@@ -351,9 +351,9 @@
         "question": "Can ℝ⁵ contain a 3-dimensional subspace? If so, give an example.",
         "options": [
           "Yes: {(x₁,x₂,x₃,0,0) : xᵢ ∈ ℝ} is a 3D subspace of ℝ⁵",
-          "No, subspaces must have the same dimension as the full space",
+          "subspaces must have the same dimension as the full space",
           "Only if the subspace passes through a specific point",
-          "Only for even dimensions...                            "
+          "Only for even dimensions"
         ],
         "correct_option": "Yes: {(x₁,x₂,x₃,0,0) : xᵢ ∈ ℝ} is a 3D subspace of ℝ⁵",
         "explanation": "Step 1: The set {(x₁,x₂,x₃,0,0)} has 3 free parameters. Step 2: It contains the zero vector, and is closed under addition and scalar multiplication. Step 3: It is a 3-dimensional subspace embedded in the 5-dimensional space ℝ⁵."
@@ -363,9 +363,9 @@
         "question": "The set of all continuous functions on [0,1] is an infinite-dimensional vector space. What does 'infinite-dimensional' mean in this context?",
         "options": [
           "No finite set of functions can serve as a basis — you need infinitely many basis functions",
-          "The functions can only take infinite values...                                       ",
-          "There are infinitely many points in [0,1]...                                         ",
-          "The functions are not well-defined...                                                "
+          "The functions can only take infinite values",
+          "There are infinitely many points in [0,1]",
+          "The functions are t well-defined"
         ],
         "correct_option": "No finite set of functions can serve as a basis — you need infinitely many basis functions",
         "explanation": "Step 1: Unlike ℝⁿ (n basis vectors), this space requires infinitely many basis functions. Step 2: No finite collection of functions can represent every continuous function. Step 3: For example, {1, x, x², x³, ...} is needed — an infinite basis."

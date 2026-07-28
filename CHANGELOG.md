@@ -718,3 +718,199 @@ Note: this graded-quiz "Check Question Mode" is a separate mechanism from the ex
 
 
 
+
+
+---
+
+## Recent commits — July 17–27, 2026 _(auto-curated from git history, appended 2026-07-28)_
+
+_PR merges and direct feature/fix commits landed on `main` since the narrative above. Routine branch-sync merges omitted._
+
+### 2026-07-27
+
+- **PR #103** (`merge-newf-into-main`) — muditagrawal2007
+- fix(quiz): strip trailing noise from MCQ options + use middle-dot padding  _(ac8d48b, muditagrawal2007)_
+- fix(quiz): length-normalize MCQ options across all 56 mission files  _(cebf191, muditagrawal2007)_
+- fix(quiz): pad short distractors so the correct option isn't length-guessable  _(197f6c5, muditagrawal2007)_
+- fix(quiz): ensure correct_option is always present in options array  _(a2194f8, muditagrawal2007)_
+- feat(quiz): randomize option order in LA mission quiz + clean option text  _(c18b01a, muditagrawal2007)_
+- feat(la): remove Phase 2 RLA quiz section from mission quiz  _(a19bedd, muditagrawal2007)_
+- fix(ui): typo in modeMap — lineqgym referenced undefined LineEqGymApp  _(9d03e0e, muditagrawal2007)_
+- feat(la): 2-phase mission quiz (adaptive → real-life MCQs)  _(5e04f4b, muditagrawal2007)_
+- Revert "feat(matrixmystics): single-button 2-phase test flow (no setup, no difficulty picker)"  _(96d26f2, muditagrawal2007)_
+- wip: revert matrixmystics home tile and modeMap entry  _(d01a768, muditagrawal2007)_
+- feat(matrixmystics): single-button 2-phase test flow (no setup, no difficulty picker)  _(2b52b38, muditagrawal2007)_
+- feat(la): add Real Application tier — 265 MCQs across all 53 topics  _(90a29b8, muditagrawal2007)_
+- feat(la): refresh module 1 + Q4.7 questions with short-option MCQ style  _(6217875, muditagrawal2007)_
+- chore(deps): bump express-rate-limit to ^8.6.1 (npm install reconciled lockfile)  _(0cc4523, muditagrawal2007)_
+- fix(server): remove duplicate JWT_SECRET declarations from broken merge  _(65f8e08, muditagrawal2007)_
+- feat(la): add Matrix Mystics — 6 modules, 53 topics, 1590 curated MCQs  _(428cdbf, muditagrawal2007)_
+- fix(ui-stability): resolve React hook violations in 3 components  _(f2bab06, muditagrawal2007)_
+
+### 2026-07-24
+
+- **PR #98** (`new`) — muditagrawal2007
+
+### 2026-07-23
+
+- **PR #96** (`fix/duplicate-jwt-secret-merge`) — vicharanashala
+- fix: remove duplicate JWT_SECRET declarations that break the build  _(83bd400, Jinal Gupta)_
+- **PR #84** (`new_f`) — muditagrawal2007
+- **PR #86** (`fix/summership-jwt-fail-fast`) — vicharanashala
+- fix(security): centralize JWT secret and fail-fast in production  _(7ccb369, Jinal Gupta)_
+- **PR #85** (`fix/summership-ratelimit-cors`) — vicharanashala
+- fix(security): add rate limiting and CORS allowlist  _(e5fba3c, Jinal Gupta)_
+- feat(la): replace algorithmic quiz with curated JSON MCQs for all 56 missions  _(c4499d0, muditagrawal2007)_
+- fix(ui-stability): resolve React hook violations in main App component  _(506a82d, muditagrawal2007)_
+- Fix CoordGeomDiscoveryApp component lint issues  _(2fe7568, muditagrawal2007)_
+- **PR #83** (`fix/summership-repo-cleanup`) — vicharanashala
+- chore: remove committed debug/scratch junk files  _(b562d85, Jinal Gupta)_
+- **PR #81** (`new_f`) — muditagrawal2007
+- **PR #82** (`fix/summership-seed-users-env`) — vicharanashala
+- refactor(auth): load seed users from env, not hardcoded source  _(884bbcb, Jinal Gupta)_
+- **PR #80** (`fix/summership-base-aware-routing`) — vicharanashala
+- fix: base-path-aware routing so /summership routes work  _(bf8c347, Jinal Gupta)_
+
+### 2026-07-22
+
+- NoiseFilter: auto-fix lint issues  _(d248b04, muditagrawal2007)_
+- bkt: fix lint issues  _(67092be, muditagrawal2007)_
+- CrosswordApp: fix lint issues  _(7446913, muditagrawal2007)_
+- GlossaryText: fix unused variables  _(0cf59a7, muditagrawal2007)_
+- OnboardingTour: fix lint issues  _(361fca9, muditagrawal2007)_
+- EquationSandbox: fix unused variables  _(bcc3f07, muditagrawal2007)_
+- Stage2Grid: fix lint issues  _(febc6e3, muditagrawal2007)_
+- SimulConceptApp: fix lint issues  _(543d925, muditagrawal2007)_
+- CompletionScreen: fix lint issues  _(32e1325, muditagrawal2007)_
+- Stage5Review: fix lint issues  _(9bc086f, muditagrawal2007)_
+- Stage4Independent: fix lint issues  _(7dbe6e7, muditagrawal2007)_
+- Stage3Guided: fix unused variables  _(c5b02c3, muditagrawal2007)_
+- Stage1Predict: fix unused variables  _(44433d1, muditagrawal2007)_
+- QFormulaConceptApp: fix lint issues - remove unused vars  _(054abea, muditagrawal2007)_
+- questionFormatters: fix lint issues  _(ae8df1a, muditagrawal2007)_
+- MasteryBadge: fix lint issues  _(38ae96d, muditagrawal2007)_
+- DiagnosticQuiz: fix lint issues - remove unused exports and imports  _(b25bd52, muditagrawal2007)_
+- AutoTranslator: fix lint issues - unused vars, suppress set-state-in-effect  _(dbc0e08, muditagrawal2007)_
+- AccessibilityProvider: fix lint issues - empty blocks, unused vars, suppress set-state-in-effect  _(110dd6d, muditagrawal2007)_
+- i18n: fix lint issues - remove unused vars, suppress react-refresh  _(442a481, muditagrawal2007)_
+- IdliVadaSambharApp: fix lint issues  _(1ecce95, muditagrawal2007)_
+- LcmHcfApp: fix lint issues  _(8046091, muditagrawal2007)_
+- PercentExplanationApp: fix lint issues  _(d0a803b, muditagrawal2007)_
+- CoordGeomDiscoveryApp: fix lint issues - remove unused imports  _(bc0d522, muditagrawal2007)_
+- GeometryApp: fix lint issues - remove unused variables  _(593c183, muditagrawal2007)_
+- VisualMathLabRedux: fix lint issues - prefix unused, suppress purity warnings  _(6f5c6a9, muditagrawal2007)_
+- PythagLabApp: fix lint issues - remove unused imports/refs, prefix dead vars  _(d10efd9, muditagrawal2007)_
+- BearingsLabApp: fix lint issues - prefix unused vars, reorder function declarations  _(c15a452, muditagrawal2007)_
+- ProbLabApp: fix lint issues - prefix unused vars, remove unused refs  _(f8f77d1, muditagrawal2007)_
+- LinearAlgebraApp: fix lint issues - unused vars, empty blocks, useless escapes  _(0bdc55f, muditagrawal2007)_
+- QuestionTranslator: remove useless backslash escapes and disable no-control-regex for intentional control chars  _(92d8533, muditagrawal2007)_
+- vite.config.js: remove duplicate keys, update proxy targets to port 4000  _(5e315ef, muditagrawal2007)_
+- detective-app: fix Math.random in render and unused useMemo  _(8f6eab2, muditagrawal2007)_
+- misconceptions.js: add missing isPrime function  _(7a08108, muditagrawal2007)_
+- Fix lint errors: remove duplicate App files, fix unused vars, empty blocks, duplicate keys, hooks violations, and correct vite proxy port  _(eecea2c, muditagrawal2007)_
+- fix: Battle feature - add missing client definitions, fix GK recursion, streaks, and topic mismatch  _(db24b60, muditagrawal2007)_
+
+### 2026-07-21
+
+- **PR #79** (`fix/chartjs-dependency`) — vicharanashala
+- fix(client): add missing chart.js peer dependency for user progress tracking  _(5885fe9, Jinal Gupta)_
+- **PR #77** (`feat/track_user_progress`) — S-Hamsalekha-annamai
+- **PR #78** (`fix/authgate-home-button`) — vicharanashala
+- fix(auth): add 'Back to home' button on the Login-required (AuthGate) screen  _(2f709a4, Jinal Gupta)_
+- **PR #76** (`fix/restore-journey-banner`) — vicharanashala
+- fix(home): restore Guided Learning Journey banner on home screen  _(0e3b39c, Jinal Gupta)_
+- **PR #75** (`fix/mafs-dependency`) — vicharanashala
+- fix(client): add missing mafs dependency for concept playgrounds  _(0bdadea, Jinal Gupta)_
+
+### 2026-07-20
+
+- feat: Add support for tracking  user progress .  _(cd026f3, S Hamsalekha)_
+- Fix: Enable Vite dev server proxying for all the seven Gym APIs  _(7eb5580, S Hamsalekha)_
+- **PR #52** (`feature/concept-playgrounds`) — 24F3005086
+- **PR #51** (`feature/i18n`) — 24F3005086
+- **PR #58** (`tenali_main`) — diptosubhro-ctrl
+- **PR #49** (`feature/bkt-prereqs`) — 24F3005086
+- **PR #50** (`feature/accessibility`) — 24F3005086
+- **PR #56** (`feature/curiosity`) — RukmenderT
+- fix: remove duplicate hover tooltip and left-side variation label in Curiosity Mode  _(f1ab5b6, RukmenderT)_
+- **PR #46** (`main`) — patnaikArpita
+- **PR #65** (`fix/module-theming`) — vicharanashala
+- **PR #8** (`Re-added-geometry-game-20July`) — patnaikArpita
+- added MVP , enchancements , suggestion  _(5aa05b4, AnshulKanodia)_
+- Fix riddle: add /riddle pathname route, remove double app-shell/card nesting  _(f336fec, muditagrawal2007)_
+- Math Riddles: 48 riddles (find-rule, sequence, logic, image) + playground preview fix  _(073696d, muditagrawal2007)_
+- Playground visualizer: Python Tutor style with code+arrow | memory boxes  _(243973c, muditagrawal2007)_
+- Playground: add live preview for HTML/CSS/JS and code visualizer  _(93b3f23, muditagrawal2007)_
+- Add View Code and Load buttons to playground history  _(202c228, muditagrawal2007)_
+- Fix playground: proper default code for all languages, dark terminal output, language categories  _(73cc0b5, muditagrawal2007)_
+- feat: Code Playground — run code in 50+ languages via Judge0 CE  _(8ef012e, muditagrawal2007)_
+- fix proctoring: face detection model URL + faster interval, add speech-to-text transcript for voice events, display transcripts in dashboard  _(2fa1a21, muditagrawal2007)_
+- fix: face detection — accept onFaceCount callback, lower threshold to 0.3, increase inputSize to 320  _(ce39d6f, muditagrawal2007)_
+- remove flashcard apps: Cross-Section Explorer, Spatial Reasoning, 2D↔3D Translator, Shape Slicer 3D, Net Builder, Scribble Guess  _(726393b, muditagrawal2007)_
+
+### 2026-07-19
+
+- fix: add missing locales files for i18n  _(f037028, 24F3005086)_
+
+### 2026-07-18
+
+- fix: remove MasteryBadge usage from concept playgrounds since it belongs to BKT branch  _(a20f15f, 24F3005086)_
+- fix: add missing i18n dependencies for accessibility panel  _(dc7673c, 24F3005086)_
+- fix: concept playgrounds localization bugs from afternoon session  _(12c0162, 24F3005086)_
+- fix: dark/light theme bugs from afternoon session  _(94ca4a2, 24F3005086)_
+- fix: mastery badge UI bugs from afternoon session  _(013d26c, 24F3005086)_
+- fix: translation bugs from afternoon session  _(8306099, 24F3005086)_
+- remove settings_icon.svg and update tutorial/reset layout logic  _(9ff1128, Dipto Subhro)_
+
+### 2026-07-17
+
+- feat: inline proctor dashboard on /linear, no-auth endpoints, localStorage persistence  _(4d88e05, muditagrawal2007)_
+- Optimize Level 1 token boundaries to prevent mismatch confusion  _(6f0a1be, Dipto Subhro)_
+- Remove subject introductions and names from Level 1 questions  _(537b944, Dipto Subhro)_
+- Shorten all Level 1 questions in the corpus  _(fbc5831, Dipto Subhro)_
+- Move Reset Progress button to inside the levels workspace next to Exit button  _(fff4c8d, Dipto Subhro)_
+- Add Reset Progress button inside each Level card on main dashboard  _(ae369b8, Dipto Subhro)_
+- Enable Tutorial Reference button for Level 1 questions  _(2675311, Dipto Subhro)_
+- Bypass Session Complete screen after tutorial to start practice immediately  _(4f37c1f, Dipto Subhro)_
+- Remove details sub-view and reset button, making all levels directly start questions  _(d10a052, Dipto Subhro)_
+- Remove Key Math Fact box from tutorial reference modal  _(f883f30, Dipto Subhro)_
+- Remove strand tag labels from exercise workspace  _(5e67a0c, Dipto Subhro)_
+- Remove Reveal 1 Noise Phrase button from active exercise card  _(568a201, Dipto Subhro)_
+- Add Tutorial Reference popout button and modal overlay for levels above 1  _(545b418, Dipto Subhro)_
+- Directly start questions on levels after Level 1 instead of opening stages sub-view  _(ce132ad, Dipto Subhro)_
+- Add Reset Level Progress button inside each level details sub-view  _(dc15de5, Dipto Subhro)_
+- Keep one tutorial stage for Level 1 and remove tutorial stages from all other Levels  _(6925c08, Dipto Subhro)_
+- Remove level and name card from the level details view  _(8a41af8, Dipto Subhro)_
+- Remove Open Level text indicator from dashboard level cards  _(809bbd8, Dipto Subhro)_
+- Redirect level clicks to a dedicated stages sub-view with back navigation  _(f46e195, Dipto Subhro)_
+- Remove Active label from Noise Filter levels  _(192ccc3, Dipto Subhro)_
+- Make level cards on Noise Filter dashboard collapsible  _(1ed0ea7, Dipto Subhro)_
+- Remove Noise Filter header box and description card  _(b497c6c, Dipto Subhro)_
+- fix: Add CSS styling for accessibility panel and toggle button  _(be5117f, 24F3005086)_
+- fix: dashboard loading stuck, useState null, screen capture clarity, hanging  _(ce7cc1c, muditagrawal2007)_
+- fix: restore scratch/generate_puzzles.js accidentally removed in accessibility branch  _(dde3b3d, 24F3005086)_
+- fix: replace updateBKT stub with proper import from bkt.js  _(a928447, 24F3005086)_
+- fix: remove ?v=2 cache-buster from App.jsx import to prevent duplicate React instance  _(6e64980, RukmenderT)_
+- fix: add updateBKT wrapper export in bkt.js for concept playground compatibility  _(210298a, 24F3005086)_
+- chore: remove stray scratch folder  _(ae98953, 24F3005086)_
+- fix: dashboard broken + compulsory monitoring + auto-collapse alerts  _(fafb069, muditagrawal2007)_
+- Restore scratch folder from main  _(4e4d3ea, 24F3005086)_
+- Restore scratch folder from main  _(22a3dc0, 24F3005086)_
+- Restore scratch folder from main  _(b39bf4c, 24F3005086)_
+- perf: add willReadFrequently to Canvas2D contexts in detection hooks  _(08fb816, muditagrawal2007)_
+- fix: rewrite proctoring detection flow — all hooks now report anomalies directly  _(b41ca8f, muditagrawal2007)_
+- fix: add face-api.js to optimizeDeps.include to fix Vite dev server 500  _(987233d, muditagrawal2007)_
+- Fix: make Idli-Vada-Sambhar, Crossword & Word Search follow the dark/light theme  _(880cc73, Jinal Gupta)_
+- feat: add CompreFace Docker setup and face-api.js dependency  _(c21c1a4, muditagrawal2007)_
+- feat: complete proctoring suite — Dashboard, FloatingVideo, PiP, CSS, lint fixes  _(408e5c7, muditagrawal2007)_
+- Rewrite proctoring to match vibe architecture  _(ceea26b, muditagrawal2007)_
+- chore: remove stray scratch files  _(19d67d7, 24F3005086)_
+- chore: remove stray scratch folder  _(2b93db0, 24F3005086)_
+- chore: remove stray scratch files  _(1ebba99, 24F3005086)_
+- Beautiful proctor error display + screen activity monitoring  _(2e14656, muditagrawal2007)_
+- Add full proctoring suite with left-side webcam panel  _(68d9749, muditagrawal2007)_
+- Simplify cognitive load in Noise Filter feature  _(955f779, Dipto Subhro)_
+- **PR #63** (`fix/appcss-bom`) — vicharanashala
+- Fix: strip stray UTF-8 BOM from App.css breaking production build  _(57e653a, Jinal Gupta)_
+- **PR #54** (`feature/math-detective-agency`) — sharonyamita-spec
+- **PR #9** (`feature/level-wise-explanation`) — Ritish007-svg

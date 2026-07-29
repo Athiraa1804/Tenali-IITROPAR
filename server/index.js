@@ -105,6 +105,7 @@ app.use(express.static(clientDistPath));
 const auth = require('./auth');
 const transferScenarios = require('./transferScenarios');
 const progress = require('./progress');
+const translate = require('./translate');
 
 // Load static collections definitions
 let collections = [];
@@ -116,6 +117,7 @@ try {
 }
 app.use('/api/auth', auth.router);
 app.use('/api/progress', progress.router);
+app.use('/api/translate', translate.router);
 auth.seedUsers().catch(() => {});  // always populate in-memory fallback
 
 async function connectAuthMongoWithRetry(attempt = 1) {

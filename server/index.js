@@ -561,16 +561,21 @@ function bandForStep(step) {
  * Each file should contain a question object with id, question, options, answerOption, answerText
  * @returns {Array<object>} Array of question objects
  */
-function loadQuestions() {
-  const files = fs.readdirSync(questionsDir).filter((file) => file.endsWith('.json'));
-  return files.map((file) => {
-    const fullPath = path.join(questionsDir, file);
-    return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-  });
+// Reads all JSON files in `dir` concurrently (fs.promises.readFile lets libuv's
+// thread pool overlap the I/O instead of doing 991+ sequential blocking
+// syscalls) and parses each one. Order is not significant to any caller here.
+async function loadJsonDir(dir) {
+  const files = fs.readdirSync(dir).filter((file) => file.endsWith('.json'));
+  const contents = await Promise.all(
+    files.map((file) => fs.promises.readFile(path.join(dir, file), 'utf8'))
+  );
+  return contents.map((raw) => JSON.parse(raw));
 }
 
-// Load all GK questions at server startup
-const questions = loadQuestions();
+// Populated by initData() before the server starts listening (see bottom of
+// file) — declared here as `let` so the many closures throughout this file
+// that reference `questions` by name see the loaded data once ready.
+let questions = [];
 
 const WordProblemGenerator = {
   addition: (a, b) => {
@@ -1528,10 +1533,12 @@ const conceptDir = path.join(__dirname, '..', 'concept', 'questions');
  *
  * @returns {Array<object>} Array of vocabulary question objects
  */
-function loadVocab() {
+// Vocab is by far the largest set (~7,600 files) — loaded via loadJsonDir()
+// (see loadQuestions above) so the reads overlap instead of running one at a
+// time. Concepts is tiny (~15 files); left synchronous, not worth the churn.
+async function loadVocabAsync() {
   try {
-    const files = fs.readdirSync(vocabDir).filter((f) => f.endsWith('.json'));
-    return files.map((f) => JSON.parse(fs.readFileSync(path.join(vocabDir, f), 'utf8')));
+    return await loadJsonDir(vocabDir);
   } catch (e) {
     return [];
   }
@@ -1546,8 +1553,9 @@ function loadConcepts() {
   }
 }
 
-// Load all vocabulary questions at server startup
-const vocabQuestions = loadVocab();
+// Populated by initData() before the server starts listening, same as
+// `questions` above.
+let vocabQuestions = [];
 const conceptQuestions = loadConcepts();
 
 /**
@@ -14273,10 +14281,35 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500).json({ error: 'Internal server error' });
 });
 
+// Loads the two large question sets concurrently (Promise.all lets their
+// internal per-file reads all overlap on libuv's thread pool, rather than
+// finishing the ~991 GK files, then starting the ~7,600 vocab files) and
+// assigns them into the module-level `questions`/`vocabQuestions` variables
+// that every route closure below already references by name.
+async function initData() {
+  const [loadedQuestions, loadedVocab] = await Promise.all([
+    loadJsonDir(questionsDir),
+    loadVocabAsync(),
+  ]);
+  questions = loadedQuestions;
+  vocabQuestions = loadedVocab;
+}
+
 if (require.main === module) {
-  httpServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`Tenali app running on http://0.0.0.0:${PORT}`);
-  });
+  initData()
+    .then(() => {
+      httpServer.listen(PORT, '0.0.0.0', () => {
+        console.log(`Tenali app running on http://0.0.0.0:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      logger.error('startup', 'Failed to load question/vocab data:', err);
+      process.exit(1);
+    });
+} else {
+  // Required as a module (e.g. by tests) rather than run directly — still
+  // populate the data so route handlers work, without starting the listener.
+  initData().catch((err) => logger.error('startup', 'Failed to load question/vocab data:', err));
 }
 
 module.exports = app;

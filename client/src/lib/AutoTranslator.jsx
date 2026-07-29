@@ -4,27 +4,30 @@ import { translateDynamic } from './QuestionTranslator';
 import en from '../locales/en.json';
 
 // ── Translation fallback ─────────────────────────────────────────────────────
-// The unofficial Google "gtx" endpoint is unauthenticated and may rate-limit or
-// change without notice, so every call is defensively wrapped: a request timeout
-// (AbortController), an HTTP-ok check, defensive parsing, and a graceful fallback
-// to the original text on ANY failure — a failed translation never breaks the UI.
-// This is the single place to swap in a supported translation service.
-const GTX_ENDPOINT = 'https://translate.googleapis.com/translate_a/single';
+// Text not covered by the bundled dictionaries is translated via the server's
+// /api/translate proxy (backed by the official Google Cloud Translation API —
+// see server/translate.js), never called directly from the browser. Every call
+// is defensively wrapped: a request timeout (AbortController), an HTTP-ok
+// check, defensive parsing, and a graceful fallback to the original text on
+// ANY failure — a failed translation never breaks the UI.
+const API = import.meta.env.VITE_API_BASE_URL || '';
 const TRANSLATE_TIMEOUT_MS = 5000;
 
 function fetchTranslation(text, locale, cacheKey) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), TRANSLATE_TIMEOUT_MS);
-  const url = `${GTX_ENDPOINT}?client=gtx&sl=en&tl=${locale}&dt=t&q=${encodeURIComponent(text)}`;
-  return fetch(url, { signal: controller.signal })
+  return fetch(`${API}/api/translate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text, targetLang: locale }),
+    signal: controller.signal,
+  })
     .then(r => {
       if (!r.ok) throw new Error(`translate HTTP ${r.status}`);
       return r.json();
     })
     .then(data => {
-      // gtx shape: [[[translated, original, ...], ...], ...]
-      const segments = Array.isArray(data) && Array.isArray(data[0]) ? data[0] : null;
-      const resText = segments ? segments.map(item => item && item[0]).filter(Boolean).join('') : '';
+      const resText = data && data.translated;
       if (!resText) throw new Error('empty translation');
       if (cacheKey) localStorage.setItem(cacheKey, resText);
       return resText;

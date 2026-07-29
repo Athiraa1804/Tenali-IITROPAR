@@ -54519,6 +54519,12 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
     // Guards against double-submit and double-advance race conditions
     const submittedRef = useRef(false)
     const advancedRef = useRef(false)
+    // Tracks the in-flight question fetch so a newer loadQuestion() call (or
+    // unmount) can cancel a still-pending older one — otherwise an
+    // out-of-order response can land after a newer question and silently
+    // overwrite it, or a leftover fetch can setState after unmount.
+    const questionAbortRef = useRef(null)
+    useEffect(() => () => questionAbortRef.current?.abort(), [])
 
     useEffect(() => {
       if (finished) {
@@ -54540,11 +54546,18 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
     }
 
     const loadQuestion = async () => {
+      // Cancel any still-pending question fetch before starting a new one,
+      // so an out-of-order response from the old request can never land
+      // after (and overwrite) this newer one.
+      questionAbortRef.current?.abort()
+      const controller = new AbortController()
+      questionAbortRef.current = controller
+
       setLoading(true)
       setLoadError('')
       try {
         const diff = effectiveDifficulty()
-        const r = await fetch(`${API}/${apiPath}/question?difficulty=${diff}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' } })
+        const r = await fetch(`${API}/${apiPath}/question?difficulty=${diff}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' }, signal: controller.signal })
         if (!r.ok) throw new Error(`Server returned ${r.status}`)
         const data = await r.json()
         // Defensive: a question must have a non-empty prompt to be displayable.
@@ -54562,6 +54575,10 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
         advancedRef.current = false
         timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(effectiveDifficulty ? effectiveDifficulty() : (difficulty || 'easy'), isAdaptive))
       } catch (e) {
+        // A cancelled-on-purpose fetch (superseded by a newer loadQuestion()
+        // call, or the component unmounted) isn't a real failure — don't
+        // show an error for it.
+        if (e.name === 'AbortError') return
         console.error(`Failed to load ${title} question:`, e)
         setQuestion(null)
         setLoadError(`Couldn't load a ${title} question (${e.message || 'unknown error'}). Tap Retry to try again.`)

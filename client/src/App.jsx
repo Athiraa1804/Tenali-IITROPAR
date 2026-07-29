@@ -45440,7 +45440,7 @@ function AchievementCollections({ completedTopics = [], onSelectTopic }) {
       {selectedBook && (
         <div className="book-modal-overlay" onClick={() => setSelectedBook(null)}>
           <div className="book-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="book-modal-close" onClick={() => setSelectedBook(null)}>✕</button>
+            <button className="book-modal-close" onClick={() => setSelectedBook(null)} aria-label="Close">✕</button>
             <h2 className="book-modal-title">{selectedBook.name}</h2>
             <p className="book-modal-desc">{selectedBook.description}</p>
 
@@ -45899,7 +45899,7 @@ function ProfileShowcase({ completedTopics = [], onSelectTopic }) {
       {activeBadgeDetail && (
         <div className="badge-detail-overlay" onClick={() => setActiveBadgeDetail(null)}>
           <div className="badge-detail-modal" onClick={e => e.stopPropagation()}>
-            <button className="badge-detail-close" onClick={() => setActiveBadgeDetail(null)}>✕</button>
+            <button className="badge-detail-close" onClick={() => setActiveBadgeDetail(null)} aria-label="Close">✕</button>
 
             <div className="badge-detail-hero">
               <div className={`badge-detail-aura level-${activeBadgeDetail.level}`} style={{ background: activeBadgeDetail.isLocked ? '#e11d48' : '' }} />
@@ -65244,7 +65244,7 @@ function IntervalSchedulingApp() {
                   >
                     <span className="is-interval-label">{intv.start}–{intv.end}</span>
                     {step < 0 && (
-                      <button className="is-interval-remove" onClick={(e) => { e.stopPropagation(); removeInterval(intv.id) }}>×</button>
+                      <button className="is-interval-remove" onClick={(e) => { e.stopPropagation(); removeInterval(intv.id) }} aria-label="Remove interval">×</button>
                     )}
                   </div>
                 )

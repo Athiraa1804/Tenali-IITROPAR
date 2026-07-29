@@ -47352,6 +47352,12 @@ function GKApp({ onBack, markTopicCompleted, isGoalMode = false }) {
   const timer = useTimer()
   // Guard ref: prevents double-fetch from React StrictMode concurrent effect invocations
   const fetchingRef = useRef(false)
+  // Tracks the in-flight question fetch so unmounting can cancel it — the
+  // fetchingRef guard above already stops a second overlapping call from
+  // starting, but nothing previously stopped a pending fetch's setState
+  // calls from firing after the component unmounts.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   /**
    * loadQuestion(excludeIds?): Fetch next GK question from API
@@ -47378,19 +47384,27 @@ function GKApp({ onBack, markTopicCompleted, isGoalMode = false }) {
     setFeedback('')
     setIsCorrect(null)
     setRevealed(false)
-    const ids = excludeIds || seenIds
-    const excludeParam = ids.length ? `?exclude=${ids.join(',')}` : ''
-    const res = await fetch(`${API}/gk-api/question${excludeParam}`)
-    const data = await res.json()
-    setQuestion(data)
-    // Track this question ID so we don't ask it again (persist to localStorage)
-    const newSeen = [...ids, data.id]
-    setSeenIds(newSeen)
-    saveGKSeen(newSeen)
-    setQuestionNumber((n) => n + 1)
-    setLoading(false)
-    fetchingRef.current = false
-    timer.start()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+    try {
+      const ids = excludeIds || seenIds
+      const excludeParam = ids.length ? `?exclude=${ids.join(',')}` : ''
+      const res = await fetch(`${API}/gk-api/question${excludeParam}`, { signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
+      // Track this question ID so we don't ask it again (persist to localStorage)
+      const newSeen = [...ids, data.id]
+      setSeenIds(newSeen)
+      saveGKSeen(newSeen)
+      setQuestionNumber((n) => n + 1)
+      timer.start()
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to load GK question:', e)
+    } finally {
+      setLoading(false)
+      fetchingRef.current = false
+    }
   }
 
   /**
@@ -47633,6 +47647,11 @@ function ColumnAdditionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   const answerRefs = useRef([])
   const carryRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => { if (!isGoalMode) setSessionGoal('standard') }, [isGoalMode])
 
@@ -47646,16 +47665,23 @@ function ColumnAdditionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-addition-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-addition-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setAnswerInputs(new Array(data.answerDigits.length).fill(''))
       setCarryInputs(new Array(data.carries.length).fill(''))
       setCorrectAnswerDigits(null); setCorrectCarryDigits(null)
       setTimeout(() => { if (answerRefs.current[data.answerDigits.length - 1]) answerRefs.current[data.answerDigits.length - 1].focus() }, 100)
-    } catch (e) { console.error('Fetch column addition question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column addition question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -47968,6 +47994,11 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
   const answerRefs = useRef([])
   const carryRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   const [isMulti, setIsMulti] = useState(false)
   const [currentPP, setCurrentPP] = useState(0)
@@ -47996,9 +48027,13 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-multiplication-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-multiplication-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       const multi = !!data.multiDigitMultiplier
@@ -48026,7 +48061,10 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
           if (answerRefs.current[lastIdx]) answerRefs.current[lastIdx].focus()
         }, 100)
       }
-    } catch (e) { console.error('Fetch column multiplication question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column multiplication question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -48836,6 +48874,11 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   const remainderRefs = useRef([])
   const borrowRefs = useRef({})
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   const COL = 40
   const BRACKET = 80
@@ -48851,9 +48894,13 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-division-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-division-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setQuotientInputs(new Array(data.quotientDigits.length).fill(''))
@@ -48862,7 +48909,10 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
       setBorrowInputs({})
       setActiveBorrows(new Set())
       setTimeout(() => { if (quotientRefs.current[0]) quotientRefs.current[0].focus() }, 100)
-    } catch (e) { console.error('Fetch column division question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column division question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -49475,6 +49525,11 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
   const answerRefs = useRef([])
   const borrowRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => { if (!isGoalMode) setSessionGoal('standard') }, [isGoalMode])
 
@@ -49488,9 +49543,13 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-subtraction-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-subtraction-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setAnswerInputs(new Array(data.answerDigits.length).fill(''))
@@ -49500,7 +49559,10 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
         const lastIdx = data.answerDigits.length - 1
         if (answerRefs.current[lastIdx]) answerRefs.current[lastIdx].focus()
       }, 100)
-    } catch (e) { console.error('Fetch column subtraction question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column subtraction question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -49931,6 +49993,11 @@ function AdditionApp({ onBack, completedTopics = [], goldMastery = [], markTopic
   // Timer for response timing
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => {
     if (finished) {
@@ -49986,6 +50053,10 @@ function AdditionApp({ onBack, completedTopics = [], goldMastery = [], markTopic
   }
 
 const fetchQuestion = async (selectedDifficulty = difficulty) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     setFeedback('')
     setAnswer('')
@@ -49999,43 +50070,48 @@ const fetchQuestion = async (selectedDifficulty = difficulty) => {
     const sumMax = additionMode === 'counting' ? sumMaxMap[diffLevel] : null
     const sumMaxParam = sumMax ? `&sumMax=${sumMax}` : ''
 
-    const res = await fetch(`${API}/addition-api/question?digits=${digits}${sumMaxParam}`)
-    const data = await res.json()
-    setQuestion(data)
+    try {
+      const res = await fetch(`${API}/addition-api/question?digits=${digits}${sumMaxParam}`, { signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
 
-    const targetTotal = Number(data.a) + Number(data.b)
+      const targetTotal = Number(data.a) + Number(data.b)
 
-    if (additionMode === 'counting') {
-      // Initialize apples for Visual Counting mode
-      const totalApples = Math.max(15, targetTotal + 5)
-      const initialItems = Array.from({ length: totalApples }, (_, i) => ({ id: `apple-${i}`, icon: '🍎' }))
-      setSourceItems(initialItems)
-      setTargetItems([])
-    } else if (additionMode === 'scale') {
-      // Initialize weights for Balance Scale mode
-      let initBank = []
-      if (diffLevel === 'easy') {
-        if (targetTotal >= 10) {
-          const numTens = Math.floor(targetTotal / 10) + 2;
-          const numOnes = Math.max(12, (targetTotal % 10) + 5);
-          for (let i = 0; i < numTens; i++) {
-            initBank.push({ id: `bank-10-${i}-${Math.random()}`, val: 10 });
-          }
-          for (let i = 0; i < numOnes; i++) {
-            initBank.push({ id: `bank-1-${i}-${Math.random()}`, val: 1 });
+      if (additionMode === 'counting') {
+        // Initialize apples for Visual Counting mode
+        const totalApples = Math.max(15, targetTotal + 5)
+        const initialItems = Array.from({ length: totalApples }, (_, i) => ({ id: `apple-${i}`, icon: '🍎' }))
+        setSourceItems(initialItems)
+        setTargetItems([])
+      } else if (additionMode === 'scale') {
+        // Initialize weights for Balance Scale mode
+        let initBank = []
+        if (diffLevel === 'easy') {
+          if (targetTotal >= 10) {
+            const numTens = Math.floor(targetTotal / 10) + 2;
+            const numOnes = Math.max(12, (targetTotal % 10) + 5);
+            for (let i = 0; i < numTens; i++) {
+              initBank.push({ id: `bank-10-${i}-${Math.random()}`, val: 10 });
+            }
+            for (let i = 0; i < numOnes; i++) {
+              initBank.push({ id: `bank-1-${i}-${Math.random()}`, val: 1 });
+            }
+          } else {
+            initBank = Array.from({ length: Math.max(15, targetTotal + 2) }, (_, i) => ({ id: `bank-1-${i}-${Math.random()}`, val: 1 }));
           }
         } else {
-          initBank = Array.from({ length: Math.max(15, targetTotal + 2) }, (_, i) => ({ id: `bank-1-${i}-${Math.random()}`, val: 1 }));
+          initBank = createDynamicWeightBank(targetTotal)
         }
-      } else {
-        initBank = createDynamicWeightBank(targetTotal)
+        setBankBlocks(initBank)
+        setRightBlocks([])
       }
-      setBankBlocks(initBank)
-      setRightBlocks([])
-    }
 
+      timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to fetch addition question:', e)
+    }
     setLoading(false)
-    timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
   }
 
   /**
@@ -51520,6 +51596,11 @@ function BasicArithApp({ onBack, completedTopics = [], goldMastery = [], markTop
   // Timer
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => {
     if (finished) {
@@ -51557,13 +51638,22 @@ function BasicArithApp({ onBack, completedTopics = [], goldMastery = [], markTop
   }
 
 const fetchQuestion = async () => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     setFeedback(''); setAnswer(''); setRevealed(false); setIsCorrect(null)
-    const res = await fetch(`${API}/basicarith-api/question?difficulty=${effectiveDiff()}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' } })
-    const data = await res.json()
-    setQuestion(data)
+    try {
+      const res = await fetch(`${API}/basicarith-api/question?difficulty=${effectiveDiff()}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' }, signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
+      timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to fetch basic arithmetic question:', e)
+    }
     setLoading(false)
-    timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
   }
 
   /**

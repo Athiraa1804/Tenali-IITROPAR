@@ -1,5 +1,6 @@
 const express = require('express');
 const { requireAuth, Progress } = require('./auth');
+const logger = require('./lib/logger');
 
 const router = express.Router();
 const inMemoryProgress = {};
@@ -68,7 +69,7 @@ router.post('/update', requireAuth, async (req, res) => {
     await prog.save();
     res.json({ success: true, progress: prog });
   } catch (err) {
-    console.error('[progress] update error:', err);
+    logger.error(null, '[progress] update error:', err);
     res.status(500).json({ error: 'Failed to update progress' });
   }
 });

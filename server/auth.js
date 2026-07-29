@@ -21,6 +21,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const logger = require('./lib/logger');
 
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/tenali';
 const DEFAULT_DEV_SECRET = 'tenali-dev-secret-change-me';
@@ -35,7 +36,7 @@ if (process.env.NODE_ENV === 'production' &&
   throw new Error('JWT_SECRET must be set to a strong, non-default value in production — refusing to start.');
 }
 if (JWT_SECRET === DEFAULT_DEV_SECRET) {
-  console.warn('[auth] WARNING: using the built-in development JWT secret. Set JWT_SECRET before deploying.');
+  logger.warn(null,'[auth] WARNING: using the built-in development JWT secret. Set JWT_SECRET before deploying.');
 }
 
 // ─── Mongoose schema ─────────────────────────────────────────────────────────
@@ -193,9 +194,9 @@ const ENV_SEED_USERS = (process.env.TENALI_SEED_USERS || '')
 const SEED_USERS = [...ENV_SEED_USERS];
 
 if (ENV_SEED_USERS.length === 0) {
-  console.warn('[auth] No TENALI_SEED_USERS configured — relying only on existing DB users. No admin will be seeded.');
+  logger.warn(null,'[auth] No TENALI_SEED_USERS configured — relying only on existing DB users. No admin will be seeded.');
 } else if (!ENV_SEED_USERS.some((u) => u.role === 'admin')) {
-  console.warn('[auth] No admin entry in TENALI_SEED_USERS — proctor dashboard access will be unavailable until one is added (format "user:pass:admin").');
+  logger.warn(null,'[auth] No admin entry in TENALI_SEED_USERS — proctor dashboard access will be unavailable until one is added (format "user:pass:admin").');
 }
 
 // In-memory fallback used when MongoDB is unavailable.

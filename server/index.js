@@ -50,6 +50,20 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const wordCreator = require('./wordCreator');
+const logger = require('./lib/logger');
+
+// Catch what would otherwise be a silent crash (or, for unhandled promise
+// rejections on Node 15+, a crash with no application-level record of why).
+// Log first, then exit so the process manager (systemd's tenali.service)
+// restarts a clean process rather than continuing in a possibly-corrupt state.
+process.on('uncaughtException', (err) => {
+  logger.error('process', 'uncaughtException:', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason) => {
+  logger.error('process', 'unhandledRejection:', reason);
+  process.exit(1);
+});
 
 // Initialize Express app and configure middleware
 const app = express();
@@ -113,7 +127,7 @@ try {
   collections = JSON.parse(fs.readFileSync(path.join(__dirname, 'collections.json'), 'utf8'));
   console.log(`[collections] loaded ${collections.length} collections`);
 } catch (e) {
-  console.error('[collections] failed to load collections.json:', e.message);
+  logger.error(null,'[collections] failed to load collections.json:', e.message);
 }
 app.use('/api/auth', auth.router);
 app.use('/api/progress', progress.router);
@@ -129,11 +143,11 @@ async function connectAuthMongoWithRetry(attempt = 1) {
     await auth.seedUsers();
   } catch (err) {
     if (attempt >= maxAttempts) {
-      console.error('[auth] Mongo connect failed - using in-memory auth:', err.message);
+      logger.error(null,'[auth] Mongo connect failed - using in-memory auth:', err.message);
       return;
     }
 
-    console.warn(
+    logger.warn(null,
       `[auth] Mongo unavailable (${err.message}); retrying in ${Math.round(retryDelayMs / 1000)}s ` +
       `(${attempt}/${maxAttempts})`
     );
@@ -287,7 +301,7 @@ app.use((req, res, next) => {
           }
         }
       } catch (err) {
-        console.error('[attempt-logger] Failed to log student attempt:', err.message);
+        logger.error(null,'[attempt-logger] Failed to log student attempt:', err.message);
       }
     })();
 
@@ -365,7 +379,7 @@ app.use(async (req, res, next) => {
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
-      console.warn('[LIL] JWT verify failed:', e.message);
+      logger.warn(null,'[LIL] JWT verify failed:', e.message);
     }
   }
 
@@ -408,7 +422,7 @@ app.use(async (req, res, next) => {
       // Fire-and-forget: try to save attempt in background
       lilProcess.processAttempt(payloadInput)
         .then(() => {})
-        .catch(err => console.error('[LIL] processAttempt failed:', err.message));
+        .catch(err => logger.error(null,'[LIL] processAttempt failed:', err.message));
     } else {
       originalJson(data);
     }
@@ -434,7 +448,7 @@ app.use(async (req, res, next) => {
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
-      console.warn('[LIL GET] JWT verify failed:', e.message);
+      logger.warn(null,'[LIL GET] JWT verify failed:', e.message);
     }
   }
 
@@ -493,7 +507,7 @@ app.use(async (req, res, next) => {
         });
       }
     } catch (err) {
-      console.error('[LIL GET] Failed to fetch revision question:', err);
+      logger.error(null,'[LIL GET] Failed to fetch revision question:', err);
     }
   }
 
@@ -9454,7 +9468,7 @@ app.get('/api/learning-journey/progress', auth.requireAuth, async (req, res) => 
       overallProgressPercent
     });
   } catch (err) {
-    console.error('[learning-journey] GET /progress error:', err.message);
+    logger.error(null,'[learning-journey] GET /progress error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -9470,7 +9484,7 @@ app.post('/api/learning-journey/complete-concept', auth.requireAuth, async (req,
     const progress = await completeConcept(userId, topicId, conceptKey);
     res.json({ success: true, completedConcepts: progress.completedConcepts });
   } catch (err) {
-    console.error('[learning-journey] POST /complete-concept error:', err.message);
+    logger.error(null,'[learning-journey] POST /complete-concept error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -9486,7 +9500,7 @@ app.get('/api/learning-journey/checkpoint/quiz', auth.requireAuth, async (req, r
     const quiz = await getCheckpointQuiz(userId, topicId);
     res.json(quiz);
   } catch (err) {
-    console.error('[learning-journey] GET /checkpoint/quiz error:', err.message);
+    logger.error(null,'[learning-journey] GET /checkpoint/quiz error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -9502,7 +9516,7 @@ app.post('/api/learning-journey/checkpoint/verify', auth.requireAuth, async (req
     const result = await verifyCheckpointQuiz(userId, topicId, answers);
     res.json(result);
   } catch (err) {
-    console.error('[learning-journey] POST /checkpoint/verify error:', err.message);
+    logger.error(null,'[learning-journey] POST /checkpoint/verify error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -9580,7 +9594,7 @@ app.post('/api/proctor/start', async (req, res) => {
     });
     res.json({ sessionId: session._id, status: 'active' });
   } catch (e) {
-    console.error('[proctor] start error:', e.message);
+    logger.error(null,'[proctor] start error:', e.message);
     res.status(500).json({ error: 'failed to start proctor session' });
   }
 });
@@ -9606,7 +9620,7 @@ app.post('/api/proctor/event', async (req, res) => {
     });
     res.json({ eventId: event._id, recorded: true });
   } catch (e) {
-    console.error('[proctor] event error:', e.message);
+    logger.error(null,'[proctor] event error:', e.message);
     res.status(500).json({ error: 'failed to log proctor event' });
   }
 });
@@ -9625,7 +9639,7 @@ app.post('/api/proctor/end', async (req, res) => {
     const events = await ProctorEvent.find({ sessionId }).sort({ timestamp: 1 });
     res.json({ session, events });
   } catch (e) {
-    console.error('[proctor] end error:', e.message);
+    logger.error(null,'[proctor] end error:', e.message);
     res.status(500).json({ error: 'failed to end proctor session' });
   }
 });
@@ -9684,7 +9698,7 @@ app.post('/api/proctor/face/register', auth.requireAuth, async (req, res) => {
       res.json({ registered: false, reason: 'CompreFace detection failed' });
     }
   } catch (e) {
-    console.error('[face] register error:', e.message);
+    logger.error(null,'[face] register error:', e.message);
     res.json({ registered: false, reason: 'CompreFace unreachable' });
   }
 });
@@ -9711,7 +9725,7 @@ app.post('/api/proctor/face/verify', async (req, res) => {
       res.json({ verified: true, similarity: 1, reason: 'CompreFace verification failed' });
     }
   } catch (e) {
-    console.error('[face] verify error:', e.message);
+    logger.error(null,'[face] verify error:', e.message);
     res.json({ verified: true, similarity: 1, reason: 'CompreFace unreachable' });
   }
 });
@@ -9734,7 +9748,7 @@ app.post('/api/emotions/submit', async (req, res) => {
     });
     res.json({ id: doc._id, recorded: true });
   } catch (e) {
-    console.error('[emotion] submit error:', e.message);
+    logger.error(null,'[emotion] submit error:', e.message);
     res.status(500).json({ error: 'failed to submit emotion' });
   }
 });
@@ -9798,13 +9812,13 @@ app.post('/api/playground/run', async (req, res) => {
     });
     if (!r.ok) {
       const text = await r.text();
-      console.error('[playground] Judge0 error:', r.status, text);
+      logger.error(null,'[playground] Judge0 error:', r.status, text);
       return res.status(502).json({ error: 'Judge0 request failed', detail: text });
     }
     const data = await r.json();
     res.json(data);
   } catch (e) {
-    console.error('[playground] error:', e.message);
+    logger.error(null,'[playground] error:', e.message);
     res.status(500).json({ error: 'Failed to execute code' });
   }
 });
@@ -9819,7 +9833,7 @@ app.get('/api/playground2/languages', (req, res) => {
     const langs = compiler.listLanguages();
     res.json({ languages: langs });
   } catch (e) {
-    console.error('[playground2] list error:', e.message);
+    logger.error(null,'[playground2] list error:', e.message);
     res.status(500).json({ error: 'Failed to list languages' });
   }
 });
@@ -9833,7 +9847,7 @@ app.post('/api/playground2/run', async (req, res) => {
     const result = await compiler.executeCode(language, code, stdin || '', timeout);
     res.json(result);
   } catch (e) {
-    console.error('[playground2] run error:', e.message);
+    logger.error(null,'[playground2] run error:', e.message);
     res.status(500).json({ error: 'Failed to execute code' });
   }
 });
@@ -10110,7 +10124,7 @@ function loadInMemoryProfiles() {
       console.log(`[auth] Loaded ${Object.keys(inMemoryUserProfiles).length} in-memory user profiles from persistent file fallback`);
     }
   } catch (err) {
-    console.error('[auth] Failed to load in-memory profiles:', err.message);
+    logger.error(null,'[auth] Failed to load in-memory profiles:', err.message);
   }
 }
 
@@ -10124,7 +10138,7 @@ function saveInMemoryProfiles() {
     }
     fs.writeFileSync(DB_FILE, JSON.stringify(cleaned, null, 2), 'utf8');
   } catch (err) {
-    console.error('[auth] Failed to save in-memory profiles:', err.message);
+    logger.error(null,'[auth] Failed to save in-memory profiles:', err.message);
   }
 }
 
@@ -10171,13 +10185,13 @@ async function getUserFromReq(req) {
           const dbUser = await auth.User.findById(payload.sub || payload.username);
           if (dbUser) return dbUser;
         } catch (dbErr) {
-          console.error('[auth] Database query failed, falling back to in-memory profile:', dbErr.message);
+          logger.error(null,'[auth] Database query failed, falling back to in-memory profile:', dbErr.message);
         }
       }
       return getInMemoryUser(payload.username);
     }
   } catch (e) {
-    console.error('[auth] getUserFromReq error:', e.message);
+    logger.error(null,'[auth] getUserFromReq error:', e.message);
   }
   return null;
 }
@@ -10844,7 +10858,7 @@ app.get('/transfer-api/question', async (req, res) => {
         const generated = generateGenericTransfer(topic, originalQuestion);
         return res.json(generated);
       } catch (fetchErr) {
-        console.error(`Generic transfer fallback failed to fetch for topic '${topic}':`, fetchErr);
+        logger.error(null,`Generic transfer fallback failed to fetch for topic '${topic}':`, fetchErr);
         return res.status(404).json({ error: `No transfer scenarios available for topic: ${topic}. Fallback failed: ${fetchErr.message}` });
       }
     }
@@ -10916,7 +10930,7 @@ app.post('/transfer-api/check', express.json(), async (req, res) => {
           explanation = generateGenericExplanation(varTopic, originalQuestion, expectedAnswer);
         }
       } catch (checkErr) {
-        console.error(`Generic check call failed for topic ${varTopic}, falling back to compareAnswers:`, checkErr);
+        logger.error(null,`Generic check call failed for topic ${varTopic}, falling back to compareAnswers:`, checkErr);
         correct = compareAnswers(userAnswer, expectedAnswer);
         explanation = generateGenericExplanation(varTopic, originalQuestion, expectedAnswer);
       }
@@ -12427,7 +12441,7 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
     }
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
-    console.error('Mission quiz question error:', e);
+    logger.error(null,'Mission quiz question error:', e);
     res.status(500).json({ error: 'Failed to generate question' });
   }
 });
@@ -13152,7 +13166,7 @@ app.post('/curiosity-api/variation', (req, res) => {
 
     return res.json({ original: originalData, variation, newProblem, newAnswer, explanation });
   } catch (err) {
-    console.error('[curiosity-api] error:', err && err.stack ? err.stack : err);
+    logger.error(null,'[curiosity-api] error:', err && err.stack ? err.stack : err);
     return res.status(500).json({ error: 'internal error' });
   }
 });
@@ -13198,12 +13212,12 @@ function loadMatrixMysticsBank() {
           totalTopics++;
         }
       } catch (e) {
-        console.error(`[matrixmystics] Failed to load ${file}:`, e.message);
+        logger.error(null,`[matrixmystics] Failed to load ${file}:`, e.message);
       }
     }
     console.log(`[matrixmystics] Loaded ${Object.keys(mmQuestionBank).length} topics across ${Object.keys(mmModules).length} modules (${totalTopics} topic entries)`);
   } catch (e) {
-    console.error('[matrixmystics] Failed to read directory:', e.message);
+    logger.error(null,'[matrixmystics] Failed to read directory:', e.message);
   }
 }
 
@@ -13303,7 +13317,7 @@ app.get('/matrixmystics-api/question', (req, res) => {
 
     return res.status(500).json({ error: 'Question format error' });
   } catch (err) {
-    console.error('[matrixmystics-api] error:', err);
+    logger.error(null,'[matrixmystics-api] error:', err);
     return res.status(500).json({ error: 'internal error' });
   }
 });
@@ -14246,6 +14260,17 @@ io.on('connection', (socket) => {
     else { io.to(room.code).emit('opponentLeft', { name: player?.name || 'Opponent' }); rooms.delete(room.code); }
     broadcastOpenRooms();
   });
+});
+
+// Global error handler — catches anything an individual route didn't handle
+// itself (thrown errors, and in Express 5, rejected async handlers too).
+// Must be registered after all routes. Logs full detail server-side but
+// never leaks stack traces to the client.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  logger.error('http', `${req.method} ${req.originalUrl} ->`, err);
+  if (res.headersSent) return;
+  res.status(err.status || 500).json({ error: 'Internal server error' });
 });
 
 if (require.main === module) {

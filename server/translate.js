@@ -19,6 +19,7 @@
  */
 
 const express = require('express');
+const logger = require('./lib/logger');
 
 const API_KEY = process.env.GOOGLE_TRANSLATE_API_KEY;
 const ENDPOINT = 'https://translation.googleapis.com/language/translate/v2';
@@ -26,7 +27,7 @@ const TRANSLATE_TIMEOUT_MS = 5000;
 const MAX_TEXT_LENGTH = 500;
 
 if (!API_KEY) {
-  console.warn('[translate] GOOGLE_TRANSLATE_API_KEY not set — /api/translate will pass text through untranslated.');
+  logger.warn(null,'[translate] GOOGLE_TRANSLATE_API_KEY not set — /api/translate will pass text through untranslated.');
 }
 
 // In-memory cache: "text|targetLang" -> translated string. Bounded so it
@@ -91,7 +92,7 @@ router.post('/', express.json(), async (req, res) => {
     cacheSet(cacheKey, translated);
     res.json({ translated });
   } catch (err) {
-    console.warn('[translate] request failed, returning original text:', err.message);
+    logger.warn(null,'[translate] request failed, returning original text:', err.message);
     res.json({ translated: text });
   }
 });

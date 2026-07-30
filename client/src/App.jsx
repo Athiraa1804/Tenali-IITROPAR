@@ -41587,7 +41587,7 @@ function CoordGeomInteractiveApp({ onBack }) {
 
   const loadQuestion = async () => {
     try {
-      const r = await fetch(`/coordgeom-api/question?difficulty=${difficulty}`);
+      const r = await fetch(`${API}/coordgeom-api/question?difficulty=${difficulty}`);
       if (!r.ok) throw new Error('Server error');
       const data = await r.json();
       setCurrentQ(data);
@@ -41629,7 +41629,7 @@ function CoordGeomInteractiveApp({ onBack }) {
         ...currentQ,
         userAnswer: currentQ.type === 'coord' ? `(${dartPos.x}, ${dartPos.y})` : textAnswer
       };
-      const r = await fetch('/coordgeom-api/check', {
+      const r = await fetch(`${API}/coordgeom-api/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -41852,7 +41852,7 @@ function DartBoardApp({ onBack }) {
 
   const loadQuestion = async () => {
     try {
-      const r = await fetch(`/darts-api/question?level=${currentLevel}`);
+      const r = await fetch(`${API}/darts-api/question?level=${currentLevel}`);
       if (!r.ok) throw new Error('Server error');
       const data = await r.json();
       setCurrentQ(data);
@@ -41915,7 +41915,7 @@ function DartBoardApp({ onBack }) {
         userX: dartPos.x,
         userY: dartPos.y,
       };
-      const r = await fetch('/darts-api/check', {
+      const r = await fetch(`${API}/darts-api/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -44193,7 +44193,7 @@ function App() {
       try {
         const typeParam = type ? `&type=${encodeURIComponent(type)}` : ''
         const usedParam = usedIdsRef.current.length ? `&used=${encodeURIComponent(JSON.stringify(usedIdsRef.current))}` : ''
-        const r = await fetch(`/riddle-api/question?difficulty=${difficulty}${typeParam}${usedParam}`)
+        const r = await fetch(`${API}/riddle-api/question?difficulty=${difficulty}${typeParam}${usedParam}`)
         const data = await r.json()
         if (data.id != null) usedIdsRef.current = [...usedIdsRef.current, data.id]
         setQuestion(data)
@@ -44231,7 +44231,7 @@ function App() {
     const selectType = async (type) => {
       setSelectedType(type)
       try {
-        const r = await fetch(`/riddle-api/count?type=${encodeURIComponent(type)}`)
+        const r = await fetch(`${API}/riddle-api/count?type=${encodeURIComponent(type)}`)
         const data = await r.json()
         const max = data.count || 44
         setMaxForType(max)
@@ -44255,7 +44255,7 @@ function App() {
       submittedRef.current = true
 
       try {
-        const r = await fetch('/riddle-api/check', {
+        const r = await fetch(`${API}/riddle-api/check`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: question.id, answer: userAnswer })
@@ -44276,7 +44276,7 @@ function App() {
     const fetchSolution = async () => {
       if (!question) return
       try {
-        const r = await fetch('/riddle-api/solution', {
+        const r = await fetch(`${API}/riddle-api/solution`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: question.id })
@@ -52428,7 +52428,7 @@ function VisualMathApp({ onBack }) {
     setLoading(true); resetInteractive()
     const mode = pickMode()
     try {
-      const r = await fetch(`/visual-math-api/question?type=${operation}&mode=${mode}&difficulty=${difficulty}`)
+      const r = await fetch(`${API}/visual-math-api/question?type=${operation}&mode=${mode}&difficulty=${difficulty}`)
       const q = await r.json()
       setQuestion(q)
     } catch (e) { console.error(e) }

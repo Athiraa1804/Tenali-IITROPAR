@@ -67,11 +67,13 @@ jobs:
 
       - name: 🔍 Show what changed
         run: |
-          git --no-pager diff --stat README.md CONTRIBUTORS.md
+          git --no-pager diff --stat README.md CONTRIBUTORS.md CHANGELOG.md
           echo "─── README.md diff ───"
-          git --no-pager diff README.md | head -120 || true
+          git --no-pager diff README.md | head -80 || true
           echo "─── CONTRIBUTORS.md diff ───"
-          git --no-pager diff CONTRIBUTORS.md | head -120 || true
+          git --no-pager diff CONTRIBUTORS.md | head -80 || true
+          echo "─── CHANGELOG.md diff (first 30 lines) ───"
+          git --no-pager diff CHANGELOG.md | head -30 || true
 
       - name: 🚀 Commit via github-actions[bot]
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -84,12 +86,14 @@ jobs:
             - Synced real names & avatars from GitHub API
             - Updated repo snapshot numbers
             - Regenerated full contributor cards in CONTRIBUTORS.md
+            - Regenerated point-wise CHANGELOG.md (commit-by-commit log)
 
             Triggered by: ${{ github.event_name }}
             Commit:       ${{ github.sha }}
           file_pattern: |
             README.md
             CONTRIBUTORS.md
+            CHANGELOG.md
           branch: main              # always push to main, not the PR source branch
           commit_user_name: 'github-actions[bot]'
           commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'

@@ -34,6 +34,7 @@ const REPO = process.env.TENALI_REPO || 'vicharanashala/tenali';
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const README = path.resolve(PROJECT_ROOT, 'README.md');
 const CONTRIBUTORS = path.resolve(PROJECT_ROOT, 'CONTRIBUTORS.md');
+const CHANGELOG = path.resolve(PROJECT_ROOT, 'CHANGELOG.md');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
@@ -122,6 +123,24 @@ function gatherGitLog() {
     prsByAuthor[user].add(num);
   });
 
+  // Full commit list — used to power the auto-generated CHANGELOG.md
+  // Format per line: sha|shortSha|author|email|date|subject
+  const commits = sh(`git log --pretty=format:"%H|%h|%an|%ae|%ad|%s" --date=short`)
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      const [sha, shortSha, author, email, date, ...rest] = line.split('|');
+      return {
+        sha,
+        shortSha,
+        author,
+        // Email is intentionally stripped from the rendered output
+        email,
+        date,
+        subject: rest.join('|'),
+      };
+    });
+
   return {
     totalCommits: total,
     uniqueAuthors: authorCount,
@@ -131,6 +150,7 @@ function gatherGitLog() {
     ),
     totalPRs: allPRs.size,
     allPRNumbers: [...allPRs].sort((a, b) => +a - +b),
+    commits,
   };
 }
 
@@ -743,6 +763,80 @@ function renderCards(rows) {
   return rows.map(renderCard).join('\n\n');
 }
 
+// ─── CHANGELOG rendering ────────────────────────────────────────────────────
+
+// Map conventional commit prefix → emoji + label
+const COMMIT_TYPE_ICONS = {
+  feat: '✨', feature: '✨',
+  fix: '🐛', bugfix: '🐛',
+  docs: '📝', doc: '📝',
+  chore: '🔧',
+  refactor: '♻️',
+  style: '💄',
+  test: '🧪', tests: '🧪',
+  perf: '⚡',
+  build: '📦',
+  ci: '👷',
+  revert: '⏪',
+  merge: '🔀',
+  init: '🎉',
+  release: '🚀',
+};
+
+function commitTypeIcon(subject) {
+  const m = String(subject || '').toLowerCase().match(/^([a-z]+)(?:\(.*?\))?!?:/);
+  if (!m) return '📌'; // default for non-conventional commits
+  return COMMIT_TYPE_ICONS[m[1]] || '📌';
+}
+
+// Parse "Merge pull request #N from <user>/<branch>" → PR info
+function parseMergeInfo(subject) {
+  const m = String(subject || '').match(/Merge pull request #(\d+) from ([^/]+)\//i);
+  if (!m) return null;
+  return { prNumber: m[1], prAuthor: m[2] };
+}
+
+function renderChangelog(git) {
+  const commits = git.commits || [];
+  if (commits.length === 0) return '_No commits yet._';
+
+  // Group commits by date (YYYY-MM-DD)
+  const byDate = new Map();
+  for (const c of commits) {
+    if (!byDate.has(c.date)) byDate.set(c.date, []);
+    byDate.get(c.date).push(c);
+  }
+
+  // Sort dates newest-first
+  const sortedDates = [...byDate.keys()].sort((a, b) => (a < b ? 1 : -1));
+
+  const lines = [];
+  lines.push(`### 📊 Total: ${commits.length} commits · ${byDate.size} active days · ${git.uniqueAuthors} unique authors\n`);
+
+  for (const date of sortedDates) {
+    const dayCommits = byDate.get(date);
+    lines.push(`#### 📅 ${date}  <sub>(${dayCommits.length} commit${dayCommits.length === 1 ? '' : 's'})</sub>\n`);
+
+    for (const c of dayCommits) {
+      const icon = commitTypeIcon(c.subject);
+      const merge = parseMergeInfo(c.subject);
+
+      // For merge commits, show "PR #N from <user>"
+      if (merge) {
+        lines.push(`- ${icon} \`${c.shortSha}\` — **${c.author}** — 🔀 PR #${merge.prNumber} from \`${merge.prAuthor}\``);
+      } else {
+        // Regular commit: show sha + author + subject
+        // Subject is stripped of the conventional-commit prefix for readability
+        const cleanSubject = String(c.subject).replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
+        lines.push(`- ${icon} \`${c.shortSha}\` — **${c.author}** — ${cleanSubject}`);
+      }
+    }
+    lines.push(''); // blank line between dates
+  }
+
+  return lines.join('\n');
+}
+
 // ─── README mutation ────────────────────────────────────────────────────────
 
 function replaceMarkerBlock(readme, startMarker, endMarker, newContent) {
@@ -792,9 +886,18 @@ async function main() {
   const snapshot = renderSnapshot(totals);
   const atAGlance = renderAtAGlance(totals);
   const cards = renderCards(rows);
+  const changelog = renderChangelog(git);
 
   let readme = fs.readFileSync(README, 'utf8');
   let contributorsDoc = fs.readFileSync(CONTRIBUTORS, 'utf8');
+
+  // CHANGELOG.md — point-wise commit log grouped by date
+  let changelogDoc = fs.existsSync(CHANGELOG)
+    ? fs.readFileSync(CHANGELOG, 'utf8')
+    : null;
+  if (changelogDoc) {
+    changelogDoc = replaceMarkerBlock(changelogDoc, '<!-- live-changelog:start -->', '<!-- live-changelog:end -->', changelog);
+  }
 
   // README.md — only the at-a-glance, snapshot, leaderboard (no cards)
   readme = replaceMarkerBlock(readme, '<!-- live-at-a-glance:start -->', '<!-- live-at-a-glance:end -->', atAGlance);
@@ -816,7 +919,8 @@ async function main() {
 
   fs.writeFileSync(README, readme);
   fs.writeFileSync(CONTRIBUTORS, contributorsDoc);
-  log(`✅ README.md + CONTRIBUTORS.md updated (${rows.length} contributors rendered)`);
+  if (changelogDoc) fs.writeFileSync(CHANGELOG, changelogDoc);
+  log(`✅ README.md + CONTRIBUTORS.md${changelogDoc ? ' + CHANGELOG.md' : ''} updated (${rows.length} contributors · ${git.commits.length} commits rendered)`);
 }
 
 main().catch((e) => {

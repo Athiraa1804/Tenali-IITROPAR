@@ -1,916 +1,936 @@
-# Changelog
+# 📜 Changelog
 
-Percentages — Level 1: Find a Percentage
-Author: Ritish Karmakar
-
-Version 1 — July 8, 2026
-Built the complete learning experience for Percentages Level 1 from the ground up.
-The explanation screen has five parts: an interactive visual where students drag a slider and watch a percentage bar fill up live, click-through theory, a worked example, a copyable AI study assistant prompt for students who want extra help from their own AI tool, and an understanding check before they're allowed into the real quiz. The understanding check pulls from 20 different real-life question templates — discounts, exam marks, sports stats — with randomized numbers each time and no repeats, so a student can't just memorize one answer to pass.
-The graded quiz was rebuilt with step-by-step diagnostic solving. If a student gets a question wrong, instead of just marking it incorrect, it breaks the problem into two guided steps — converting the percentage, then applying it — and walks them through each one. If they keep struggling with the same type of step across different questions, the app automatically sends them back to the exact part of the explanation that covers it, checks their understanding, then lets them continue.
-The whole quiz got a kid-friendly redesign too — a game-like "Percent Island" theme with XP, gems, a combo counter, unlockable badges, a friendly mascot with speech bubbles, confetti and sound on correct answers, and a level-completion screen.
-Files Changed
-FileChangeApp.jsxRebuilt the graded PercentApp component — new question generator, 3-mode state machine (Normal, Step-Wise Diagnostic, Check Question), escalation/failure-tracking logic, kid-friendly UI (Percent Island theme, mascot, XP/Gems/Combo, star progress, confetti, sound)App.cssAdded the full kid-friendly theme styling — Percent Island layout, mascot speech bubbles, star animations, confetti, chunky button styles, cream card backgroundsPercentExplanationApp.jsxBuilt the 5-part explanation screen (Level1ExplanationView) — interactive visual model, click-through theory, worked example, AI study assistant prompt, understanding check with 20 randomized scenario templatesPercentExplanationApp.cssStyling for the 5-part explanation screen
-
-Version 2 — July 9, 2026
-A cleanup pass focused on cognitive load. Both the explanation screen and the graded quiz were originally showing everything stacked on one long scrollable page, which was too much at once for the target age group. I changed both to reveal one section or one step at a time, with smooth fade transitions and a progress indicator so students always know where they are.
-I also fixed a sound bug — the app was creating a brand-new audio object every time a sound effect played, which eventually hits a browser limit and breaks. I fixed this by sharing a single audio instance across the whole app, so sound now plays reliably no matter how long the session runs, and the mute toggle works cleanly without needing to recreate anything.
-Files Changed
-FileChangeaudioContext.jsNEW — Singleton AudioContext + shared playSound utilityApp.jsxRemoved duplicate local playSound, imported the shared one; rewrote step-wise quiz rendering to show one card at a time instead of all stackedApp.cssAdded .percentages-card-transition-wrapper + fade-in keyframes for the one-card-at-a-time quiz viewPercentExplanationApp.jsxImported shared playSound; added activeSection state, horizontal timeline progress indicator, Previous/Next navigation, fixed a missing closing </div>PercentExplanationApp.cssAdded transition wrapper + fade-in keyframes for one-section-at-a-time view, timeline hover styles
-
-Version 3 — July 15, 2026
-The biggest update, based on direct feedback from my mentor.
-I removed the AI study assistant prompt step entirely — it's no longer part of the flow.
-I replaced the old drag-and-drop matching game with a proper guided mini-story. A friendly mascot now walks the student through one of five different real-world examples — a candy jar, a pizza, a classroom, a piggy bank, or a football match — picked at random each time so it stays fresh, but only one example is shown per visit so it doesn't overwhelm. The story plays out in five short beats: introduce the whole amount, show a part being taken away, ask the student to guess the percentage, reveal the answer and formula, then recap. I also removed the old interaction where students had to tap 25 individual items one by one — that's now a simple animated reveal with a single tap to continue, which is far less tedious and keeps the focus on understanding rather than clicking.
-I also gave the mascot three different expressions — explaining, excited, and thinking — so it reacts appropriately to what's happening in the story.
-Separately, I simplified the rest of the explanation screen for younger readers: shorter, simpler sentences, bigger formula and result displays, and a small info popup on the header instead of permanent instructional text cluttering every screen.
-Finally, I fixed a background color bug where some cards on the explanation screen and the graded quiz didn't match the rest of the app — everything now uses the same consistent color scheme in both light and dark mode.
-Files Changed
-FileChangePercentExplanationApp.jsxRemoved the AI Study Assistant Prompt section; replaced the old drag-and-drop Story section with a new data-driven, scenario-based Story component (5 rotating real-world scenarios) and mascot avatar with 3 expressions; added hover/tap info popup on the section header; simplified Theory and Worked Example section contentPercentExplanationApp.cssRemoved AI prompt and old drag-game styles; added Story section, mascot, and info popup styles; fixed background token usage across cards to resolve the color-drift bug; added responsive/typography adjustmentsPercent Island stylesheetFixed background token usage to match the rest of the app in both light and dark mode
-
-Version 4 — July 16, 2026
-Acted on a second round of mentor feedback about the theory and worked-example sections specifically.
-Previously, the Concept Theory and Worked Example sections showed all their points and steps stacked on screen at once. I changed both to reveal one idea or one step at a time, with a "1 of 4" style progress indicator so students can see how much is left, and simple back/next navigation to move through them.
-I also reordered the Concept Theory section so the core formula is introduced first, followed by the supporting explanation — since that's the main thing students need to walk away remembering, rather than saving it for last.
-I increased the font size and spacing on both sections' cards to make everything easier to read and less cramped for a young student, and fixed a bug where the "Interactive Visual Model" heading was accidentally appearing twice on the first section.
-Files Changed
-FileChangePercentExplanationApp.jsxConverted Concept Theory and Worked Example sections from all-cards-stacked to one-card-at-a-time click-through, with progress indicators and inner Back/Next navigation; reordered Concept Theory so the formula is introduced first; fixed duplicate rendering of the "Interactive Visual Model" headingPercentExplanationApp.cssIncreased font size and card spacing/padding on Theory and Worked Example cards; added progress-indicator and inner navigation button styles
+> **Auto-generated commit log** — point-wise, grouped by date, with each commit showing:
+> - 🏷️ **Category emoji** (✨ feat · 🐛 fix · 📝 docs · 🔧 chore · etc.)
+> - 🔗 **Short SHA** (click to see the diff on GitHub)
+> - 👤 **Author name** (the person who made the change)
+> - 📝 **Commit subject** (what was done)
+> - 🔀 **PR number** (when it's a merge commit)
+>
+> 🤖 _Refreshed automatically on every push / merged PR / every 12 hours by [`github-actions[bot]`](.github/workflows/update-readme.yml)._
+>
+> 👉 **Want the high-level "what shipped" view?** See the [README.md → Features in Depth](README.md#-features-in-depth) section.
 
 ---
 
-# Changelog — Tenali
+<!-- live-changelog:start -->
+### 📊 Total: 784 commits · 43 active days · 21 unique authors
 
-Percentages — Level 1: Find a Percentage
-Author: Ritish Karmakar
+#### 📅 2026-08-03  <sub>(26 commits)</sub>
 
-Version 1 — July 8, 2026
-Built the complete learning experience for Percentages Level 1 from the ground up.
-The explanation screen has five parts: an interactive visual where students drag a slider and watch a percentage bar fill up live, click-through theory, a worked example, a copyable AI study assistant prompt for students who want extra help from their own AI tool, and an understanding check before they're allowed into the real quiz. The understanding check pulls from 20 different real-life question templates — discounts, exam marks, sports stats — with randomized numbers each time and no repeats, so a student can't just memorize one answer to pass.
-The graded quiz was rebuilt with step-by-step diagnostic solving. If a student gets a question wrong, instead of just marking it incorrect, it breaks the problem into two guided steps — converting the percentage, then applying it — and walks them through each one. If they keep struggling with the same type of step across different questions, the app automatically sends them back to the exact part of the explanation that covers it, checks their understanding, then lets them continue.
-The whole quiz got a kid-friendly redesign too — a game-like "Percent Island" theme with XP, gems, a combo counter, unlockable badges, a friendly mascot with speech bubbles, confetti and sound on correct answers, and a level-completion screen.
-Files Changed
-FileChangeApp.jsxRebuilt the graded PercentApp component — new question generator, 3-mode state machine (Normal, Step-Wise Diagnostic, Check Question), escalation/failure-tracking logic, kid-friendly UI (Percent Island theme, mascot, XP/Gems/Combo, star progress, confetti, sound)App.cssAdded the full kid-friendly theme styling — Percent Island layout, mascot speech bubbles, star animations, confetti, chunky button styles, cream card backgroundsPercentExplanationApp.jsxBuilt the 5-part explanation screen (Level1ExplanationView) — interactive visual model, click-through theory, worked example, AI study assistant prompt, understanding check with 20 randomized scenario templatesPercentExplanationApp.cssStyling for the 5-part explanation screen
+- 📌 `6237be3` — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+- 📝 `5ef467c` — **Mudit Agrawal** — reframe tagline around math strengths (drop GK/vocab/Logic)
+- 📌 `d1b49dc` — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+- 🐛 `6f4a54a` — **Mudit Agrawal** — use pull_request_target so bot can push on merged PRs
+- 📌 `e99ff85` — **muditagrawal2007** — 🔀 PR #136 from `muditagrawal2007`
+- ✨ `a2620a7` — **Mudit Agrawal** — auto-add any new git author to the leaderboard
+- 📌 `1e6c5ee` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new
+- 🐛 `9a48907` — **Mudit Agrawal** — point stars/forks badges at canonical upstream (vicharanashala/tenali)
+- ✨ `7ba7054` — **Mudit Agrawal** — show live ⭐ stars, 🍴 forks, 🐛 open issues in at-a-glance
+- 📌 `7b2e971` — **muditagrawal2007** — 🔀 PR #135 from `muditagrawal2007`
+- 🐛 `286a1da` — **Mudit Agrawal** — make rank emoji dynamic — single source of truth
+- ♻️ `a45a8ea` — **Mudit Agrawal** — split detailed cards into CONTRIBUTORS.md
+- 📝 `897c2e3` — **Mudit Agrawal** — re-label Mudit as 'Maintainer' (drop ambiguous 'Repo Owner')
+- 📝 `d9ecb3b` — **Mudit Agrawal** — expand Sudarshan's profile with his 7 custom routes + 30+ puzzle families
+- 📝 `53a60fc` — **Mudit Agrawal** — expand Mudit Agrawal's profile with Sudoku + Playground features
+- 📌 `1d670d0` — **Mudit Agrawal** — stop rendering contributor email addresses
+- 📌 `cf68af6` — **muditagrawal2007** — added the readme.md
+- 🐛 `693c4b9` — **Mudit Agrawal** — preserve fallback real name when API returns login-as-name
+- ✨ `98da836` — **Mudit Agrawal** — full bot-generated contributor section + '+' merge indicator
+- 📌 `a232fdc` — **muditagrawal2007** — 🔀 PR #134 from `muditagrawal2007`
+- 📌 `aa9eb2d` — **muditagrawal2007** — added the readme.md
+- 📌 `101f75d` — **Mudit Agrawal** — redact production droplet IP from deployment topology
+- 📌 `bdb434b` — **Mudit Agrawal** — redact production droplet IP from public docs
+- 📌 `7e7e1e4` — **muditagrawal2007** — added the readme.md
+- 📝 `397e298` — **Mudit Agrawal** — simplify user workflow, fix fork-chain docs, auto-refresh contributor stats
+- 📌 `3326d15` — **muditagrawal2007** — added the readme.md
 
-Version 2 — July 9, 2026
-A cleanup pass focused on cognitive load. Both the explanation screen and the graded quiz were originally showing everything stacked on one long scrollable page, which was too much at once for the target age group. I changed both to reveal one section or one step at a time, with smooth fade transitions and a progress indicator so students always know where they are.
-I also fixed a sound bug — the app was creating a brand-new audio object every time a sound effect played, which eventually hits a browser limit and breaks. I fixed this by sharing a single audio instance across the whole app, so sound now plays reliably no matter how long the session runs, and the mute toggle works cleanly without needing to recreate anything.
-Files Changed
-FileChangeaudioContext.jsNEW — Singleton AudioContext + shared playSound utilityApp.jsxRemoved duplicate local playSound, imported the shared one; rewrote step-wise quiz rendering to show one card at a time instead of all stackedApp.cssAdded .percentages-card-transition-wrapper + fade-in keyframes for the one-card-at-a-time quiz viewPercentExplanationApp.jsxImported shared playSound; added activeSection state, horizontal timeline progress indicator, Previous/Next navigation, fixed a missing closing </div>PercentExplanationApp.cssAdded transition wrapper + fade-in keyframes for one-section-at-a-time view, timeline hover styles
+#### 📅 2026-07-30  <sub>(4 commits)</sub>
 
-Version 3 — July 15, 2026
-The biggest update, based on direct feedback from my mentor.
-I removed the AI study assistant prompt step entirely — it's no longer part of the flow.
-I replaced the old drag-and-drop matching game with a proper guided mini-story. A friendly mascot now walks the student through one of five different real-world examples — a candy jar, a pizza, a classroom, a piggy bank, or a football match — picked at random each time so it stays fresh, but only one example is shown per visit so it doesn't overwhelm. The story plays out in five short beats: introduce the whole amount, show a part being taken away, ask the student to guess the percentage, reveal the answer and formula, then recap. I also removed the old interaction where students had to tap 25 individual items one by one — that's now a simple animated reveal with a single tap to continue, which is far less tedious and keeps the focus on understanding rather than clicking.
-I also gave the mascot three different expressions — explaining, excited, and thinking — so it reacts appropriately to what's happening in the story.
-Separately, I simplified the rest of the explanation screen for younger readers: shorter, simpler sentences, bigger formula and result displays, and a small info popup on the header instead of permanent instructional text cluttering every screen.
-Finally, I fixed a background color bug where some cards on the explanation screen and the graded quiz didn't match the rest of the app — everything now uses the same consistent color scheme in both light and dark mode.
-Files Changed
-FileChangePercentExplanationApp.jsxRemoved the AI Study Assistant Prompt section; replaced the old drag-and-drop Story section with a new data-driven, scenario-based Story component (5 rotating real-world scenarios) and mascot avatar with 3 expressions; added hover/tap info popup on the section header; simplified Theory and Worked Example section contentPercentExplanationApp.cssRemoved AI prompt and old drag-game styles; added Story section, mascot, and info popup styles; fixed background token usage across cards to resolve the color-drift bug; added responsive/typography adjustmentsPercent Island stylesheetFixed background token usage to match the rest of the app in both light and dark mode
+- 📌 `5a552d3` — **jgupta05072003-code** — 🔀 PR #128 from `vicharanashala`
+- ♻️ `86cb13e` — **Jinal Gupta** — extract /darts-api into its own route module
+- 📌 `a28bb92` — **jgupta05072003-code** — 🔀 PR #115 from `vicharanashala`
+- 🐛 `2d96c80` — **Jinal Gupta** — use API base URL for coordgeom/darts/riddle/visual-math fetch calls
 
-Version 4 — July 16, 2026
-Acted on a second round of mentor feedback about the theory and worked-example sections specifically.
-Previously, the Concept Theory and Worked Example sections showed all their points and steps stacked on screen at once. I changed both to reveal one idea or one step at a time, with a "1 of 4" style progress indicator so students can see how much is left, and simple back/next navigation to move through them.
-I also reordered the Concept Theory section so the core formula is introduced first, followed by the supporting explanation — since that's the main thing students need to walk away remembering, rather than saving it for last.
-I increased the font size and spacing on both sections' cards to make everything easier to read and less cramped for a young student, and fixed a bug where the "Interactive Visual Model" heading was accidentally appearing twice on the first section.
-Files Changed
-FileChangePercentExplanationApp.jsxConverted Concept Theory and Worked Example sections from all-cards-stacked to one-card-at-a-time click-through, with progress indicators and inner Back/Next navigation; reordered Concept Theory so the formula is introduced first; fixed duplicate rendering of the "Interactive Visual Model" headingPercentExplanationApp.cssIncreased font size and card spacing/padding on Theory and Worked Example cards; added progress-indicator and inner navigation button styles
+#### 📅 2026-07-29  <sub>(16 commits)</sub>
+
+- 📌 `60732b1` — **jgupta05072003-code** — 🔀 PR #114 from `vicharanashala`
+- 🐛 `8d68798` — **Jinal Gupta** — add request cancellation to the 6 highest-traffic custom quiz components
+- 📌 `b571fec` — **jgupta05072003-code** — 🔀 PR #113 from `vicharanashala`
+- 🐛 `960ff72` — **Jinal Gupta** — cancel in-flight question fetches in makeQuizApp
+- 📌 `4cf776d` — **jgupta05072003-code** — 🔀 PR #112 from `vicharanashala`
+- 📌 `17b86df` — **jgupta05072003-code** — 🔀 PR #111 from `vicharanashala`
+- 🐛 `db2a3d5` — **Jinal Gupta** — make progress updates atomic to prevent lost-update races
+- ⚡ `3c4877b` — **Jinal Gupta** — parallelize question/vocabulary loading at startup
+- 📌 `ef0ba1a` — **jgupta05072003-code** — 🔀 PR #110 from `vicharanashala`
+- 🐛 `cb687d0` — **Jinal Gupta** — add structured logging, global error handler, crash logging
+- 📌 `1ae25a8` — **jgupta05072003-code** — 🔀 PR #109 from `vicharanashala`
+- 🐛 `1091bf9` — **Jinal Gupta** — make the accessibility settings panel itself accessible; label icon-only buttons
+- 📌 `1f6afa7` — **jgupta05072003-code** — 🔀 PR #108 from `vicharanashala`
+- 🐛 `b55f8c4` — **Jinal Gupta** — replace unofficial gtx endpoint with server-side translation proxy
+- 📌 `f9891d7` — **jgupta05072003-code** — 🔀 PR #107 from `vicharanashala`
+- 🐛 `563d839` — **Jinal Gupta** — move admin seed credential out of source into env
+
+#### 📅 2026-07-28  <sub>(5 commits)</sub>
+
+- 📌 `d5f3dd7` — **jgupta05072003-code** — 🔀 PR #106 from `vicharanashala`
+- 📌 `c748a8d` — **jgupta05072003-code** — 🔀 PR #105 from `vicharanashala`
+- 🐛 `bab87f0` — **Jinal Gupta** — make AutoTranslator translation fetches resilient
+- 🐛 `756a1de` — **Jinal Gupta** — read Vite base path from VITE_BASE_PATH env
+- 📝 `14cada5` — **Jinal Gupta** — append Jul 17–27 commit history to CHANGELOG.md
+
+#### 📅 2026-07-27  <sub>(20 commits)</sub>
+
+- 📌 `7e9db00` — **muditagrawal2007** — 🔀 PR #103 from `muditagrawal2007`
+- 🔀 `8b505d3` — **muditagrawal2007** — sync new_f into main — LA quiz length-bias fix + conflict resolution
+- 🐛 `ac8d48b` — **muditagrawal2007** — strip trailing noise from MCQ options + use middle-dot padding
+- 🐛 `cebf191` — **muditagrawal2007** — length-normalize MCQ options across all 56 mission files
+- 🐛 `197f6c5` — **muditagrawal2007** — pad short distractors so the correct option isn't length-guessable
+- 🐛 `a2194f8` — **muditagrawal2007** — ensure correct_option is always present in options array
+- ✨ `c18b01a` — **muditagrawal2007** — randomize option order in LA mission quiz + clean option text
+- ✨ `a19bedd` — **muditagrawal2007** — remove Phase 2 RLA quiz section from mission quiz
+- 🔀 `133b2a5` — **muditagrawal2007** — sync origin/new into new_f — Battle, Column Division, Riddles, Playground, Sudoku, Proctor
+- 🐛 `9d03e0e` — **muditagrawal2007** — typo in modeMap — lineqgym referenced undefined LineEqGymApp
+- ✨ `5e04f4b` — **muditagrawal2007** — 2-phase mission quiz (adaptive → real-life MCQs)
+- 📌 `96d26f2` — **muditagrawal2007** — Revert "feat(matrixmystics): single-button 2-phase test flow (no setup, no difficulty picker)"
+- 📌 `d01a768` — **muditagrawal2007** — revert matrixmystics home tile and modeMap entry
+- ✨ `2b52b38` — **muditagrawal2007** — single-button 2-phase test flow (no setup, no difficulty picker)
+- ✨ `90a29b8` — **muditagrawal2007** — add Real Application tier — 265 MCQs across all 53 topics
+- ✨ `6217875` — **muditagrawal2007** — refresh module 1 + Q4.7 questions with short-option MCQ style
+- 🔧 `0cc4523` — **muditagrawal2007** — bump express-rate-limit to ^8.6.1 (npm install reconciled lockfile)
+- 🐛 `65f8e08` — **muditagrawal2007** — remove duplicate JWT_SECRET declarations from broken merge
+- ✨ `428cdbf` — **muditagrawal2007** — add Matrix Mystics — 6 modules, 53 topics, 1590 curated MCQs
+- 🐛 `f2bab06` — **muditagrawal2007** — resolve React hook violations in 3 components
+
+#### 📅 2026-07-24  <sub>(3 commits)</sub>
+
+- 📌 `f490e54` — **muditagrawal2007** — 🔀 PR #98 from `muditagrawal2007`
+- 🔀 `2057383` — **muditagrawal2007** — resolve conflicts from origin/main sync
+- ✨ `82f3d62` — **muditagrawal2007** — sync origin/main, secure proctor endpoints with admin-only access, add BattleApp features
+
+#### 📅 2026-07-23  <sub>(20 commits)</sub>
+
+- 📌 `7b1a0df` — **jgupta05072003-code** — 🔀 PR #96 from `vicharanashala`
+- 🐛 `83bd400` — **Jinal Gupta** — remove duplicate JWT_SECRET declarations that break the build
+- 📌 `c7d7753` — **muditagrawal2007** — 🔀 PR #84 from `muditagrawal2007`
+- 📌 `3502aba` — **muditagrawal2007** — Merge branch 'main' into new_f
+- 📌 `df064f1` — **jgupta05072003-code** — 🔀 PR #86 from `vicharanashala`
+- 🐛 `7ccb369` — **Jinal Gupta** — centralize JWT secret and fail-fast in production
+- 📌 `a8f6870` — **jgupta05072003-code** — 🔀 PR #85 from `vicharanashala`
+- 🐛 `e5fba3c` — **Jinal Gupta** — add rate limiting and CORS allowlist
+- 📌 `845cf82` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- ✨ `c4499d0` — **muditagrawal2007** — replace algorithmic quiz with curated JSON MCQs for all 56 missions
+- 🐛 `506a82d` — **muditagrawal2007** — resolve React hook violations in main App component
+- 📌 `2fe7568` — **muditagrawal2007** — Fix CoordGeomDiscoveryApp component lint issues
+- 📌 `6054ee4` — **jgupta05072003-code** — 🔀 PR #83 from `vicharanashala`
+- 🔧 `b562d85` — **Jinal Gupta** — remove committed debug/scratch junk files
+- 📌 `ea64920` — **jgupta05072003-code** — 🔀 PR #81 from `muditagrawal2007`
+- 📌 `2b498cf` — **jgupta05072003-code** — 🔀 PR #82 from `vicharanashala`
+- ♻️ `884bbcb` — **Jinal Gupta** — load seed users from env, not hardcoded source
+- 📌 `be1a974` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 📌 `3ef48c5` — **jgupta05072003-code** — 🔀 PR #80 from `vicharanashala`
+- 🐛 `bf8c347` — **Jinal Gupta** — base-path-aware routing so /summership routes work
+
+#### 📅 2026-07-22  <sub>(38 commits)</sub>
+
+- 📌 `d248b04` — **muditagrawal2007** — auto-fix lint issues
+- 📌 `67092be` — **muditagrawal2007** — fix lint issues
+- 📌 `7446913` — **muditagrawal2007** — fix lint issues
+- 📌 `0cf59a7` — **muditagrawal2007** — fix unused variables
+- 📌 `361fca9` — **muditagrawal2007** — fix lint issues
+- 📌 `bcc3f07` — **muditagrawal2007** — fix unused variables
+- 📌 `febc6e3` — **muditagrawal2007** — Stage2Grid: fix lint issues
+- 📌 `543d925` — **muditagrawal2007** — fix lint issues
+- 📌 `32e1325` — **muditagrawal2007** — fix lint issues
+- 📌 `9bc086f` — **muditagrawal2007** — Stage5Review: fix lint issues
+- 📌 `7dbe6e7` — **muditagrawal2007** — Stage4Independent: fix lint issues
+- 📌 `c5b02c3` — **muditagrawal2007** — Stage3Guided: fix unused variables
+- 📌 `44433d1` — **muditagrawal2007** — Stage1Predict: fix unused variables
+- 📌 `054abea` — **muditagrawal2007** — fix lint issues - remove unused vars
+- 📌 `ae8df1a` — **muditagrawal2007** — fix lint issues
+- 📌 `38ae96d` — **muditagrawal2007** — fix lint issues
+- 📌 `b25bd52` — **muditagrawal2007** — fix lint issues - remove unused exports and imports
+- 📌 `dbc0e08` — **muditagrawal2007** — fix lint issues - unused vars, suppress set-state-in-effect
+- 📌 `110dd6d` — **muditagrawal2007** — fix lint issues - empty blocks, unused vars, suppress set-state-in-effect
+- 📌 `442a481` — **muditagrawal2007** — i18n: fix lint issues - remove unused vars, suppress react-refresh
+- 📌 `1ecce95` — **muditagrawal2007** — fix lint issues
+- 📌 `8046091` — **muditagrawal2007** — fix lint issues
+- 📌 `d0a803b` — **muditagrawal2007** — fix lint issues
+- 📌 `bc0d522` — **muditagrawal2007** — fix lint issues - remove unused imports
+- 📌 `593c183` — **muditagrawal2007** — fix lint issues - remove unused variables
+- 📌 `6f5c6a9` — **muditagrawal2007** — fix lint issues - prefix unused, suppress purity warnings
+- 📌 `d10efd9` — **muditagrawal2007** — fix lint issues - remove unused imports/refs, prefix dead vars
+- 📌 `c15a452` — **muditagrawal2007** — fix lint issues - prefix unused vars, reorder function declarations
+- 📌 `f8f77d1` — **muditagrawal2007** — fix lint issues - prefix unused vars, remove unused refs
+- 📌 `0bdc55f` — **muditagrawal2007** — fix lint issues - unused vars, empty blocks, useless escapes
+- 📌 `92d8533` — **muditagrawal2007** — remove useless backslash escapes and disable no-control-regex for intentional control chars
+- 📌 `5e315ef` — **muditagrawal2007** — vite.config.js: remove duplicate keys, update proxy targets to port 4000
+- 📌 `8f6eab2` — **muditagrawal2007** — detective-app: fix Math.random in render and unused useMemo
+- 📌 `7a08108` — **muditagrawal2007** — misconceptions.js: add missing isPrime function
+- 📌 `0b62128` — **muditagrawal2007** — Merge branch 'new_f' of https://github.com/muditagrawal2007/Tenali_123 into new_f
+- 📌 `eecea2c` — **muditagrawal2007** — Fix lint errors: remove duplicate App files, fix unused vars, empty blocks, duplicate keys, hooks violations, and correct vite proxy port
+- 🐛 `db24b60` — **muditagrawal2007** — Battle feature - add missing client definitions, fix GK recursion, streaks, and topic mismatch
+- 📌 `8aca1f7` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+
+#### 📅 2026-07-21  <sub>(10 commits)</sub>
+
+- 📌 `14cfd2a` — **jgupta05072003-code** — 🔀 PR #79 from `vicharanashala`
+- 🐛 `5885fe9` — **Jinal Gupta** — add missing chart.js peer dependency for user progress tracking
+- 📌 `4ddecce` — **jgupta05072003-code** — 🔀 PR #77 from `S-Hamsalekha-annamai`
+- 📌 `9951b02` — **jgupta05072003-code** — 🔀 PR #78 from `vicharanashala`
+- 🐛 `2f709a4` — **Jinal Gupta** — add 'Back to home' button on the Login-required (AuthGate) screen
+- 📌 `ee10bda` — **S-Hamsalekha-annamai** — Merge branch 'main' into feat/track_user_progress
+- 📌 `879fe8f` — **jgupta05072003-code** — 🔀 PR #76 from `vicharanashala`
+- 🐛 `0e3b39c` — **Jinal Gupta** — restore Guided Learning Journey banner on home screen
+- 📌 `1e58db3` — **jgupta05072003-code** — 🔀 PR #75 from `vicharanashala`
+- 🐛 `0bdadea` — **Jinal Gupta** — add missing mafs dependency for concept playgrounds
+
+#### 📅 2026-07-20  <sub>(28 commits)</sub>
+
+- ✨ `cd026f3` — **S Hamsalekha** — Add support for tracking  user progress .
+- 🐛 `7eb5580` — **S Hamsalekha** — Enable Vite dev server proxying for all the seven Gym APIs
+- 📌 `d1ffff1` — **jgupta05072003-code** — 🔀 PR #52 from `24F3005086`
+- 📌 `1d4d224` — **jgupta05072003-code** — 🔀 PR #51 from `24F3005086`
+- 📌 `7b0b000` — **jgupta05072003-code** — 🔀 PR #58 from `diptosubhro-ctrl`
+- 📌 `bed204d` — **24F3005086** — Resolve merge conflicts
+- 📌 `4ee9e0b` — **24F3005086** — Merge remote-tracking branch 'origin/main' into feature/i18n
+- 📌 `fb24b99` — **jgupta05072003-code** — 🔀 PR #49 from `24F3005086`
+- 📌 `f8b7e48` — **24F3005086** — Merge remote-tracking branch 'origin/main' into feature/concept-playgrounds
+- 📌 `22193e0` — **24F3005086** — Merge remote-tracking branch 'origin/main' into feature/bkt-prereqs
+- 📌 `ac59893` — **24F3005086** — Merge main into feature/i18n
+- 📌 `265a923` — **jgupta05072003-code** — 🔀 PR #50 from `24F3005086`
+- 📌 `06bbd04` — **jgupta05072003-code** — 🔀 PR #56 from `RukmenderT`
+- 🐛 `f1ab5b6` — **RukmenderT** — remove duplicate hover tooltip and left-side variation label in Curiosity Mode
+- 📌 `aacee65` — **jgupta05072003-code** — 🔀 PR #46 from `patnaikArpita`
+- 📌 `aa16753` — **jgupta05072003-code** — 🔀 PR #65 from `vicharanashala`
+- 📌 `96983bb` — **Anshul Kanodia** — 🔀 PR #8 from `patnaikArpita`
+- 📌 `5aa05b4` — **AnshulKanodia** — added MVP , enchancements , suggestion
+- 📌 `f336fec` — **muditagrawal2007** — Fix riddle: add /riddle pathname route, remove double app-shell/card nesting
+- 📌 `073696d` — **muditagrawal2007** — Math Riddles: 48 riddles (find-rule, sequence, logic, image) + playground preview fix
+- 📌 `243973c` — **muditagrawal2007** — Playground visualizer: Python Tutor style with code+arrow | memory boxes
+- 📌 `93b3f23` — **muditagrawal2007** — add live preview for HTML/CSS/JS and code visualizer
+- 📌 `202c228` — **muditagrawal2007** — Add View Code and Load buttons to playground history
+- 📌 `73cc0b5` — **muditagrawal2007** — Fix playground: proper default code for all languages, dark terminal output, language categories
+- ✨ `8ef012e` — **muditagrawal2007** — Code Playground — run code in 50+ languages via Judge0 CE
+- 📌 `2fa1a21` — **muditagrawal2007** — fix proctoring: face detection model URL + faster interval, add speech-to-text transcript for voice events, display transcripts in dashboard
+- 🐛 `ce39d6f` — **muditagrawal2007** — face detection — accept onFaceCount callback, lower threshold to 0.3, increase inputSize to 320
+- 📌 `726393b` — **muditagrawal2007** — remove flashcard apps: Cross-Section Explorer, Spatial Reasoning, 2D↔3D Translator, Shape Slicer 3D, Net Builder, Scribble Guess
+
+#### 📅 2026-07-19  <sub>(1 commit)</sub>
+
+- 🐛 `f037028` — **24F3005086** — add missing locales files for i18n
+
+#### 📅 2026-07-18  <sub>(8 commits)</sub>
+
+- 🐛 `a20f15f` — **24F3005086** — remove MasteryBadge usage from concept playgrounds since it belongs to BKT branch
+- 🐛 `dc7673c` — **24F3005086** — add missing i18n dependencies for accessibility panel
+- 🐛 `12c0162` — **24F3005086** — concept playgrounds localization bugs from afternoon session
+- 🐛 `94ca4a2` — **24F3005086** — dark/light theme bugs from afternoon session
+- 🐛 `013d26c` — **24F3005086** — mastery badge UI bugs from afternoon session
+- 🐛 `8306099` — **24F3005086** — translation bugs from afternoon session
+- 📌 `9ff1128` — **Dipto Subhro** — remove settings_icon.svg and update tutorial/reset layout logic
+- 📌 `4bfa35f` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+
+#### 📅 2026-07-17  <sub>(58 commits)</sub>
+
+- ✨ `4d88e05` — **muditagrawal2007** — inline proctor dashboard on /linear, no-auth endpoints, localStorage persistence
+- 📌 `6f0a1be` — **Dipto Subhro** — Optimize Level 1 token boundaries to prevent mismatch confusion
+- 📌 `537b944` — **Dipto Subhro** — Remove subject introductions and names from Level 1 questions
+- 📌 `fbc5831` — **Dipto Subhro** — Shorten all Level 1 questions in the corpus
+- 📌 `fff4c8d` — **Dipto Subhro** — Move Reset Progress button to inside the levels workspace next to Exit button
+- 📌 `ae369b8` — **Dipto Subhro** — Add Reset Progress button inside each Level card on main dashboard
+- 📌 `2675311` — **Dipto Subhro** — Enable Tutorial Reference button for Level 1 questions
+- 📌 `4f37c1f` — **Dipto Subhro** — Bypass Session Complete screen after tutorial to start practice immediately
+- 📌 `d10a052` — **Dipto Subhro** — Remove details sub-view and reset button, making all levels directly start questions
+- 📌 `f883f30` — **Dipto Subhro** — Remove Key Math Fact box from tutorial reference modal
+- 📌 `5e67a0c` — **Dipto Subhro** — Remove strand tag labels from exercise workspace
+- 📌 `568a201` — **Dipto Subhro** — Remove Reveal 1 Noise Phrase button from active exercise card
+- 📌 `545b418` — **Dipto Subhro** — Add Tutorial Reference popout button and modal overlay for levels above 1
+- 📌 `ce132ad` — **Dipto Subhro** — Directly start questions on levels after Level 1 instead of opening stages sub-view
+- 📌 `dc15de5` — **Dipto Subhro** — Add Reset Level Progress button inside each level details sub-view
+- 📌 `6925c08` — **Dipto Subhro** — Keep one tutorial stage for Level 1 and remove tutorial stages from all other Levels
+- 📌 `8a41af8` — **Dipto Subhro** — Remove level and name card from the level details view
+- 📌 `809bbd8` — **Dipto Subhro** — Remove Open Level text indicator from dashboard level cards
+- 📌 `f46e195` — **Dipto Subhro** — Redirect level clicks to a dedicated stages sub-view with back navigation
+- 📌 `192ccc3` — **Dipto Subhro** — Remove Active label from Noise Filter levels
+- 📌 `1ed0ea7` — **Dipto Subhro** — Make level cards on Noise Filter dashboard collapsible
+- 📌 `b497c6c` — **Dipto Subhro** — Remove Noise Filter header box and description card
+- 🐛 `be5117f` — **24F3005086** — Add CSS styling for accessibility panel and toggle button
+- 🐛 `ce7cc1c` — **muditagrawal2007** — dashboard loading stuck, useState null, screen capture clarity, hanging
+- 🐛 `dde3b3d` — **24F3005086** — restore scratch/generate_puzzles.js accidentally removed in accessibility branch
+- 🐛 `a928447` — **24F3005086** — replace updateBKT stub with proper import from bkt.js
+- 🐛 `6e64980` — **RukmenderT** — remove ?v=2 cache-buster from App.jsx import to prevent duplicate React instance
+- 🐛 `210298a` — **24F3005086** — add updateBKT wrapper export in bkt.js for concept playground compatibility
+- 📌 `55b4062` — **RukmenderT** — Merge branch 'upstream/main' into feature/curiosity
+- 📌 `a39a905` — **24F3005086** — Merge feature/bkt-prereqs into feature/concept-playgrounds and replace updateBKT stub
+- 🔧 `ae98953` — **24F3005086** — remove stray scratch folder
+- 🐛 `fafb069` — **muditagrawal2007** — dashboard broken + compulsory monitoring + auto-collapse alerts
+- 📌 `4e4d3ea` — **24F3005086** — Restore scratch folder from main
+- 📌 `22a3dc0` — **24F3005086** — Restore scratch folder from main
+- 📌 `b39bf4c` — **24F3005086** — Restore scratch folder from main
+- ⚡ `08fb816` — **muditagrawal2007** — add willReadFrequently to Canvas2D contexts in detection hooks
+- 🐛 `b41ca8f` — **muditagrawal2007** — rewrite proctoring detection flow — all hooks now report anomalies directly
+- 🐛 `987233d` — **muditagrawal2007** — add face-api.js to optimizeDeps.include to fix Vite dev server 500
+- 🐛 `880cc73` — **Jinal Gupta** — make Idli-Vada-Sambhar, Crossword & Word Search follow the dark/light theme
+- ✨ `c21c1a4` — **muditagrawal2007** — add CompreFace Docker setup and face-api.js dependency
+- ✨ `408e5c7` — **muditagrawal2007** — complete proctoring suite — Dashboard, FloatingVideo, PiP, CSS, lint fixes
+- 📌 `ceea26b` — **muditagrawal2007** — Rewrite proctoring to match vibe architecture
+- 🔧 `19d67d7` — **24F3005086** — remove stray scratch files
+- 🔧 `2b93db0` — **24F3005086** — remove stray scratch folder
+- 🔧 `1ebba99` — **24F3005086** — remove stray scratch files
+- 📌 `2e14656` — **muditagrawal2007** — Beautiful proctor error display + screen activity monitoring
+- 📌 `68d9749` — **muditagrawal2007** — Add full proctoring suite with left-side webcam panel
+- 📌 `8c57d8f` — **24F3005086** — Merge origin/main into feature/concept-playgrounds, resolve App.jsx conflict
+- 📌 `17a12e2` — **24F3005086** — Merge remote-tracking branch 'origin/main' into feature/accessibility
+- 📌 `2b56447` — **24F3005086** — Merge remote-tracking branch 'myfork/main' into feature/i18n
+- 📌 `d1bfa4b` — **24F3005086** — Resolve merge conflicts in App.jsx
+- 📌 `cbbc394` — **Dipto Subhro** — Merge upstream/main and resolve conflicts in App.jsx
+- 📌 `955f779` — **Dipto Subhro** — Simplify cognitive load in Noise Filter feature
+- 📌 `669ca83` — **jgupta05072003-code** — 🔀 PR #63 from `vicharanashala`
+- 🐛 `57e653a` — **Jinal Gupta** — strip stray UTF-8 BOM from App.css breaking production build
+- 📌 `746d96f` — **jgupta05072003-code** — 🔀 PR #54 from `sharonyamita-spec`
+- 📌 `3b99282` — **Sharonya Banerjee** — Merge upstream/main into feature/math-detective-agency, resolve client/package-lock.json conflict
+- 📌 `cde8069` — **jgupta05072003-code** — 🔀 PR #9 from `Ritish007-svg`
+
+#### 📅 2026-07-16  <sub>(42 commits)</sub>
+
+- 📌 `3e5716f` — **Ritish Karmakar** — Merge upstream/main and resolve conflicts with level-wise explanation feature
+- 📌 `88f107f` — **Ritish Karmakar** — Replace CHANGELOG with cleaned-up Versions 1-4 summary
+- 🐛 `df68cb9` — **24F3005086** — place AuthMenu inside I18nProvider and consume translations in deeper modules
+- 🐛 `ccd742b` — **24F3005086** — add CSS rules to actually apply dyslexia font
+- 🐛 `62aa41a` — **24F3005086** — apply smoothing layer to BKT mastery updates to fix 43% jump bug
+- 🔧 `0928764` — **Dipto Subhro** — rename Teach stages to Tutorial
+- 📌 `7407dc1` — **Dipto Subhro** — Merge upstream/main and resolve conflicts in App.jsx
+- 📌 `b9f2225` — **Sharonya Banerjee** — Resolve merge conflict in client/src/App.css: keep feature/math-detective-agency version as base, append badge-detail modal CSS from upstream/main
+- 🐛 `bf5c05c` — **RukmenderT** — resolve merge conflicts and restore Curiosity Mode in hamburger menu
+- 🔧 `ca6a01c` — **Dipto Subhro** — remove empty settings_icon.png
+- 🔧 `d9cba15` — **Dipto Subhro** — completely remove voice narration context, button, and audio assets
+- 📌 `e35be03` — **jgupta05072003-code** — 🔀 PR #59 from `varshini-nandula`
+- 💄 `b6af5e2` — **varshini-nandula** — remove Tenali header and view achievements label from profile page
+- 📌 `cd7aa36` — **varshini-nandula** — Merge branch 'upstream/main' into feat/profile-achievement-showcase
+- 📌 `65db0d9` — **Sharonya Banerjee** — Merge remote-tracking branch 'upstream/main' into feature/math-detective-agency
+- 📌 `8fa8ab1` — **jgupta05072003-code** — 🔀 PR #57 from `Vaibhav-sa30`
+- 📌 `679eb4c` — **jgupta05072003-code** — 🔀 PR #53 from `Shubhdix9`
+- 📌 `71b1ea6` — **jgupta05072003-code** — 🔀 PR #20 from `KCDharshan9`
+- 🐛 `8b115a9` — **muditagrawal2007** — show Guide button and OnboardingTour only on home page
+- 📌 `c12efcb` — **jgupta05072003-code** — 🔀 PR #48 from `muditagrawal2007`
+- 🐛 `2334265` — **24F3005086** — add I18nProvider to main.jsx
+- 🐛 `c5f93b9` — **muditagrawal2007** — GymApp crash — add missing sessionGoal, isAdaptive, handleTimeout; fix difficulty → currentDifficulty
+- 📌 `ae7d508` — **muditagrawal2007** — Restore Tenali Guide (OnboardingTour) lost during merge conflict resolution - add back OnboardingTour render, Guide button, and tour-home-grid id
+- 📌 `3aa146a` — **muditagrawal2007** — Column apps: ResultsTable shows carries/borrows (user vs correct) and always shows correct answer
+- 📌 `3e06951` — **muditagrawal2007** — Column apps: make feedback box visibly red/green with 25% opacity bg + colored border
+- 📌 `c186cef` — **muditagrawal2007** — Column apps: feedback box always red when wrong, always green when correct
+- 📌 `755f468` — **muditagrawal2007** — Multi-digit multiplication: cursor flows carry→digit per column (right to left) instead of all carries then all digits
+- 📌 `127101f` — **Dipto Subhro** — Update App.jsx home menu and UI layout
+- 🐛 `5dc7ebd` — **muditagrawal2007** — trailing carry in multi-digit multiplication initialized as null (not 0) to match hidden UI position
+- 📌 `9dfbe41` — **Dipto Subhro** — Remove voice narration, rename boss level to Hero's Challenge, and simplify teaching parts in NoiseFilter
+- 🐛 `0005b99` — **muditagrawal2007** — auto-focus answer row after last PP by setting allDone before focusing
+- 📌 `3b4f49b` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 📌 `2b04d88` — **muditagrawal2007** — Column multiplication: always show answer row separator line, disable inputs until all PPs done
+- 📌 `70ae2d2` — **muditagrawal2007** — Column multiplication: better PP visual states - green tint for done, accent border for active
+- 📌 `39f3c42` — **muditagrawal2007** — Column multiplication: add help panel, multiplier highlight, step indicator, operation hint
+- 📌 `b8c50a9` — **muditagrawal2007** — added the 2*3 as well as the 3*3 multiplication
+- 📌 `656be26` — **Ritish Karmakar** — Replace CHANGELOG with cleaned-up Versions 1-4 summary
+- 📌 `787aa25` — **Ritish Karmakar** — Restore feature work lost during merge with main
+- 🔧 `d6401ce` — **Vaibhav** — Resolve merge conflicts with upstream main
+- ✨ `03f7927` — **Vaibhav** — Add Notation Literacy exercise
+- 🐛 `731d3f6` — **KCDharshan9** — remove version and build date behind hamburger
+- 🐛 `8f4f031` — **KCDharshan9** — fix bugs & issues causing errors
+
+#### 📅 2026-07-15  <sub>(45 commits)</sub>
+
+- 📌 `53cd78e` — **Ritish Karmakar** — Update lockfile after clean reinstall
+- 📌 `04a092e` — **Ritish Karmakar** — Document latest UI and explanation changes
+- 📌 `d0001c5` — **Ritish Karmakar** — Update app styling and UI
+- 📌 `f853c42` — **Ritish Karmakar** — Improve percentage explanation step layout
+- 📌 `486e518` — **Ritish Karmakar** — Update CHANGELOG with Version 3: Percent Story redesign, AI prompt removal, background fixes
+- 📌 `d5af472` — **Ritish Karmakar** — Refine Level 1 explanation: hover info popup, boxed theory cards, mobile responsive fixes
+- ✨ `d412800` — **RukmenderT** — add curiosity
+- ✨ `6ce4d59` — **24F3005086** — Add Accessibility Provider and aria-labels
+- 📌 `4bcb7b5` — **Ritish Karmakar** — Update lockfile after clean reinstall
+- 📌 `ac85f65` — **Dipto Subhro** — Merge remote-tracking branch 'upstream/main' into add-timer
+- ✨ `c19e141` — **varshini-nandula** — introduce 15-day streak milestone badge and image asset
+- 📌 `1a7c792` — **Ritish Karmakar** — Merge branch 'main' into feature/level-wise-explanation
+- 📌 `d8091fa` — **muditagrawal2007** — made the UI work in light as well as dark mode
+- 📌 `27ab01b` — **muditagrawal2007** — fixed the subtraction
+- 📌 `99549f6` — **Sharonya Banerjee** — Merge remote-tracking branch 'upstream/main' into feature/math-detective-agency
+- 📌 `6fc2133` — **Sharonya Banerjee** — Resolve merge conflicts in App.css and App.jsx
+- ✨ `9247ff8` — **Sharonya Banerjee** — add Math Detective Agency - story-based mystery math cases
+- ✨ `bf1f4c0` — **varshini-nandula** — define scalable MongoDB collections and fix route collision for offline/in-memory fallback
+- 💄 `3a3c9ba` — **varshini-nandula** — update celebration modal subtext since pinned badges feature is removed
+- 📌 `3ec995e` — **24F3005086** — Feature/concept playgrounds
+- ✨ `8ec90e1` — **24F3005086** — Implement BKT Algorithm, Class Routing, and Diagnostic
+- ✨ `baf249f` — **24F3005086** — Add multilingual support and translations
+- 📌 `6feb742` — **Ritish Karmakar** — Document latest UI and explanation changes
+- 📌 `7610dd7` — **KCDharshan9** — Merge branch 'main' into feat/tap-to-define-word-glossary
+- 📌 `82f1cae` — **Ritish Karmakar** — Update app styling and UI
+- 📌 `044a03a` — **Ritish Karmakar** — Improve percentage explanation step layout
+- 📌 `754f566` — **KCDharshan9** — Merge remote-tracking branch 'upstream/main' resolve conflicts
+- 📌 `d5f4019` — **jgupta05072003-code** — 🔀 PR #18 from `Vaibhav-sa30`
+- ✨ `050e1ba` — **Shubh dixit** — implement organic crossword and premium word search games
+- ✨ `167e54f` — **KCDharshan9** — update visuals of missing terms
+- 📌 `e319407` — **Vaibhav** — Resolve merge conflict with upstream main in App.jsx
+- 📌 `de84fb9` — **Vaibhav** — Fix App.jsx formatting
+- 📌 `597c2cb` — **Vaibhav** — Merge remote-tracking branch 'origin/feature/vachana-literacy-module' into feature/vachana-literacy-module
+- 🐛 `f177ea8` — **varshini-nandula** — restore window.tenaliIncrementSolved hook and server collections completion celebrations
+- 🐛 `de3fe37` — **varshini-nandula** — restore real-time badge unlock and celebration queue logic
+- 🐛 `c6cd7ce` — **varshini-nandula** — resolve reference errors (additionMode, difficulty, topicKey) in AdditionApp and makeQuizApp factory
+- 📌 `23dfc1e` — **Ritish Karmakar** — Update CHANGELOG with Version 3: Percent Story redesign, AI prompt removal, background fixes
+- 📌 `9cfe858` — **muditagrawal2007** — added the column addtion , mulitplication and the substraction
+- 📌 `3af3bd9` — **Ritish Karmakar** — Refine Level 1 explanation: hover info popup, boxed theory cards, mobile responsive fixes
+- 🔧 `311111f` — **varshini-nandula** — export app from index.js and ignore local in-memory journey database
+- 🐛 `31c47b2` — **varshini-nandula** — restore missing journey-banner styling rules in App.css
+- 🐛 `256bfc0` — **varshini-nandula** — add in-memory fallback for Guided Learning Journey progress when MongoDB is unavailable
+- 🐛 `2d8e2ac` — **varshini-nandula** — restore missing showAbout, menuOpen, and search states in Home component
+- 🐛 `74af340` — **varshini-nandula** — resolve duplicate identifier declarations in App.jsx
+- 📌 `fc9dd2a` — **varshini-nandula** — Merge branch 'upstream/main' into feat/profile-achievement-showcase
+
+#### 📅 2026-07-14  <sub>(56 commits)</sub>
+
+- 🐛 `79a9c71` — **KCDharshan9** — resolve submit button issue in addition app
+- 📌 `3edd6ca` — **Dipto Subhro** — Merge branch 'main' into add-timer
+- 📌 `34f729b` — **muditagrawal2007** — added the column addtion
+- ✨ `ddd92b3` — **Dipto Subhro** — add narration settings menu with custom gradient gear icon and voice selection
+- 📌 `e9cccb0` — **KCDharshan9** — Merge branch 'main' into feat/tap-to-define-word-glossary
+- 📌 `ca0037b` — **KCDharshan9** — Merge remote-tracking branch 'upstream/main' Resolve conflicts
+- 📝 `f5d4167` — **Jinal Gupta** — add curated CHANGELOG.md
+- ♻️ `fdea52e` — **Vaibhav** — move CHANGELOG and exercise-references into vachana folder
+- ✨ `85d5154` — **Vaibhav** — remove reset button from quiz header, place at session complete screen, and optimize definition question formatting
+- 🐛 `3f2deb6` — **Vaibhav** — resolve history view state overlap bug in placement test, add previous button, and hide redundant headers
+- ✨ `60051fe` — **Vaibhav** — implement numeric shortcuts, color-coded submission feedback, manual submit controls, and previous question navigation
+- 🐛 `315054f` — **Vaibhav** — ensure URL is in sync on initial dashboard entry and support direct sub-route loads
+- ♻️ `ed17a3e` — **Vaibhav** — modularize Vachana Literacy Lab into separate component files and clean up App.jsx
+- 📌 `19a7965` — **jgupta05072003-code** — 🔀 PR #34 from `ahana4banerjee`
+- 📌 `74c0214` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+- ♻️ `e13ff3f` — **Vaibhav** — move CHANGELOG and exercise-references into vachana folder
+- 📌 `c724f4d` — **jgupta05072003-code** — 🔀 PR #44 from `muditagrawal2007`
+- 📌 `fac08b4` — **muditagrawal2007** — Fix submission delay: cache tatsavit userId + fire-and-forget LIL processAttempt to unblock responses
+- 📌 `3271c4f` — **KCDharshan9** — Merge remote-tracking branch 'upstream/main' To resolve conflicts
+- 📌 `97eb101` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 📌 `e717fe4` — **jgupta05072003-code** — 🔀 PR #43 from `vicharanashala`
+- 🐛 `e8aca58` — **Jinal Gupta** — remove double API-base prefix in Visual Learning Universe
+- 📌 `9372b71` — **muditagrawal2007** — Restore Addition, Arithmetic, Coord. Geometry & Mensuration flashcards to home grid
+- 🔧 `58b4616` — **KCDharshan9** — ignore all PowerShell script files in .gitignore
+- 📌 `93e556a` — **muditagrawal2007** — Guard generateMqExplanation with try-catch to prevent crash on questions with empty data
+- 📌 `8e36bde` — **jgupta05072003-code** — 🔀 PR #41 from `muditagrawal2007`
+- 🐛 `c54726b` — **muditagrawal2007** — Remove auto-submit on MCQ selection in LinearAlgebra mission quiz
+- 📌 `1f54bae` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 📌 `b7f0069` — **muditagrawal2007** — Remove language puzzle from home grid, wildcard /language route, guide button home-only, hamburger appends /language
+- 📌 `ca2f1fe` — **jgupta05072003-code** — 🔀 PR #39 from `muditagrawal2007`
+- 📌 `05fea03` — **jgupta05072003-code** — 🔀 PR #40 from `vicharanashala`
+- 🐛 `915d3c8` — **Jinal Gupta** — route quiz API through VITE_API_BASE_URL
+- 📌 `a58c691` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 🐛 `e8b6469` — **muditagrawal2007** — remove Random Mix, Custom Lesson, Gym from regularApps (grid cards) - kept in hamburger only
+- 🐛 `acefa1d` — **muditagrawal2007** — remove Random Mix, Custom Lesson, Gym from flashcard grid (kept in hamburger)
+- 📌 `0f5e3c2` — **muditagrawal2007** — Merge branch 'new_f' of https://github.com/muditagrawal2007/Tenali_123 into new_f
+- 🐛 `fd16a1c` — **muditagrawal2007** — restore Random Mix, Custom Lesson, Gym, and Goal Practice to hamburger menu
+- 📌 `80f5920` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+- 📌 `d2100a5` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+- 📌 `6742b36` — **jgupta05072003-code** — 🔀 PR #19 from `muditagrawal2007`
+- 📌 `1de6d4e` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 🐛 `3c59513` — **muditagrawal2007** — add isGoalMode prop to GeneratedQuizApp and fix broken comment syntax
+- ✨ `b0fb976` — **Jinal Gupta** — add Idli–Vada–Sambhar multiples & LCM game
+- ✨ `ecef295` — **Ahana Banerjee** — resolved merge conflicts and restored the feature functionality
+- 📌 `09dc04c` — **muditagrawal2007** — Merge remote-tracking branch 'origin/main' into new_f
+- 📌 `b5ad0e3` — **KCDharshan9** — Remove ps1 scripts from tracking and apply gitignore
+- 📌 `8c2925b` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+- 📌 `d43b0d8` — **jgupta05072003-code** — 🔀 PR #33 from `Shubhdix9`
+- ✨ `ece308a` — **Vaibhav** — remove reset button from quiz header, place at session complete screen, and optimize definition question formatting
+- 🐛 `bcc9d2c` — **Vaibhav** — resolve history view state overlap bug in placement test, add previous button, and hide redundant headers
+- ✨ `b5774cc` — **Vaibhav** — implement numeric shortcuts, color-coded submission feedback, manual submit controls, and previous question navigation
+- 🐛 `48bd6d0` — **Vaibhav** — ensure URL is in sync on initial dashboard entry and support direct sub-route loads
+- 📌 `08c714b` — **Vaibhav** — Merge upstream/main into feature branch and resolve conflicts
+- ♻️ `6fdf46d` — **Vaibhav** — modularize Vachana Literacy Lab into separate component files and clean up App.jsx
+- 📌 `c30b976` — **Vaibhav** — Merge upstream/main into feature branch
+- 📌 `9b86577` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+
+#### 📅 2026-07-13  <sub>(41 commits)</sub>
+
+- ✨ `4f4a40f` — **Vaibhav** — implement adaptive placement check, MCQ auto-submit, and guided exploration
+- 💄 `e8c1b77` — **Shubh dixit** — remove addition, mensuration, and coordinate geometry from hamburger menu
+- ✨ `354f05f` — **varshini-nandula** — sort badges showcase by category priority and fix hooks ordering rules
+- 📌 `243a3fd` — **Shubh dixit** — Merge remote-tracking branch 'upstream/main' into feat/guide-vlu-performance-overhaul
+- 🐛 `23a7be5` — **Shubh dixit** — fix addition screen crash and remove extra modes
+- 📌 `80d52fc` — **jgupta05072003-code** — 🔀 PR #35 from `KrishnaG-101`
+- 🐛 `21e10b4` — **Ahana Banerjee** — hide the Guided Learning Journey banner from the Goal Selection view
+- ✨ `1cfebc2` — **Krishna Gelra** — optimize wordCreator verification latency and restore original layout
+- 🔧 `62e71b5` — **KCDharshan9** — resolve merge conflicts and update branch
+- 📌 `a53dfeb` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
+- 📌 `81ff9ae` — **Shubh dixit** — Fix ReferenceError: setIsGoalMode is not defined in App state
+- ✨ `36f71d7` — **Ahana Banerjee** — place the feature button on the main page below the search bar
+- 📌 `6f83f14` — **Shubh dixit** — Fix isGoalSelection reference error in Home component
+- 📌 `fbd4502` — **Shubh dixit** — Fix missing InteractiveLcmHcfApp import from upstream merge
+- 📌 `e004443` — **muditagrawal2007** — Merge remote-tracking branch 'origin/new_f' into new_f
+- 📌 `3af50a5` — **Krishna Gelra** — Merge remote main into language_integration and resolve conflicts
+- 📌 `bee657a` — **Shubh dixit** — Resolve merge conflicts with upstream main and fix syntax errors
+- 📌 `7192ab7` — **muditagrawal2007** — Merge origin/main into new_f - resolve import conflict
+- 📌 `9ba6094` — **Shubh dixit** — Merge remote-tracking branch 'upstream/main' into feat/guide-vlu-performance-overhaul
+- 📌 `26a8fea` — **jgupta05072003-code** — 🔀 PR #12 from `poorvipravallika06`
+- 📌 `32ff962` — **jgupta05072003-code** — 🔀 PR #11 from `ahana4banerjee`
+- 📌 `cacc90b` — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
+- 📌 `001f190` — **muditagrawal2007** — removed the route laquiz and correct the answers
+- ⚡ `60cf163` — **Shubh dixit** — instant question transitions + visual counting caps
+- ✨ `7af9af5` — **Vaibhav** — implement adaptive placement check, MCQ auto-submit, and guided exploration
+- 📌 `3022297` — **muditagrawal2007** — added the timer in the quiz and fix the solution part
+- 🐛 `aded1da` — **KCDharshan9** — fix alignment and svg based on word
+- ✨ `0b6b158` — **Ahana Banerjee** — add confetti animations
+- ✨ `fba34e4` — **Ahana Banerjee** — add confetti animation
+- 📌 `05f9444` — **muditagrawal2007** — added feature in the quiz
+- 📌 `5f17c85` — **muditagrawal2007** — added feature in the quiz
+- ✨ `f354aa8` — **varshini-nandula** — implement profile topic navigation with URL mode sync and sync progress race condition fix
+- ✨ `083d879` — **varshini-nandula** — implement persistent JSON fallback database and student attempt logging
+- 💄 `7cbadd0` — **varshini-nandula** — make category selector dropdown text white on hover/open for contrast
+- 📌 `5633feb` — **muditagrawal2007** — added feature in the quiz
+- 📌 `d5ff001` — **muditagrawal2007** — added the quiz seciotn in the linear algebra
+- ✨ `dabfebd` — **Ahana Banerjee** — implement a targeted concept revision loop
+- ✨ `fd7f464` — **Ahana Banerjee** — Replaced "❌ Try Again" with "Oh no, it's okay" rendered in theme-compliant warning/wrong color
+- ✨ `6b864df` — **Ahana Banerjee** — add a confetti animation upon clearing a checkpoint quiz
+- ✨ `5796f40` — **Ahana Banerjee** — block access to succesive topics in learning journey
+- 📌 `d42b5b6` — **Ahana Banerjee** — integrated the new Learning Journey feature, enabling structured learning with sequential unlock rules, automatic integration with existing concept quiz modules, and cumulative 15-question topic checkpoints.
+
+#### 📅 2026-07-12  <sub>(2 commits)</sub>
+
+- 📌 `4c5096b` — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AN-goal-based-practice-sessions
+- ✨ `db31c33` — **Krishna Gelra** — modular language puzzles framework & word creator
+
+#### 📅 2026-07-11  <sub>(11 commits)</sub>
+
+- ✨ `2b26b4d` — **KCDharshan9** — implement Word Explorer and enriched definition popovers with SVG visuals
+- ✨ `208cc64` — **varshini-nandula** — implement unified profile showcase with category dropdown, collapsible cabinet layout, circular close buttons and polished visual cards
+- 💄 `ddbb64a` — **varshini-nandula** — update bronze, gold, and silver topic badge designs
+- ✨ `aa75fab` — **varshini-nandula** — implement real-time badge unlock celebration modal with CSS confetti
+- ✨ `aafeae5` — **Shubh dixit** — Visual Learning Universe title size fix, Guide & UI tweaks
+- ✨ `675d485` — **poorvipravallika06** — implement progressive gamified levels and retry flow for HCF/LCM quiz
+- ✨ `c821e51` — **varshini-nandula** — improve badge visibility, fix badge image path resolutions, and unify locked state with disabled Keep Practicing! button
+- ✨ `fe29397` — **varshini-nandula** — implement gamified profile achievement showcase with badge selector modal
+- ✨ `1c2d6c7` — **varshini-nandula** — implement achievement collections and profile showcase with streak tracking
+- 📌 `09cdd5a` — **varshini-nandula** — Merge branch 'main' of https://github.com/vicharanashala/tenali into feat/profile-achievement-showcase
+- 🔧 `fe8377d` — **varshini-nandula** — remove docs from directory
+
+#### 📅 2026-07-10  <sub>(23 commits)</sub>
+
+- 📌 `97ed83d` — **Vaibhav** — Fix PR #18 review findings: simplify word problem, resolve ESLint warnings, and update pedagogical references
+- 📌 `cf3ae05` — **Vaibhav** — Replace Error Communication with Root Decoder & update etymology references
+- 📝 `6f9c498` — **Vaibhav** — create exercise research references document
+- ✨ `3e6d045` — **Vaibhav** — implement minimalist grid dashboard layout to reduce cognitive load in v0.1.3
+- ✨ `1140312` — **Vaibhav** — add 3 new general math literacy exercises for v0.1.2
+- ✨ `3506c26` — **Vaibhav** — add 5 new literacy exercises to Vachana module
+- 📌 `ea55e5a` — **Vaibhav** — Fix PR #18 review findings: simplify word problem, resolve ESLint warnings, and update pedagogical references
+- 📌 `6fa50ad` — **poorvipravallika06** — Implement confidence-based quiz progression flow (sequential redirection)
+- 📌 `18c89c1` — **Vaibhav** — Replace Error Communication with Root Decoder & update etymology references
+- 📌 `de4f388` — **poorvipravallika06** — Remove unused variables in LcmHcfApp.jsx to pass eslint checks
+- 📌 `3dd1cc4` — **poorvipravallika06** — Refine HCF Venn circles padding, cap LCM jump height, and implement progressive quiz tiers
+- 📝 `046ee1d` — **Vaibhav** — create exercise research references document
+- ✨ `4437380` — **Vaibhav** — implement minimalist grid dashboard layout to reduce cognitive load in v0.1.3
+- ♻️ `37daf1d` — **varshini-nandula** — standardize hints formatting for first 5 modules to match exact prefixes without emojis
+- 💄 `57ae244` — **varshini-nandula** — normalize indentation in transferScenarios.js
+- ♻️ `bb681ce` — **varshini-nandula** — apply Tenali Question & Hint Design Guide Part 1 to percentage, ratio, fractionadd, addition, and decimals modules
+- ✨ `0c3094a` — **Vaibhav** — add 3 new general math literacy exercises for v0.1.2
+- 📌 `9dbfa2c` — **Shubh dixit** — Resolve merge conflicts with main
+- 📌 `e408a79` — **Shubh dixit** — UI standardization, premium dark theme updates, and module layout improvements
+- ✨ `15e5576` — **Vaibhav** — add 5 new literacy exercises to Vachana module
+- ♻️ `86c0c1c` — **varshini-nandula** — update prompt and hints for remaining learning transfer challenges according to design guide
+- 📌 `717bd0f` — **muditagrawal2007** — change
+- 📌 `88fb6fc` — **jgupta05072003-code** — 🔀 PR #10 from `muditagrawal2007`
+
+#### 📅 2026-07-09  <sub>(27 commits)</sub>
+
+- 📌 `5356ef9` — **Ritish Karmakar** — Refactor Percentages layout to one-card-at-a-time and fix AudioContext singleton; update changelog
+- ✨ `129f48c` — **Vaibhav** — implement Vachana Mathematical Literacy Lab
+- 📌 `dce3d1f` — **poorvipravallika06** — Refactor HCF & LCM module with dynamic quiz, stepper locks, validation popups, accordion examples, and mistake redirection
+- 🐛 `8887895` — **KCDharshan9** — restore Vite proxy configuration
+- 🔧 `1e09021` — **KCDharshan9** — restore unrelated project files
+- 🔧 `1782261` — **KCDharshan9** — remove internal documentation from repository tracking
+- 📌 `8a493a7` — **muditagrawal2007** — change
+- ✨ `d6d932d` — **KCDharshan9** — add new question datasets and update server dependencies
+- 📌 `a386c49` — **muditagrawal2007** — change
+- ✨ `51b7510` — **KCDharshan9** — add multiple vocabulary and question data files and update project dependencies
+- 📌 `26a3306` — **muditagrawal2007** — change
+- 📌 `a45075e` — **muditagrawal2007** — change
+- ✨ `3103083` — **varshini-nandula** — implement customized learning transfer templates for all remaining modules and update walkthrough documentation
+- ✨ `8870d08` — **Vaibhav** — implement Vachana Mathematical Literacy Lab
+- ✨ `8cbe4ea` — **KCDharshan9** — Learn These Words pre-quiz section (Feature AQ)
+- ✨ `3f54fac` — **Ahana Banerjee** — remove standard mode from the goal selector pills in the goal based practice app
+- 🔧 `7ef1a9d` — **varshini-nandula** — remove developer debug controls and reset progress button from dashboard
+- ✨ `73cb6e8` — **Ahana Banerjee** — implement goal-based practice session as a standalone and isolate it from the main diagnostic and learning module
+- 📌 `c190b1a` — **Ritish Karmakar** — Refactor Percentages layout to one-card-at-a-time and fix AudioContext singleton; update changelog
+- ✨ `789be66` — **varshini-nandula** — gate transfer challenge unlocking on completing easy medium and hard levels
+- 🐛 `a7297e4` — **varshini-nandula** — update completion screen to encourage student to try again
+- ✨ `613278e` — **Shubh dixit** — replace emojis with standard lucide-react icons
+- 🔧 `fa62169` — **Shubh dixit** — remove unused script files from root
+- ✨ `14413c0` — **varshini-nandula** — implement step-by-step explanations and fix grading for generic transfer challenges
+- 🐛 `384b007` — **varshini-nandula** — resolve temporal dead zone error and enhance transfer challenge UI
+- 🐛 `05953e6` — **varshini-nandula** — add missing learning modules to vite proxy config
+- 📝 `8fd68ad` — **varshini-nandula** — add docs directory to .gitignore
+
+#### 📅 2026-07-08  <sub>(13 commits)</sub>
+
+- 📌 `61997df` — **Ritish Karmakar** — Add comprehensive changelog for Percentages Level 1 feature
+- 📌 `eed3ad8` — **Ritish Karmakar** — Implement step-wise diagnostic quiz for Percentages with kid-friendly UI
+- ✨ `1a54b57` — **KCDharshan9** — implement initial tap-to-define word glossary
+- ✨ `8108475` — **poorvipravallika06** — implement interactive LCM & HCF module with curiosity and confidence meter
+- 📌 `7636bf4` — **muditagrawal2007** — added the limit to the number of the questions to visible
+- 📌 `13e0a27` — **Ritish Karmakar** — Add comprehensive changelog for Percentages Level 1 feature
+- 📌 `412a788` — **Ritish Karmakar** — Implement step-wise diagnostic quiz for Percentages with kid-friendly UI
+- ✨ `c65bcde` — **Ahana Banerjee** — implement Learning Intelligence Layer (LIL) architecture with goal based practise sessions functionality across all apps and question topic cards
+- 🐛 `7e9aea7` — **varshini-nandula** — fix ReferenceError and implement Stage 3 completion hook and Stage 4 Transfer CTA for AdditionApp
+- ✨ `2e4d127` — **Shubh dixit** — Premium Core Educational Suite & UI Standardization (4 core features)
+- ✨ `c8a8895` — **varshini-nandula** — implement dynamic fallback to support transfer challenges for all modules (Version 2)
+- 🐛 `1a00ce0` — **varshini-nandula** — correct topic key alignment to fix empty transfer questions
+- ✨ `86ddece` — **varshini-nandula** — add Stage 4 learning transfer challenges for percentages, ratios, and fractions
+
+#### 📅 2026-07-06  <sub>(1 commit)</sub>
+
+- 🔧 `2fbd8bb` — **varshini-nandula** — add docs directory to gitignore
+
+#### 📅 2026-06-30  <sub>(4 commits)</sub>
+
+- 📌 `85f4ac9` — **Ritish Karmakar** — Add level-wise explanation: Percentages Level 1 (Find) 1st change
+- 📌 `c3fcfe0` — **Ritish Karmakar** — Update package-lock
+- 📌 `5e6c747` — **Ritish Karmakar** — Add level-wise explanation: Percentages Level 1 (Find) 1st change
+- 📌 `8f8653c` — **Ritish Karmakar** — Update package-lock
+
+#### 📅 2026-05-11  <sub>(1 commit)</sub>
+
+- ✨ `6d4e9ad` — **Vasuki** — add Guess the Number (binary magic card trick)
+
+#### 📅 2026-05-03  <sub>(21 commits)</sub>
+
+- 📌 `8ffb66e` — **Sudarshan** — Add session summary doc
+- 📌 `408c4f2` — **Sudarshan** — Add L17 bridge 27 (+ − in Standard Form). Chapter 5 fully bridged.
+- 📌 `e6ee1ac` — **Sudarshan** — Add L16 bridge 26 (× ÷ in Standard Form)
+- 📌 `805fe78` — **Sudarshan** — Add L15 bridge 25 (Standard Form Basics)
+- 📌 `6aecb9e` — **Sudarshan** — Add L14 bridge 24 (Successive % Changes)
+- 📌 `c1b8650` — **Sudarshan** — Add L13 bridge 23 (Reverse Percentages)
+- 📌 `be68994` — **Sudarshan** — Add L12 bridge 22 (Multiplier Method)
+- 📌 `3315931` — **Sudarshan** — Add L11 bridge 21 (% Increase/Decrease)
+- 📌 `0e4376e` — **Sudarshan** — Add L10 bridge 20 (X as a percentage of Y)
+- 📌 `76d2e9a` — **Sudarshan** — Add L9 bridge 19 (X% of Y)
+- 📌 `735aef8` — **Sudarshan** — Add L8 bridges 17-18 (% Decimal, % Fraction conversions)
+- 📌 `944a78a` — **Sudarshan** — Add L7 bridge 16 (Fraction OF / What fraction is M of N)
+- 📌 `cae5b23` — **Sudarshan** — Add L6 bridge 15 (Clear Decimals from Fractions)
+- 📌 `c9deb84` — **Sudarshan** — Add L5 bridges 13-14 (Reciprocals + Divide Fractions/KCF)
+- 📌 `9ad3eb8` — **Sudarshan** — Add Lesson 4 bridges (Bridges 9-12) for Add/Subtract Fractions
+- 📌 `3ae971e` — **Sudarshan** — Add 8 Lesson-prerequisite bridges + LaTeX-typeset fractions
+- 📌 `9767e6c` — **Sudarshan** — Add in-memory auth fallback when MongoDB is unavailable
+- 📌 `c21625e` — **Sudarshan** — auto-commit 2026-05-03 18:28:32
+- 📌 `8a127a0` — **Sudarshan** — auto-commit 2026-05-03 18:18:58
+- 📌 `3f49a2d` — **Sudarshan** — auto-commit 2026-05-03 17:10:36
+- 📌 `8dbe6f6` — **Sudarshan** — auto-commit 2026-05-03 14:19:32
+
+#### 📅 2026-05-02  <sub>(7 commits)</sub>
+
+- 📌 `8ba9205` — **Sudarshan** — auto-commit 2026-05-02 04:12:35
+- 📌 `96e8fb3` — **Sudarshan** — auto-commit 2026-05-02 04:11:25
+- 📌 `2fdc3c0` — **S. R. S. Iyengar** — Format deploy.yml for consistency and clarity
+- 📌 `3ca635b` — **S. R. S. Iyengar** — Change deployment from GitHub Pages to droplet
+- 📌 `2ebb0ac` — **Sudarshan** — auto-commit 2026-05-02 01:12:09
+- 📌 `812a6d5` — **Sudarshan** — auto-commit 2026-05-02 00:40:59
+- 📌 `4e021b4` — **Sudarshan** — auto-commit 2026-05-02 00:22:40
+
+#### 📅 2026-05-01  <sub>(11 commits)</sub>
+
+- 📌 `f9a9c42` — **Sudarshan** — auto-commit 2026-05-01 21:48:39
+- 📌 `c79778e` — **Sudarshan** — auto-commit 2026-05-01 21:40:10
+- 📌 `8746120` — **Sudarshan** — auto-commit 2026-05-01 19:26:47
+- 📌 `3d56ee0` — **Sudarshan** — auto-commit 2026-05-01 16:16:46
+- 📌 `02c7a33` — **Sudarshan** — auto-commit 2026-05-01 16:09:32
+- 📌 `3bda941` — **Sudarshan** — auto-commit 2026-05-01 16:00:50
+- 📌 `df7a4bc` — **Sudarshan** — auto-commit 2026-05-01 15:55:22
+- 📌 `9c13486` — **Sudarshan** — auto-commit 2026-05-01 11:03:48
+- 📌 `c3a95ae` — **Sudarshan** — auto-commit 2026-05-01 11:03:37
+- 📌 `1971271` — **Sudarshan** — auto-commit 2026-05-01 10:52:56
+- 📌 `412ef5e` — **Sudarshan** — auto-commit 2026-05-01 10:37:37
+
+#### 📅 2026-04-30  <sub>(21 commits)</sub>
+
+- 📌 `f393751` — **Sudarshan** — auto-commit 2026-04-30 10:16:00
+- 📌 `c65c7c1` — **Sudarshan** — auto-commit 2026-04-30 09:57:46
+- 📌 `71d189c` — **Sudarshan** — auto-commit 2026-04-30 09:47:25
+- 📌 `0b309ec` — **Sudarshan** — auto-commit 2026-04-30 09:12:34
+- 📌 `29c2227` — **Sudarshan** — auto-commit 2026-04-30 09:12:31
+- 📌 `4d03baa` — **Sudarshan** — auto-commit 2026-04-30 09:12:28
+- 📌 `12e40ce` — **Sudarshan** — auto-commit 2026-04-30 09:12:26
+- 📌 `ebb8de4` — **Sudarshan** — auto-commit 2026-04-30 09:11:50
+- 📌 `30a4fea` — **Sudarshan** — auto-commit 2026-04-30 09:08:49
+- 📌 `dbf8c68` — **Sudarshan** — auto-commit 2026-04-30 09:06:41
+- 📌 `5bebedc` — **Sudarshan** — auto-commit 2026-04-30 09:02:35
+- 📌 `a1975c3` — **Sudarshan** — auto-commit 2026-04-30 09:01:01
+- 📌 `0987d80` — **Sudarshan** — auto-commit 2026-04-30 08:44:29
+- 📌 `bc4da92` — **Sudarshan** — auto-commit 2026-04-30 08:40:43
+- 📌 `d64ddff` — **Sudarshan** — auto-commit 2026-04-30 07:58:49
+- 📌 `d7b4a58` — **Sudarshan** — auto-commit 2026-04-30 07:54:49
+- 📌 `e0989dc` — **Sudarshan** — auto-commit 2026-04-30 07:54:45
+- 📌 `cdbb34b` — **Sudarshan** — auto-commit 2026-04-30 07:42:12
+- 📌 `5dd1320` — **Sudarshan** — auto-commit 2026-04-30 07:42:01
+- 📌 `330cffe` — **Sudarshan** — auto-commit 2026-04-30 07:41:05
+- 📌 `1a2e6e5` — **Sudarshan** — auto-commit 2026-04-30 07:35:45
+
+#### 📅 2026-04-29  <sub>(12 commits)</sub>
+
+- 📌 `0892380` — **Sudarshan** — auto-commit 2026-04-29 12:42:25
+- 📌 `8f32df9` — **Sudarshan** — auto-commit 2026-04-29 12:13:17
+- 📌 `3b054e2` — **Sudarshan** — auto-commit 2026-04-29 09:28:52
+- 📌 `0cf45b8` — **Sudarshan** — auto-commit 2026-04-29 09:28:50
+- 📌 `27d1bcc` — **Sudarshan** — auto-commit 2026-04-29 09:28:47
+- 📌 `156aa0d` — **Sudarshan** — auto-commit 2026-04-29 09:19:15
+- 📌 `9ef2e59` — **Sudarshan** — auto-commit 2026-04-29 09:05:51
+- 📌 `7ad7964` — **Sudarshan** — auto-commit 2026-04-29 08:53:34
+- 📌 `0136b75` — **Sudarshan** — auto-commit 2026-04-29 08:34:32
+- 📌 `2a5772c` — **Sudarshan** — auto-commit 2026-04-29 08:31:44
+- 📌 `610c314` — **Sudarshan** — auto-commit 2026-04-29 08:23:14
+- 📌 `6a321de` — **Sudarshan** — auto-commit 2026-04-29 08:15:18
+
+#### 📅 2026-04-27  <sub>(4 commits)</sub>
+
+- 📌 `8e7559d` — **Sudarshan** — auto-commit 2026-04-27 08:24:40
+- 📌 `2b9ca8a` — **Sudarshan** — auto-commit 2026-04-27 08:02:11
+- 📌 `b81b97b` — **Sudarshan** — auto-commit 2026-04-27 07:45:44
+- 📌 `14d5c26` — **Sudarshan** — auto-commit 2026-04-27 07:01:36
+
+#### 📅 2026-04-24  <sub>(8 commits)</sub>
+
+- 📌 `bca8cbd` — **Sudarshan** — auto-commit 2026-04-24 10:32:06
+- 📌 `238edbe` — **Sudarshan** — shuffle MCQ options and add keyboard navigation (arrows, Enter, A-D/1-4)
+- 📌 `afd1562` — **Sudarshan** — auto-commit 2026-04-24 09:56:03
+- 📌 `8608f54` — **Sudarshan** — add zoom to line-fitter (+/−/1:1/Fit buttons + mouse wheel)
+- 📌 `31c2420` — **Sudarshan** — auto-commit 2026-04-24 09:34:47
+- 📌 `cfbb1cc` — **Sudarshan** — replace drill with interactive line-fitter (random points, live y=mx+C)
+- 📌 `163508c` — **Sudarshan** — auto-commit 2026-04-24 09:14:38
+- 📌 `1fd6fa5` — **Sudarshan** — Add /riya: IGCSE Add Math 0606 practice bank (65 MCQs across 14 topics)
+
+#### 📅 2026-04-20  <sub>(2 commits)</sub>
+
+- 📌 `aecf603` — **Sudarshan** — auto-commit 2026-04-20 14:18:48
+- 📌 `555cbb2` — **Sudarshan** — ensure all four MCQ choices are unique
+
+#### 📅 2026-04-18  <sub>(26 commits)</sub>
+
+- 📌 `9707001` — **Sudarshan** — auto-commit 2026-04-18 21:00:22
+- 📌 `2a0c7d5` — **Sudarshan** — auto-commit 2026-04-18 20:34:21
+- 📌 `6a04d2c` — **Sudarshan** — auto-commit 2026-04-18 20:28:24
+- 📌 `616edd1` — **Sudarshan** — auto-commit 2026-04-18 20:26:54
+- 📌 `0fb1759` — **Sudarshan** — auto-commit 2026-04-18 20:25:33
+- 📌 `a6688c7` — **Sudarshan** — auto-commit 2026-04-18 20:24:01
+- 📌 `7d34815` — **Sudarshan** — Add version badge + auto-increment on push
+- 📌 `7c11afc` — **Sudarshan** — Add version badge + auto-increment on push
+- 📌 `0977d37` — **Sudarshan** — Add version badge + auto-increment on push
+- 📌 `5df8f55` — **Sudarshan** — Add version badge + auto-increment on push
+- 📌 `f7f4737` — **Sudarshan** — Add version badge + auto-increment on push
+- 📌 `c2c864c` — **Sudarshan** — Render fractions as stacked LaTeX-style (no / sign), fix level 7 math
+- 📌 `f96a02c` — **Sudarshan** — Replace Tatsavit with algebra simplification drill
+- 📌 `34499ee` — **Sudarshan** — auto-commit 2026-04-18 08:33:10
+- 📌 `f829f9c` — **Sudarshan** — auto-commit 2026-04-18 08:24:37
+- 📌 `a6fdb67` — **Sudarshan** — auto-commit 2026-04-18 08:18:48
+- 📌 `b984612` — **Sudarshan** — auto-commit 2026-04-18 07:53:54
+- 📌 `05c42ad` — **Sudarshan** — auto-commit 2026-04-18 07:52:41
+- 📌 `adb4288` — **Sudarshan** — auto-commit 2026-04-18 07:48:54
+- 📌 `95112a6` — **Sudarshan** — auto-commit 2026-04-18 07:46:12
+- 📌 `b52b65c` — **Sudarshan** — auto-commit 2026-04-18 07:41:25
+- 📌 `98ee2c8` — **Sudarshan** — auto-commit 2026-04-18 07:40:57
+- 📌 `b76d6b5` — **Sudarshan** — auto-commit 2026-04-18 07:37:42
+- 📌 `ebe80c2` — **Sudarshan** — auto-commit 2026-04-18 07:36:08
+- 📌 `38dff87` — **Sudarshan** — auto-commit 2026-04-18 07:34:22
+- 📌 `0f63e88` — **Sudarshan** — auto-commit 2026-04-18 07:30:48
+
+#### 📅 2026-04-17  <sub>(20 commits)</sub>
+
+- 📌 `3c0a7d3` — **Sudarshan** — auto-commit 2026-04-17 23:49:18
+- 📌 `6b37d34` — **Sudarshan** — auto-commit 2026-04-17 23:46:04
+- 📌 `ae1aa7e` — **Sudarshan** — auto-commit 2026-04-17 23:42:52
+- 📌 `5fb0684` — **Sudarshan** — auto-commit 2026-04-17 23:37:40
+- 📌 `af4459f` — **Sudarshan** — auto-commit 2026-04-17 23:34:50
+- 🐛 `90e78a4` — **Sudarshan** — randomly focus on 2 or 3 slowest facts (uniform)
+- 🐛 `a3bc937` — **Sudarshan** — no auto Phase 2 — add manual Phase 2 button
+- 🐛 `744d4ca` — **Sudarshan** — show lookup table in order (no shuffle), split into 2 rows of 5
+- ✨ `62fae99` — **Sudarshan** — add /supertables1 — adaptive 2-phase speed drill with rolling window
+- 🐛 `34a9ad9` — **Sudarshan** — exclude incorrect answers from timing data and attempt count
+- ✨ `64fabd4` — **Sudarshan** — trimmed mean (drop top/bottom 10%) for chart and adaptive logic
+- ✨ `4393f77` — **Sudarshan** — make all 10 levels adaptive using session performance data
+- ✨ `5d9fe1a` — **Sudarshan** — add live performance chart + record timing on all levels
+- ✨ `76bba2d` — **Sudarshan** — expand table selection from 20 to 50
+- 🐛 `404527d` — **Sudarshan** — fix grid overflow + Enter key advances on feedback
+- 🐛 `d29342a` — **Sudarshan** — improve contrast and formatting across dark/light themes
+- ✨ `88378bd` — **Sudarshan** — sequential level progression + high-contrast theme
+- 📌 `c5bcd18` — **Sudarshan** — Add /supertables route with 10-level multiplication learning app
+- 📌 `bb8db96` — **Sudarshan** — Add SuperTables: 10-level multiplication learning app
+- ✨ `b01e72b` — **Sudarshan** — add /lakshya route + spaced repetition for slow multipliers in /tables
+
+#### 📅 2026-04-16  <sub>(16 commits)</sub>
+
+- ✨ `209276d` — **Sudarshan** — add /lakshya route with mastery multiplication program
+- ✨ `dac69e8` — **Sudarshan** — add /jatin route with 10-level table learning strategy
+- 🐛 `9ea5f87` — **Sudarshan** — theme-aware colors + Yazdan's Levels heading
+- 🐛 `4076eb0` — **Sudarshan** — replace hardcoded dark colors with theme-aware CSS variables
+- ✨ `17e10a1` — **Sudarshan** — add /yazdan route with 10-level progressive tables mastery
+- 📌 `c9e10cf` — **Sudarshan** — Enter key accepts Level Up on promotion prompt
+- 📌 `7f71ee0` — **Sudarshan** — Rename landing page title to Tenali's Tables Desk
+- 📌 `cf73ca0` — **Sudarshan** — Add /tables route — generic version of the scaffolded tables app
+- 📌 `13b3575` — **Sudarshan** — Fix See Results, confetti, Level 2 single-column layout, Level 1 dimming answer
+- 📌 `eecfd45` — **Sudarshan** — 5-level progression: show answer, partial table, shuffled, reverse+products, no table
+- 📌 `4556cae` — **Sudarshan** — Phase 2: show only 5 shuffled rows instead of all 10
+- 📌 `692aac0` — **Sudarshan** — Fix table readability: larger monospace font, aligned numbers, darker colors
+- 📌 `7577ba2` — **Sudarshan** — Extend table chooser from 2-9 to 2-19
+- 📌 `4c0ae22` — **Sudarshan** — Fix lookup table spacing: use tight gap instead of space-between
+- 📌 `f5d0294` — **Sudarshan** — Minimalist mobile-first layout for /taittiriya playing phase
+- 📌 `35bcd86` — **Sudarshan** — Redesign /taittiriya: 3-phase scaffolded tables with table chooser
+
+#### 📅 2026-04-05  <sub>(27 commits)</sub>
+
+- 📌 `e0a5851` — **Sudarshan** — Update SRS.md to v4.0 with comprehensive project documentation
+- 📌 `e79b546` — **Sudarshan** — Redesign solve card with stepped timeline layout
+- 📌 `d077928` — **Sudarshan** — Add interactive difficulty slider and per-topic difficulty tracking
+- 📌 `375ad77` — **Sudarshan** — Add draggable seeker to adaptive difficulty bar across all puzzles
+- 📌 `4491209` — **Sudarshan** — Add Skip button, center-align feedback, and visual ack for self-report
+- 📌 `c7f7b6c` — **Sudarshan** — Add visual feedback for Too Hard/Too Easy self-report buttons
+- 📌 `fef7d3e` — **Sudarshan** — Redesign solve feedback: centered card with highlighted answer and styled explanation
+- 📌 `fccdbba` — **Sudarshan** — Rewrite solve explanations with detailed step-by-step teaching for all puzzle types
+- 📌 `f3055a7` — **Sudarshan** — Update SRS.md v3.0: document Solve button, self-report buttons, and Journey fixes
+- 📌 `d64045c` — **Sudarshan** — Add Solve button across all puzzles with step-by-step explanations
+- 📌 `61896d6` — **Sudarshan** — Journey quiz: fix Enter key, fix undefined feedback, add Skip + self-report buttons
+- 📌 `a0852b1` — **Sudarshan** — Add self-report difficulty buttons to all adaptive puzzles; add SRS.md
+- 📌 `5589581` — **Sudarshan** — add always-visible Easy/Hard self-report buttons below Submit
+- 📌 `7c14d56` — **Sudarshan** — Add ^, x keys to Tatsavit numpad; accept full expression answers for monomials
+- 📌 `d14ff18` — **Sudarshan** — Add 'Start the Journey' adaptive quiz to path page
+- 📌 `99a4134` — **Sudarshan** — per-type slow thresholds instead of flat 15s
+- 📌 `8a96f06` — **Sudarshan** — ask 'easy or difficult?' when student takes >15s on any question
+- 📌 `94715ea` — **Sudarshan** — Fix new puzzles (uuid→Date.now), add Tatsavit numpad + time-based hints, persist GK/Vocab seen IDs
+- 📌 `2f2ca88` — **Sudarshan** — Add enhanced landing page preview at /enhanced
+- 📌 `f65b971` — **Sudarshan** — Add 15 new puzzles, fix Tatsavit wrong-answer counting & sqrt prompt
+- 📌 `9573957` — **Sudarshan** — Style NONE option in red on /path dropdown
+- 📌 `d457a07` — **Sudarshan** — Add NONE source default for longest path, remove tatsavit from graph
+- 📌 `f1e5f12` — **Sudarshan** — Route /tatsavit URL to new TatsavitApp instead of old AdaptiveMixedApp
+- 📌 `d9c40f4` — **Sudarshan** — Add /path — prerequisite path finder with dropdown menus
+- 📌 `2253c62` — **Sudarshan** — Serve prerequisite graph at /graph route
+- 📌 `6344395` — **Sudarshan** — Fix TatsavitApp + add prerequisite graph + fix server type bug
+- 📌 `eb013eb` — **Sudarshan** — Add Tatsavit progressive drill + limit Squaring to 2-digit (11-99)
+
+#### 📅 2026-04-04  <sub>(11 commits)</sub>
+
+- 📌 `0145abd` — **Sudarshan** — Add Squaring puzzle — (a+b)² = a² + 2ab + b²
+- 📌 `90595e4` — **Sudarshan** — Keep multiplier range 1-10 for multiplication tables
+- 📌 `117c6a1` — **Sudarshan** — Fix Random Mix missing prompts, extend Multiplication to 19
+- 📌 `21c05f8` — **Sudarshan** — Fix Random Mix submit button — timer.elapsed() TypeError
+- 📌 `1cd053b` — **Sudarshan** — Show error feedback when wrong factor entered in Prime Factors
+- 📌 `4cde017` — **Sudarshan** — Fix question skipping, score bugs, and Bearings repetition
+- 📌 `37e1e60` — **Sudarshan** — Fix Dot Products submit button and restyle with CSS classes
+- 📌 `ca0d8fb` — **Sudarshan** — Overhaul Extended Euclidean: BigInt for 20+ digit numbers, wider inputs, proper subscripts
+- 📌 `ed7e0f8` — **Sudarshan** — Fix Extended Euclidean compute button — rows array was inside comment
+- 📌 `16186e5` — **Sudarshan** — Fix double-submit causing inflated score in Dot Products
+- 📌 `0ba2252` — **Sudarshan** — Fix Dot Products: remove auto-tab, show proper vector dimensions
+
+#### 📅 2026-04-03  <sub>(31 commits)</sub>
+
+- 📌 `b53512e` — **Sudarshan** — Replace text inputs with visual matrix/vector grid boxes in Dot Products
+- 📌 `4140445` — **Sudarshan** — Render matrices with proper bracket formatting in Dot Products
+- 📌 `77f453c` — **Sudarshan** — Fix Dot Products medium: use 2D and 3D dot products instead of sum variant
+- 📌 `0142bb5` — **Sudarshan** — Add Dot Products puzzle with 4 difficulty levels
+- 📌 `82d10f4` — **Sudarshan** — Move Random Mix + Custom Lesson into hamburger menu
+- 📌 `c0e6059` — **Sudarshan** — Sort puzzles alphabetically, feature Random Mix + Custom in top row
+- 📌 `c9a4ea6` — **Sudarshan** — Fix Enter key not advancing after wrong answer in QFormula, Simul, FuncEval, LineEq
+- 📌 `7b84779` — **Sudarshan** — Fix Enter key not advancing after wrong answer in Prime Factors
+- 📌 `2c4fa30` — **Sudarshan** — Add Tenali Raman mascot to landing page
+- 📌 `4b3322d` — **Sudarshan** — Retrofit all hand-written quiz apps for visual uniformity
+- 📌 `014593f` — **Sudarshan** — Update all 37 SKILL.md files to comprehensive formal specifications
+- 📌 `85c4a18` — **Sudarshan** — Add Adaptive difficulty mode to all puzzle apps
+- 📌 `953511b` — **Sudarshan** — Add Random Mix — adaptive cross-topic quiz with progressive difficulty
+- 📌 `2bd177e` — **Sudarshan** — Add 6 geometry puzzles: Angles, Triangles, Congruence, Pythagoras, Polygons, Similarity
+- 📌 `5727703` — **Sudarshan** — Add final 10 puzzles to reach 50 total: Integration, Standard Form, Bounds, Speed/Distance/Time, Variation, HCF & LCM, Profit & Loss, Rounding, Binomial Theorem, Complex Numbers
+- 📌 `7502b43` — **Sudarshan** — Add 14 new puzzles: Trig, Inequalities, Coord Geom, Probability, Statistics, Matrices, Vectors, Transformations, Mensuration, Bearings, Logarithms, Differentiation, Number Bases, Circle Theorems
+- 📌 `a94b016` — **Sudarshan** — Add Sets puzzle — union, intersection, Venn diagrams
+- 📌 `a72a770` — **Sudarshan** — Add Sequences, Ratio & Proportion, and Percentages puzzles
+- 📌 `7de490e` — **Sudarshan** — Add Surds and Indices puzzles with full IGCSE coverage
+- 📌 `87ad057` — **Sudarshan** — replace stacked num/den inputs with single text input
+- 📌 `ae24a41` — **Sudarshan** — Fix Fractions (Add) setup screen to match standard puzzle layout
+- 📌 `c3cfb93` — **Sudarshan** — increase to 100 questions per session
+- 📌 `b17839d` — **Sudarshan** — Set Taittiriya to start on 3× table (mastered 2×)
+- 📌 `1f8a07e` — **Sudarshan** — Fix double plus sign in monomial addition prompts
+- 📌 `013386b` — **Sudarshan** — Add table advancement to Taittiriya: auto-advance on mastery
+- 📌 `248201c` — **Sudarshan** — Remove setup phase from Tatsavit — auto-starts immediately
+- 📌 `d4e3a65` — **Sudarshan** — Fix Taittiriya: show only the current table, not neighbors
+- 📌 `16bf1b6` — **Sudarshan** — Remove setup phase from Taittiriya — auto-starts immediately
+- 📌 `39620ce` — **Sudarshan** — Add Fractions (Add) puzzle, scaffolded tables for Taittiriya, adaptive mixed quiz for Tatsavit
+- 📌 `e97a032` — **Sudarshan** — Add extensive code comments and rewrite all SKILL.md as formal specs
+- 📌 `b6d4b61` — **Sudarshan** — Fix vocab repetition: add dedup to vocab + GK, expand to ~4000 questions
+
+#### 📅 2026-04-02  <sub>(43 commits)</sub>
+
+- 📌 `ce262f9` — **Sudarshan** — Add interval scheduling & extended Euclid pages, fix Custom Lesson crash
+- 📌 `58ca1fd` — **Sudarshan** — Rename GK subtitle to 'General Knowledge questions'
+- 📌 `46582ab` — **Sudarshan** — Enable keyboard input for Arithmetic puzzle
+- 📌 `13cd0ac` — **Sudarshan** — Fix desktop adaptive tables layout: balanced spacing and alignment
+- 📌 `ef5aa95` — **Sudarshan** — Allow Enter key to advance after wrong answers in adaptive tables
+- 📌 `6894bb5` — **Sudarshan** — Improve mobile adaptive tables: quiz on top, compact 3-col ref table
+- 📌 `b653f5a` — **Sudarshan** — Add Next button after wrong answers in adaptive tables
+- 📌 `0bf8a8c` — **Sudarshan** — Fix mobile layout for reference table in /tatsavit and /taittiriya
+- 📌 `70eb575` — **Sudarshan** — Fix keyboard shortcuts: pass letter directly instead of relying on state
+- 📌 `347a148` — **Sudarshan** — Fix card layout: subtitle sits right below badge, both centered
+- 📌 `b07f230` — **Sudarshan** — Add keyboard shortcuts (1-4 / a-d) for multiple-choice questions
+- 📌 `e2b4f64` — **Sudarshan** — Pin card badges to top: consistent alignment regardless of subtitle length
+- 📌 `964ba8a` — **Sudarshan** — Redesign adaptive tables: starting table picker + speed-based adaptation
+- 📌 `fc5404d` — **Sudarshan** — Fix /taittiriya and /tatsavit: change Vite base from './' to '/'
+- 📌 `917b8c3` — **Sudarshan** — Make title badges uniform: fixed 140x38px with centered text
+- 📌 `fd27bc3` — **Sudarshan** — Fix GK badge alignment: add min-width to menu-title badges
+- 📌 `1fc2cbd` — **Sudarshan** — Add adaptive multiplication tables for /taittiriya and /tatsavit
+- 📌 `51859ff` — **Sudarshan** — Complete dark/light theme: all components use CSS variables
+- 📌 `bb9ce73` — **Sudarshan** — Shorten puzzle card names: GK, Vocabulary, Quadratics, Sim. Eq., Arithmetic
+- 📌 `d0ec86f` — **Sudarshan** — Add Custom Lesson puzzle, dark/light theme toggle, search bar, uniform cards
+- 📌 `b0ae5ea` — **Sudarshan** — Lighten title badge to silver grey, center-align all card content
+- 📌 `b5dcb1f` — **Sudarshan** — Style menu card titles with greyscale badge rectangles
+- 📌 `3c9773f` — **Sudarshan** — Merge linear/simul, add Basic Arithmetic, restructure polymul, fix alignment
+- 📌 `7e568fe` — **Sudarshan** — Use proper Unicode superscripts instead of ^ for exponents
+- 📌 `7806cc9` — **Sudarshan** — Fix missing isCorrect state in Addition, Quadratic, Multiply, Sqrt
+- 📌 `55ee5e1` — **Sudarshan** — Rename Spot It to Twin Hunt everywhere
+- 📌 `bb9140c` — **Sudarshan** — Only auto-advance on correct answers; wait on wrong answers
+- 📌 `e04efdc` — **Sudarshan** — Ensure prime factorization never generates prime numbers
+- 📌 `84df47e` — **Sudarshan** — Add SKILL.md specs for all 8 new math puzzles
+- 📌 `33a9fb3` — **Sudarshan** — Add 8 new math puzzles to Tenali
+- 📌 `b5c9553` — **Sudarshan** — Update all SKILL.md specs to reflect current state of all 7 apps
+- 📌 `0d2ab69` — **Sudarshan** — Reverse Vocab Builder: show word, pick the correct definition
+- 📌 `0800f57` — **Sudarshan** — Add Vocab Builder quiz and scatter Spot It items in circles
+- 📌 `a035455` — **Sudarshan** — Add Spot It puzzle — find the common object in two panels
+- 📌 `f510a62` — **Sudarshan** — Auto-advance to next question after 1.5s feedback display
+- 📌 `7ac6300` — **Sudarshan** — Add Multiplication Tables quiz and configurable question count
+- 📌 `fd1951b` — **Sudarshan** — Fix numpad: enable physical keyboard alongside on-screen keypad
+- 📌 `7185057` — **Sudarshan** — Add elegant on-screen numeric keypad to all math quizzes
+- 📌 `7a6fa71` — **Sudarshan** — Show running results table during Addition and Quadratic quizzes
+- 🐛 `862e31a` — **Sudarshan** — prevent a=0 in quadratic and allow minus sign on mobile keyboard
+- 📌 `ce04be1` — **Sudarshan** — Upgrade typography, responsive grid, and finish screen spacing
+- 📌 `6a7ddcf` — **Sudarshan** — Add supermarket documentation hub and clean up old app docs
+- 📌 `36a484e` — **Sudarshan** — Redesign UI, add step-by-step feedback, quadratic difficulty levels, and 4x4 home grid
+
+#### 📅 2026-04-01  <sub>(3 commits)</sub>
+
+- 📌 `a1f10d6` — **S. R. S. Iyengar** — Add GitHub Pages deployment workflow with relative asset paths
+- 📌 `e52f864` — **S. R. S. Iyengar** — Fix render.yaml: use node env, build client, start server
+- 📌 `100334e` — **S. R. S. Iyengar** — Add render.yaml for static site deployment
+
+#### 📅 2026-03-31  <sub>(1 commit)</sub>
+
+- 📌 `b3b7e5d` — **sudarshan** — Add quadratic lesson and sync current Tenali working tree
+
+#### 📅 2026-03-14  <sub>(17 commits)</sub>
+
+- 📌 `4185a9f` — **S. R. S. Iyengar** — Vendor nested quiz apps into main repo
+- 📌 `9e20003` — **S. R. S. Iyengar** — Add missing Tenali app content for deployment
+- 📌 `7ff9e96` — **S. R. S. Iyengar** — Prepare Tenali for single-service Render deploy
+- 📌 `f02d086` — **S. R. S. Iyengar** — Make all controls fully greyscale
+- 📌 `d3210e9` — **S. R. S. Iyengar** — Restyle Tenali with monochrome pencil theme
+- 📌 `5a552c4` — **S. R. S. Iyengar** — Unify GK enter and next flow
+- 📌 `7249d29` — **S. R. S. Iyengar** — Add Enter key handling across quiz modes
+- 📌 `b26e6a1` — **S. R. S. Iyengar** — Make addition flow explicit with next button
+- 📌 `98f498b` — **S. R. S. Iyengar** — Show score in GK mode
+- 📌 `d2242fc` — **S. R. S. Iyengar** — Fix Tenali launcher API calls
+- 📌 `714feca` — **S. R. S. Iyengar** — Integrate Tenali apps into single UI
+- 📌 `36ab1b7` — **S. R. S. Iyengar** — Proxy Tenali launcher apps through root server
+- 📌 `df55244` — **S. R. S. Iyengar** — Turn Tenali root into app launcher
+- 📌 `e19f8ba` — **S. R. S. Iyengar** — Serve built client from Express on single port
+- 📌 `caed3e8` — **S. R. S. Iyengar** — Proxy API through Vite for LAN clients
+- 📌 `dce76e0` — **S. R. S. Iyengar** — Fix client API host for LAN access
+- 📌 `0182e4b` — **S. R. S. Iyengar** — Scaffold Aryabhata kids addition app v1
+
+<!-- live-changelog:end -->
 
 ---
 
-# Changelog — Tenali
-All notable changes to this repository, grouped by date (newest first).
-Auto-curated from git history: pull-request merges and direct commits are listed;
-routine branch-sync merges are omitted. Regenerate with `gen_changelog.py`.
-
-## Version 3 — 2026-07-15
-Overview
-This release removes the AI Study Assistant Prompt step from the explanation flow, replaces the old drag-and-drop Story section with a new guided, mascot-led mini-lesson, and significantly simplifies the rest of the explanation screen for younger readers. It also fixes a recurring background color mismatch so every screen in the module — Home, Explanation, Story, and the graded quiz — now looks visually consistent in both light and dark mode.
-1. REMOVED — AI Study Assistant Prompt Section
-
-The "AI Study Assistant Prompt" step (previously Section 4 of the explanation flow, shipped in Version 1) has been removed from the explanation screen entirely.
-The explanation flow is now 5 sections: Interactive Visual → Concept Theory → Worked Example → Percent Story → Quick Check Quiz — with Percent Story taking the position the AI prompt step previously held, and Quick Check Quiz remaining the final gate before the graded quiz.
-The "after 2 failed rounds, nudge back to the AI prompt" escape hatch (Version 1) no longer applies, since there is no AI prompt step to return to.
-
-2. NEW — Percent Story Section (replaces "Percent Pop")
-
-Removed the old drag-and-drop matching game that had been occupying Section 4. Testing showed it didn't reinforce the concept well and left students under-prepared for the quiz that follows.
-Replaced it with a guided comic-style mini-lesson: a friendly mascot character walks the student through a short story that builds up the idea of "part out of whole = percent" step by step.
-Each time a student reaches this section, one of five different real-world scenarios is chosen at random — a candy jar, a pizza, a classroom of students, a piggy bank, or a football match — so repeat visits don't feel identical, without showing multiple scenarios at once and overwhelming the student.
-The story unfolds across five short panels: introducing the whole amount, showing the part being taken away, asking the student to guess the percentage, revealing the answer and formula, and a quick recap before moving on.
-Replaced an earlier interaction that asked students to tap 25 individual items one by one (tedious and not meaningful practice) with a simple animated reveal — items fade away on their own while a counter updates, and the student taps once to continue.
-Added a "make your best guess" moment before the answer is revealed, so students engage with the problem instead of just watching.
-
-3. NEW — Mascot Character
-
-Introduced a simple, friendly illustrated mascot with three clear expressions (explaining, excited, and thinking) that appear at different points in the story to match what's being said — designed to feel warm and approachable for ages 7–9.
-
-4. Simplified — Explanation Screen Readability Pass
-
-Removed extra instructional subtext that appeared on every section; replaced it with a small info icon next to the section header that shows a short description only when hovered or tapped, keeping the main screen clean.
-Shortened the "Concept Theory" section's four explanation points down to one short, simple sentence each, and gave each point its own clearly separated card — matching the layout already used in the worked example section.
-Enlarged the main formula and result displays (e.g. "Find 25% of 200 = 50") so they're the most visually prominent thing on the screen, with supporting math shown smaller underneath.
-Enlarged the step text in the worked example section and gave each step, plus the final answer, its own clearly separated card so nothing runs together.
-Verified the updated layout doesn't overlap or overflow on small mobile screens.
-
-5. Fixed — Background Color Consistency
-
-Fixed a recurring bug where card backgrounds on the explanation screen didn't match the rest of the app due to leftover local color settings — all cards now consistently use the same background as the Home page, in both light and dark mode.
-Applied the same fix to the graded practice screen ("Percent Island"), which had previously been using its own unrelated color scheme — it now visually matches the rest of the app.
-
-Verification
-
-npm run build succeeded with no errors.
-Manual walkthrough confirmed: all five Story scenarios play correctly with no repeats in a single session; the reveal animation and guess step work as intended; the info popup opens/closes correctly on both hover (desktop) and tap (mobile); no layout overlap at mobile widths; and light/dark mode render consistently across the Home page, explanation screen, Story section, and graded quiz.
-Confirmed no unrelated changes were introduced to background styling anywhere in the app during this pass.
-
-Files Changed
-FileChangePercentExplanationApp.jsxRemoved AI Study Assistant Prompt section; replaced old drag-game Story section with new data-driven, scenario-based Story component and mascot; added info popup; simplified/restructured Theory and Worked Example sectionsPercentExplanationApp.cssRemoved AI prompt and old drag-game styles; added new Story, mascot, and info popup styles; fixed background token usage across cards; added responsive/typography adjustmentsPercent Island stylesheetFixed background token usage to match the rest of the app
-
-
-
-## 2026-07-14
-
-- **PR #34** (`feature/AL-learning-checkpoints`) — ahana4banerjee
-- **PR #44** (`new_f`) — muditagrawal2007
-- Fix submission delay: cache tatsavit userId + fire-and-forget LIL processAttempt to unblock responses  _(fac08b4, muditagrawal2007)_
-- **PR #43** (`fix/mathlab-api-base`) — vicharanashala
-- fix(mathlab): remove double API-base prefix in Visual Learning Universe  _(e8aca58, Jinal Gupta)_
-- Restore Addition, Arithmetic, Coord. Geometry & Mensuration flashcards to home grid  _(9372b71, muditagrawal2007)_
-- Guard generateMqExplanation with try-catch to prevent crash on questions with empty data  _(93e556a, muditagrawal2007)_
-- **PR #41** (`new_f`) — muditagrawal2007
-- Fix: Remove auto-submit on MCQ selection in LinearAlgebra mission quiz  _(c54726b, muditagrawal2007)_
-- Remove language puzzle from home grid, wildcard /language route, guide button home-only, hamburger appends /language  _(b7f0069, muditagrawal2007)_
-- **PR #39** (`new_f`) — muditagrawal2007
-- **PR #40** (`fix/linalg-api-base`) — vicharanashala
-- fix(linear-algebra): route quiz API through VITE_API_BASE_URL  _(915d3c8, Jinal Gupta)_
-- fix: remove Random Mix, Custom Lesson, Gym from regularApps (grid cards) - kept in hamburger only  _(e8b6469, muditagrawal2007)_
-- fix: remove Random Mix, Custom Lesson, Gym from flashcard grid (kept in hamburger)  _(acefa1d, muditagrawal2007)_
-- fix: restore Random Mix, Custom Lesson, Gym, and Goal Practice to hamburger menu  _(fd16a1c, muditagrawal2007)_
-- **PR #19** (`new_f`) — muditagrawal2007
-- fix: add isGoalMode prop to GeneratedQuizApp and fix broken comment syntax  _(3c59513, muditagrawal2007)_
-- feat: add Idli–Vada–Sambhar multiples & LCM game  _(b0fb976, Jinal Gupta)_
-- feat: resolved merge conflicts and restored the feature functionality  _(ecef295, Ahana Banerjee)_
-- **PR #33** (`feat/guide-vlu-performance-overhaul`) — Shubhdix9
-
-## 2026-07-13
-
-- style(menu): remove addition, mensuration, and coordinate geometry from hamburger menu  _(e8c1b77, Shubh dixit)_
-- fix(addition): fix addition screen crash and remove extra modes  _(23a7be5, Shubh dixit)_
-- **PR #35** (`language_integration`) — KrishnaG-101
-- fix: hide the Guided Learning Journey banner from the Goal Selection view  _(21e10b4, Ahana Banerjee)_
-- feat: optimize wordCreator verification latency and restore original layout  _(1cfebc2, Krishna Gelra)_
-- Fix ReferenceError: setIsGoalMode is not defined in App state  _(81ff9ae, Shubh dixit)_
-- feat: place the feature button on the main page below the search bar  _(36f71d7, Ahana Banerjee)_
-- Fix isGoalSelection reference error in Home component  _(6f83f14, Shubh dixit)_
-- Fix missing InteractiveLcmHcfApp import from upstream merge  _(fbd4502, Shubh dixit)_
-- Resolve merge conflicts with upstream main and fix syntax errors  _(bee657a, Shubh dixit)_
-- **PR #12** (`feature/new-feature`) — poorvipravallika06
-- **PR #11** (`feature/AN-goal-based-practice-sessions`) — ahana4banerjee
-- removed the route laquiz and correct the answers  _(001f190, muditagrawal2007)_
-- perf: instant question transitions + visual counting caps  _(60cf163, Shubh dixit)_
-- added the timer in the quiz and fix the solution part  _(3022297, muditagrawal2007)_
-- feat: add confetti animations  _(0b6b158, Ahana Banerjee)_
-- feat: add confetti animation  _(fba34e4, Ahana Banerjee)_
-- added feature in the quiz  _(05f9444, muditagrawal2007)_
-- added feature in the quiz  _(5f17c85, muditagrawal2007)_
-- added feature in the quiz  _(5633feb, muditagrawal2007)_
-- added the quiz seciotn in the linear algebra  _(d5ff001, muditagrawal2007)_
-- feat: implement a targeted concept revision loop  _(dabfebd, Ahana Banerjee)_
-- feat: Replaced "❌ Try Again" with "Oh no, it's okay" rendered in theme-compliant warning/wrong color  _(fd7f464, Ahana Banerjee)_
-- feat: add a confetti animation upon clearing a checkpoint quiz  _(6b864df, Ahana Banerjee)_
-- feat: block access to succesive topics in learning journey  _(5796f40, Ahana Banerjee)_
-- integrated the new Learning Journey feature, enabling structured learning with sequential unlock rules, automatic integration with existing concept quiz modules, and cumulative 15-question topic checkpoints.  _(d42b5b6, Ahana Banerjee)_
-
-## 2026-07-12
-
-- feat: modular language puzzles framework & word creator  _(db31c33, Krishna Gelra)_
-
-## 2026-07-11
-
-- feat: Visual Learning Universe title size fix, Guide & UI tweaks  _(aafeae5, Shubh dixit)_
-- feat: implement progressive gamified levels and retry flow for HCF/LCM quiz  _(675d485, poorvipravallika06)_
-
-## 2026-07-10
-
-- Implement confidence-based quiz progression flow (sequential redirection)  _(6fa50ad, poorvipravallika06)_
-- Remove unused variables in LcmHcfApp.jsx to pass eslint checks  _(de4f388, poorvipravallika06)_
-- Refine HCF Venn circles padding, cap LCM jump height, and implement progressive quiz tiers  _(3dd1cc4, poorvipravallika06)_
-- UI standardization, premium dark theme updates, and module layout improvements  _(e408a79, Shubh dixit)_
-- change  _(717bd0f, muditagrawal2007)_
-- **PR #10** (`new`) — muditagrawal2007
-
-## 2026-07-09
-
-## Version 2 — 2026-07-09
-
-### Overview
-Refactoring pass across the Percentages feature addressing two issues raised after a Proof of Concept review: excessive cognitive load from stacked, scrollable content, and a browser-limit bug in sound playback caused by repeatedly creating new `AudioContext` instances. This release intentionally touches both `App.jsx` (graded quiz) **and** `PercentExplanationApp.jsx` / `.css` (explanation screen) — the prior restriction against modifying the explanation screen was deliberately lifted for this task.
-
-### Changed — One-Card-at-a-Time View
-- **Graded Quiz — Step-Wise Diagnostic Mode (`App.jsx`):**
-  - Previously, all step cards (Step 1, Step 2, full solution recap) were stacked and simultaneously visible.
-  - Now, exactly one card is rendered at a time — either the current step (`stepwiseState.currentStepIndex`) or the recap card (`stepwiseState.showRecap === true`).
-  - A `key` prop on the card wrapper forces React to unmount/remount on each transition, triggering a `@keyframes percentages-card-fade-in` animation on every card swap.
-  - A persistent step progress badge (e.g. "Step 1 of 2") is shown in the header.
-- **Explanation Screen — Level 1 View (`PercentExplanationApp.jsx`):**
-  - Previously, all 5 sections (Interactive Visual, Theory, Worked Example, AI Prompt, Quick Check Quiz) were stacked and simultaneously visible on one long scrollable page.
-  - Now, an `activeSection` state (1–5) controls which single section is rendered.
-  - Added a horizontal timeline progress indicator at the top showing steps 1–5, with filled green circles for completed steps, an orange-highlighted active step, grey pending steps, a filled tracking line, and click-back navigation to any previously visited section.
-  - Added Previous/Next navigation buttons at the bottom of each card for sequential progression.
-  - A `key`-based wrapper triggers a matching `@keyframes explanation-card-fade-in` animation on every section change.
-  - The Quick Check Quiz (step 5) in the timeline remains disabled until `isExplanationFinished` is true (all 4 prior sections completed) — preserving the existing no-shortcut gating.
-
-### Changed — Audio Context Singleton
-- **New module — `client/src/audioContext.js`:**
-  - Exports `getAudioContext()` — lazily creates a single shared `AudioContext` singleton and resumes it if suspended, instead of creating a new instance per sound.
-  - Exports `playSound(type, enabled)` — builds fresh oscillator/gain nodes per sound event (unchanged behavior) against the shared singleton context, playing either a "correct" chime or "wrong" buzzer.
-  - `getAudioContext()` is only ever called from inside `playSound()`, which itself is only ever called from user-gesture event handlers (button clicks) — never on component mount, satisfying the browser's audio-gesture activation requirement.
-- **Graded Quiz (`App.jsx`):** removed the duplicated local `playSound` function; now imports the shared `playSound` from `./audioContext`. All existing call sites in the quiz submit handler continue to work unchanged.
-- **Explanation Screen (`PercentExplanationApp.jsx`):** imports `playSound` from `./audioContext`; `MicroQuiz.handleSelect` calls `playSound(isCorrect ? 'correct' : 'wrong', true)` inside the option-selection handler (a user-gesture callstack), adding audio cues to Quick Check Quiz answers for the first time.
-- **Mute toggle:** `playSound` accepts an `enabled` boolean parameter — passing `false` skips audio without touching or closing the singleton context (no `.close()` call), so the shared `AudioContext` persists across mute/unmute rather than being destroyed and needing re-creation.
-
-### Verification
-- `npm run build` succeeded (20 modules transformed, no errors).
-- 14/14 automated static checks passed, including: `getAudioContext` not called at module top-level; `getAudioContext` only called inside `playSound`; both apps correctly import the shared `playSound`; quiz step timeline disabled until `isExplanationFinished`; Quick Check Quiz gated by `isExplanationFinished`; escalation redirect correctly calls `setActiveSection`; stepwise card and recap card both correctly keyed for transition animation.
-- **Preserved invariants confirmed unchanged:** scoring/correctness-checking logic; state machine transitions and escalation logic (`handleQuizSubmit`, `stepwiseState` reducer, `failedRounds`); Quick Check Quiz randomization/no-repeat deduplication (`generateQuestion()`); no-direct-quiz-shortcut gating (`onContinueToQuiz` disabled gate, `isExplanationFinished` logic).
-- **Manual browser verification still required** (not yet performed as of this entry) — dev server running locally for: timeline/one-card view check, MicroQuiz gating check, sound playback on quiz answers, step-wise transition/fade-in check, escalation redirect check (fail same step twice), and mute toggle check.
-
-### Files Changed
-| File | Change |
-|---|---|
-| `audioContext.js` | **NEW** — Singleton AudioContext + `playSound` utility |
-| `App.jsx` | Removed duplicate `playSound`, imported shared one; rewrote stepwise rendering to one-card-at-a-time |
-| `App.css` | Added `.percentages-card-transition-wrapper` + `@keyframes percentages-card-fade-in` |
-| `PercentExplanationApp.jsx` | Imported `playSound`; added `activeSection` state, timeline indicator, nav buttons, transition wrapper; fixed a missing closing `</div>` |
-| `PercentExplanationApp.css` | Added `.explanation-card-transition-wrapper` + `@keyframes explanation-card-fade-in` + timeline hover styles |
-
-- Refactor HCF & LCM module with dynamic quiz, stepper locks, validation popups, accordion examples, and mistake redirection  _(dce3d1f, poorvipravallika06)_
-- change  _(8a493a7, muditagrawal2007)_
-- change  _(a386c49, muditagrawal2007)_
-- change  _(26a3306, muditagrawal2007)_
-- change  _(a45075e, muditagrawal2007)_
-- feat: remove standard mode from the goal selector pills in the goal based practice app  _(3f54fac, Ahana Banerjee)_
-- feat: implement goal-based practice session as a standalone and isolate it from the main diagnostic and learning module  _(73cb6e8, Ahana Banerjee)_
-- feat: replace emojis with standard lucide-react icons  _(613278e, Shubh dixit)_
-- chore: remove unused script files from root  _(fa62169, Shubh dixit)_
-
-## 2026-07-08
-
-Version 2 - 2026-07-15
-Overview
-Improved the Percentages learning and quiz experience with a clearer step-by-step explanation flow and a refreshed kid-friendly adventure theme.
-
-1. Explanation Flow Improvements
-
-- Updated the concept theory section to reveal one idea at a time with progress indicators.
-- Updated the worked example to reveal one step at a time, including a separate final answer card.
-- Added Previous and Next navigation within the theory and worked-example sections.
-- Increased step-card spacing and text size for improved readability.
-- Simplified the section progress label to show the current section number.
-
-2. Percentages Quiz UI Redesign
-
-- Replaced the previous percentages color palette with a polished dark/light adventure theme.
-- Added centralized theme variables for backgrounds, text, borders, accents, status colors, and shadows.
-- Refreshed the quiz shell, progress area, buttons, mute control, animations, stars, and card styling.
-- Improved responsive layout behavior and fixed the quiz header mute-button overlap.
-
-Status
-
-Implemented for the Percentages explanation and quiz flows.
-
-Version 1 — 2026-07-08
-Overview
-This release delivers a complete learning loop for Percentages — Level 1: Find a Percentage: a 5-part explanation screen (interactive visual → click-through theory → worked example → AI study assistant prompt → understanding check) feeding into a brand-new, kid-friendly graded quiz, tied together by an escalation system that sends struggling students back to the exact part of the explanation they need.
-
-1. Levels Selection Screen
-
-Entry point for the Percentages module (LevelsSelectView), listing all four levels:
-
-Level 1: Find a Percentage (active)
-Level 2: Increase / Decrease (locked, coming soon)
-Level 3: Reverse Percentage (locked, coming soon)
-Level 4: Compound Percentage (locked, coming soon)
-
-
-No direct shortcut into the graded quiz from this screen — students must go through the explanation first.
-
-2. Explanation Screen — 5-Part Design
-Level1ExplanationView was built as five sequential parts:
-
-Interactive Visual — drag-to-fill percent bar.
-A slider the student drags fills a live percentage bar in real time, alongside a 100-square grid that fills square-by-square so "percent = out of 100" is physically visible rather than just stated. The calculation below updates live as the student drags: Find {percent}% of {whole} = {result}, so the student sees the answer change before any theory text appears.
-
-Design rule: every sub-method is classified before building as either spatial/object visual (bar fills, dot slides, grid lights up — used here, since percentages have no literal physical object like a fraction does, but the bar-fill metaphor works the same way) or no visual (pure symbolic methods fall straight to worked examples instead, per the "don't force a visual where it teaches a wrong mental picture" rule). This classification is decided per sub-method, not per topic — within Percentages, Find and Increase are candidates for a spatial visual; Reverse and Compound were left undecided rather than forced.
-Component is reusable (grid, pie/bar, slider) but currently implemented specifically for Percentages → Find; not yet abstracted into a fully reusable cross-topic component.
-
-
-Click-through theory — one concept revealed per click, not a wall of text.
-Worked example — step-by-step reveal, following the same click-through pattern as the theory section.
-AI Study Assistant Prompt — a copyable, generic prompt (no numbers baked in) matching the original "prompt handoff" design exactly. Zero cost to Tenali since it hands off to the student's own AI chat tool rather than an in-app LLM tutor.
-Understanding Check — an ungraded comprehension gate before unlocking the graded quiz. This evolved beyond the original single-question spec:
-
-Original spec: one ungraded question, same difficulty as the worked example, with different numbers — but a single fixed question can be beaten by memorizing the answer on retry without real understanding.
-What shipped instead:
-
-20 real-life scenario templates (discount, exam marks, sports stats, restaurant tip, etc.) instead of one fixed question.
-Randomized numbers every attempt, using step = 100 / gcd(percent, 100) to guarantee a clean, whole-number answer without brute-forcing valid combinations.
-No-repeat rule — the template just used is excluded from the next pick, so consecutive questions are never the same scenario.
-4 questions per round, need 3 correct to pass. A failed round starts a fresh round with new questions — no retry cap, same "repeat until passed" philosophy as the original stuck-loop rule, just applied at the round level instead of a single question.
-Distractors built from real mistakes (percent-of-itself, leftover-instead-of-part, 10%-benchmark slip errors), with a collision check to stop a distractor from accidentally matching the correct answer.
-
-
-This keeps the original spirit (ungraded, confirms understanding, not scored) while closing the memorization gap a single fixed question would have had.
-
-
-
-3. Escape Hatches (matches original design)
-
-AI prompt handoff — built exactly as specified: generic, no numbers, student copies it to any AI chat tool.
-After 2 failed rounds (8 questions) — a visible nudge points back to the AI prompt box, giving it a genuine trigger condition tied to real struggle rather than being a default first option.
-Video link — not yet added to this level; deferred, not built.
-
-4. ⚠️ OPEN ITEM — "Skip to Quiz" vs. no-direct-jump requirement
-Design notes state the graded quiz was "kept fully reachable throughout — via 'Skip to Quiz' for confident students and 'Continue to Practice' after passing the check." This conflicts with an explicit later requirement that the All Levels / explanation flow should not allow directly jumping to the graded quiz, bypassing the Understanding Check. This needs to be resolved before final sign-off — either the "Skip to Quiz" escape hatch should be removed, or it was already removed and this design note is stale and should be corrected. Confirm current behavior in the live build before closing out this release.
-5. NEW — Graded Quiz: Step-Wise Diagnostic Solving
-Rebuilt the graded PercentApp component from the ground up:
-
-Removed the old difficulty-tier setup screen — the quiz now starts directly on Level 1 questions.
-Added a frontend question generator (generateFindQuestion) producing randomized, clean percentage-of-a-whole problems (e.g. "What is 60% of 800?").
-Implemented a 3-mode state machine:
-
-Normal Mode — single-input question. A correct first-try answer counts toward the 3-star completion goal for the level and reveals an optional "Show full solution" accordion (doesn't affect scoring). A wrong answer transitions into Step-Wise Diagnostic Mode.
-Step-Wise Diagnostic Mode — breaks the question into two guided steps:
-
-Convert the percentage to a decimal/fraction
-Multiply that value by the whole
-Each step is checked independently; a correct step auto-advances, a wrong step reveals the correct method inline and waits for the student to continue. After both steps are resolved, a full solution recap is shown before moving to the next question.
-
-
-Check Question Mode — shown only after a student returns from an escalation redirect (see below). A single verification question confirms the concept has landed; a correct answer returns them to Normal Mode, a wrong answer sends them back to the explanation again.
-
-
-
-6. NEW — Escalation & Revert-to-Explanation Flow
-To support students who repeatedly struggle with a specific step inside the graded quiz:
-
-Each step type (conversion vs. multiplication) has its own persistent failure flag (failedStep1, failedStep2).
-First failure on a step: the student sees the correct method inline and continues within the same quiz session — no redirect yet.
-Second failure on the same step type (even on a later, different question): triggers an escalation —
-
-A friendly mascot message pauses the quiz ("Let's pause and look at this idea together again to make it super clear! 🦉").
-The student is redirected back into the Explanation Screen, deep-linked and auto-scrolled to the specific card relevant to the step they struggled with (the theory card for conversion, the worked example card for multiplication), with a brief highlight flash to draw attention to it.
-After reviewing, the student clicks "Continue to Practice Quiz" again, which now lands them in Check Question Mode rather than straight back into Normal Mode — a single question confirming they've got it before resuming normal play.
-If the check question is answered incorrectly, they're sent back to the explanation again; if correct, they return to Normal Mode.
-
-
-This escalation flag persists for the rest of the session — it is intentionally not reset after a single successful check answer, so a further failure on that same step type will immediately re-trigger escalation rather than requiring two fresh failures again.
-Note: this graded-quiz "Check Question Mode" is a separate mechanism from the explanation screen's "Understanding Check" (Section 2, part 5) — the former is a single-question gate re-entering the quiz after an escalation; the latter is the 4-question/3-to-pass round gating first entry into the quiz.
-
-7. NEW — Kid-Friendly UI/UX Redesign (ages 7–10)
-
-
-
-
-- feat: implement interactive LCM & HCF module with curiosity and confidence meter  _(8108475, poorvipravallika06)_
-- added the limit to the number of the questions to visible  _(7636bf4, muditagrawal2007)_
-- feat: implement Learning Intelligence Layer (LIL) architecture with goal based practise sessions functionality across all apps and question topic cards  _(c65bcde, Ahana Banerjee)_
-- feat: Premium Core Educational Suite & UI Standardization (4 core features)  _(2e4d127, Shubh dixit)_
-
-## 2026-05-11
-
-- feat: add Guess the Number (binary magic card trick)  _(6d4e9ad, Vasuki)_
-
-## 2026-05-03
-
-- Add session summary doc  _(8ffb66e, Sudarshan)_
-- Add L17 bridge 27 (+ − in Standard Form). Chapter 5 fully bridged.  _(408c4f2, Sudarshan)_
-- Add L16 bridge 26 (× ÷ in Standard Form)  _(e6ee1ac, Sudarshan)_
-- Add L15 bridge 25 (Standard Form Basics)  _(805fe78, Sudarshan)_
-- Add L14 bridge 24 (Successive % Changes)  _(6aecb9e, Sudarshan)_
-- Add L13 bridge 23 (Reverse Percentages)  _(c1b8650, Sudarshan)_
-- Add L12 bridge 22 (Multiplier Method)  _(be68994, Sudarshan)_
-- Add L11 bridge 21 (% Increase/Decrease)  _(3315931, Sudarshan)_
-- Add L10 bridge 20 (X as a percentage of Y)  _(0e4376e, Sudarshan)_
-- Add L9 bridge 19 (X% of Y)  _(76d2e9a, Sudarshan)_
-- Add L8 bridges 17-18 (% Decimal, % Fraction conversions)  _(735aef8, Sudarshan)_
-- Add L7 bridge 16 (Fraction OF / What fraction is M of N)  _(944a78a, Sudarshan)_
-- Add L6 bridge 15 (Clear Decimals from Fractions)  _(cae5b23, Sudarshan)_
-- Add L5 bridges 13-14 (Reciprocals + Divide Fractions/KCF)  _(c9deb84, Sudarshan)_
-- Add Lesson 4 bridges (Bridges 9-12) for Add/Subtract Fractions  _(9ad3eb8, Sudarshan)_
-- Add 8 Lesson-prerequisite bridges + LaTeX-typeset fractions  _(3ae971e, Sudarshan)_
-- Add in-memory auth fallback when MongoDB is unavailable  _(9767e6c, Sudarshan)_
-- auto-commit 2026-05-03 18:28:32  _(c21625e, Sudarshan)_
-- auto-commit 2026-05-03 18:18:58  _(8a127a0, Sudarshan)_
-- auto-commit 2026-05-03 17:10:36  _(3f49a2d, Sudarshan)_
-- auto-commit 2026-05-03 14:19:32  _(8dbe6f6, Sudarshan)_
-
-## 2026-05-02
-
-- auto-commit 2026-05-02 04:12:35  _(8ba9205, Sudarshan)_
-- auto-commit 2026-05-02 04:11:25  _(96e8fb3, Sudarshan)_
-- Format deploy.yml for consistency and clarity  _(2fdc3c0, S. R. S. Iyengar)_
-- Change deployment from GitHub Pages to droplet  _(3ca635b, S. R. S. Iyengar)_
-- auto-commit 2026-05-02 01:12:09  _(2ebb0ac, Sudarshan)_
-- auto-commit 2026-05-02 00:40:59  _(812a6d5, Sudarshan)_
-- auto-commit 2026-05-02 00:22:40  _(4e021b4, Sudarshan)_
-
-## 2026-05-01
-
-- auto-commit 2026-05-01 21:48:39  _(f9a9c42, Sudarshan)_
-- auto-commit 2026-05-01 21:40:10  _(c79778e, Sudarshan)_
-- auto-commit 2026-05-01 19:26:47  _(8746120, Sudarshan)_
-- auto-commit 2026-05-01 16:16:46  _(3d56ee0, Sudarshan)_
-- auto-commit 2026-05-01 16:09:32  _(02c7a33, Sudarshan)_
-- auto-commit 2026-05-01 16:00:50  _(3bda941, Sudarshan)_
-- auto-commit 2026-05-01 15:55:22  _(df7a4bc, Sudarshan)_
-- auto-commit 2026-05-01 11:03:48  _(9c13486, Sudarshan)_
-- auto-commit 2026-05-01 11:03:37  _(c3a95ae, Sudarshan)_
-- auto-commit 2026-05-01 10:52:56  _(1971271, Sudarshan)_
-- auto-commit 2026-05-01 10:37:37  _(412ef5e, Sudarshan)_
-
-## 2026-04-30
-
-- auto-commit 2026-04-30 10:16:00  _(f393751, Sudarshan)_
-- auto-commit 2026-04-30 09:57:46  _(c65c7c1, Sudarshan)_
-- auto-commit 2026-04-30 09:47:25  _(71d189c, Sudarshan)_
-- auto-commit 2026-04-30 09:12:34  _(0b309ec, Sudarshan)_
-- auto-commit 2026-04-30 09:12:31  _(29c2227, Sudarshan)_
-- auto-commit 2026-04-30 09:12:28  _(4d03baa, Sudarshan)_
-- auto-commit 2026-04-30 09:12:26  _(12e40ce, Sudarshan)_
-- auto-commit 2026-04-30 09:11:50  _(ebb8de4, Sudarshan)_
-- auto-commit 2026-04-30 09:08:49  _(30a4fea, Sudarshan)_
-- auto-commit 2026-04-30 09:06:41  _(dbf8c68, Sudarshan)_
-- auto-commit 2026-04-30 09:02:35  _(5bebedc, Sudarshan)_
-- auto-commit 2026-04-30 09:01:01  _(a1975c3, Sudarshan)_
-- auto-commit 2026-04-30 08:44:29  _(0987d80, Sudarshan)_
-- auto-commit 2026-04-30 08:40:43  _(bc4da92, Sudarshan)_
-- auto-commit 2026-04-30 07:58:49  _(d64ddff, Sudarshan)_
-- auto-commit 2026-04-30 07:54:49  _(d7b4a58, Sudarshan)_
-- auto-commit 2026-04-30 07:54:45  _(e0989dc, Sudarshan)_
-- auto-commit 2026-04-30 07:42:12  _(cdbb34b, Sudarshan)_
-- auto-commit 2026-04-30 07:42:01  _(5dd1320, Sudarshan)_
-- auto-commit 2026-04-30 07:41:05  _(330cffe, Sudarshan)_
-- auto-commit 2026-04-30 07:35:45  _(1a2e6e5, Sudarshan)_
-
-## 2026-04-29
-
-- auto-commit 2026-04-29 12:42:25  _(0892380, Sudarshan)_
-- auto-commit 2026-04-29 12:13:17  _(8f32df9, Sudarshan)_
-- auto-commit 2026-04-29 09:28:52  _(3b054e2, Sudarshan)_
-- auto-commit 2026-04-29 09:28:50  _(0cf45b8, Sudarshan)_
-- auto-commit 2026-04-29 09:28:47  _(27d1bcc, Sudarshan)_
-- auto-commit 2026-04-29 09:19:15  _(156aa0d, Sudarshan)_
-- auto-commit 2026-04-29 09:05:51  _(9ef2e59, Sudarshan)_
-- auto-commit 2026-04-29 08:53:34  _(7ad7964, Sudarshan)_
-- auto-commit 2026-04-29 08:34:32  _(0136b75, Sudarshan)_
-- auto-commit 2026-04-29 08:31:44  _(2a5772c, Sudarshan)_
-- auto-commit 2026-04-29 08:23:14  _(610c314, Sudarshan)_
-- auto-commit 2026-04-29 08:15:18  _(6a321de, Sudarshan)_
-
-## 2026-04-27
-
-- auto-commit 2026-04-27 08:24:40  _(8e7559d, Sudarshan)_
-- auto-commit 2026-04-27 08:02:11  _(2b9ca8a, Sudarshan)_
-- auto-commit 2026-04-27 07:45:44  _(b81b97b, Sudarshan)_
-- auto-commit 2026-04-27 07:01:36  _(14d5c26, Sudarshan)_
-
-## 2026-04-24
-
-- auto-commit 2026-04-24 10:32:06  _(bca8cbd, Sudarshan)_
-- Riya: shuffle MCQ options and add keyboard navigation (arrows, Enter, A-D/1-4)  _(238edbe, Sudarshan)_
-- auto-commit 2026-04-24 09:56:03  _(afd1562, Sudarshan)_
-- Tatsavit: add zoom to line-fitter (+/−/1:1/Fit buttons + mouse wheel)  _(8608f54, Sudarshan)_
-- auto-commit 2026-04-24 09:34:47  _(31c2420, Sudarshan)_
-- Tatsavit: replace drill with interactive line-fitter (random points, live y=mx+C)  _(cfbb1cc, Sudarshan)_
-- auto-commit 2026-04-24 09:14:38  _(163508c, Sudarshan)_
-- Add /riya: IGCSE Add Math 0606 practice bank (65 MCQs across 14 topics)  _(1fd6fa5, Sudarshan)_
-
-## 2026-04-20
-
-- auto-commit 2026-04-20 14:18:48  _(aecf603, Sudarshan)_
-- Tatsavit: ensure all four MCQ choices are unique  _(555cbb2, Sudarshan)_
-
-## 2026-04-18
-
-- auto-commit 2026-04-18 21:00:22  _(9707001, Sudarshan)_
-- auto-commit 2026-04-18 20:34:21  _(2a0c7d5, Sudarshan)_
-- auto-commit 2026-04-18 20:28:24  _(6a04d2c, Sudarshan)_
-- auto-commit 2026-04-18 20:26:54  _(616edd1, Sudarshan)_
-- auto-commit 2026-04-18 20:25:33  _(0fb1759, Sudarshan)_
-- auto-commit 2026-04-18 20:24:01  _(a6688c7, Sudarshan)_
-- Add version badge + auto-increment on push  _(7d34815, Sudarshan)_
-- Add version badge + auto-increment on push  _(7c11afc, Sudarshan)_
-- Add version badge + auto-increment on push  _(0977d37, Sudarshan)_
-- Add version badge + auto-increment on push  _(5df8f55, Sudarshan)_
-- Add version badge + auto-increment on push  _(f7f4737, Sudarshan)_
-- Render fractions as stacked LaTeX-style (no / sign), fix level 7 math  _(c2c864c, Sudarshan)_
-- Replace Tatsavit with algebra simplification drill  _(f96a02c, Sudarshan)_
-- auto-commit 2026-04-18 08:33:10  _(34499ee, Sudarshan)_
-- auto-commit 2026-04-18 08:24:37  _(f829f9c, Sudarshan)_
-- auto-commit 2026-04-18 08:18:48  _(a6fdb67, Sudarshan)_
-- auto-commit 2026-04-18 07:53:54  _(b984612, Sudarshan)_
-- auto-commit 2026-04-18 07:52:41  _(05c42ad, Sudarshan)_
-- auto-commit 2026-04-18 07:48:54  _(adb4288, Sudarshan)_
-- auto-commit 2026-04-18 07:46:12  _(95112a6, Sudarshan)_
-- auto-commit 2026-04-18 07:41:25  _(b52b65c, Sudarshan)_
-- auto-commit 2026-04-18 07:40:57  _(98ee2c8, Sudarshan)_
-- auto-commit 2026-04-18 07:37:42  _(b76d6b5, Sudarshan)_
-- auto-commit 2026-04-18 07:36:08  _(ebe80c2, Sudarshan)_
-- auto-commit 2026-04-18 07:34:22  _(38dff87, Sudarshan)_
-- auto-commit 2026-04-18 07:30:48  _(0f63e88, Sudarshan)_
-
-## 2026-04-17
-
-- auto-commit 2026-04-17 23:49:18  _(3c0a7d3, Sudarshan)_
-- auto-commit 2026-04-17 23:46:04  _(6b37d34, Sudarshan)_
-- auto-commit 2026-04-17 23:42:52  _(ae1aa7e, Sudarshan)_
-- auto-commit 2026-04-17 23:37:40  _(5fb0684, Sudarshan)_
-- auto-commit 2026-04-17 23:34:50  _(af4459f, Sudarshan)_
-- fix(supertables1): randomly focus on 2 or 3 slowest facts (uniform)  _(90e78a4, Sudarshan)_
-- fix(supertables1): no auto Phase 2 — add manual Phase 2 button  _(a3bc937, Sudarshan)_
-- fix(supertables1): show lookup table in order (no shuffle), split into 2 rows of 5  _(744d4ca, Sudarshan)_
-- feat: add /supertables1 — adaptive 2-phase speed drill with rolling window  _(62fae99, Sudarshan)_
-- fix(supertables): exclude incorrect answers from timing data and attempt count  _(34a9ad9, Sudarshan)_
-- feat(supertables): trimmed mean (drop top/bottom 10%) for chart and adaptive logic  _(64fabd4, Sudarshan)_
-- feat(supertables): make all 10 levels adaptive using session performance data  _(4393f77, Sudarshan)_
-- feat(supertables): add live performance chart + record timing on all levels  _(5d9fe1a, Sudarshan)_
-- feat(supertables): expand table selection from 20 to 50  _(76bba2d, Sudarshan)_
-- fix(supertables): fix grid overflow + Enter key advances on feedback  _(404527d, Sudarshan)_
-- fix(supertables): improve contrast and formatting across dark/light themes  _(d29342a, Sudarshan)_
-- feat(supertables): sequential level progression + high-contrast theme  _(88378bd, Sudarshan)_
-- Add /supertables route with 10-level multiplication learning app  _(c5bcd18, Sudarshan)_
-- Add SuperTables: 10-level multiplication learning app  _(bb8db96, Sudarshan)_
-- feat: add /lakshya route + spaced repetition for slow multipliers in /tables  _(b01e72b, Sudarshan)_
-
-## 2026-04-16
-
-- feat: add /lakshya route with mastery multiplication program  _(209276d, Sudarshan)_
-- feat: add /jatin route with 10-level table learning strategy  _(dac69e8, Sudarshan)_
-- fix: theme-aware colors + Yazdan's Levels heading  _(9ea5f87, Sudarshan)_
-- fix: replace hardcoded dark colors with theme-aware CSS variables  _(4076eb0, Sudarshan)_
-- feat: add /yazdan route with 10-level progressive tables mastery  _(17e10a1, Sudarshan)_
-- Enter key accepts Level Up on promotion prompt  _(c9e10cf, Sudarshan)_
-- Rename landing page title to Tenali's Tables Desk  _(7f71ee0, Sudarshan)_
-- Add /tables route — generic version of the scaffolded tables app  _(cf73ca0, Sudarshan)_
-- Fix See Results, confetti, Level 2 single-column layout, Level 1 dimming answer  _(13b3575, Sudarshan)_
-- 5-level progression: show answer, partial table, shuffled, reverse+products, no table  _(eecfd45, Sudarshan)_
-- Phase 2: show only 5 shuffled rows instead of all 10  _(4556cae, Sudarshan)_
-- Fix table readability: larger monospace font, aligned numbers, darker colors  _(692aac0, Sudarshan)_
-- Extend table chooser from 2-9 to 2-19  _(7577ba2, Sudarshan)_
-- Fix lookup table spacing: use tight gap instead of space-between  _(4c0ae22, Sudarshan)_
-- Minimalist mobile-first layout for /taittiriya playing phase  _(f5d0294, Sudarshan)_
-- Redesign /taittiriya: 3-phase scaffolded tables with table chooser  _(35bcd86, Sudarshan)_
-
-## 2026-04-05
-
-- Update SRS.md to v4.0 with comprehensive project documentation  _(e0a5851, Sudarshan)_
-- Redesign solve card with stepped timeline layout  _(e79b546, Sudarshan)_
-- Add interactive difficulty slider and per-topic difficulty tracking  _(d077928, Sudarshan)_
-- Add draggable seeker to adaptive difficulty bar across all puzzles  _(375ad77, Sudarshan)_
-- Add Skip button, center-align feedback, and visual ack for self-report  _(4491209, Sudarshan)_
-- Add visual feedback for Too Hard/Too Easy self-report buttons  _(c7f7b6c, Sudarshan)_
-- Redesign solve feedback: centered card with highlighted answer and styled explanation  _(fef7d3e, Sudarshan)_
-- Rewrite solve explanations with detailed step-by-step teaching for all puzzle types  _(fccdbba, Sudarshan)_
-- Update SRS.md v3.0: document Solve button, self-report buttons, and Journey fixes  _(f3055a7, Sudarshan)_
-- Add Solve button across all puzzles with step-by-step explanations  _(d64045c, Sudarshan)_
-- Journey quiz: fix Enter key, fix undefined feedback, add Skip + self-report buttons  _(61896d6, Sudarshan)_
-- Add self-report difficulty buttons to all adaptive puzzles; add SRS.md  _(a0852b1, Sudarshan)_
-- Tatsavit: add always-visible Easy/Hard self-report buttons below Submit  _(5589581, Sudarshan)_
-- Add ^, x keys to Tatsavit numpad; accept full expression answers for monomials  _(7c14d56, Sudarshan)_
-- Add 'Start the Journey' adaptive quiz to path page  _(d14ff18, Sudarshan)_
-- Tatsavit: per-type slow thresholds instead of flat 15s  _(99a4134, Sudarshan)_
-- Tatsavit: ask 'easy or difficult?' when student takes >15s on any question  _(8a96f06, Sudarshan)_
-- Fix new puzzles (uuid→Date.now), add Tatsavit numpad + time-based hints, persist GK/Vocab seen IDs  _(94715ea, Sudarshan)_
-- Add enhanced landing page preview at /enhanced  _(2f2ca88, Sudarshan)_
-- Add 15 new puzzles, fix Tatsavit wrong-answer counting & sqrt prompt  _(f65b971, Sudarshan)_
-- Style NONE option in red on /path dropdown  _(9573957, Sudarshan)_
-- Add NONE source default for longest path, remove tatsavit from graph  _(d457a07, Sudarshan)_
-- Route /tatsavit URL to new TatsavitApp instead of old AdaptiveMixedApp  _(f1e5f12, Sudarshan)_
-- Add /path — prerequisite path finder with dropdown menus  _(d9c40f4, Sudarshan)_
-- Serve prerequisite graph at /graph route  _(2253c62, Sudarshan)_
-- Fix TatsavitApp + add prerequisite graph + fix server type bug  _(6344395, Sudarshan)_
-- Add Tatsavit progressive drill + limit Squaring to 2-digit (11-99)  _(eb013eb, Sudarshan)_
-
-## 2026-04-04
-
-- Add Squaring puzzle — (a+b)² = a² + 2ab + b²  _(0145abd, Sudarshan)_
-- Keep multiplier range 1-10 for multiplication tables  _(90595e4, Sudarshan)_
-- Fix Random Mix missing prompts, extend Multiplication to 19  _(117c6a1, Sudarshan)_
-- Fix Random Mix submit button — timer.elapsed() TypeError  _(21c05f8, Sudarshan)_
-- Show error feedback when wrong factor entered in Prime Factors  _(1cd053b, Sudarshan)_
-- Fix question skipping, score bugs, and Bearings repetition  _(4cde017, Sudarshan)_
-- Fix Dot Products submit button and restyle with CSS classes  _(37e1e60, Sudarshan)_
-- Overhaul Extended Euclidean: BigInt for 20+ digit numbers, wider inputs, proper subscripts  _(ca0d8fb, Sudarshan)_
-- Fix Extended Euclidean compute button — rows array was inside comment  _(ed7e0f8, Sudarshan)_
-- Fix double-submit causing inflated score in Dot Products  _(16186e5, Sudarshan)_
-- Fix Dot Products: remove auto-tab, show proper vector dimensions  _(0ba2252, Sudarshan)_
-
-## 2026-04-03
-
-- Replace text inputs with visual matrix/vector grid boxes in Dot Products  _(b53512e, Sudarshan)_
-- Render matrices with proper bracket formatting in Dot Products  _(4140445, Sudarshan)_
-- Fix Dot Products medium: use 2D and 3D dot products instead of sum variant  _(77f453c, Sudarshan)_
-- Add Dot Products puzzle with 4 difficulty levels  _(0142bb5, Sudarshan)_
-- Move Random Mix + Custom Lesson into hamburger menu  _(82d10f4, Sudarshan)_
-- Sort puzzles alphabetically, feature Random Mix + Custom in top row  _(c0e6059, Sudarshan)_
-- Fix Enter key not advancing after wrong answer in QFormula, Simul, FuncEval, LineEq  _(c9a4ea6, Sudarshan)_
-- Fix Enter key not advancing after wrong answer in Prime Factors  _(7b84779, Sudarshan)_
-- Add Tenali Raman mascot to landing page  _(2c4fa30, Sudarshan)_
-- Retrofit all hand-written quiz apps for visual uniformity  _(4b3322d, Sudarshan)_
-- Update all 37 SKILL.md files to comprehensive formal specifications  _(014593f, Sudarshan)_
-- Add Adaptive difficulty mode to all puzzle apps  _(85c4a18, Sudarshan)_
-- Add Random Mix — adaptive cross-topic quiz with progressive difficulty  _(953511b, Sudarshan)_
-- Add 6 geometry puzzles: Angles, Triangles, Congruence, Pythagoras, Polygons, Similarity  _(2bd177e, Sudarshan)_
-- Add final 10 puzzles to reach 50 total: Integration, Standard Form, Bounds, Speed/Distance/Time, Variation, HCF & LCM, Profit & Loss, Rounding, Binomial Theorem, Complex Numbers  _(5727703, Sudarshan)_
-- Add 14 new puzzles: Trig, Inequalities, Coord Geom, Probability, Statistics, Matrices, Vectors, Transformations, Mensuration, Bearings, Logarithms, Differentiation, Number Bases, Circle Theorems  _(7502b43, Sudarshan)_
-- Add Sets puzzle — union, intersection, Venn diagrams  _(a94b016, Sudarshan)_
-- Add Sequences, Ratio & Proportion, and Percentages puzzles  _(a72a770, Sudarshan)_
-- Add Surds and Indices puzzles with full IGCSE coverage  _(7de490e, Sudarshan)_
-- Fractions: replace stacked num/den inputs with single text input  _(87ad057, Sudarshan)_
-- Fix Fractions (Add) setup screen to match standard puzzle layout  _(ae24a41, Sudarshan)_
-- Tatsavit: increase to 100 questions per session  _(c3cfb93, Sudarshan)_
-- Set Taittiriya to start on 3× table (mastered 2×)  _(b17839d, Sudarshan)_
-- Fix double plus sign in monomial addition prompts  _(1f8a07e, Sudarshan)_
-- Add table advancement to Taittiriya: auto-advance on mastery  _(013386b, Sudarshan)_
-- Remove setup phase from Tatsavit — auto-starts immediately  _(248201c, Sudarshan)_
-- Fix Taittiriya: show only the current table, not neighbors  _(d4e3a65, Sudarshan)_
-- Remove setup phase from Taittiriya — auto-starts immediately  _(16bf1b6, Sudarshan)_
-- Add Fractions (Add) puzzle, scaffolded tables for Taittiriya, adaptive mixed quiz for Tatsavit  _(39620ce, Sudarshan)_
-- Add extensive code comments and rewrite all SKILL.md as formal specs  _(e97a032, Sudarshan)_
-- Fix vocab repetition: add dedup to vocab + GK, expand to ~4000 questions  _(b6d4b61, Sudarshan)_
-
-## 2026-04-02
-
-- Add interval scheduling & extended Euclid pages, fix Custom Lesson crash  _(ce262f9, Sudarshan)_
-- Rename GK subtitle to 'General Knowledge questions'  _(58ca1fd, Sudarshan)_
-- Enable keyboard input for Arithmetic puzzle  _(46582ab, Sudarshan)_
-- Fix desktop adaptive tables layout: balanced spacing and alignment  _(13cd0ac, Sudarshan)_
-- Allow Enter key to advance after wrong answers in adaptive tables  _(ef5aa95, Sudarshan)_
-- Improve mobile adaptive tables: quiz on top, compact 3-col ref table  _(6894bb5, Sudarshan)_
-- Add Next button after wrong answers in adaptive tables  _(b653f5a, Sudarshan)_
-- Fix mobile layout for reference table in /tatsavit and /taittiriya  _(0bf8a8c, Sudarshan)_
-- Fix keyboard shortcuts: pass letter directly instead of relying on state  _(70eb575, Sudarshan)_
-- Fix card layout: subtitle sits right below badge, both centered  _(347a148, Sudarshan)_
-- Add keyboard shortcuts (1-4 / a-d) for multiple-choice questions  _(b07f230, Sudarshan)_
-- Pin card badges to top: consistent alignment regardless of subtitle length  _(e2b4f64, Sudarshan)_
-- Redesign adaptive tables: starting table picker + speed-based adaptation  _(964ba8a, Sudarshan)_
-- Fix /taittiriya and /tatsavit: change Vite base from './' to '/'  _(fc5404d, Sudarshan)_
-- Make title badges uniform: fixed 140x38px with centered text  _(917b8c3, Sudarshan)_
-- Fix GK badge alignment: add min-width to menu-title badges  _(fd27bc3, Sudarshan)_
-- Add adaptive multiplication tables for /taittiriya and /tatsavit  _(1fc2cbd, Sudarshan)_
-- Complete dark/light theme: all components use CSS variables  _(51859ff, Sudarshan)_
-- Shorten puzzle card names: GK, Vocabulary, Quadratics, Sim. Eq., Arithmetic  _(bb9ce73, Sudarshan)_
-- Add Custom Lesson puzzle, dark/light theme toggle, search bar, uniform cards  _(d0ec86f, Sudarshan)_
-- Lighten title badge to silver grey, center-align all card content  _(b0ae5ea, Sudarshan)_
-- Style menu card titles with greyscale badge rectangles  _(b5dcb1f, Sudarshan)_
-- Merge linear/simul, add Basic Arithmetic, restructure polymul, fix alignment  _(3c9773f, Sudarshan)_
-- Use proper Unicode superscripts instead of ^ for exponents  _(7e568fe, Sudarshan)_
-- Fix missing isCorrect state in Addition, Quadratic, Multiply, Sqrt  _(7806cc9, Sudarshan)_
-- Rename Spot It to Twin Hunt everywhere  _(55ee5e1, Sudarshan)_
-- Only auto-advance on correct answers; wait on wrong answers  _(bb9140c, Sudarshan)_
-- Ensure prime factorization never generates prime numbers  _(e04efdc, Sudarshan)_
-- Add SKILL.md specs for all 8 new math puzzles  _(84df47e, Sudarshan)_
-- Add 8 new math puzzles to Tenali  _(33a9fb3, Sudarshan)_
-- Update all SKILL.md specs to reflect current state of all 7 apps  _(b5c9553, Sudarshan)_
-- Reverse Vocab Builder: show word, pick the correct definition  _(0d2ab69, Sudarshan)_
-- Add Vocab Builder quiz and scatter Spot It items in circles  _(0800f57, Sudarshan)_
-- Add Spot It puzzle — find the common object in two panels  _(a035455, Sudarshan)_
-- Auto-advance to next question after 1.5s feedback display  _(f510a62, Sudarshan)_
-- Add Multiplication Tables quiz and configurable question count  _(7ac6300, Sudarshan)_
-- Fix numpad: enable physical keyboard alongside on-screen keypad  _(fd1951b, Sudarshan)_
-- Add elegant on-screen numeric keypad to all math quizzes  _(7185057, Sudarshan)_
-- Show running results table during Addition and Quadratic quizzes  _(7a6fa71, Sudarshan)_
-- Fix: prevent a=0 in quadratic and allow minus sign on mobile keyboard  _(862e31a, Sudarshan)_
-- Upgrade typography, responsive grid, and finish screen spacing  _(ce04be1, Sudarshan)_
-- Add supermarket documentation hub and clean up old app docs  _(6a7ddcf, Sudarshan)_
-- Redesign UI, add step-by-step feedback, quadratic difficulty levels, and 4x4 home grid  _(36a484e, Sudarshan)_
-
-## 2026-04-01
-
-- Add GitHub Pages deployment workflow with relative asset paths  _(a1f10d6, S. R. S. Iyengar)_
-- Fix render.yaml: use node env, build client, start server  _(e52f864, S. R. S. Iyengar)_
-- Add render.yaml for static site deployment  _(100334e, S. R. S. Iyengar)_
-
-## 2026-03-31
-
-- Add quadratic lesson and sync current Tenali working tree  _(b3b7e5d, sudarshan)_
-
-## 2026-03-14
-
-- Vendor nested quiz apps into main repo  _(4185a9f, S. R. S. Iyengar)_
-- Add missing Tenali app content for deployment  _(9e20003, S. R. S. Iyengar)_
-- Prepare Tenali for single-service Render deploy  _(7ff9e96, S. R. S. Iyengar)_
-- Make all controls fully greyscale  _(f02d086, S. R. S. Iyengar)_
-- Restyle Tenali with monochrome pencil theme  _(d3210e9, S. R. S. Iyengar)_
-- Unify GK enter and next flow  _(5a552c4, S. R. S. Iyengar)_
-- Add Enter key handling across quiz modes  _(7249d29, S. R. S. Iyengar)_
-- Make addition flow explicit with next button  _(b26e6a1, S. R. S. Iyengar)_
-- Show score in GK mode  _(98f498b, S. R. S. Iyengar)_
-- Fix Tenali launcher API calls  _(d2242fc, S. R. S. Iyengar)_
-- Integrate Tenali apps into single UI  _(714feca, S. R. S. Iyengar)_
-- Proxy Tenali launcher apps through root server  _(36ab1b7, S. R. S. Iyengar)_
-- Turn Tenali root into app launcher  _(df55244, S. R. S. Iyengar)_
-- Serve built client from Express on single port  _(e19f8ba, S. R. S. Iyengar)_
-- Proxy API through Vite for LAN clients  _(caed3e8, S. R. S. Iyengar)_
-- Fix client API host for LAN access  _(dce76e0, S. R. S. Iyengar)_
-- Scaffold Aryabhata kids addition app v1  _(0182e4b, S. R. S. Iyengar)_
-
-
-
-
-
-
----
-
-## Recent commits — July 17–27, 2026 _(auto-curated from git history, appended 2026-07-28)_
-
-_PR merges and direct feature/fix commits landed on `main` since the narrative above. Routine branch-sync merges omitted._
-
-### 2026-07-27
-
-- **PR #103** (`merge-newf-into-main`) — muditagrawal2007
-- fix(quiz): strip trailing noise from MCQ options + use middle-dot padding  _(ac8d48b, muditagrawal2007)_
-- fix(quiz): length-normalize MCQ options across all 56 mission files  _(cebf191, muditagrawal2007)_
-- fix(quiz): pad short distractors so the correct option isn't length-guessable  _(197f6c5, muditagrawal2007)_
-- fix(quiz): ensure correct_option is always present in options array  _(a2194f8, muditagrawal2007)_
-- feat(quiz): randomize option order in LA mission quiz + clean option text  _(c18b01a, muditagrawal2007)_
-- feat(la): remove Phase 2 RLA quiz section from mission quiz  _(a19bedd, muditagrawal2007)_
-- fix(ui): typo in modeMap — lineqgym referenced undefined LineEqGymApp  _(9d03e0e, muditagrawal2007)_
-- feat(la): 2-phase mission quiz (adaptive → real-life MCQs)  _(5e04f4b, muditagrawal2007)_
-- Revert "feat(matrixmystics): single-button 2-phase test flow (no setup, no difficulty picker)"  _(96d26f2, muditagrawal2007)_
-- wip: revert matrixmystics home tile and modeMap entry  _(d01a768, muditagrawal2007)_
-- feat(matrixmystics): single-button 2-phase test flow (no setup, no difficulty picker)  _(2b52b38, muditagrawal2007)_
-- feat(la): add Real Application tier — 265 MCQs across all 53 topics  _(90a29b8, muditagrawal2007)_
-- feat(la): refresh module 1 + Q4.7 questions with short-option MCQ style  _(6217875, muditagrawal2007)_
-- chore(deps): bump express-rate-limit to ^8.6.1 (npm install reconciled lockfile)  _(0cc4523, muditagrawal2007)_
-- fix(server): remove duplicate JWT_SECRET declarations from broken merge  _(65f8e08, muditagrawal2007)_
-- feat(la): add Matrix Mystics — 6 modules, 53 topics, 1590 curated MCQs  _(428cdbf, muditagrawal2007)_
-- fix(ui-stability): resolve React hook violations in 3 components  _(f2bab06, muditagrawal2007)_
-
-### 2026-07-24
-
-- **PR #98** (`new`) — muditagrawal2007
-
-### 2026-07-23
-
-- **PR #96** (`fix/duplicate-jwt-secret-merge`) — vicharanashala
-- fix: remove duplicate JWT_SECRET declarations that break the build  _(83bd400, Jinal Gupta)_
-- **PR #84** (`new_f`) — muditagrawal2007
-- **PR #86** (`fix/summership-jwt-fail-fast`) — vicharanashala
-- fix(security): centralize JWT secret and fail-fast in production  _(7ccb369, Jinal Gupta)_
-- **PR #85** (`fix/summership-ratelimit-cors`) — vicharanashala
-- fix(security): add rate limiting and CORS allowlist  _(e5fba3c, Jinal Gupta)_
-- feat(la): replace algorithmic quiz with curated JSON MCQs for all 56 missions  _(c4499d0, muditagrawal2007)_
-- fix(ui-stability): resolve React hook violations in main App component  _(506a82d, muditagrawal2007)_
-- Fix CoordGeomDiscoveryApp component lint issues  _(2fe7568, muditagrawal2007)_
-- **PR #83** (`fix/summership-repo-cleanup`) — vicharanashala
-- chore: remove committed debug/scratch junk files  _(b562d85, Jinal Gupta)_
-- **PR #81** (`new_f`) — muditagrawal2007
-- **PR #82** (`fix/summership-seed-users-env`) — vicharanashala
-- refactor(auth): load seed users from env, not hardcoded source  _(884bbcb, Jinal Gupta)_
-- **PR #80** (`fix/summership-base-aware-routing`) — vicharanashala
-- fix: base-path-aware routing so /summership routes work  _(bf8c347, Jinal Gupta)_
-
-### 2026-07-22
-
-- NoiseFilter: auto-fix lint issues  _(d248b04, muditagrawal2007)_
-- bkt: fix lint issues  _(67092be, muditagrawal2007)_
-- CrosswordApp: fix lint issues  _(7446913, muditagrawal2007)_
-- GlossaryText: fix unused variables  _(0cf59a7, muditagrawal2007)_
-- OnboardingTour: fix lint issues  _(361fca9, muditagrawal2007)_
-- EquationSandbox: fix unused variables  _(bcc3f07, muditagrawal2007)_
-- Stage2Grid: fix lint issues  _(febc6e3, muditagrawal2007)_
-- SimulConceptApp: fix lint issues  _(543d925, muditagrawal2007)_
-- CompletionScreen: fix lint issues  _(32e1325, muditagrawal2007)_
-- Stage5Review: fix lint issues  _(9bc086f, muditagrawal2007)_
-- Stage4Independent: fix lint issues  _(7dbe6e7, muditagrawal2007)_
-- Stage3Guided: fix unused variables  _(c5b02c3, muditagrawal2007)_
-- Stage1Predict: fix unused variables  _(44433d1, muditagrawal2007)_
-- QFormulaConceptApp: fix lint issues - remove unused vars  _(054abea, muditagrawal2007)_
-- questionFormatters: fix lint issues  _(ae8df1a, muditagrawal2007)_
-- MasteryBadge: fix lint issues  _(38ae96d, muditagrawal2007)_
-- DiagnosticQuiz: fix lint issues - remove unused exports and imports  _(b25bd52, muditagrawal2007)_
-- AutoTranslator: fix lint issues - unused vars, suppress set-state-in-effect  _(dbc0e08, muditagrawal2007)_
-- AccessibilityProvider: fix lint issues - empty blocks, unused vars, suppress set-state-in-effect  _(110dd6d, muditagrawal2007)_
-- i18n: fix lint issues - remove unused vars, suppress react-refresh  _(442a481, muditagrawal2007)_
-- IdliVadaSambharApp: fix lint issues  _(1ecce95, muditagrawal2007)_
-- LcmHcfApp: fix lint issues  _(8046091, muditagrawal2007)_
-- PercentExplanationApp: fix lint issues  _(d0a803b, muditagrawal2007)_
-- CoordGeomDiscoveryApp: fix lint issues - remove unused imports  _(bc0d522, muditagrawal2007)_
-- GeometryApp: fix lint issues - remove unused variables  _(593c183, muditagrawal2007)_
-- VisualMathLabRedux: fix lint issues - prefix unused, suppress purity warnings  _(6f5c6a9, muditagrawal2007)_
-- PythagLabApp: fix lint issues - remove unused imports/refs, prefix dead vars  _(d10efd9, muditagrawal2007)_
-- BearingsLabApp: fix lint issues - prefix unused vars, reorder function declarations  _(c15a452, muditagrawal2007)_
-- ProbLabApp: fix lint issues - prefix unused vars, remove unused refs  _(f8f77d1, muditagrawal2007)_
-- LinearAlgebraApp: fix lint issues - unused vars, empty blocks, useless escapes  _(0bdc55f, muditagrawal2007)_
-- QuestionTranslator: remove useless backslash escapes and disable no-control-regex for intentional control chars  _(92d8533, muditagrawal2007)_
-- vite.config.js: remove duplicate keys, update proxy targets to port 4000  _(5e315ef, muditagrawal2007)_
-- detective-app: fix Math.random in render and unused useMemo  _(8f6eab2, muditagrawal2007)_
-- misconceptions.js: add missing isPrime function  _(7a08108, muditagrawal2007)_
-- Fix lint errors: remove duplicate App files, fix unused vars, empty blocks, duplicate keys, hooks violations, and correct vite proxy port  _(eecea2c, muditagrawal2007)_
-- fix: Battle feature - add missing client definitions, fix GK recursion, streaks, and topic mismatch  _(db24b60, muditagrawal2007)_
-
-### 2026-07-21
-
-- **PR #79** (`fix/chartjs-dependency`) — vicharanashala
-- fix(client): add missing chart.js peer dependency for user progress tracking  _(5885fe9, Jinal Gupta)_
-- **PR #77** (`feat/track_user_progress`) — S-Hamsalekha-annamai
-- **PR #78** (`fix/authgate-home-button`) — vicharanashala
-- fix(auth): add 'Back to home' button on the Login-required (AuthGate) screen  _(2f709a4, Jinal Gupta)_
-- **PR #76** (`fix/restore-journey-banner`) — vicharanashala
-- fix(home): restore Guided Learning Journey banner on home screen  _(0e3b39c, Jinal Gupta)_
-- **PR #75** (`fix/mafs-dependency`) — vicharanashala
-- fix(client): add missing mafs dependency for concept playgrounds  _(0bdadea, Jinal Gupta)_
-
-### 2026-07-20
-
-- feat: Add support for tracking  user progress .  _(cd026f3, S Hamsalekha)_
-- Fix: Enable Vite dev server proxying for all the seven Gym APIs  _(7eb5580, S Hamsalekha)_
-- **PR #52** (`feature/concept-playgrounds`) — 24F3005086
-- **PR #51** (`feature/i18n`) — 24F3005086
-- **PR #58** (`tenali_main`) — diptosubhro-ctrl
-- **PR #49** (`feature/bkt-prereqs`) — 24F3005086
-- **PR #50** (`feature/accessibility`) — 24F3005086
-- **PR #56** (`feature/curiosity`) — RukmenderT
-- fix: remove duplicate hover tooltip and left-side variation label in Curiosity Mode  _(f1ab5b6, RukmenderT)_
-- **PR #46** (`main`) — patnaikArpita
-- **PR #65** (`fix/module-theming`) — vicharanashala
-- **PR #8** (`Re-added-geometry-game-20July`) — patnaikArpita
-- added MVP , enchancements , suggestion  _(5aa05b4, AnshulKanodia)_
-- Fix riddle: add /riddle pathname route, remove double app-shell/card nesting  _(f336fec, muditagrawal2007)_
-- Math Riddles: 48 riddles (find-rule, sequence, logic, image) + playground preview fix  _(073696d, muditagrawal2007)_
-- Playground visualizer: Python Tutor style with code+arrow | memory boxes  _(243973c, muditagrawal2007)_
-- Playground: add live preview for HTML/CSS/JS and code visualizer  _(93b3f23, muditagrawal2007)_
-- Add View Code and Load buttons to playground history  _(202c228, muditagrawal2007)_
-- Fix playground: proper default code for all languages, dark terminal output, language categories  _(73cc0b5, muditagrawal2007)_
-- feat: Code Playground — run code in 50+ languages via Judge0 CE  _(8ef012e, muditagrawal2007)_
-- fix proctoring: face detection model URL + faster interval, add speech-to-text transcript for voice events, display transcripts in dashboard  _(2fa1a21, muditagrawal2007)_
-- fix: face detection — accept onFaceCount callback, lower threshold to 0.3, increase inputSize to 320  _(ce39d6f, muditagrawal2007)_
-- remove flashcard apps: Cross-Section Explorer, Spatial Reasoning, 2D↔3D Translator, Shape Slicer 3D, Net Builder, Scribble Guess  _(726393b, muditagrawal2007)_
-
-### 2026-07-19
-
-- fix: add missing locales files for i18n  _(f037028, 24F3005086)_
-
-### 2026-07-18
-
-- fix: remove MasteryBadge usage from concept playgrounds since it belongs to BKT branch  _(a20f15f, 24F3005086)_
-- fix: add missing i18n dependencies for accessibility panel  _(dc7673c, 24F3005086)_
-- fix: concept playgrounds localization bugs from afternoon session  _(12c0162, 24F3005086)_
-- fix: dark/light theme bugs from afternoon session  _(94ca4a2, 24F3005086)_
-- fix: mastery badge UI bugs from afternoon session  _(013d26c, 24F3005086)_
-- fix: translation bugs from afternoon session  _(8306099, 24F3005086)_
-- remove settings_icon.svg and update tutorial/reset layout logic  _(9ff1128, Dipto Subhro)_
-
-### 2026-07-17
-
-- feat: inline proctor dashboard on /linear, no-auth endpoints, localStorage persistence  _(4d88e05, muditagrawal2007)_
-- Optimize Level 1 token boundaries to prevent mismatch confusion  _(6f0a1be, Dipto Subhro)_
-- Remove subject introductions and names from Level 1 questions  _(537b944, Dipto Subhro)_
-- Shorten all Level 1 questions in the corpus  _(fbc5831, Dipto Subhro)_
-- Move Reset Progress button to inside the levels workspace next to Exit button  _(fff4c8d, Dipto Subhro)_
-- Add Reset Progress button inside each Level card on main dashboard  _(ae369b8, Dipto Subhro)_
-- Enable Tutorial Reference button for Level 1 questions  _(2675311, Dipto Subhro)_
-- Bypass Session Complete screen after tutorial to start practice immediately  _(4f37c1f, Dipto Subhro)_
-- Remove details sub-view and reset button, making all levels directly start questions  _(d10a052, Dipto Subhro)_
-- Remove Key Math Fact box from tutorial reference modal  _(f883f30, Dipto Subhro)_
-- Remove strand tag labels from exercise workspace  _(5e67a0c, Dipto Subhro)_
-- Remove Reveal 1 Noise Phrase button from active exercise card  _(568a201, Dipto Subhro)_
-- Add Tutorial Reference popout button and modal overlay for levels above 1  _(545b418, Dipto Subhro)_
-- Directly start questions on levels after Level 1 instead of opening stages sub-view  _(ce132ad, Dipto Subhro)_
-- Add Reset Level Progress button inside each level details sub-view  _(dc15de5, Dipto Subhro)_
-- Keep one tutorial stage for Level 1 and remove tutorial stages from all other Levels  _(6925c08, Dipto Subhro)_
-- Remove level and name card from the level details view  _(8a41af8, Dipto Subhro)_
-- Remove Open Level text indicator from dashboard level cards  _(809bbd8, Dipto Subhro)_
-- Redirect level clicks to a dedicated stages sub-view with back navigation  _(f46e195, Dipto Subhro)_
-- Remove Active label from Noise Filter levels  _(192ccc3, Dipto Subhro)_
-- Make level cards on Noise Filter dashboard collapsible  _(1ed0ea7, Dipto Subhro)_
-- Remove Noise Filter header box and description card  _(b497c6c, Dipto Subhro)_
-- fix: Add CSS styling for accessibility panel and toggle button  _(be5117f, 24F3005086)_
-- fix: dashboard loading stuck, useState null, screen capture clarity, hanging  _(ce7cc1c, muditagrawal2007)_
-- fix: restore scratch/generate_puzzles.js accidentally removed in accessibility branch  _(dde3b3d, 24F3005086)_
-- fix: replace updateBKT stub with proper import from bkt.js  _(a928447, 24F3005086)_
-- fix: remove ?v=2 cache-buster from App.jsx import to prevent duplicate React instance  _(6e64980, RukmenderT)_
-- fix: add updateBKT wrapper export in bkt.js for concept playground compatibility  _(210298a, 24F3005086)_
-- chore: remove stray scratch folder  _(ae98953, 24F3005086)_
-- fix: dashboard broken + compulsory monitoring + auto-collapse alerts  _(fafb069, muditagrawal2007)_
-- Restore scratch folder from main  _(4e4d3ea, 24F3005086)_
-- Restore scratch folder from main  _(22a3dc0, 24F3005086)_
-- Restore scratch folder from main  _(b39bf4c, 24F3005086)_
-- perf: add willReadFrequently to Canvas2D contexts in detection hooks  _(08fb816, muditagrawal2007)_
-- fix: rewrite proctoring detection flow — all hooks now report anomalies directly  _(b41ca8f, muditagrawal2007)_
-- fix: add face-api.js to optimizeDeps.include to fix Vite dev server 500  _(987233d, muditagrawal2007)_
-- Fix: make Idli-Vada-Sambhar, Crossword & Word Search follow the dark/light theme  _(880cc73, Jinal Gupta)_
-- feat: add CompreFace Docker setup and face-api.js dependency  _(c21c1a4, muditagrawal2007)_
-- feat: complete proctoring suite — Dashboard, FloatingVideo, PiP, CSS, lint fixes  _(408e5c7, muditagrawal2007)_
-- Rewrite proctoring to match vibe architecture  _(ceea26b, muditagrawal2007)_
-- chore: remove stray scratch files  _(19d67d7, 24F3005086)_
-- chore: remove stray scratch folder  _(2b93db0, 24F3005086)_
-- chore: remove stray scratch files  _(1ebba99, 24F3005086)_
-- Beautiful proctor error display + screen activity monitoring  _(2e14656, muditagrawal2007)_
-- Add full proctoring suite with left-side webcam panel  _(68d9749, muditagrawal2007)_
-- Simplify cognitive load in Noise Filter feature  _(955f779, Dipto Subhro)_
-- **PR #63** (`fix/appcss-bom`) — vicharanashala
-- Fix: strip stray UTF-8 BOM from App.css breaking production build  _(57e653a, Jinal Gupta)_
-- **PR #54** (`feature/math-detective-agency`) — sharonyamita-spec
-- **PR #9** (`feature/level-wise-explanation`) — Ritish007-svg
+<sub>🕒 Last regenerated by the bot — see the [latest commit](https://github.com/vicharanashala/tenali/commits/main) on this file for the most recent timestamp.</sub>

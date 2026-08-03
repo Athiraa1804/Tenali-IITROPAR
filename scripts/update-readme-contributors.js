@@ -124,7 +124,10 @@ function gatherGitLog() {
   });
 
   // Full commit list — used to power the auto-generated CHANGELOG.md
-  // Format per line: sha|shortSha|author|email|date|subject
+  // Two parallel streams:
+  //   1. Metadata per commit: sha, shortSha, author, date, subject
+  //   2. File stats per commit: which files were touched, +/− line counts
+  // These are joined by sha so each commit object carries its full stats.
   const commits = sh(`git log --pretty=format:"%H|%h|%an|%ae|%ad|%s" --date=short`)
     .split('\n')
     .filter(Boolean)
@@ -138,8 +141,79 @@ function gatherGitLog() {
         email,
         date,
         subject: rest.join('|'),
+        filesChanged: [],
+        insertions: 0,
+        deletions: 0,
       };
     });
+
+  // Per-commit file stats via `git log --numstat`.
+  // Output format:
+  //   COMMIT:<full-sha>
+  //   <added>\t<removed>\t<file>
+  //   <added>\t<removed>\t<file>
+  //   ...
+  //   COMMIT:<full-sha>
+  // We walk the stream once and bucket lines per commit.
+  const statBySha = {};
+  let currentSha = null;
+  const numstatOutput = sh(`git log --pretty=format:"COMMIT:%H" --numstat --no-merges`);
+  for (const rawLine of numstatOutput.split('\n')) {
+    if (rawLine.startsWith('COMMIT:')) {
+      currentSha = rawLine.slice('COMMIT:'.length).trim();
+      if (currentSha && !statBySha[currentSha]) {
+        statBySha[currentSha] = { files: [], add: 0, del: 0 };
+      }
+      continue;
+    }
+    if (!currentSha || !rawLine.trim()) continue;
+    const [add, del, file] = rawLine.split('\t');
+    const a = parseInt(add, 10);
+    const d = parseInt(del, 10);
+    if (Number.isNaN(a) || Number.isNaN(d)) continue; // binary files show "-\t-\t"
+    if (!statBySha[currentSha]) continue;
+    statBySha[currentSha].files.push({ file, additions: a, deletions: d });
+    statBySha[currentSha].add += a;
+    statBySha[currentSha].del += d;
+  }
+
+  // Merge stats into commit objects
+  for (const c of commits) {
+    const s = statBySha[c.sha];
+    if (s) {
+      c.filesChanged = s.files;
+      c.insertions = s.add;
+      c.deletions = s.del;
+    }
+  }
+
+  // Capture commit body (multi-line message after the subject) — used as a
+  // quoted block under each commit so the "why" is preserved alongside the "what".
+  // Format from `git log`: subject on first line, body on subsequent lines.
+  const bodyBySha = {};
+  let bodySha = null;
+  const bodyBuffer = [];
+  const bodyOutput = sh(`git log --pretty=format:"COMMIT:%H%nSUBJECT:%s" --date=short`);
+  for (const rawLine of bodyOutput.split('\n')) {
+    if (rawLine.startsWith('COMMIT:')) {
+      if (bodySha && bodyBuffer.length > 0) {
+        bodyBySha[bodySha] = bodyBuffer.join('\n').trim();
+      }
+      bodySha = rawLine.slice('COMMIT:'.length).trim();
+      bodyBuffer.length = 0;
+      continue;
+    }
+    if (rawLine.startsWith('SUBJECT:')) continue;
+    if (rawLine.trim()) bodyBuffer.push(rawLine);
+  }
+  if (bodySha && bodyBuffer.length > 0) {
+    bodyBySha[bodySha] = bodyBuffer.join('\n').trim();
+  }
+
+  // Attach bodies to commits
+  for (const c of commits) {
+    if (bodyBySha[c.sha]) c.body = bodyBySha[c.sha];
+  }
 
   return {
     totalCommits: total,
@@ -796,62 +870,66 @@ function parseMergeInfo(subject) {
   return { prNumber: m[1], prAuthor: m[2] };
 }
 
-// Friendly labels for conventional-commit categories used in the
-// per-day "What changed" summary block. Order matters — it controls
-// the order categories appear in the summary.
-const SUMMARY_CATEGORIES = [
-  { key: 'feat', icon: '✨', label: 'Features' },
-  { key: 'fix', icon: '🐛', label: 'Fixes' },
-  { key: 'perf', icon: '⚡', label: 'Performance' },
-  { key: 'refactor', icon: '♻️', label: 'Refactors' },
-  { key: 'docs', icon: '📝', label: 'Docs' },
-  { key: 'test', icon: '🧪', label: 'Tests' },
-  { key: 'build', icon: '📦', label: 'Build' },
-  { key: 'ci', icon: '👷', label: 'CI' },
-  { key: 'style', icon: '💄', label: 'Style' },
-  { key: 'chore', icon: '🔧', label: 'Chore' },
-];
-
-function commitTypeKey(subject) {
-  const m = String(subject || '').toLowerCase().match(/^([a-z]+)(?:\(.*?\))?!?:/);
-  return m ? m[1] : 'other';
-}
-
 // Strip the conventional-commit prefix from a subject for cleaner display
 function cleanSubject(subject) {
   return String(subject || '').replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
 }
 
-// Build a per-day "What changed" summary block — categorizes commits,
-// counts each category, and shows a brief one-line example per category.
-function renderDaySummary(dayCommits) {
-  // Bucket commits by category
-  const buckets = {};
-  for (const c of dayCommits) {
-    const key = commitTypeKey(c.subject);
-    if (!buckets[key]) buckets[key] = [];
-    buckets[key].push(c);
+// Render the per-commit deep-details block: files changed + line counts
+// + optional commit body. Returned as a list of markdown lines (without
+// the leading "- " bullet — caller adds that).
+const MAX_FILES_SHOWN = 8;     // cap file list to keep changelog scannable
+const MAX_BODY_LINES = 8;      // cap multi-line commit body
+
+function renderCommitDetails(c, repoUrl, commitUrl) {
+  const out = [];
+
+  // ── Files changed line ──
+  const files = c.filesChanged || [];
+  const fileCount = files.length;
+
+  if (fileCount > 0) {
+    let fileLine;
+    if (fileCount <= MAX_FILES_SHOWN) {
+      // Show every file with inline per-file +/− stats
+      const parts = files.map((f) => {
+        const ad = (f.additions || 0) + (f.deletions || 0);
+        // Inline per-file stats: only show numbers when they're meaningful
+        if (f.additions === 0 && f.deletions === 0) return `\`${f.file}\``;
+        return `\`${f.file}\` \`+${f.additions} −${f.deletions}\``;
+      });
+      fileLine = `📁 **${fileCount} file${fileCount === 1 ? '' : 's'}:** ${parts.join(', ')}`;
+    } else {
+      // Truncate the file list with "+N more"
+      const shown = files.slice(0, MAX_FILES_SHOWN);
+      const remaining = fileCount - MAX_FILES_SHOWN;
+      const parts = shown.map((f) => {
+        if (f.additions === 0 && f.deletions === 0) return `\`${f.file}\``;
+        return `\`${f.file}\` \`+${f.additions} −${f.deletions}\``;
+      });
+      fileLine = `📁 **${fileCount} files:** ${parts.join(', ')} *(+${remaining} more in [\`${c.shortSha}\`](${commitUrl(c.sha)}))*`;
+    }
+    out.push(fileLine);
   }
 
-  const parts = [];
-  for (const cat of SUMMARY_CATEGORIES) {
-    const bucket = buckets[cat.key];
-    if (!bucket || bucket.length === 0) continue;
-    // Pick the most "headline-y" commit from this bucket — prefer the
-    // longest subject (most descriptive) and exclude bot auto-refresh commits.
-    const headlines = bucket
-      .filter((c) => !/🤖 docs\(contributors\): refresh/.test(c.subject))
-      .sort((a, b) => b.subject.length - a.subject.length);
-    const top = headlines[0] || bucket[0];
-    const txt = cleanSubject(top.subject);
-    const countLabel = bucket.length === 1 ? '' : ` ×${bucket.length}`;
-    parts.push(`${cat.icon} **${cat.label}** — ${txt}${countLabel}`);
+  // ── Line stats summary line ──
+  if (c.insertions || c.deletions || fileCount > 0) {
+    const ins = c.insertions || 0;
+    const del = c.deletions || 0;
+    const fLabel = fileCount > 0 ? ` · ${fileCount} file${fileCount === 1 ? '' : 's'}` : '';
+    out.push(`📊 **\`+${ins} −${del}\`**${fLabel}`);
   }
 
-  // Skip the summary entirely for days that only have bot auto-refresh commits
-  if (parts.length === 0) return '';
+  // ── Commit body (if present and non-trivial) ──
+  if (c.body) {
+    const bodyLines = c.body.split('\n').slice(0, MAX_BODY_LINES);
+    const more = c.body.split('\n').length - bodyLines.length;
+    const quoted = bodyLines.map((l) => `> ${l}`).join('\n');
+    const moreNote = more > 0 ? `\n> *…(${more} more line${more === 1 ? '' : 's'})*` : '';
+    out.push(`💬 **What & why:**\n${quoted}${moreNote}`);
+  }
 
-  return `> **💡 What changed today**\n` + parts.map((p) => `> - ${p}`).join('\n') + `\n`;
+  return out;
 }
 
 function renderChangelog(git) {
@@ -875,42 +953,34 @@ function renderChangelog(git) {
 
   const lines = [];
   lines.push(`### 📊 Total: ${commits.length} commits · ${byDate.size} active days · ${git.uniqueAuthors} unique authors\n`);
+  lines.push(`> **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file \`+additions −deletions\`, the **total line stats**, and (when present) the **commit body** explaining what & why.\n`);
 
   for (const date of sortedDates) {
     const dayCommits = byDate.get(date);
-
-    // Day header + per-day "What changed" summary
     lines.push(`#### 📅 ${date}  <sub>(${dayCommits.length} commit${dayCommits.length === 1 ? '' : 's'})</sub>\n`);
-    const summary = renderDaySummary(dayCommits);
-    if (summary) lines.push(summary);
 
-    // Full per-commit detail list (collapsible for very long days)
-    const useDetails = dayCommits.length > 12;
-    if (useDetails) {
-      lines.push(`<details><summary><b>📜 Show all ${dayCommits.length} commits</b></summary>\n`);
-    }
-
+    // Per-commit deep details — every commit gets its own bullet block
     for (const c of dayCommits) {
       const icon = commitTypeIcon(c.subject);
       const merge = parseMergeInfo(c.subject);
-
-      // Short SHA is rendered as a clickable markdown link → GitHub commit diff
       const shaLink = `[\`${c.shortSha}\`](${commitUrl(c.sha)})`;
 
-      // For merge commits, link the PR number too
+      let mainLine;
       if (merge) {
         const prLink = `[#${merge.prNumber}](${repoUrl}/pull/${merge.prNumber})`;
-        lines.push(`- ${icon} ${shaLink} — **${c.author}** — 🔀 PR ${prLink} from \`${merge.prAuthor}\``);
+        mainLine = `- ${icon} ${shaLink} — **${c.author}** — 🔀 PR ${prLink} from \`${merge.prAuthor}\` — ${cleanSubject(c.subject.replace(/^Merge pull request.*from [^\/]+\/?/, '')) || c.subject}`;
       } else {
-        // Regular commit: show sha + author + subject
-        // Subject is stripped of the conventional-commit prefix for readability
-        lines.push(`- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject(c.subject)}`);
+        mainLine = `- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject(c.subject)}`;
+      }
+      lines.push(mainLine);
+
+      // Append deep details (files + stats + body) as 4-space-indented sub-bullets
+      const details = renderCommitDetails(c, repoUrl, commitUrl);
+      for (const detail of details) {
+        lines.push(`    - ${detail}`);
       }
     }
 
-    if (useDetails) {
-      lines.push(`\n</details>`);
-    }
     lines.push(''); // blank line between dates
   }
 

@@ -50,7 +50,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **789** | **60** | **19** | **69** | **7,662** | **991** |
+| **792** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -61,7 +61,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **165** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **167** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
@@ -71,9 +71,9 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
 | 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
 | 11. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
-| 12. | **Sharonya Banerjee** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
-| 13. | **Pandraju Poorvi Pravallika** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-| 14. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **5** | 0  | — |
+| 12. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **6** | 0  | — |
+| 13. | **Sharonya Banerjee** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
+| 14. | **Pandraju Poorvi Pravallika** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
 | 15. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
 | 16. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
 | 17. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
@@ -129,7 +129,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="Mudit Agrawal"/></a>
         <br/><b>Mudit Agrawal</b>
         <br/><a href="https://github.com/muditagrawal2007">@muditagrawal2007</a>
-        <br/><sub>🏆 165 commits · 13 PRs merged</sub>
+        <br/><sub>🏆 167 commits · 13 PRs merged</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
@@ -393,6 +393,28 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
+        <br/><b>github-actions-bot-</b>
+        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
+        <br/><sub>🏆 6 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>12. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>6 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="Sharonya Banerjee"/></a>
         <br/><b>Sharonya Banerjee</b>
         <br/><a href="https://github.com/sharonyamita-spec">@sharonyamita-spec</a>
@@ -400,7 +422,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub><i>(SemiColonSlayer)</i></sub>
       </td>
       <td valign="top" width="*">
-        <h4>12. Math Detective Agency</h4>
+        <h4>13. Math Detective Agency</h4>
         <ul>
           <li>🕵️ <b>Math Detective Agency (PR #54)</b> — story-based mystery math cases with chained clue progression</li>
           <li>🪪 <b>Badge detail modal</b> — CSS for badge detail modal in <code>App.css</code></li>
@@ -422,35 +444,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>13. HCF/LCM Interactive Module</h4>
+        <h4>14. HCF/LCM Interactive Module</h4>
         <ul>
           <li>🍕 <b>Interactive LCM & HCF (PR #12)</b> — dynamic quiz with stepper locks, validation popups, accordion examples, mistake redirection</li>
           <li>🎯 <b>Confidence meter</b> — confidence-based quiz progression with sequential redirection</li>
           <li>🏆 <b>Progressive gamified levels</b> — tiered HCF/LCM levels with retry flow</li>
           <li>🎨 <b>Visual polish</b> — refined HCF Venn circle padding, capped LCM jump height</li>
           <li>🧹 <b>ESLint cleanup</b> — removed unused vars in <code>LcmHcfApp.jsx</code></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
-        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
-        <br/><b>github-actions-bot-</b>
-        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
-        <br/><sub>🏆 5 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>14. New Contributor</h4>
-        <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>5 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>

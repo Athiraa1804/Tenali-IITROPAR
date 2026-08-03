@@ -33,6 +33,7 @@ const https = require('https');
 const REPO = process.env.TENALI_REPO || 'vicharanashala/tenali';
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const README = path.resolve(PROJECT_ROOT, 'README.md');
+const CONTRIBUTORS = path.resolve(PROJECT_ROOT, 'CONTRIBUTORS.md');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
@@ -718,11 +719,17 @@ async function main() {
   const cards = renderCards(rows);
 
   let readme = fs.readFileSync(README, 'utf8');
+  let contributorsDoc = fs.readFileSync(CONTRIBUTORS, 'utf8');
 
+  // README.md — only the at-a-glance, snapshot, leaderboard (no cards)
   readme = replaceMarkerBlock(readme, '<!-- live-at-a-glance:start -->', '<!-- live-at-a-glance:end -->', atAGlance);
   readme = replaceMarkerBlock(readme, '<!-- live-snapshot:start -->', '<!-- live-snapshot:end -->', snapshot);
   readme = replaceMarkerBlock(readme, '<!-- live-rank:start -->', '<!-- live-rank:end -->', leaderboard);
-  readme = replaceMarkerBlock(readme, '<!-- live-cards:start -->', '<!-- live-cards:end -->', cards);
+
+  // CONTRIBUTORS.md — full set including the cards
+  contributorsDoc = replaceMarkerBlock(contributorsDoc, '<!-- live-snapshot:start -->', '<!-- live-snapshot:end -->', snapshot);
+  contributorsDoc = replaceMarkerBlock(contributorsDoc, '<!-- live-rank:start -->', '<!-- live-rank:end -->', leaderboard);
+  contributorsDoc = replaceMarkerBlock(contributorsDoc, '<!-- live-cards:start -->', '<!-- live-cards:end -->', cards);
 
   if (DRY_RUN) {
     log('--dry-run — preview of leaderboard:');
@@ -733,7 +740,8 @@ async function main() {
   }
 
   fs.writeFileSync(README, readme);
-  log(`✅ README.md updated (${rows.length} contributors rendered · 4 blocks regenerated)`);
+  fs.writeFileSync(CONTRIBUTORS, contributorsDoc);
+  log(`✅ README.md + CONTRIBUTORS.md updated (${rows.length} contributors rendered)`);
 }
 
 main().catch((e) => {

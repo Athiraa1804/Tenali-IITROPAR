@@ -4,7 +4,7 @@
 
 # 🧠 Tenali — Adaptive Math Quiz Platform
 
-### *An advanced,  adaptive learning platform featuring interactive puzzles in Mathematics, Logic, and General Knowledge.*
+### *An adaptive math learning platform with interactive puzzles, real-time multiplayer, and step-by-step explanations.*
 
 <p>
   <a href="https://tenali.fun"><img src="https://img.shields.io/badge/Live-tenali.fun-FF6B6B?style=for-the-badge&logo=globe&logoColor=white" alt="Live"/></a>
@@ -26,7 +26,7 @@
 
 ---
 
-### ✨ **69 puzzle types · 7,662 vocab words · 991 GK questions · Adaptive difficulty · Live multiplayer · Zero question storage**
+### ✨ **69 math topics · Algorithmically generated · Adaptive difficulty · Live multiplayer · Step-by-step solutions**
 
 </div>
 
@@ -67,7 +67,7 @@
 
 ## 🌟 What is Tenali?
 
-Tenali (named after the legendary **Tenali Raman** — the witty Indian scholar who outwitted entire courts with logic) is a **stateless adaptive learning platform** for math, logic, language and general knowledge. Every question is **generated algorithmically** on each request — there is no question database. Difficulty adapts per learner in real time.
+Tenali (named after the legendary **Tenali Raman** — the witty Indian scholar who outwitted entire courts with logic) is an **adaptive math learning platform** featuring 69 algorithmically-generated puzzle types, real-time multiplayer battles, and step-by-step solutions for every problem. Every question is generated on the fly — there is no question database — so practice is infinite and never repeats. Difficulty adapts to each learner in real time.
 
 It is built to run on a single VPS — `tenali.fun` — with one Node process serving the React app, the puzzle APIs, the JWT auth, the Socket.IO Battle Arena, and the multi-language code playground.
 
@@ -79,12 +79,12 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>781</b><br/><sub>commits</sub></td>
+      <td align="center"><b>793</b><br/><sub>commits</sub></td>
       <td align="center"><b>60</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>19</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>⭐ 0</b><br/><sub>stars</sub></td>
-      <td align="center"><b>🍴 0</b><br/><sub>forks</sub></td>
-      <td align="center"><b>🐛 0</b><br/><sub>open issues</sub></td>
+      <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
+      <td align="center"><b>🍴 58</b><br/><sub>forks</sub></td>
+      <td align="center"><b>🐛 52</b><br/><sub>open issues</sub></td>
     </tr>
   </table>
 </p>
@@ -187,11 +187,11 @@ Coins for every correct answer, XP & streak tracking, pinned badges, and album-s
 ### 🎲 10. Random Mix & Custom Lesson
 Random Mix pulls a question from your weakest areas. Custom Lesson lets you pick exactly which topics appear and how many of each.
 
-### 🔤 11. Vocabulary Trainer
-**7,662** curated vocab words with definitions and contextual clues, served from `vocab/questions/`.
+### 🔤 11. Vocabulary Trainer (bonus)
+**7,662** curated vocab words with definitions and contextual clues, served from `vocab/questions/`. Secondary feature — for breaks between math practice.
 
-### 🌍 12. GK Quiz Bank
-**991** General Knowledge questions across geography, history, science, sports and culture.
+### 🌍 12. GK Quiz Bank (bonus)
+**991** General Knowledge questions across geography, history, science, sports and culture. Secondary feature — for variety between math sessions.
 
 ### 📊 13. Progress & Profile
 Per-topic mastery, public badge board, collection completion.
@@ -510,12 +510,14 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 
 ## 🏆 Contributors — Real Names & GitHub IDs
 
-> All contributor data below was fetched live from the [GitHub Contributors API](https://github.com/muditagrawal2007/Tenali_123/graphs/contributors). Each contributor card shows the **real name** (from their GitHub profile), their **GitHub ID**, and the **commits they contributed**.
+> All contributor data below was fetched live from the [GitHub Contributors API](https://github.com/vicharanashala/tenali/graphs/contributors). Each contributor card shows the **real name** (from their GitHub profile), their **GitHub ID**, and the **commits they contributed**.
+
+> 🔄 **Bot refresh cadence:** Every 12 hours (UTC 00:00 & 12:00) via cron. Only repo admins/maintainers can trigger manually — see [CONTRIBUTORS.md → Bot refresh cadence](CONTRIBUTORS.md#-bot-refresh-cadence-every-12-hours-utc-0000--1200).
 
 ### 🌟 Live Wall (auto-updated)
 
-<a href="https://github.com/muditagrawal2007/Tenali_123/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=muditagrawal2007/Tenali_123&max=100&columns=20" alt="Contributors wall" />
+<a href="https://github.com/vicharanashala/tenali/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vicharanashala/tenali&max=100&columns=20" alt="Contributors wall" />
 </a>
 
 ### 📊 Repo at a glance
@@ -523,7 +525,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **781** | **60** | **19** | **69** | **7,662** | **991** |
+| **793** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -534,7 +536,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **161** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **168** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
@@ -544,13 +546,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
 | 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
 | 11. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
-| 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
-| 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-| 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 18. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **1** | 0  | — |
+| 12. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **6** | 0  | — |
+| 13. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
+| 14. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
+| 15. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
+| 16. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 17. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
+| 18. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 | 19. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 

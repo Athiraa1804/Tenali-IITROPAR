@@ -5,14 +5,11 @@ name: 🤖 Update README contributors
 # GitHub API and commits the change back via github-actions[bot].
 
 on:
-  push:
-    branches: [main, master]
-  pull_request_target:
-    # pull_request_target runs in the base repo context with full write access,
-    # which is what we need to commit the refreshed README + CONTRIBUTORS.md.
-    # Filter to merged PRs only (see job-level `if` below).
-    types: [closed]
-    branches: [main, master]
+  # 🚫 push and pull_request_target triggers intentionally removed.
+  # The bot now fires ONLY every 12 hours via cron (and manually by admins
+  # via workflow_dispatch). This keeps the bot's resource usage at ~2%
+  # of the free GitHub Actions tier while still keeping the leaderboard
+  # reasonably fresh (≤12h staleness).
   workflow_dispatch:
   schedule:
     # 🔁 Refresh every 12 hours so the leaderboard never goes stale
@@ -30,10 +27,7 @@ permissions:
 
 jobs:
   update-readme:
-    # Only run for merged PRs (skip closed-without-merge)
-    if: >
-      github.event_name != 'pull_request_target' ||
-      github.event.pull_request.merged == true
+    # No event filter needed — bot now fires only on cron + manual dispatch
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -67,11 +61,13 @@ jobs:
 
       - name: 🔍 Show what changed
         run: |
-          git --no-pager diff --stat README.md CONTRIBUTORS.md
+          git --no-pager diff --stat README.md CONTRIBUTORS.md CHANGELOG.md
           echo "─── README.md diff ───"
-          git --no-pager diff README.md | head -120 || true
+          git --no-pager diff README.md | head -80 || true
           echo "─── CONTRIBUTORS.md diff ───"
-          git --no-pager diff CONTRIBUTORS.md | head -120 || true
+          git --no-pager diff CONTRIBUTORS.md | head -80 || true
+          echo "─── CHANGELOG.md diff (first 30 lines) ───"
+          git --no-pager diff CHANGELOG.md | head -30 || true
 
       - name: 🚀 Commit via github-actions[bot]
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -84,12 +80,14 @@ jobs:
             - Synced real names & avatars from GitHub API
             - Updated repo snapshot numbers
             - Regenerated full contributor cards in CONTRIBUTORS.md
+            - Regenerated point-wise CHANGELOG.md (commit-by-commit log)
 
-            Triggered by: ${{ github.event_name }}
+            Triggered by: ${{ github.event_name }}  (cron every 12h or manual)
             Commit:       ${{ github.sha }}
           file_pattern: |
             README.md
             CONTRIBUTORS.md
+            CHANGELOG.md
           branch: main              # always push to main, not the PR source branch
           commit_user_name: 'github-actions[bot]'
           commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'

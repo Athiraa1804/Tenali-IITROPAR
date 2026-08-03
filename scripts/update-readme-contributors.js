@@ -219,7 +219,7 @@ const FALLBACK_PROFILES = {
     name: 'Mudit Agrawal',
     avatar: 'https://avatars.githubusercontent.com/u/228782706?v=4',
     color: '#C0C0C0',
-    role: '🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground',
+    role: '🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground',
     topFeatures: [
       { icon: '⚔️', text: '<b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO' },
       { icon: '🧮', text: '<b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b>' },

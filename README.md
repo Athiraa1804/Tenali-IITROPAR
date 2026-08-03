@@ -78,7 +78,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>723</b><br/><sub>commits</sub></td>
+      <td align="center"><b>724</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
@@ -521,7 +521,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **723** | **44** | **17** | **69** | **7,662** | **991** |
+| **724** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -532,7 +532,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **122** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **122** | 9  | 🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **J. Gupta**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
@@ -602,7 +602,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🏆 122 commits · 9 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
+        <h4>🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
         <ul>
           <li>⚔️ <b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO</li>
           <li>🧮 <b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b></li>

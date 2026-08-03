@@ -79,12 +79,12 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>784</b><br/><sub>commits</sub></td>
+      <td align="center"><b>785</b><br/><sub>commits</sub></td>
       <td align="center"><b>60</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>19</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
-      <td align="center"><b>🍴 58</b><br/><sub>forks</sub></td>
-      <td align="center"><b>🐛 52</b><br/><sub>open issues</sub></td>
+      <td align="center"><b>⭐ 0</b><br/><sub>stars</sub></td>
+      <td align="center"><b>🍴 0</b><br/><sub>forks</sub></td>
+      <td align="center"><b>🐛 0</b><br/><sub>open issues</sub></td>
     </tr>
   </table>
 </p>
@@ -523,7 +523,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **784** | **60** | **19** | **69** | **7,662** | **991** |
+| **785** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -547,9 +547,9 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
 | 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
 | 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 17. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **2** | 0  | — |
+| 15. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **3** | 0  | — |
+| 16. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 17. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 18. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 | 19. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->

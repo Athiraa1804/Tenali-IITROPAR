@@ -810,6 +810,11 @@ function renderChangelog(git) {
   // Sort dates newest-first
   const sortedDates = [...byDate.keys()].sort((a, b) => (a < b ? 1 : -1));
 
+  // Build a clickable commit URL: clicking the short SHA jumps to the
+  // diff on GitHub so developers can see exactly what changed.
+  const repoUrl = `https://github.com/${REPO}`;
+  const commitUrl = (sha) => `${repoUrl}/commit/${sha}`;
+
   const lines = [];
   lines.push(`### 📊 Total: ${commits.length} commits · ${byDate.size} active days · ${git.uniqueAuthors} unique authors\n`);
 
@@ -821,14 +826,18 @@ function renderChangelog(git) {
       const icon = commitTypeIcon(c.subject);
       const merge = parseMergeInfo(c.subject);
 
-      // For merge commits, show "PR #N from <user>"
+      // Short SHA is rendered as a clickable markdown link → GitHub commit diff
+      const shaLink = `[\`${c.shortSha}\`](${commitUrl(c.sha)})`;
+
+      // For merge commits, link the PR number too
       if (merge) {
-        lines.push(`- ${icon} \`${c.shortSha}\` — **${c.author}** — 🔀 PR #${merge.prNumber} from \`${merge.prAuthor}\``);
+        const prLink = `[#${merge.prNumber}](${repoUrl}/pull/${merge.prNumber})`;
+        lines.push(`- ${icon} ${shaLink} — **${c.author}** — 🔀 PR ${prLink} from \`${merge.prAuthor}\``);
       } else {
         // Regular commit: show sha + author + subject
         // Subject is stripped of the conventional-commit prefix for readability
         const cleanSubject = String(c.subject).replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
-        lines.push(`- ${icon} \`${c.shortSha}\` — **${c.author}** — ${cleanSubject}`);
+        lines.push(`- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject}`);
       }
     }
     lines.push(''); // blank line between dates

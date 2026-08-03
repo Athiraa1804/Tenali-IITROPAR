@@ -38,7 +38,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **783** | **60** | **19** | **69** | **7,662** | **991** |
+| **785** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -49,7 +49,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **162** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **163** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
@@ -62,9 +62,9 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
 | 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
 | 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 17. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **2** | 0  | — |
+| 15. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **3** | 0  | — |
+| 16. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 17. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 18. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 | 19. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
@@ -117,7 +117,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="Mudit Agrawal"/></a>
         <br/><b>Mudit Agrawal</b>
         <br/><a href="https://github.com/muditagrawal2007">@muditagrawal2007</a>
-        <br/><sub>🏆 162 commits · 13 PRs merged</sub>
+        <br/><sub>🏆 163 commits · 13 PRs merged</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
@@ -450,6 +450,28 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
+        <br/><b>github-actions-bot-</b>
+        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
+        <br/><sub>🏆 3 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>15. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>3 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S. Hamsalekha"/></a>
         <br/><b>S. Hamsalekha</b>
         <br/><a href="https://github.com/S-Hamsalekha-annamai">@S-Hamsalekha-annamai</a>
@@ -457,7 +479,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🔗 also commits as: <b>S Hamsalekha</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>15. Track User Progress</h4>
+        <h4>16. Track User Progress</h4>
         <ul>
           <li>📊 <b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones</li>
           <li>🗂️ <b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics</li>
@@ -478,34 +500,12 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🏆 3 commits · 1 PR merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>16. Language Puzzles Framework</h4>
+        <h4>17. Language Puzzles Framework</h4>
         <ul>
           <li>🧩 <b>Modular Language Puzzles framework (PR #35)</b> — pluggable architecture for word/letter puzzles</li>
           <li>🆕 <b>Word Creator</b> — fill-in-the-blanks to create new words</li>
           <li>⚡ <b>Latency optimization</b> — reduced <code>wordCreator</code> verification time</li>
           <li>🔀 <b>Merge conflict resolution</b> — clean upstream merge</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
-        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
-        <br/><b>github-actions-bot-</b>
-        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
-        <br/><sub>🏆 2 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>17. New Contributor</h4>
-        <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>2 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>

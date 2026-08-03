@@ -1,13 +1,16 @@
 name: 🤖 Update README contributors
 
-# Runs whenever a commit lands on main, a PR is merged, or weekly on schedule.
-# Re-generates the leaderboard + snapshot in README.md from live git log + GitHub API
-# and commits the change back via github-actions[bot].
+# Runs whenever a commit lands on main, a PR is merged, every 12h, or manually.
+# Re-generates the leaderboard + snapshot in README.md from live git log +
+# GitHub API and commits the change back via github-actions[bot].
 
 on:
   push:
     branches: [main, master]
-  pull_request:
+  pull_request_target:
+    # pull_request_target runs in the base repo context with full write access,
+    # which is what we need to commit the refreshed README + CONTRIBUTORS.md.
+    # Filter to merged PRs only (see job-level `if` below).
     types: [closed]
     branches: [main, master]
   workflow_dispatch:
@@ -22,14 +25,14 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write    # required for github-actions[bot] to push
+  contents: write    # required for github-actions[bot] to push to main
   pull-requests: write
 
 jobs:
   update-readme:
     # Only run for merged PRs (skip closed-without-merge)
     if: >
-      github.event_name != 'pull_request' ||
+      github.event_name != 'pull_request_target' ||
       github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -55,9 +58,11 @@ jobs:
           echo "─── Leaderboard preview ───"
           node scripts/update-readme-contributors.js --dry-run | tail -80
 
-      - name: ✍️ Regenerate README.md
+      - name: ✍️ Regenerate README.md + CONTRIBUTORS.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Pull contributor data from this (canonical) repo
+          TENALI_REPO: ${{ github.repository }}
         run: node scripts/update-readme-contributors.js
 
       - name: 🔍 Show what changed
@@ -85,6 +90,7 @@ jobs:
           file_pattern: |
             README.md
             CONTRIBUTORS.md
+          branch: main              # always push to main, not the PR source branch
           commit_user_name: 'github-actions[bot]'
           commit_user_email: '41898282+github-actions[bot]@users.noreply.github.com'
           commit_author: 'github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>'

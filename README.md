@@ -82,8 +82,8 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
       <td align="center"><b>175+</b><br/><sub>API endpoints</sub></td>
       <td align="center"><b>7,662</b><br/><sub>vocab questions</sub></td>
       <td align="center"><b>991</b><br/><sub>GK questions</sub></td>
-      <td align="center"><b>711</b><br/><sub>total commits</sub></td>
-      <td align="center"><b>43</b><br/><sub>merged PRs</sub></td>
+      <td align="center"><b>713</b><br/><sub>total commits</sub></td>
+      <td align="center"><b>44</b><br/><sub>merged PRs</sub></td>
       <td align="center"><b>20</b><br/><sub>contributors</sub></td>
     </tr>
   </table>
@@ -106,23 +106,30 @@ Sandbox    :  50+ languages via /api/playground2
 
 ## 🎯 User Workflow
 
-```mermaid
-flowchart LR
-    A(["🌐 Open<br/>tenali.fun"]) --> B(["🏠 Home<br/>90+ cards"])
-    B --> C(["📐 Pick<br/>topic"])
-    C --> D(["▶️ Quiz<br/>20 Qs"])
-    D --> E{"Answer<br/>correct?"}
-    E -- "✅ Yes" --> F["Score ↑<br/>+0.15 to +0.5"]
-    E -- "❌ No"  --> G["Score ↓<br/>−0.4 to −0.6"]
-    F --> H(["💡 See<br/>explanation"])
-    G --> H
-    H --> I(["📈 Difficulty<br/>auto-adjusts"])
-    I --> J{"More<br/>questions?"}
-    J -- "Yes" --> D
-    J -- "No"  --> K(["🏆 Results<br/>+ badge<br/>+ saved"])
+A learner goes through **four simple stages** every time they play:
+
+### 1️⃣ Open → 2️⃣ Pick → 3️⃣ Play → 4️⃣ Earn
+
+```
+┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
+│ 🌐 Open  │───▶│ 📐 Pick  │───▶│ ▶️ Play  │───▶│ 🏆 Earn  │
+│tenali.fun│    │  topic   │    │ 20 Qs    │    │+ badge   │
+└──────────┘    └──────────┘    └──────────┘    └──────────┘
 ```
 
-### 🎮 Game Modes (pick any from the home grid)
+**That's it.** Everything else — login, difficulty, scoring, badges — happens automatically inside the **Play** box.
+
+---
+
+### 📋 What's inside each stage
+
+#### 1️⃣ Open `tenali.fun`
+- Lands on the **home grid** — 90+ colorful topic cards (blue = arithmetic, green = geometry, purple = algebra, orange = games)
+- **Optional login** with JWT — guest mode works fully without an account
+- Filter by search or browse the guided journey
+
+#### 2️⃣ Pick a topic
+Choose any of these modes from the home grid:
 
 | Mode | What you do |
 |------|-------------|
@@ -134,18 +141,17 @@ flowchart LR
 | 🎲 **Random Mix** | Quiz that adapts to your weakest topics |
 | 🛠️ **Custom Lesson** | Hand-pick topics and question counts |
 
-**Step-by-step experience**
+#### 3️⃣ Play — 20 adaptive questions
+- ✅ **Correct** → score goes **up** (+0.15 to +0.5)
+- ❌ **Wrong** → score goes **down** (−0.4 to −0.6)
+- 💡 **Tap "Solve"** at any time for a step-by-step explanation
+- 📈 **Difficulty auto-adjusts** with every answer: `easy → medium → hard → extrahard`
 
-1. **🏠 Land on the home grid** — 90+ color-coded learning tiles (blue = arithmetic, green = geometry, purple = algebra, orange = games).
-2. **🔐 Optional login** — Sign in to persist coins, XP, streaks and badges. Guest mode works fully without an account.
-3. **📐 Pick a topic card** — Filter by search, browse the guided journey, or jump straight into a topic.
-4. **▶️ Answer 20 adaptive questions** — Each correct answer raises `adaptScore`, every wrong one lowers it.
-5. **💡 Tap "Solve" for an explanation** — `generateExplanation()` returns a step-by-step walkthrough.
-6. **📈 Difficulty auto-adjusts** — `easy → medium → hard → extrahard`.
-7. **🏆 Earn badges & trophies** — bronze, silver, gold per topic; collection albums.
-8. **⚔️ Battle other learners** — Live fastest-finger duels (Socket.IO).
-9. **🔍 Detective Agency** — Story-mode mysteries — solve a math case to advance.
-10. **🎓 Guided Learning Journey** — Linear, checkpoint-driven curriculum that unlocks the next concept only after mastery.
+#### 4️⃣ Earn rewards
+- 🏆 **Results screen** — coins, XP, streak
+- 🥇 **Badge** — bronze → silver → gold per topic
+- 📊 **Progress saved** — persisted in MongoDB for next time
+- ➡️ **Loop** — pick another topic and play again
 
 ---
 
@@ -514,7 +520,7 @@ tenali.fun (DNS → 143.110.241.156)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **711** | **43** | **17** | **69** | **7,662** | **991** |
+| **713** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -525,20 +531,20 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Top Features |
 |--:|:-------------|:-------------|----------:|-----:|:----------------|
 | 🥇 | **S. R. S. Iyengar** *(Sudarshan)* | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | Lead Architect & Curriculum Author |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **117** | 8  | Repo Owner · Battle Arena · Linear Algebra |
-| 🥉 | **J. Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | Upstream Repo Maintainer & PR Reviewer |
-| 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
-| 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
+| 🥈 | **muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **119** | 9  | Repo Owner · Battle Arena · Linear Algebra |
+| 🥉 | **jgupta05072003-code** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | Upstream Repo Maintainer & PR Reviewer |
+| 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
+| 5. | **24F3005086** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish** | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
-| 7. | **Diptosubhro Datta** | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
+| 7. | **DIPTOSUBHRO DATTA** | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
 | 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
 | 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
 | 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
 | 11. | **Shubh Dixit** | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
-| 12. | **Sharonya Banerjee** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
-| 13. | **Pandraju Poorvi Pravallika** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-| 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **S. Hamsalekha** | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 12. | **SemiColonSlayer** *(Sharonya Banerjee)* | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
+| 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
+| 14. | **RukmenderT** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
+| 15. | **S-Hamsalekha-annamai** | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
 | 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 <!-- live-rank:end -->

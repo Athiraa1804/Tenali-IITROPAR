@@ -5,12 +5,15 @@
  *
  * Regenerates the contributor section of README.md from:
  *   1. The GitHub Contributors API   → profile photos, real names, GitHub IDs
- *   2. Local git log                 → commit counts (always accurate even when API lags)
+ *   2. Local git log                 → commit counts (always accurate)
  *   3. Merge-commit scan             → merged PR numbers
+ *   4. Curated FALLBACK_PROFILES     → top features list per contributor
  *
- * Marker block in README.md:
- *   <!-- live-rank:start --> ... <!-- live-rank:end -->
- *   <!-- live-cards:start --> ... <!-- live-cards:end -->
+ * Marker blocks in README.md (all are bot-managed, nothing is static):
+ *   <!-- live-at-a-glance:start --> ... <!-- live-at-a-glance:end -->
+ *   <!-- live-snapshot:start -->    ... <!-- live-snapshot:end -->
+ *   <!-- live-rank:start -->        ... <!-- live-rank:end -->
+ *   <!-- live-cards:start -->       ... <!-- live-cards:end -->
  *
  * The script is idempotent — running it twice produces the same file.
  *
@@ -70,11 +73,10 @@ function ghFetch(urlPath) {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           try { resolve(JSON.parse(data)); } catch (e) { reject(e); }
         } else if (res.statusCode === 403 || res.statusCode === 429) {
-          // Rate limit — fall back to local data
           log(`⚠ rate-limited (${res.statusCode}) on ${urlPath} — falling back`);
           resolve(null);
         } else {
-          reject(new Error(`GitHub API ${res.statusCode} ${res.statusCodeText || ''} for ${urlPath}`));
+          reject(new Error(`GitHub API ${res.statusCode} for ${urlPath}`));
         }
       });
     });
@@ -83,12 +85,12 @@ function ghFetch(urlPath) {
   });
 }
 
-async function ghFetchAll(urlPath, acc = []) {
-  const page = await ghFetch(urlPath);
-  if (!page) return acc;
-  const next = Array.isArray(page) ? acc.concat(page) : acc.concat([page]);
-  // Link header is not exposed here; fetch paginated pages by ?per_page=100 then loop with page=#
-  return next;
+// Strip null / empty values from an API response so they don't override fallback data
+function stripEmpty(obj) {
+  if (!obj || typeof obj !== 'object') return {};
+  return Object.fromEntries(
+    Object.entries(obj).filter(([, v]) => v !== null && v !== undefined && v !== '')
+  );
 }
 
 // ─── data gathering ─────────────────────────────────────────────────────────
@@ -98,12 +100,14 @@ function gatherGitLog() {
   const authorCount = parseInt(
     sh(`git log --pretty=format:"%ae" | sort -u | wc -l`), 10) || 0;
 
-  // Commits per author (by name as it appears in git log)
+  // Commits per author (by name as it appears in git log) + collect emails too
   const byAuthor = {};
+  const emailsByName = {};
   sh(`git log --pretty=format:"%an|%ae"`).split('\n').forEach((line) => {
     if (!line) return;
     const [name, email] = line.split('|');
     byAuthor[name] = (byAuthor[name] || 0) + 1;
+    if (email) emailsByName[name] = email;
   });
 
   // PRs per author (parsed from "Merge pull request #N from <user>/<branch>")
@@ -122,6 +126,7 @@ function gatherGitLog() {
     totalCommits: total,
     uniqueAuthors: authorCount,
     commitsByName: byAuthor,
+    emailsByName,
     prsByUser: Object.fromEntries(
       Object.entries(prsByAuthor).map(([k, v]) => [k, v.size])
     ),
@@ -168,8 +173,22 @@ async function fetchContributors() {
   return enriched;
 }
 
-// Manual fallback profile data — used when GitHub API is rate-limited.
-// Keys are GitHub logins as they appear in `git log` and the contributor graph.
+// Curated fallback profiles — used when GitHub API is rate-limited or for
+// contributors not on GitHub. Each profile carries the "top features" list
+// that drives the bot-generated contributor cards section.
+//
+// Schema:
+//   {
+//     name, git?,        // display name + original git author name (if different)
+//     avatar,            // profile image URL (always 120px in render)
+//     color,             // accent color for the avatar ring
+//     location?, blog?, twitter?,
+//     role,              // one-line summary (used in leaderboard + card title)
+//     topFeatures: [     // bullet list rendered in the card body
+//       { icon: '⚔️', text: '...' },
+//       ...
+//     ],
+//   }
 const FALLBACK_PROFILES = {
   sudarshansudarshan: {
     name: 'S. R. S. Iyengar',
@@ -179,32 +198,79 @@ const FALLBACK_PROFILES = {
     bio: 'Scientist/Teacher',
     blog: 'http://www.sudarshaniyengar.com',
     color: '#FFD93D',
-    role: 'Lead Architect & Curriculum Author',
+    role: '🥇 Lead Architect & Curriculum Author',
+    topFeatures: [
+      { icon: '🧠', text: '<b>Adaptive difficulty core</b> — <code>adaptScore</code> → band mapping drives every <code>*api/question</code>' },
+      { icon: '🌉', text: '<b>Prerequisite bridges</b> — Lessons 1–27 (arithmetic → fractions → standard form)' },
+      { icon: '🍕', text: '<b>Idli-Vada-Sambhar LCM game</b> — gamified multiples/LCM with <code>LcmHcfApp</code>' },
+      { icon: '➗', text: '<b>Standard Form & Percentage bridges</b> — ×÷ in scientific notation, multiplier method, reverse %, success %' },
+      { icon: '🧮', text: '<b>In-memory auth fallback</b> — added <code>inMemoryUsers</code> when MongoDB is unavailable' },
+      { icon: '🧰', text: '<b>Auto-fix tooling</b> — <code>NoiseFilter</code>, lint sweeps across stages 1–5 + completion screen' },
+      { icon: '🧾', text: '<b>Diagnostic quiz pipeline</b> — DiagnosticQuiz, MasteryBadge, questionFormatters' },
+    ],
   },
   muditagrawal2007: {
     name: 'Mudit Agrawal',
     avatar: 'https://avatars.githubusercontent.com/u/228782706?v=4',
     color: '#C0C0C0',
-    role: 'Repo Owner · Battle Arena · Linear Algebra',
+    role: '🥈 Repo Owner · Battle Arena · Linear Algebra',
+    topFeatures: [
+      { icon: '⚔️', text: '<b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO' },
+      { icon: '🧮', text: '<b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b>' },
+      { icon: '🐛', text: '<b>React hook violation fixes</b> — UI stability across the main <code>App</code> component' },
+      { icon: '🔀', text: '<b>Merge integration</b> — merged <code>vicharanashala/main</code> 5× to keep the fork in sync' },
+      { icon: '🛡️', text: '<b>Admin-only Proctor endpoints</b> — secured <code>/api/proctor/*</code> with <code>requireAdmin</code>' },
+      { icon: '🧹', text: '<b>Component-wide lint fixes</b> — 20+ components cleaned up' },
+      { icon: '📦', text: '<b>PRs merged:</b> #10, #19, #39, #41, #44, #48, #81, #84' },
+    ],
   },
   'varshini-nandula': {
     name: 'Lakshmi Varshini Nandula',
     avatar: 'https://avatars.githubusercontent.com/u/174730796?v=4',
     color: '#CD7F32',
-    role: 'Profile Showcase & Offline Storage',
+    role: '🥉 Profile Showcase & Offline Storage',
+    topFeatures: [
+      { icon: '🏅', text: '<b>Profile Achievement Showcase (PR #59)</b> — badge cabinet, category dropdown, circular close buttons' },
+      { icon: '📦', text: '<b>Scalable MongoDB collections</b> — <code>UserStats</code>, <code>UserMilestone</code>, <code>UserTopicProgress</code>, <code>UserCollectionProgress</code>' },
+      { icon: '💾', text: '<b>Persistent JSON fallback DB</b> — offline mode that survives MongoDB outages + <code>StudentAttemptLog</code>' },
+      { icon: '🎉', text: '<b>Celebration queue</b> — real-time badge-unlock + celebration modal logic' },
+      { icon: '🥇', text: '<b>15-day streak milestone badge</b> — new badge type + image asset' },
+      { icon: '🗂️', text: '<b>Category-priority sorting</b> — badges sorted by domain in the showcase' },
+      { icon: '🔗', text: '<b>Profile ↔ URL mode sync</b> — deep-link to specific profile topics' },
+      { icon: '🛠️', text: '<b>Crash fixes</b> — restored <code>tenaliIncrementSolved</code>, <code>showAbout</code>, <code>menuOpen</code>, <code>search</code>, resolved duplicate identifiers in <code>App.jsx</code>' },
+    ],
   },
   'jgupta05072003-code': {
     name: 'J. Gupta',
     avatar: 'https://avatars.githubusercontent.com/u/267273120?v=4',
     color: '#4D96FF',
-    role: 'Upstream Repo Maintainer & PR Reviewer',
-    note: 'merged 30+ PRs',
+    role: '4️⃣ Upstream Repo Maintainer & PR Reviewer',
+    topFeatures: [
+      { icon: '🔍', text: '<b>Reviewed and merged 30+ PRs</b> into <code>vicharanashala/tenali</code>' },
+      { icon: '🔧', text: '<b>Hardened JWT auth</b> — centralized JWT_SECRET, removed duplicate declarations (#96)' },
+      { icon: '🛡️', text: '<b>Rate limiting + CORS allowlist</b> — added <code>express-rate-limit</code> + origin allowlist (#85)' },
+      { icon: '🧹', text: '<b>Repo cleanup</b> — removed committed debug/scratch files (#83)' },
+      { icon: '🌱', text: '<b>Seed users via env</b> — refactored <code>auth.js</code> so credentials come from <code>TENALI_SEED_USERS</code> (#82)' },
+      { icon: '🛣️', text: '<b>Base-path-aware routing</b> — fixed <code>/summership</code> sub-paths (#80)' },
+      { icon: '📦', text: '<b>Missing dependencies</b> — chart.js (#79), mafs (#75), removed UTF-8 BOM from <code>App.css</code> (#63), unified module theming (#65)' },
+      { icon: '🏠', text: '<b>Restored Journey banner</b> (#76) + <b>AuthGate home button</b> (#78) + <b>Linear Algebra API base</b> (#40)' },
+    ],
   },
   '24F3005086': {
     name: 'Sameer Mishra',
     avatar: 'https://avatars.githubusercontent.com/u/189242179?v=4',
     color: '#6BCB77',
-    role: 'i18n · Accessibility · Concept Labs',
+    role: '5️⃣ i18n · Accessibility · Concept Labs',
+    topFeatures: [
+      { icon: '🌍', text: '<b>Internationalization (PR #51)</b> — full i18n framework, locales directory, translation layer' },
+      { icon: '♿', text: '<b>Accessibility panel (PR #50)</b> — high-contrast toggle, reduced motion, keyboard nav, ARIA roles' },
+      { icon: '🧪', text: '<b>Concept Playgrounds (PR #52)</b> — multi-stage concept mastery labs' },
+      { icon: '🧠', text: '<b>BKT Prerequisites (PR #49)</b> — Bayesian Knowledge Tracing + <code>bkt.js</code> library' },
+      { icon: '🎨', text: '<b>Dark/light theme system</b> — coherent theming across IdliVadaSambhar, Crossword, Word Search' },
+      { icon: '🧹', text: '<b>ESLint cleanup</b> — removed unused vars, suppressed <code>react-refresh</code> warnings' },
+      { icon: '🧩', text: '<b>MasteryBadge integration</b> — wired <code>updateBKT</code> stub into concept playgrounds' },
+      { icon: '🐛', text: '<b>Bugfix sweeps</b> — translation, dark/light, mastery-badge, concept-playgrounds localization' },
+    ],
   },
   'Vaibhav-sa30': {
     name: 'Vaibhav Satish',
@@ -212,41 +278,95 @@ const FALLBACK_PROFILES = {
     color: '#FF6B6B',
     location: 'India',
     twitter: 'vee42O',
-    role: 'Vachana Literacy Lab & Vocabulary',
+    role: '6️⃣ Vachana Literacy Lab & Vocabulary',
+    topFeatures: [
+      { icon: '🆕', text: '<b>Vachana Mathematical Literacy Lab (PR #18)</b> — standalone literacy module with grid dashboard, 8+ exercises across v0.1.x' },
+      { icon: '🔤', text: '<b>Notation Literacy Exercise (PR #57)</b> — teaches math notation & root decoding with etymology references' },
+      { icon: '🔍', text: '<b>Vocabulary Explorer</b> — adaptive placement check, MCQ auto-submit, guided exploration' },
+      { icon: '🧭', text: '<b>Vocab Quiz UX</b> — numeric shortcuts, color-coded feedback, manual submit, previous-question navigation' },
+      { icon: '🪟', text: '<b>History view fix</b> — placement-test state overlap fix + previous button' },
+      { icon: '♻️', text: '<b>Modularization</b> — split Vachana Literacy Lab into separate component files' },
+      { icon: '📚', text: '<b>Exercise research docs</b> — pedagogical references + CHANGELOG entries for every v0.1.x release' },
+    ],
   },
   'diptosubhro-ctrl': {
     name: 'Diptosubhro Datta',
     avatar: 'https://avatars.githubusercontent.com/u/248255769?v=4',
     color: '#9B59B6',
     location: 'COOCH BEHAR',
-    role: 'Tutorial System + Noise Filter Refactor',
+    role: '7️⃣ Tutorial System + Noise Filter Refactor',
+    topFeatures: [
+      { icon: '🆕', text: '<b>Tenali Main overhaul (PR #58)</b> — full UI standardization, premium dark theme, module layout improvements' },
+      { icon: '🧹', text: '<b>Noise Filter refactor</b> — cleaned up level boundaries, removed subject intros, shortened Level 1 questions' },
+      { icon: '🔄', text: '<b>Reset Progress UX</b> — moved Reset button inside each level card, kept tutorial reference for Level 1' },
+      { icon: '🪜', text: '<b>Tutorial Reference modal</b> — popout button + overlay for levels above 1' },
+      { icon: '🗑️', text: '<b>UI cleanup</b> — removed Key Math Fact box, strand tag labels, Reveal Noise Phrase button' },
+      { icon: '🧭', text: '<b>Stages sub-view</b> — direct start after Level 1, dedicated sub-view with back navigation' },
+      { icon: '🛠️', text: '<b>Merge conflict resolutions</b> — multiple upstream merges with clean App.jsx reconciliation' },
+    ],
   },
   'Ritish007-svg': {
     name: 'Ritish Karmakar',
     avatar: 'https://avatars.githubusercontent.com/u/214147769?v=4',
     color: '#E67E22',
-    role: 'Percentages Level-wise Explanation',
+    role: '8️⃣ Percentages Level-wise Explanation',
+    topFeatures: [
+      { icon: '📈', text: '<b>Level-wise Percentages (PR #9)</b> — diagnostic quiz for Percentages with kid-friendly UI' },
+      { icon: '🪜', text: '<b>Percentages Level 1 (Find)</b> — first explanation level with hover info popups, boxed theory cards, mobile-responsive fixes' },
+      { icon: '🎴', text: '<b>One-card-at-a-time layout</b> — refactored Percentages workspace + fixed <code>AudioContext</code> singleton' },
+      { icon: '📜', text: '<b>CHANGELOG</b> — Version 1 → 4 detailed notes for Percentages redesign' },
+      { icon: '🎨', text: '<b>UI & styling polish</b> — theme-consistent cards and progress indicators' },
+      { icon: '🔁', text: '<b>Restore feature work</b> — recovered work lost during upstream merges' },
+    ],
   },
   KCDharshan9: {
     name: 'K C Dharshan',
     avatar: 'https://avatars.githubusercontent.com/u/196636372?v=4',
     color: '#1ABC9C',
     location: 'India',
-    role: 'Tap-to-Define Word Glossary',
+    role: '9️⃣ Tap-to-Define Word Glossary',
+    topFeatures: [
+      { icon: '📖', text: '<b>Tap-to-Define Word Glossary (PR #20)</b> — Word Explorer + enriched definition popovers with SVG visuals' },
+      { icon: '🆕', text: '<b>Learn These Words pre-quiz (Feature AQ)</b> — vocab warmup section' },
+      { icon: '🛠️', text: '<b>Bugs sweep</b> — submit button in addition app, version/build date behind hamburger, alignment/SVG issues' },
+      { icon: '🔀', text: '<b>5× merge conflict resolutions</b> — clean upstream merges' },
+      { icon: '🧹', text: '<b>Cleanup</b> — removed PowerShell scripts, ignored internal docs, restored Vite proxy config' },
+      { icon: '📦', text: '<b>Datasets</b> — added new vocabulary & question data files + updated server dependencies' },
+    ],
   },
   ahana4banerjee: {
     name: 'Ahana Banerjee',
     avatar: 'https://avatars.githubusercontent.com/u/166562662?v=4',
     color: '#E91E63',
     location: 'Hyderabad, India',
-    role: 'Goal Practice & Learning Journey',
+    role: '🔟 Goal Practice & Learning Journey',
+    topFeatures: [
+      { icon: '📚', text: '<b>Goal-based Practice Sessions (PR #11)</b> — isolated goal-practice module that hides "standard mode" pills' },
+      { icon: '🧠', text: '<b>Learning Intelligence Layer (LIL)</b> — architected LIL with cross-app goal-practice integration' },
+      { icon: '🪜', text: '<b>AL Learning Checkpoints (PR #34)</b> — sequential unlock rules with <b>15-question topic checkpoints</b>' },
+      { icon: '🎯', text: '<b>Targeted concept revision loop</b> — automatically revisits weak concepts' },
+      { icon: '🎉', text: '<b>Confetti animations</b> — checkpoint completion celebrations' },
+      { icon: '🚫', text: '<b>Block successive topics</b> — locked topics until the previous is mastered' },
+      { icon: '🛡️', text: '<b>"Oh no, it\'s okay"</b> — replaced harsh wrong-answer copy with kid-friendly wording' },
+      { icon: '🔀', text: '<b>6× merge conflict resolutions</b> — clean upstream merges for both feature branches' },
+    ],
   },
   Shubhdix9: {
     name: 'Shubh Dixit',
     avatar: 'https://avatars.githubusercontent.com/u/212879841?v=4',
     color: '#34495E',
     location: 'Jaipur',
-    role: 'Premium UI Suite + Word Games',
+    role: '1️⃣1️⃣ Premium UI Suite + Word Games',
+    topFeatures: [
+      { icon: '🏆', text: '<b>Premium Core Educational Suite (PR #53)</b> — UI standardization, premium dark theme, module layout improvements' },
+      { icon: '➕', text: '<b>Addition crash fix</b> — fixed ReferenceError for <code>setIsGoalMode</code> and removed extra modes' },
+      { icon: '🔤', text: '<b>Crossword + Word Search</b> — organic crossword + premium word search games' },
+      { icon: '⚡', text: '<b>Instant question transitions</b> — perf: visual counting caps + question transitions' },
+      { icon: '🧭', text: '<b>Visual Learning Universe</b> — title size fix + Guide/UI tweaks' },
+      { icon: '🖼️', text: '<b>Lucide-react icons</b> — replaced emojis with standard icon library' },
+      { icon: '🧹', text: '<b>Removed unused scripts</b> + addition/mensuration/coord-geom from hamburger menu' },
+      { icon: '🔀', text: '<b>Merge conflict resolutions</b> — multiple upstream merges with syntax-error fixes' },
+    ],
   },
   'sharonyamita-spec': {
     name: 'Sharonya Banerjee',
@@ -254,75 +374,125 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/261205962?v=4',
     color: '#16A085',
     note: 'SemiColonSlayer',
-    role: 'Math Detective Agency',
+    role: '1️⃣2️⃣ Math Detective Agency',
+    topFeatures: [
+      { icon: '🕵️', text: '<b>Math Detective Agency (PR #54)</b> — story-based mystery math cases with chained clue progression' },
+      { icon: '🪪', text: '<b>Badge detail modal</b> — CSS for badge detail modal in <code>App.css</code>' },
+      { icon: '🔀', text: '<b>3× merge conflict resolutions</b> — clean upstream merges keeping the detective CSS as base' },
+      { icon: '🆕', text: '<b>Hundreds of procedurally generated mysteries</b> unlocked via Detective module' },
+    ],
   },
   poorvipravallika06: {
     name: 'Pandraju Poorvi Pravallika',
     avatar: 'https://avatars.githubusercontent.com/u/207549779?v=4',
     color: '#F39C12',
-    role: 'HCF/LCM Interactive Module',
+    role: '1️⃣3️⃣ HCF/LCM Interactive Module',
+    topFeatures: [
+      { icon: '🍕', text: '<b>Interactive LCM & HCF (PR #12)</b> — dynamic quiz with stepper locks, validation popups, accordion examples, mistake redirection' },
+      { icon: '🎯', text: '<b>Confidence meter</b> — confidence-based quiz progression with sequential redirection' },
+      { icon: '🏆', text: '<b>Progressive gamified levels</b> — tiered HCF/LCM levels with retry flow' },
+      { icon: '🎨', text: '<b>Visual polish</b> — refined HCF Venn circle padding, capped LCM jump height' },
+      { icon: '🧹', text: '<b>ESLint cleanup</b> — removed unused vars in <code>LcmHcfApp.jsx</code>' },
+    ],
   },
   RukmenderT: {
     name: 'Rukmender T',
     avatar: 'https://avatars.githubusercontent.com/u/206398340?v=4',
     color: '#8E44AD',
-    role: 'Curiosity Mode',
+    role: '1️⃣4️⃣ Curiosity Mode',
+    topFeatures: [
+      { icon: '🤔', text: '<b>Curiosity Mode (PR #56)</b> — variation discovery puzzles that explore "what if" scenarios' },
+      { icon: '🪟', text: '<b>Hamburger menu integration</b> — restored Curiosity Mode after upstream merges' },
+      { icon: '🛠️', text: '<b>Merge conflict resolutions</b> — clean upstream syncs' },
+      { icon: '🧹', text: '<b>UI cleanup</b> — removed duplicate hover tooltip + left-side variation label' },
+    ],
   },
   'KrishnaG-101': {
     name: 'Krishna Gelra',
     avatar: 'https://avatars.githubusercontent.com/u/155518412?v=4',
     color: '#27AE60',
-    role: 'Language Puzzles Framework',
+    role: '1️⃣5️⃣ Language Puzzles Framework',
+    topFeatures: [
+      { icon: '🧩', text: '<b>Modular Language Puzzles framework (PR #35)</b> — pluggable architecture for word/letter puzzles' },
+      { icon: '🆕', text: '<b>Word Creator</b> — fill-in-the-blanks to create new words' },
+      { icon: '⚡', text: '<b>Latency optimization</b> — reduced <code>wordCreator</code> verification time' },
+      { icon: '🔀', text: '<b>Merge conflict resolution</b> — clean upstream merge' },
+    ],
   },
   'S-Hamsalekha-annamai': {
     name: 'S. Hamsalekha',
     avatar: 'https://avatars.githubusercontent.com/u/247533500?v=4',
     color: '#2C3E50',
-    role: 'Track User Progress',
+    role: '1️⃣6️⃣ Track User Progress',
+    topFeatures: [
+      { icon: '📊', text: '<b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones' },
+      { icon: '🗂️', text: '<b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics' },
+      { icon: '🔀', text: '<b>Upstream merge</b> for <code>feat/track_user_progress</code>' },
+    ],
   },
   AnshulKanodia: {
     name: 'Anshul Kanodia',
     avatar: 'https://avatars.githubusercontent.com/u/113899062?v=4',
     color: '#7F8C8D',
     blog: 'https://anshulkanodia.vercel.app',
-    role: 'Geometry Game Restoration',
+    role: '1️⃣7️⃣ Geometry Game Restoration',
+    topFeatures: [
+      { icon: '🔺', text: '<b>Re-added Geometry Game (PR #8)</b> — restored the 20-July geometry game after it was lost in a merge' },
+      { icon: '🔀', text: '<b>Upstream merge integration</b> for <code>patnaikArpita/Re-added-geometry-game-20July</code>' },
+    ],
   },
 };
 
 // Map git-log author-name → GitHub login so we can join local commits to GH profiles.
+// Note: a single GitHub login can have multiple git author names — the bot
+// renders all of them and adds a "+" indicator in the contributor card.
 const GIT_NAME_TO_LOGIN = {
+  // S. R. S. Iyengar — one person, two git author names
   Sudarshan: 'sudarshansudarshan',
   'S. R. S. Iyengar': 'sudarshansudarshan',
+
   muditagrawal2007: 'muditagrawal2007',
   'varshini-nandula': 'varshini-nandula',
+
+  // J. Gupta — one person, two git author names (j.gupta + jinalbirla)
   'jgupta05072003-code': 'jgupta05072003-code',
-  Jinal: 'jgupta05072003-code', // Jinal Gupta's auth-hardening PRs merged by jgupta05072003-code
+  Jinal: 'jgupta05072003-code',
   'Jinal Gupta': 'jgupta05072003-code',
+
   '24F3005086': '24F3005086',
+
   Vaibhav: 'Vaibhav-sa30',
   'Dipto Subhro': 'diptosubhro-ctrl',
+
   'Ritish Karmakar': 'Ritish007-svg',
   Ritish: 'Ritish007-svg',
+
   'K C Dharshan': 'KCDharshan9',
   KCDharshan9: 'KCDharshan9',
+
   'Ahana Banerjee': 'ahana4banerjee',
   'Sharonya Banerjee': 'sharonyamita-spec',
   Sharonya: 'sharonyamita-spec',
+
   poorvipravallika06: 'poorvipravallika06',
   Poorvipravallika: 'poorvipravallika06',
+
   RukmenderT: 'RukmenderT',
   'Krishna Gelra': 'KrishnaG-101',
-  'Krishna': 'KrishnaG-101',
+  Krishna: 'KrishnaG-101',
+
   'S Hamsalekha': 'S-Hamsalekha-annamai',
   'S-Hamsalekha-annamai': 'S-Hamsalekha-annamai',
   Hamsalekha: 'S-Hamsalekha-annamai',
+
   'Anshul Kanodia': 'AnshulKanodia',
   AnshulKanodia: 'AnshulKanodia',
+
   'Shubh dixit': 'Shubhdix9',
   Shubh: 'Shubhdix9',
 };
 
-// ─── rendering ──────────────────────────────────────────────────────────────
+// ─── data merging ───────────────────────────────────────────────────────────
 
 function mergeData(git, apiContribs) {
   // Join git commits by author name → login → API profile (or fallback)
@@ -330,23 +500,31 @@ function mergeData(git, apiContribs) {
   for (const [gitName, count] of Object.entries(git.commitsByName)) {
     const login = GIT_NAME_TO_LOGIN[gitName];
     if (!login) continue; // skip emails that don't map (e.g. Vasuki)
-    byLogin[login] = byLogin[login] || { login, gitNames: [], commits: 0 };
+    byLogin[login] = byLogin[login] || {
+      login,
+      gitNames: [],
+      gitEmails: [],
+      commits: 0,
+    };
     byLogin[login].gitNames.push(gitName);
+    const email = git.emailsByName[gitName];
+    if (email && !byLogin[login].gitEmails.includes(email)) {
+      byLogin[login].gitEmails.push(email);
+    }
     byLogin[login].commits += count;
   }
 
   // PR counts: keyed by github login (source branch prefix)
-  const prsByLogin = git.prsByUser; // already keyed by login
+  const prsByLogin = git.prsByUser;
 
-  // Merge API profile data
+  // Merge profile data — fallback first, API on top but only with non-empty values
   for (const login of Object.keys(byLogin)) {
     const api = apiContribs.find((c) => c.login === login);
     const fb = FALLBACK_PROFILES[login] || {};
     byLogin[login] = {
       ...byLogin[login],
       ...fb,
-      ...(api || {}),
-      // PR count: prefer local git truth, fall back to API
+      ...stripEmpty(api || {}),
       prs: prsByLogin[login] || 0,
     };
   }
@@ -355,31 +533,135 @@ function mergeData(git, apiContribs) {
   return Object.values(byLogin).sort((a, b) => b.commits - a.commits);
 }
 
+// ─── rendering ──────────────────────────────────────────────────────────────
+
+// Build the "↳ also commits as: X, Y" merge indicator for a contributor.
+// Always shown when a GitHub login has more than one git author name OR
+// more than one email address — making the merge transparent.
+function renderMergeNote(r) {
+  const extras = [];
+  if (r.gitNames && r.gitNames.length > 1) {
+    const others = r.gitNames.filter((n) => n !== r.name && n !== r.git && n !== r.login);
+    if (others.length > 0) extras.push(...others);
+  }
+  if (r.gitEmails && r.gitEmails.length > 1) {
+    // Always show emails in a compact form
+  }
+  if (extras.length === 0) return '';
+  return `\n<sub>↳ also commits as: <b>${extras.join('</b>, <b>')}</b></sub>`;
+}
+
 function renderLeaderboard(rows, totals) {
   const medals = ['🥇', '🥈', '🥉'];
   const lines = [];
-  lines.push('| # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Top Features |');
-  lines.push('|--:|:-------------|:-------------|----------:|-----:|:----------------|');
+  lines.push('| # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |');
+  lines.push('|--:|:-------------|:-------------|----------:|-----:|:--------|');
   rows.forEach((r, idx) => {
     const medal = medals[idx] || `${idx + 1}.`;
-    const displayName = r.name && r.name !== r.login
-      ? `**${r.name}**${r.git && r.git !== r.name ? ` *(${r.git})*` : ''}`
-      : `**${r.login}**`;
+    // Prefer fallback name (real name), then git author name, then login
+    const displayName =
+      r.name && r.name !== r.login ? `**${r.name}**` : `**${r.login}**`;
+
+    // Show "↳ also commits as" indicator when this GitHub user has multiple git identities
+    let mergeSuffix = '';
+    const otherNames = (r.gitNames || []).filter(
+      (n) => n !== r.name && n !== r.git && n !== r.login && n !== r.login.toLowerCase()
+    );
+    if (otherNames.length > 0) {
+      mergeSuffix = `<br/><sub>↳ also commits as <b>${otherNames.join('</b>, <b>')}</b></sub>`;
+    }
+
     const ghLink = `[${r.login}](https://github.com/${r.login})`;
-    const features = r.role || '—';
+    const role = r.role || '—';
     lines.push(
-      `| ${medal} | ${displayName} | ${ghLink} | **${r.commits}** | ${r.prs}  | ${features} |`
+      `| ${medal} | ${displayName}${mergeSuffix} | ${ghLink} | **${r.commits}** | ${r.prs}  | ${role} |`
     );
   });
   return lines.join('\n');
 }
 
 function renderSnapshot(totals) {
+  const byLogin = totals.byLogin || {};
   return [
     '| 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |',
     '|----------:|------------:|--------------:|---------:|-------:|----:|',
-    `| **${totals.totalCommits}** | **${totals.totalPRs}** | **${Object.keys(totals.byLogin || {}).length || 16}** | **69** | **7,662** | **991** |`,
+    `| **${totals.totalCommits}** | **${totals.totalPRs}** | **${Object.keys(byLogin).length || 16}** | **69** | **7,662** | **991** |`,
   ].join('\n');
+}
+
+function renderAtAGlance(totals) {
+  return [
+    '<p align="center">',
+    '  <table>',
+    '    <tr>',
+    `      <td align="center"><b>${totals.totalCommits}</b><br/><sub>commits</sub></td>`,
+    `      <td align="center"><b>${totals.totalPRs}</b><br/><sub>PRs merged</sub></td>`,
+    `      <td align="center"><b>${Object.keys(totals.byLogin || {}).length || 16}</b><br/><sub>GitHub contributors</sub></td>`,
+    '      <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>',
+    '      <td align="center"><b>47,000+</b><br/><sub>lines of client code</sub></td>',
+    '    </tr>',
+    '  </table>',
+    '</p>',
+  ].join('\n');
+}
+
+function renderCard(r) {
+  const fb = FALLBACK_PROFILES[r.login] || {};
+  const avatar = r.avatar || fb.avatar || `https://github.com/${r.login}.png?size=120`;
+  const color = r.color || fb.color || '#888888';
+  const name = r.name || fb.name || r.login;
+  const role = r.role || fb.role || 'Contributor';
+  const features = (r.topFeatures || fb.topFeatures || []).map(
+    (f) => `          <li>${f.icon} ${f.text}</li>`
+  ).join('\n');
+
+  // Build sub-line: location + twitter + blog + merged identities
+  const metaSubs = [];
+  if (r.location) metaSubs.push(`📍 ${r.location}`);
+  if (r.twitter) metaSubs.push(`🐦 @${r.twitter}`);
+  if (r.blog) metaSubs.push(`🌐 ${r.blog}`);
+  if (r.note) metaSubs.push(`<i>(${r.note})</i>`);
+  const metaLine = metaSubs.length > 0 ? `\n        <br/><sub>${metaSubs.join(' · ')}</sub>` : '';
+
+  // Merge indicator — show all other git author names + emails
+  const others = (r.gitNames || []).filter(
+    (n) => n !== name && n !== fb.name && n !== r.login
+  );
+  const mergeSubs = [];
+  if (others.length > 0) {
+    mergeSubs.push(`<sub>🔗 also commits as: <b>${others.join('</b>, <b>')}</b></sub>`);
+  }
+  if (r.gitEmails && r.gitEmails.length > 0) {
+    mergeSubs.push(`<sub>📧 ${r.gitEmails.join(', ')}</sub>`);
+  }
+  const mergeLine = mergeSubs.length > 0 ? `\n        <br/>${mergeSubs.join('\n        <br/>')}` : '';
+
+  return [
+    `<p align="center">`,
+    `  <table>`,
+    `    <tr>`,
+    `      <td align="center" width="220">`,
+    `        <a href="https://github.com/${r.login}"><img src="${avatar}&s=120" width="120" style="border-radius:50%; border:3px solid ${color};" alt="${name}"/></a>`,
+    `        <br/><b>${name}</b>`,
+    (fb.git && fb.git !== name) ? `        <br/><sub><i>(git: ${fb.git})</i></sub>` : '',
+    `        <br/><a href="https://github.com/${r.login}">@${r.login}</a>`,
+    `        <br/><sub>🏆 ${r.commits} commits · ${r.prs} PR${r.prs === 1 ? '' : 's'} merged</sub>${metaLine}${mergeLine}`,
+    `      </td>`,
+    `      <td valign="top" width="*">`,
+    `        <h4>${role}</h4>`,
+    `        <ul>`,
+    features,
+    `        </ul>`,
+    `      </td>`,
+    `    </tr>`,
+    `  </table>`,
+    `</p>`,
+  ].filter(Boolean).join('\n');
+}
+
+function renderCards(rows) {
+  if (rows.length === 0) return '_No contributor data available yet._';
+  return rows.map(renderCard).join('\n\n');
 }
 
 // ─── README mutation ────────────────────────────────────────────────────────
@@ -395,15 +677,6 @@ function replaceMarkerBlock(readme, startMarker, endMarker, newContent) {
     '\n' + newContent + '\n' +
     readme.slice(end)
   );
-}
-
-function updateAtAGlance(readme, totals) {
-  // Replace the inline "## 📊 At a Glance" stat numbers (uses simple regex anchors)
-  const commits = String(totals.totalCommits);
-  const prs = String(totals.totalPRs);
-  return readme
-    .replace(/<b>43<\/b><br\/><sub>merged PRs<\/sub>/, `<b>${prs}</b><br/><sub>merged PRs</sub>`)
-    .replace(/<b>711<\/b><br\/><sub>total commits<\/sub>/, `<b>${commits}</b><br/><sub>total commits</sub>`);
 }
 
 // ─── main ───────────────────────────────────────────────────────────────────
@@ -423,22 +696,26 @@ async function main() {
 
   const rows = mergeData(git, apiContribs);
 
-  // Banner line for the leaderboard caption
   const banner = rows.length > 0
-    ? `_Live data — last regenerated ${new Date().toISOString().split('T')[0]} · auto-refreshed by [\`github-actions[bot]\`](https://github.com/features/actions) on every push to \`main\`._`
+    ? `_Live data — last regenerated ${new Date().toISOString().split('T')[0]} · auto-refreshed by [\`github-actions[bot]\`](https://github.com/features/actions) on every push to \`main\` and every 12h._`
     : '';
 
-  const leaderboard = banner + '\n\n' + renderLeaderboard(rows, git);
-  const snapshot = renderSnapshot({ ...git, byLogin: Object.fromEntries(rows.map(r => [r.login, r])) });
+  const totals = { ...git, byLogin: Object.fromEntries(rows.map((r) => [r.login, r])) };
+
+  const leaderboard = banner + '\n\n' + renderLeaderboard(rows, totals);
+  const snapshot = renderSnapshot(totals);
+  const atAGlance = renderAtAGlance(totals);
+  const cards = renderCards(rows);
 
   let readme = fs.readFileSync(README, 'utf8');
 
-  readme = replaceMarkerBlock(readme, '<!-- live-rank:start -->', '<!-- live-rank:end -->', leaderboard);
+  readme = replaceMarkerBlock(readme, '<!-- live-at-a-glance:start -->', '<!-- live-at-a-glance:end -->', atAGlance);
   readme = replaceMarkerBlock(readme, '<!-- live-snapshot:start -->', '<!-- live-snapshot:end -->', snapshot);
-  readme = updateAtAGlance(readme, git);
+  readme = replaceMarkerBlock(readme, '<!-- live-rank:start -->', '<!-- live-rank:end -->', leaderboard);
+  readme = replaceMarkerBlock(readme, '<!-- live-cards:start -->', '<!-- live-cards:end -->', cards);
 
   if (DRY_RUN) {
-    log('--dry-run — not writing file. Diff would be:');
+    log('--dry-run — preview of leaderboard:');
     console.log('─'.repeat(60));
     console.log(readme.split('<!-- live-rank:start -->')[1]?.split('<!-- live-rank:end -->')[0] || '');
     console.log('─'.repeat(60));
@@ -446,7 +723,7 @@ async function main() {
   }
 
   fs.writeFileSync(README, readme);
-  log(`✅ ${path.relative(process.cwd(), README)} updated (${rows.length} contributors rendered)`);
+  log(`✅ README.md updated (${rows.length} contributors rendered · 4 blocks regenerated)`);
 }
 
 main().catch((e) => {

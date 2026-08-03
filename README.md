@@ -78,13 +78,11 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>69</b><br/><sub>puzzle families</sub></td>
-      <td align="center"><b>175+</b><br/><sub>API endpoints</sub></td>
-      <td align="center"><b>7,662</b><br/><sub>vocab questions</sub></td>
-      <td align="center"><b>991</b><br/><sub>GK questions</sub></td>
-      <td align="center"><b>713</b><br/><sub>total commits</sub></td>
-      <td align="center"><b>44</b><br/><sub>merged PRs</sub></td>
-      <td align="center"><b>20</b><br/><sub>contributors</sub></td>
+      <td align="center"><b>718</b><br/><sub>commits</sub></td>
+      <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
+      <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
+      <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
+      <td align="center"><b>47,000+</b><br/><sub>lines of client code</sub></td>
     </tr>
   </table>
 </p>
@@ -523,39 +521,41 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **713** | **44** | **17** | **69** | **7,662** | **991** |
+| **718** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
 
 <!-- live-rank:start -->
-_Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main`._
+_Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
 
-| # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Top Features |
-|--:|:-------------|:-------------|----------:|-----:|:----------------|
-| 🥇 | **S. R. S. Iyengar** *(Sudarshan)* | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | Lead Architect & Curriculum Author |
-| 🥈 | **MUDIT AGRAWAL muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **119** | 9  | Repo Owner · Battle Arena · Linear Algebra |
-| 🥉 | **jgupta05072003-code** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | Upstream Repo Maintainer & PR Reviewer |
-| 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
-| 5. | **24F3005086** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
-| 6. | **Vaibhav Satish** | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
-| 7. | **DIPTOSUBHRO DATTA** | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
-| 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
-| 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
-| 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
-| 11. | **Shubh Dixit** | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
-| 12. | **SemiColonSlayer** *(Sharonya Banerjee)* | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
-| 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-| 14. | **RukmenderT** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **S-Hamsalekha-annamai** | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
+| # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
+|--:|:-------------|:-------------|----------:|-----:|:--------|
+| 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect & Curriculum Author |
+| 🥈 | **muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **121** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra |
+| 🥉 | **jgupta05072003-code**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
+| 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
+| 5. | **24F3005086** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
+| 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | 6️⃣ Vachana Literacy Lab & Vocabulary |
+| 7. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | 7️⃣ Tutorial System + Noise Filter Refactor |
+| 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | 8️⃣ Percentages Level-wise Explanation |
+| 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | 9️⃣ Tap-to-Define Word Glossary |
+| 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | 🔟 Goal Practice & Learning Journey |
+| 11. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | 1️⃣1️⃣ Premium UI Suite + Word Games |
+| 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | 1️⃣2️⃣ Math Detective Agency |
+| 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | 1️⃣3️⃣ HCF/LCM Interactive Module |
+| 14. | **RukmenderT** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | 1️⃣4️⃣ Curiosity Mode |
+| 15. | **S-Hamsalekha-annamai**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | 1️⃣6️⃣ Track User Progress |
+| 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | 1️⃣5️⃣ Language Puzzles Framework |
+| 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | 1️⃣7️⃣ Geometry Game Restoration |
 <!-- live-rank:end -->
 
 
 
 ### 🪪 Contributor Cards — Profile, Real Name & Features
 
+
+<!-- live-cards:start -->
 <p align="center">
   <table>
     <tr>
@@ -564,17 +564,20 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>S. R. S. Iyengar</b>
         <br/><sub><i>(git: Sudarshan)</i></sub>
         <br/><a href="https://github.com/sudarshansudarshan">@sudarshansudarshan</a>
-        <br/><sub>📍 Rupnagar, Punjab · 🏆 258 commits</sub>
+        <br/><sub>🏆 280 commits · 0 PRs merged</sub>
+        <br/><sub>📍 Rupnagar, Punjab · 🌐 http://www.sudarshaniyengar.com</sub>
+        <br/><sub>🔗 also commits as: <b>Sudarshan</b></sub>
+        <br/><sub>📧 sudarshan@iitrpr.ac.in</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥇 Lead Architect & Curriculum Author</h4>
         <ul>
           <li>🧠 <b>Adaptive difficulty core</b> — <code>adaptScore</code> → band mapping drives every <code>*api/question</code></li>
-          <li>🌉 <b>Prerequisite bridges</b> — Lessons 1 – 27 (arithmetic → fractions → standard form)</li>
+          <li>🌉 <b>Prerequisite bridges</b> — Lessons 1–27 (arithmetic → fractions → standard form)</li>
           <li>🍕 <b>Idli-Vada-Sambhar LCM game</b> — gamified multiples/LCM with <code>LcmHcfApp</code></li>
-          <li>➗ <b>Standard Form & Percentage bridges</b> — × ÷ in scientific notation, multiplier method, reverse %, success %</li>
+          <li>➗ <b>Standard Form & Percentage bridges</b> — ×÷ in scientific notation, multiplier method, reverse %, success %</li>
           <li>🧮 <b>In-memory auth fallback</b> — added <code>inMemoryUsers</code> when MongoDB is unavailable</li>
-          <li>🧰 <b>Auto-fix tooling</b> — <code>NoiseFilter</code>, lint sweeps across stages 1 – 5 + completion screen</li>
+          <li>🧰 <b>Auto-fix tooling</b> — <code>NoiseFilter</code>, lint sweeps across stages 1–5 + completion screen</li>
           <li>🧾 <b>Diagnostic quiz pipeline</b> — DiagnosticQuiz, MasteryBadge, questionFormatters</li>
         </ul>
       </td>
@@ -587,12 +590,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
     <tr>
       <td align="center" width="220">
         <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="muditagrawal2007"/></a>
-        <br/><b>Mudit Agrawal</b>
+        <br/><b>muditagrawal2007</b>
         <br/><a href="https://github.com/muditagrawal2007">@muditagrawal2007</a>
-        <br/><sub>🏆 117 commits · 7 PRs merged</sub>
+        <br/><sub>🏆 121 commits · 9 PRs merged</sub>
+        <br/><sub>📧 muditagrawal9415369961@gmail.com</sub>
       </td>
       <td valign="top" width="*">
-        <h4>🥈· Battle Arena · Linear Algebra</h4>
+        <h4>🥈 Repo Owner · Battle Arena · Linear Algebra</h4>
         <ul>
           <li>⚔️ <b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO</li>
           <li>🧮 <b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b></li>
@@ -611,10 +615,39 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula"/></a>
-        <br/><b>Lakshmi Varshini Nandula</b>
+        <a href="https://github.com/jgupta05072003-code"><img src="https://avatars.githubusercontent.com/u/267273120?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #4D96FF;" alt="jgupta05072003-code"/></a>
+        <br/><b>jgupta05072003-code</b>
+        <br/><a href="https://github.com/jgupta05072003-code">@jgupta05072003-code</a>
+        <br/><sub>🏆 57 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>Jinal Gupta</b></sub>
+        <br/><sub>📧 j.gupta05072003@gmail.com, jinalbirla@gmail.com</sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>4️⃣ Upstream Repo Maintainer & PR Reviewer</h4>
+        <ul>
+          <li>🔍 <b>Reviewed and merged 30+ PRs</b> into <code>vicharanashala/tenali</code></li>
+          <li>🔧 <b>Hardened JWT auth</b> — centralized JWT_SECRET, removed duplicate declarations (#96)</li>
+          <li>🛡️ <b>Rate limiting + CORS allowlist</b> — added <code>express-rate-limit</code> + origin allowlist (#85)</li>
+          <li>🧹 <b>Repo cleanup</b> — removed committed debug/scratch files (#83)</li>
+          <li>🌱 <b>Seed users via env</b> — refactored <code>auth.js</code> so credentials come from <code>TENALI_SEED_USERS</code> (#82)</li>
+          <li>🛣️ <b>Base-path-aware routing</b> — fixed <code>/summership</code> sub-paths (#80)</li>
+          <li>📦 <b>Missing dependencies</b> — chart.js (#79), mafs (#75), removed UTF-8 BOM from <code>App.css</code> (#63), unified module theming (#65)</li>
+          <li>🏠 <b>Restored Journey banner</b> (#76) + <b>AuthGate home button</b> (#78) + <b>Linear Algebra API base</b> (#40)</li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
+        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula "/></a>
+        <br/><b>Lakshmi Varshini Nandula </b>
         <br/><a href="https://github.com/varshini-nandula">@varshini-nandula</a>
         <br/><sub>🏆 43 commits · 1 PR merged</sub>
+        <br/><sub>📧 varshininandula2006@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥉 Profile Showcase & Offline Storage</h4>
@@ -637,37 +670,11 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/jgupta05072003-code"><img src="https://avatars.githubusercontent.com/u/267273120?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #4D96FF;" alt="jgupta05072003-code"/></a>
-        <br/><b>J. Gupta</b>
-        <br/><sub><i>(upstream maintainer from vicharanashala)</i></sub>
-        <br/><a href="https://github.com/jgupta05072003-code">@jgupta05072003-code</a>
-        <br/><sub>🏆 41 commits · merged 30+ PRs</sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>4️⃣ Upstream Repo Maintainer & PR Reviewer</h4>
-        <ul>
-          <li>🔍 <b>Reviewed and merged 30+ PRs</b> into <code>vicharanashala/Tenali_123</code></li>
-          <li>🔧 <b>Hardened JWT auth</b> — centralized JWT_SECRET, removed duplicate declarations (#96)</li>
-          <li>🛡️ <b>Rate limiting + CORS allowlist</b> — added <code>express-rate-limit</code> + origin allowlist (#85)</li>
-          <li>🧹 <b>Repo cleanup</b> — removed committed debug/scratch files (#83)</li>
-          <li>🌱 <b>Seed users via env</b> — refactored <code>auth.js</code> so credentials come from <code>TENALI_SEED_USERS</code> (#82)</li>
-          <li>🛣️ <b>Base-path-aware routing</b> — fixed <code>/summership</code> sub-paths (#80)</li>
-          <li>📦 <b>Missing dependencies</b> — chart.js (#79), mafs (#75), removed UTF-8 BOM from <code>App.css</code> (#63), unified module theming (#65)</li>
-          <li>🏠 <b>Restored Journey banner</b> (#76) + <b>AuthGate home button</b> (#78) + <b>Linear Algebra API base</b> (#40)</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
         <a href="https://github.com/24F3005086"><img src="https://avatars.githubusercontent.com/u/189242179?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #6BCB77;" alt="24F3005086"/></a>
-        <br/><b>Sameer Mishra</b>
+        <br/><b>24F3005086</b>
         <br/><a href="https://github.com/24F3005086">@24F3005086</a>
         <br/><sub>🏆 36 commits · 4 PRs merged</sub>
+        <br/><sub>📧 sameermishra0912@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>5️⃣ i18n · Accessibility · Concept Labs</h4>
@@ -692,9 +699,11 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
       <td align="center" width="220">
         <a href="https://github.com/Vaibhav-sa30"><img src="https://avatars.githubusercontent.com/u/86743451?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #FF6B6B;" alt="Vaibhav Satish"/></a>
         <br/><b>Vaibhav Satish</b>
-        <br/><sub>📍 India · 🐦 @vee42O</sub>
         <br/><a href="https://github.com/Vaibhav-sa30">@Vaibhav-sa30</a>
         <br/><sub>🏆 35 commits · 2 PRs merged</sub>
+        <br/><sub>📍 India · 🐦 @vee42O · 🌐 https://vaibhav-sa30.github.io/vaibhavsatish/</sub>
+        <br/><sub>🔗 also commits as: <b>Vaibhav</b></sub>
+        <br/><sub>📧 vaibhavsatish9@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>6️⃣ Vachana Literacy Lab & Vocabulary</h4>
@@ -716,11 +725,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="Diptosubhro Datta"/></a>
-        <br/><b>Diptosubhro Datta</b>
-        <br/><sub>📍 Cooch Behar</sub>
+        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="DIPTOSUBHRO DATTA"/></a>
+        <br/><b>DIPTOSUBHRO DATTA</b>
         <br/><a href="https://github.com/diptosubhro-ctrl">@diptosubhro-ctrl</a>
         <br/><sub>🏆 33 commits · 1 PR merged</sub>
+        <br/><sub>📍 COOCH BEHAR</sub>
+        <br/><sub>🔗 also commits as: <b>Dipto Subhro</b></sub>
+        <br/><sub>📧 diptosubhro2006@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>7️⃣ Tutorial System + Noise Filter Refactor</h4>
@@ -746,6 +757,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Ritish Karmakar</b>
         <br/><a href="https://github.com/Ritish007-svg">@Ritish007-svg</a>
         <br/><sub>🏆 27 commits · 1 PR merged</sub>
+        <br/><sub>📧 kritish2803@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>8️⃣ Percentages Level-wise Explanation</h4>
@@ -768,9 +780,10 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
       <td align="center" width="220">
         <a href="https://github.com/KCDharshan9"><img src="https://avatars.githubusercontent.com/u/196636372?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #1ABC9C;" alt="K C Dharshan"/></a>
         <br/><b>K C Dharshan</b>
-        <br/><sub>📍 India</sub>
         <br/><a href="https://github.com/KCDharshan9">@KCDharshan9</a>
         <br/><sub>🏆 21 commits · 1 PR merged</sub>
+        <br/><sub>📍 India</sub>
+        <br/><sub>📧 kcdarshan24@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>9️⃣ Tap-to-Define Word Glossary</h4>
@@ -793,9 +806,10 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
       <td align="center" width="220">
         <a href="https://github.com/ahana4banerjee"><img src="https://avatars.githubusercontent.com/u/166562662?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #E91E63;" alt="Ahana Banerjee"/></a>
         <br/><b>Ahana Banerjee</b>
-        <br/><sub>📍 Hyderabad, India</sub>
         <br/><a href="https://github.com/ahana4banerjee">@ahana4banerjee</a>
         <br/><sub>🏆 20 commits · 2 PRs merged</sub>
+        <br/><sub>📍 Hyderabad, India · 🌐 banerjeeahana4@gmail.com</sub>
+        <br/><sub>📧 banerjeeahana4@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>🔟 Goal Practice & Learning Journey</h4>
@@ -818,11 +832,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/Shubhdix9"><img src="https://avatars.githubusercontent.com/u/212879841?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #34495E;" alt="shubh dixit"/></a>
+        <a href="https://github.com/Shubhdix9"><img src="https://avatars.githubusercontent.com/u/212879841?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #34495E;" alt="Shubh Dixit"/></a>
         <br/><b>Shubh Dixit</b>
-        <br/><sub>📍 Jaipur</sub>
         <br/><a href="https://github.com/Shubhdix9">@Shubhdix9</a>
-        <br/><sub>🏆 15 commits · 2 PRs merged</sub>
+        <br/><sub>🏆 16 commits · 2 PRs merged</sub>
+        <br/><sub>📍 Jaipur</sub>
+        <br/><sub>🔗 also commits as: <b>Shubh dixit</b></sub>
+        <br/><sub>📧 ghost@Shubhs-MacBook-Pro.local</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣1️⃣ Premium UI Suite + Word Games</h4>
@@ -845,11 +861,13 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="Sharonya Banerjee"/></a>
-        <br/><b>Sharonya Banerjee</b>
-        <br/><sub><i>(SemiColonSlayer)</i></sub>
+        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="SemiColonSlayer"/></a>
+        <br/><b>SemiColonSlayer</b>
+        <br/><sub><i>(git: Sharonya Banerjee)</i></sub>
         <br/><a href="https://github.com/sharonyamita-spec">@sharonyamita-spec</a>
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
+        <br/><sub><i>(SemiColonSlayer)</i></sub>
+        <br/><sub>📧 sharonyamita@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣2️⃣ Math Detective Agency</h4>
@@ -868,10 +886,11 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/poorvipravallika06"><img src="https://avatars.githubusercontent.com/u/207549779?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #F39C12;" alt="Pandraju Poorvi Pravallika"/></a>
-        <br/><b>Pandraju Poorvi Pravallika</b>
+        <a href="https://github.com/poorvipravallika06"><img src="https://avatars.githubusercontent.com/u/207549779?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #F39C12;" alt="PANDRAJU POORVI PRAVALLIKA"/></a>
+        <br/><b>PANDRAJU POORVI PRAVALLIKA</b>
         <br/><a href="https://github.com/poorvipravallika06">@poorvipravallika06</a>
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
+        <br/><sub>📧 poorvipravallika@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣3️⃣ HCF/LCM Interactive Module</h4>
@@ -892,9 +911,10 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
     <tr>
       <td align="center" width="220">
         <a href="https://github.com/RukmenderT"><img src="https://avatars.githubusercontent.com/u/206398340?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #8E44AD;" alt="RukmenderT"/></a>
-        <br/><b>Rukmender T</b>
+        <br/><b>RukmenderT</b>
         <br/><a href="https://github.com/RukmenderT">@RukmenderT</a>
         <br/><sub>🏆 5 commits · 1 PR merged</sub>
+        <br/><sub>📧 rukmendert07@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣4️⃣ Curiosity Mode</h4>
@@ -913,11 +933,34 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S-Hamsalekha-annamai"/></a>
+        <br/><b>S-Hamsalekha-annamai</b>
+        <br/><a href="https://github.com/S-Hamsalekha-annamai">@S-Hamsalekha-annamai</a>
+        <br/><sub>🏆 3 commits · 1 PR merged</sub>
+        <br/><sub>🔗 also commits as: <b>S Hamsalekha</b></sub>
+        <br/><sub>📧 hamsalekha.s@annam.ai</sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>1️⃣6️⃣ Track User Progress</h4>
+        <ul>
+          <li>📊 <b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones</li>
+          <li>🗂️ <b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics</li>
+          <li>🔀 <b>Upstream merge</b> for <code>feat/track_user_progress</code></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/KrishnaG-101"><img src="https://avatars.githubusercontent.com/u/155518412?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #27AE60;" alt="Krishna Gelra"/></a>
         <br/><b>Krishna Gelra</b>
-        <br/><sub>📍 India</sub>
         <br/><a href="https://github.com/KrishnaG-101">@KrishnaG-101</a>
         <br/><sub>🏆 3 commits · 1 PR merged</sub>
+        <br/><sub>📧 krishnagelra18@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣5️⃣ Language Puzzles Framework</h4>
@@ -936,32 +979,12 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S. Hamsalekha"/></a>
-        <br/><b>S. Hamsalekha</b>
-        <br/><a href="https://github.com/S-Hamsalekha-annamai">@S-Hamsalekha-annamai</a>
-        <br/><sub>🏆 2 commits · 1 PR merged</sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>1️⃣6️⃣ Track User Progress</h4>
-        <ul>
-          <li>📊 <b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones</li>
-          <li>🗂️ <b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics</li>
-          <li>🔀 <b>Upstream merge</b> for <code>feat/track_user_progress</code></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
         <a href="https://github.com/AnshulKanodia"><img src="https://avatars.githubusercontent.com/u/113899062?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #7F8C8D;" alt="Anshul Kanodia"/></a>
         <br/><b>Anshul Kanodia</b>
-        <br/><sub>📍 India · 🌐 anshulkanodia.vercel.app</sub>
         <br/><a href="https://github.com/AnshulKanodia">@AnshulKanodia</a>
-        <br/><sub>🏆 2 commits · 1 PR merged</sub>
+        <br/><sub>🏆 2 commits · 0 PRs merged</sub>
+        <br/><sub>📍 india · 🌐 https://anshulkanodia.vercel.app</sub>
+        <br/><sub>📧 anshulkanodia3560@gmail.com</sub>
       </td>
       <td valign="top" width="*">
         <h4>1️⃣7️⃣ Geometry Game Restoration</h4>
@@ -973,7 +996,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
     </tr>
   </table>
 </p>
-
+<!-- live-cards:end -->
 ---
 
 ### 📈 PR Distribution

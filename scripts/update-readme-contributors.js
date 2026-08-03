@@ -796,6 +796,64 @@ function parseMergeInfo(subject) {
   return { prNumber: m[1], prAuthor: m[2] };
 }
 
+// Friendly labels for conventional-commit categories used in the
+// per-day "What changed" summary block. Order matters — it controls
+// the order categories appear in the summary.
+const SUMMARY_CATEGORIES = [
+  { key: 'feat', icon: '✨', label: 'Features' },
+  { key: 'fix', icon: '🐛', label: 'Fixes' },
+  { key: 'perf', icon: '⚡', label: 'Performance' },
+  { key: 'refactor', icon: '♻️', label: 'Refactors' },
+  { key: 'docs', icon: '📝', label: 'Docs' },
+  { key: 'test', icon: '🧪', label: 'Tests' },
+  { key: 'build', icon: '📦', label: 'Build' },
+  { key: 'ci', icon: '👷', label: 'CI' },
+  { key: 'style', icon: '💄', label: 'Style' },
+  { key: 'chore', icon: '🔧', label: 'Chore' },
+];
+
+function commitTypeKey(subject) {
+  const m = String(subject || '').toLowerCase().match(/^([a-z]+)(?:\(.*?\))?!?:/);
+  return m ? m[1] : 'other';
+}
+
+// Strip the conventional-commit prefix from a subject for cleaner display
+function cleanSubject(subject) {
+  return String(subject || '').replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
+}
+
+// Build a per-day "What changed" summary block — categorizes commits,
+// counts each category, and shows a brief one-line example per category.
+function renderDaySummary(dayCommits) {
+  // Bucket commits by category
+  const buckets = {};
+  for (const c of dayCommits) {
+    const key = commitTypeKey(c.subject);
+    if (!buckets[key]) buckets[key] = [];
+    buckets[key].push(c);
+  }
+
+  const parts = [];
+  for (const cat of SUMMARY_CATEGORIES) {
+    const bucket = buckets[cat.key];
+    if (!bucket || bucket.length === 0) continue;
+    // Pick the most "headline-y" commit from this bucket — prefer the
+    // longest subject (most descriptive) and exclude bot auto-refresh commits.
+    const headlines = bucket
+      .filter((c) => !/🤖 docs\(contributors\): refresh/.test(c.subject))
+      .sort((a, b) => b.subject.length - a.subject.length);
+    const top = headlines[0] || bucket[0];
+    const txt = cleanSubject(top.subject);
+    const countLabel = bucket.length === 1 ? '' : ` ×${bucket.length}`;
+    parts.push(`${cat.icon} **${cat.label}** — ${txt}${countLabel}`);
+  }
+
+  // Skip the summary entirely for days that only have bot auto-refresh commits
+  if (parts.length === 0) return '';
+
+  return `> **💡 What changed today**\n` + parts.map((p) => `> - ${p}`).join('\n') + `\n`;
+}
+
 function renderChangelog(git) {
   const commits = git.commits || [];
   if (commits.length === 0) return '_No commits yet._';
@@ -820,7 +878,17 @@ function renderChangelog(git) {
 
   for (const date of sortedDates) {
     const dayCommits = byDate.get(date);
+
+    // Day header + per-day "What changed" summary
     lines.push(`#### 📅 ${date}  <sub>(${dayCommits.length} commit${dayCommits.length === 1 ? '' : 's'})</sub>\n`);
+    const summary = renderDaySummary(dayCommits);
+    if (summary) lines.push(summary);
+
+    // Full per-commit detail list (collapsible for very long days)
+    const useDetails = dayCommits.length > 12;
+    if (useDetails) {
+      lines.push(`<details><summary><b>📜 Show all ${dayCommits.length} commits</b></summary>\n`);
+    }
 
     for (const c of dayCommits) {
       const icon = commitTypeIcon(c.subject);
@@ -836,9 +904,12 @@ function renderChangelog(git) {
       } else {
         // Regular commit: show sha + author + subject
         // Subject is stripped of the conventional-commit prefix for readability
-        const cleanSubject = String(c.subject).replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
-        lines.push(`- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject}`);
+        lines.push(`- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject(c.subject)}`);
       }
+    }
+
+    if (useDetails) {
+      lines.push(`\n</details>`);
     }
     lines.push(''); // blank line between dates
   }

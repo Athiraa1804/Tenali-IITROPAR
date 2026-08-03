@@ -50,7 +50,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **785** | **60** | **19** | **69** | **7,662** | **991** |
+| **789** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -61,20 +61,20 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **163** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **165** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
-| 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
+| 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
-| 7. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
+| 7. | **Diptosubhro Datta**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
 | 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
 | 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
 | 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
 | 11. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
-| 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
-| 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-| 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 15. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **3** | 0  | — |
+| 12. | **Sharonya Banerjee** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
+| 13. | **Pandraju Poorvi Pravallika** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
+| 14. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **5** | 0  | — |
+| 15. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
 | 16. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
 | 17. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 18. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
@@ -129,7 +129,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="Mudit Agrawal"/></a>
         <br/><b>Mudit Agrawal</b>
         <br/><a href="https://github.com/muditagrawal2007">@muditagrawal2007</a>
-        <br/><sub>🏆 163 commits · 13 PRs merged</sub>
+        <br/><sub>🏆 165 commits · 13 PRs merged</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
@@ -183,8 +183,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula "/></a>
-        <br/><b>Lakshmi Varshini Nandula </b>
+        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula"/></a>
+        <br/><b>Lakshmi Varshini Nandula</b>
         <br/><a href="https://github.com/varshini-nandula">@varshini-nandula</a>
         <br/><sub>🏆 43 commits · 1 PR merged</sub>
       </td>
@@ -239,7 +239,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Vaibhav Satish</b>
         <br/><a href="https://github.com/Vaibhav-sa30">@Vaibhav-sa30</a>
         <br/><sub>🏆 35 commits · 2 PRs merged</sub>
-        <br/><sub>📍 India · 🐦 @vee42O · 🌐 https://vaibhav-sa30.github.io/vaibhavsatish/</sub>
+        <br/><sub>📍 India · 🐦 @vee42O</sub>
         <br/><sub>🔗 also commits as: <b>Vaibhav</b></sub>
       </td>
       <td valign="top" width="*">
@@ -262,8 +262,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="DIPTOSUBHRO DATTA"/></a>
-        <br/><b>DIPTOSUBHRO DATTA</b>
+        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="Diptosubhro Datta"/></a>
+        <br/><b>Diptosubhro Datta</b>
         <br/><a href="https://github.com/diptosubhro-ctrl">@diptosubhro-ctrl</a>
         <br/><sub>🏆 33 commits · 1 PR merged</sub>
         <br/><sub>📍 COOCH BEHAR</sub>
@@ -342,7 +342,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Ahana Banerjee</b>
         <br/><a href="https://github.com/ahana4banerjee">@ahana4banerjee</a>
         <br/><sub>🏆 20 commits · 2 PRs merged</sub>
-        <br/><sub>📍 Hyderabad, India · 🌐 banerjeeahana4@gmail.com</sub>
+        <br/><sub>📍 Hyderabad, India</sub>
       </td>
       <td valign="top" width="*">
         <h4>10. Goal Practice & Learning Journey</h4>
@@ -393,9 +393,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="SemiColonSlayer"/></a>
-        <br/><b>SemiColonSlayer</b>
-        <br/><sub><i>(git: Sharonya Banerjee)</i></sub>
+        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="Sharonya Banerjee"/></a>
+        <br/><b>Sharonya Banerjee</b>
         <br/><a href="https://github.com/sharonyamita-spec">@sharonyamita-spec</a>
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
         <br/><sub><i>(SemiColonSlayer)</i></sub>
@@ -417,8 +416,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/poorvipravallika06"><img src="https://avatars.githubusercontent.com/u/207549779?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #F39C12;" alt="PANDRAJU POORVI PRAVALLIKA"/></a>
-        <br/><b>PANDRAJU POORVI PRAVALLIKA</b>
+        <a href="https://github.com/poorvipravallika06"><img src="https://avatars.githubusercontent.com/u/207549779?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #F39C12;" alt="Pandraju Poorvi Pravallika"/></a>
+        <br/><b>Pandraju Poorvi Pravallika</b>
         <br/><a href="https://github.com/poorvipravallika06">@poorvipravallika06</a>
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
       </td>
@@ -440,18 +439,18 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/RukmenderT"><img src="https://avatars.githubusercontent.com/u/206398340?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #8E44AD;" alt="Rukmender T"/></a>
-        <br/><b>Rukmender T</b>
-        <br/><a href="https://github.com/RukmenderT">@RukmenderT</a>
-        <br/><sub>🏆 5 commits · 1 PR merged</sub>
+        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
+        <br/><b>github-actions-bot-</b>
+        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
+        <br/><sub>🏆 5 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>14. Curiosity Mode</h4>
+        <h4>14. New Contributor</h4>
         <ul>
-          <li>🤔 <b>Curiosity Mode (PR #56)</b> — variation discovery puzzles that explore "what if" scenarios</li>
-          <li>🪟 <b>Hamburger menu integration</b> — restored Curiosity Mode after upstream merges</li>
-          <li>🛠️ <b>Merge conflict resolutions</b> — clean upstream syncs</li>
-          <li>🧹 <b>UI cleanup</b> — removed duplicate hover tooltip + left-side variation label</li>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>5 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>
@@ -462,18 +461,18 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
-        <br/><b>github-actions-bot-</b>
-        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
-        <br/><sub>🏆 3 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
+        <a href="https://github.com/RukmenderT"><img src="https://avatars.githubusercontent.com/u/206398340?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #8E44AD;" alt="Rukmender T"/></a>
+        <br/><b>Rukmender T</b>
+        <br/><a href="https://github.com/RukmenderT">@RukmenderT</a>
+        <br/><sub>🏆 5 commits · 1 PR merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>15. New Contributor</h4>
+        <h4>15. Curiosity Mode</h4>
         <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>3 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+          <li>🤔 <b>Curiosity Mode (PR #56)</b> — variation discovery puzzles that explore "what if" scenarios</li>
+          <li>🪟 <b>Hamburger menu integration</b> — restored Curiosity Mode after upstream merges</li>
+          <li>🛠️ <b>Merge conflict resolutions</b> — clean upstream syncs</li>
+          <li>🧹 <b>UI cleanup</b> — removed duplicate hover tooltip + left-side variation label</li>
         </ul>
       </td>
     </tr>
@@ -532,7 +531,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Anshul Kanodia</b>
         <br/><a href="https://github.com/AnshulKanodia">@AnshulKanodia</a>
         <br/><sub>🏆 2 commits · 0 PRs merged</sub>
-        <br/><sub>📍 india · 🌐 https://anshulkanodia.vercel.app</sub>
+        <br/><sub>🌐 https://anshulkanodia.vercel.app</sub>
       </td>
       <td valign="top" width="*">
         <h4>18. Geometry Game Restoration</h4>

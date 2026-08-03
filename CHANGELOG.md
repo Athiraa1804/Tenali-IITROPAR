@@ -1,23 +1,39 @@
 # 📜 Changelog
 
-> **Auto-generated commit log** — point-wise, grouped by date, with each commit showing:
+> **Auto-generated commit log** — point-wise, grouped by date. Each day has:
+> - 💡 A "What changed today" summary block (categorized highlights)
+> - 🔗 The full commit list (each clickable SHA jumps to the GitHub diff)
+>
+> **Per-commit format:**
 > - 🏷️ **Category emoji** (✨ feat · 🐛 fix · 📝 docs · 🔧 chore · etc.)
-> - 🔗 **Short SHA** (click to see the diff on GitHub)
+> - 🔗 **Short SHA** (click → GitHub commit diff)
 > - 👤 **Author name** (the person who made the change)
 > - 📝 **Commit subject** (what was done)
-> - 🔀 **PR number** (when it's a merge commit)
+> - 🔀 **PR number** (when it's a merge commit, link → PR page)
 >
-> 🤖 _Refreshed automatically on every push / merged PR / every 12 hours by [`github-actions[bot]`](.github/workflows/update-readme.yml)._
+> 🤖 _Refreshed automatically every 12 hours (UTC 00:00 & 12:00) by [`github-actions[bot]`](.github/workflows/update-readme.yml). Admins can also trigger manually via the Actions tab._
 >
 > 👉 **Want the high-level "what shipped" view?** See the [README.md → Features in Depth](README.md#-features-in-depth) section.
 
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 786 commits · 43 active days · 21 unique authors
+### 📊 Total: 790 commits · 43 active days · 21 unique authors
 
-#### 📅 2026-08-03  <sub>(28 commits)</sub>
+#### 📅 2026-08-03  <sub>(32 commits)</sub>
 
+> **💡 What changed today**
+> - ✨ **Features** — show live ⭐ stars, 🍴 forks, 🐛 open issues in at-a-glance ×5
+> - 🐛 **Fixes** — point stars/forks badges at canonical upstream (vicharanashala/tenali) ×4
+> - ♻️ **Refactors** — split detailed cards into CONTRIBUTORS.md ×2
+> - 📝 **Docs** — simplify user workflow, fix fork-chain docs, auto-refresh contributor stats ×5
+
+<details><summary><b>📜 Show all 32 commits</b></summary>
+
+- 📌 [`65a31d0`](https://github.com/vicharanashala/tenali/commit/65a31d0d4a461cda56b32abc1e08f87774c5cb5f) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+- ♻️ [`32735bf`](https://github.com/vicharanashala/tenali/commit/32735bf0ff1a4c167a05032c200bb859c10271e5) — **Mudit Agrawal** — bot now fires only on cron + manual dispatch
+- 📌 [`8881f57`](https://github.com/vicharanashala/tenali/commit/8881f5792687ac4e99474e0b191189282cb66918) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+- ✨ [`2f21f41`](https://github.com/vicharanashala/tenali/commit/2f21f413766da1609e3ac573fcfb16547576b242) — **Mudit Agrawal** — make commit SHAs and PR numbers clickable
 - 📌 [`8bdf424`](https://github.com/vicharanashala/tenali/commit/8bdf42490f0f61461016c643bf4e31317de9eb0c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
 - ✨ [`7ece7dc`](https://github.com/vicharanashala/tenali/commit/7ece7dc45f4ba1d08e25aa452a2605cfa71c1468) — **Mudit Agrawal** — auto-generated point-wise commit log (bot-managed)
 - 📌 [`6237be3`](https://github.com/vicharanashala/tenali/commit/6237be3285ea52ff357aad942a714d1f4821d3c3) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
@@ -47,7 +63,13 @@
 - 📝 [`397e298`](https://github.com/vicharanashala/tenali/commit/397e298fff2c887035536a3bf130183d4872b70b) — **Mudit Agrawal** — simplify user workflow, fix fork-chain docs, auto-refresh contributor stats
 - 📌 [`3326d15`](https://github.com/vicharanashala/tenali/commit/3326d15e0d75ccb9184e9be1eb5681013ea2b39e) — **muditagrawal2007** — added the readme.md
 
+</details>
+
 #### 📅 2026-07-30  <sub>(4 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — use API base URL for coordgeom/darts/riddle/visual-math fetch calls
+> - ♻️ **Refactors** — extract /darts-api into its own route module
 
 - 📌 [`5a552d3`](https://github.com/vicharanashala/tenali/commit/5a552d3faa0f1cef154bb1c6facc57780d468230) — **jgupta05072003-code** — 🔀 PR [#128](https://github.com/vicharanashala/tenali/pull/128) from `vicharanashala`
 - ♻️ [`86cb13e`](https://github.com/vicharanashala/tenali/commit/86cb13ee14af7a08e3d4ad6ba05fc8d195bd164c) — **Jinal Gupta** — extract /darts-api into its own route module
@@ -55,6 +77,12 @@
 - 🐛 [`2d96c80`](https://github.com/vicharanashala/tenali/commit/2d96c80a8fadc5fddafaf494f9a35c06125bdcda) — **Jinal Gupta** — use API base URL for coordgeom/darts/riddle/visual-math fetch calls
 
 #### 📅 2026-07-29  <sub>(16 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — make the accessibility settings panel itself accessible; label icon-only buttons ×7
+> - ⚡ **Performance** — parallelize question/vocabulary loading at startup
+
+<details><summary><b>📜 Show all 16 commits</b></summary>
 
 - 📌 [`60732b1`](https://github.com/vicharanashala/tenali/commit/60732b132ee47ecbc9742e354e86687d750ca6d8) — **jgupta05072003-code** — 🔀 PR [#114](https://github.com/vicharanashala/tenali/pull/114) from `vicharanashala`
 - 🐛 [`8d68798`](https://github.com/vicharanashala/tenali/commit/8d6879823b827fd1ea4520dc61e7c3ec4c8fae0f) — **Jinal Gupta** — add request cancellation to the 6 highest-traffic custom quiz components
@@ -73,7 +101,13 @@
 - 📌 [`f9891d7`](https://github.com/vicharanashala/tenali/commit/f9891d7a4095e5b2e777f7a8bd82a0cc5f3a431d) — **jgupta05072003-code** — 🔀 PR [#107](https://github.com/vicharanashala/tenali/pull/107) from `vicharanashala`
 - 🐛 [`563d839`](https://github.com/vicharanashala/tenali/commit/563d83911011b3ab5cf96ecfe6c1cc58574e206e) — **Jinal Gupta** — move admin seed credential out of source into env
 
+</details>
+
 #### 📅 2026-07-28  <sub>(5 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — make AutoTranslator translation fetches resilient ×2
+> - 📝 **Docs** — append Jul 17–27 commit history to CHANGELOG.md
 
 - 📌 [`d5f3dd7`](https://github.com/vicharanashala/tenali/commit/d5f3dd7b5391c81e348ea04a958148ec6cb0cd93) — **jgupta05072003-code** — 🔀 PR [#106](https://github.com/vicharanashala/tenali/pull/106) from `vicharanashala`
 - 📌 [`c748a8d`](https://github.com/vicharanashala/tenali/commit/c748a8ddfc2ea5dbb18f02eea1aa56dff834be77) — **jgupta05072003-code** — 🔀 PR [#105](https://github.com/vicharanashala/tenali/pull/105) from `vicharanashala`
@@ -82,6 +116,13 @@
 - 📝 [`14cada5`](https://github.com/vicharanashala/tenali/commit/14cada5cfaa61ee05da3aa5c007f563320e2ae1a) — **Jinal Gupta** — append Jul 17–27 commit history to CHANGELOG.md
 
 #### 📅 2026-07-27  <sub>(20 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — single-button 2-phase test flow (no setup, no difficulty picker) ×7
+> - 🐛 **Fixes** — pad short distractors so the correct option isn't length-guessable ×7
+> - 🔧 **Chore** — bump express-rate-limit to ^8.6.1 (npm install reconciled lockfile)
+
+<details><summary><b>📜 Show all 20 commits</b></summary>
 
 - 📌 [`7e9db00`](https://github.com/vicharanashala/tenali/commit/7e9db00c273cc4953658fb7f1fe50dc1e8e3358c) — **muditagrawal2007** — 🔀 PR [#103](https://github.com/vicharanashala/tenali/pull/103) from `muditagrawal2007`
 - 🔀 [`8b505d3`](https://github.com/vicharanashala/tenali/commit/8b505d312e42bb2c84b3959cb1eccfc85f42a3aa) — **muditagrawal2007** — sync new_f into main — LA quiz length-bias fix + conflict resolution
@@ -104,13 +145,26 @@
 - ✨ [`428cdbf`](https://github.com/vicharanashala/tenali/commit/428cdbfb801e5740b87eeea344e13172ac082fa7) — **muditagrawal2007** — add Matrix Mystics — 6 modules, 53 topics, 1590 curated MCQs
 - 🐛 [`f2bab06`](https://github.com/vicharanashala/tenali/commit/f2bab068e77b33405cefed6549f25bd85515ef20) — **muditagrawal2007** — resolve React hook violations in 3 components
 
+</details>
+
 #### 📅 2026-07-24  <sub>(3 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — sync origin/main, secure proctor endpoints with admin-only access, add BattleApp features
 
 - 📌 [`f490e54`](https://github.com/vicharanashala/tenali/commit/f490e544fee7de56fb632e3939981b2218574be6) — **muditagrawal2007** — 🔀 PR [#98](https://github.com/vicharanashala/tenali/pull/98) from `muditagrawal2007`
 - 🔀 [`2057383`](https://github.com/vicharanashala/tenali/commit/205738326afa2327e1bb5eb1c437d8d4813a694a) — **muditagrawal2007** — resolve conflicts from origin/main sync
 - ✨ [`82f3d62`](https://github.com/vicharanashala/tenali/commit/82f3d624340373b24f82eba9e89ff9f8593eded0) — **muditagrawal2007** — sync origin/main, secure proctor endpoints with admin-only access, add BattleApp features
 
 #### 📅 2026-07-23  <sub>(20 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — replace algorithmic quiz with curated JSON MCQs for all 56 missions
+> - 🐛 **Fixes** — resolve React hook violations in main App component ×5
+> - ♻️ **Refactors** — load seed users from env, not hardcoded source
+> - 🔧 **Chore** — remove committed debug/scratch junk files
+
+<details><summary><b>📜 Show all 20 commits</b></summary>
 
 - 📌 [`7b1a0df`](https://github.com/vicharanashala/tenali/commit/7b1a0dfe639b5a0074ec569963ce2aef33bf293a) — **jgupta05072003-code** — 🔀 PR [#96](https://github.com/vicharanashala/tenali/pull/96) from `vicharanashala`
 - 🐛 [`83bd400`](https://github.com/vicharanashala/tenali/commit/83bd400fa52fc57cded76a3734e38c69f694b68b) — **Jinal Gupta** — remove duplicate JWT_SECRET declarations that break the build
@@ -133,7 +187,14 @@
 - 📌 [`3ef48c5`](https://github.com/vicharanashala/tenali/commit/3ef48c55e929e3d5d7cde41cebe94387e881d491) — **jgupta05072003-code** — 🔀 PR [#80](https://github.com/vicharanashala/tenali/pull/80) from `vicharanashala`
 - 🐛 [`bf8c347`](https://github.com/vicharanashala/tenali/commit/bf8c347791a1cf6ddb312240bbd6649ff607928d) — **Jinal Gupta** — base-path-aware routing so /summership routes work
 
+</details>
+
 #### 📅 2026-07-22  <sub>(38 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — Battle feature - add missing client definitions, fix GK recursion, streaks, and topic mismatch
+
+<details><summary><b>📜 Show all 38 commits</b></summary>
 
 - 📌 [`d248b04`](https://github.com/vicharanashala/tenali/commit/d248b04444275b5c94c499d9ce97148ebe126b12) — **muditagrawal2007** — auto-fix lint issues
 - 📌 [`67092be`](https://github.com/vicharanashala/tenali/commit/67092bed38e270f5cb4ea6387bf981476a3b02b0) — **muditagrawal2007** — fix lint issues
@@ -174,7 +235,12 @@
 - 🐛 [`db24b60`](https://github.com/vicharanashala/tenali/commit/db24b60d4f7fce80226e71f0b63b64de80702fd7) — **muditagrawal2007** — Battle feature - add missing client definitions, fix GK recursion, streaks, and topic mismatch
 - 📌 [`8aca1f7`](https://github.com/vicharanashala/tenali/commit/8aca1f7688d12917e62ba58db6e061f56d86eb5a) — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
 
+</details>
+
 #### 📅 2026-07-21  <sub>(10 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — add missing chart.js peer dependency for user progress tracking ×4
 
 - 📌 [`14cfd2a`](https://github.com/vicharanashala/tenali/commit/14cfd2ad3c1c2ea140200ebd86b06dbaa5ada572) — **jgupta05072003-code** — 🔀 PR [#79](https://github.com/vicharanashala/tenali/pull/79) from `vicharanashala`
 - 🐛 [`5885fe9`](https://github.com/vicharanashala/tenali/commit/5885fe94becccb54be99e04c0e243555ee0ba4b2) — **Jinal Gupta** — add missing chart.js peer dependency for user progress tracking
@@ -188,6 +254,12 @@
 - 🐛 [`0bdadea`](https://github.com/vicharanashala/tenali/commit/0bdadeaa31f5bee3de77b08179da884293dd5db3) — **Jinal Gupta** — add missing mafs dependency for concept playgrounds
 
 #### 📅 2026-07-20  <sub>(28 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — Code Playground — run code in 50+ languages via Judge0 CE ×2
+> - 🐛 **Fixes** — face detection — accept onFaceCount callback, lower threshold to 0.3, increase inputSize to 320 ×3
+
+<details><summary><b>📜 Show all 28 commits</b></summary>
 
 - ✨ [`cd026f3`](https://github.com/vicharanashala/tenali/commit/cd026f37d4b4af3185f226595d6de2004edea1df) — **S Hamsalekha** — Add support for tracking  user progress .
 - 🐛 [`7eb5580`](https://github.com/vicharanashala/tenali/commit/7eb5580e7c8f3c242860bc1541593a5685a540e3) — **S Hamsalekha** — Enable Vite dev server proxying for all the seven Gym APIs
@@ -218,11 +290,19 @@
 - 🐛 [`ce39d6f`](https://github.com/vicharanashala/tenali/commit/ce39d6f08e6c3cd37fb0618c0b2dd3d91aa030eb) — **muditagrawal2007** — face detection — accept onFaceCount callback, lower threshold to 0.3, increase inputSize to 320
 - 📌 [`726393b`](https://github.com/vicharanashala/tenali/commit/726393bc2dc58717611066b8e5aa17acc46fae32) — **muditagrawal2007** — remove flashcard apps: Cross-Section Explorer, Spatial Reasoning, 2D↔3D Translator, Shape Slicer 3D, Net Builder, Scribble Guess
 
+</details>
+
 #### 📅 2026-07-19  <sub>(1 commit)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — add missing locales files for i18n
 
 - 🐛 [`f037028`](https://github.com/vicharanashala/tenali/commit/f0370287d1940e3e24032d7a3e2ab16221c4d4b4) — **24F3005086** — add missing locales files for i18n
 
 #### 📅 2026-07-18  <sub>(8 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — remove MasteryBadge usage from concept playgrounds since it belongs to BKT branch ×6
 
 - 🐛 [`a20f15f`](https://github.com/vicharanashala/tenali/commit/a20f15f23b11aae42f82f76b57b452bd0d751702) — **24F3005086** — remove MasteryBadge usage from concept playgrounds since it belongs to BKT branch
 - 🐛 [`dc7673c`](https://github.com/vicharanashala/tenali/commit/dc7673c4936fdd5ec5d3cf5024c1cb3679f61052) — **24F3005086** — add missing i18n dependencies for accessibility panel
@@ -234,6 +314,14 @@
 - 📌 [`4bfa35f`](https://github.com/vicharanashala/tenali/commit/4bfa35f5cb7b6961afb7b89129444d1bd57f4a83) — **muditagrawal2007** — Merge branch 'vicharanashala:main' into new_f
 
 #### 📅 2026-07-17  <sub>(58 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — inline proctor dashboard on /linear, no-auth endpoints, localStorage persistence ×3
+> - 🐛 **Fixes** — restore scratch/generate_puzzles.js accidentally removed in accessibility branch ×11
+> - ⚡ **Performance** — add willReadFrequently to Canvas2D contexts in detection hooks
+> - 🔧 **Chore** — remove stray scratch folder ×4
+
+<details><summary><b>📜 Show all 58 commits</b></summary>
 
 - ✨ [`4d88e05`](https://github.com/vicharanashala/tenali/commit/4d88e05d64b8b8a1089a7fc58c726d31ea92df52) — **muditagrawal2007** — inline proctor dashboard on /linear, no-auth endpoints, localStorage persistence
 - 📌 [`6f0a1be`](https://github.com/vicharanashala/tenali/commit/6f0a1bec16d2b98a440801b4eb4ce6ec661a5652) — **Dipto Subhro** — Optimize Level 1 token boundaries to prevent mismatch confusion
@@ -294,7 +382,17 @@
 - 📌 [`3b99282`](https://github.com/vicharanashala/tenali/commit/3b992825667d4226d1d66a38c0076c755bdc5745) — **Sharonya Banerjee** — Merge upstream/main into feature/math-detective-agency, resolve client/package-lock.json conflict
 - 📌 [`cde8069`](https://github.com/vicharanashala/tenali/commit/cde80697ab8d4bcb2049a999a47d76ffb54dc902) — **jgupta05072003-code** — 🔀 PR [#9](https://github.com/vicharanashala/tenali/pull/9) from `Ritish007-svg`
 
+</details>
+
 #### 📅 2026-07-16  <sub>(42 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — Add Notation Literacy exercise
+> - 🐛 **Fixes** — GymApp crash — add missing sessionGoal, isAdaptive, handleTimeout; fix difficulty → currentDifficulty ×11
+> - 💄 **Style** — remove Tenali header and view achievements label from profile page
+> - 🔧 **Chore** — completely remove voice narration context, button, and audio assets ×4
+
+<details><summary><b>📜 Show all 42 commits</b></summary>
 
 - 📌 [`3e5716f`](https://github.com/vicharanashala/tenali/commit/3e5716f8c5bc8b9f7e94bf779a638b5785579213) — **Ritish Karmakar** — Merge upstream/main and resolve conflicts with level-wise explanation feature
 - 📌 [`88f107f`](https://github.com/vicharanashala/tenali/commit/88f107f3a670925aa6e27bbb322e59d6b1358cb0) — **Ritish Karmakar** — Replace CHANGELOG with cleaned-up Versions 1-4 summary
@@ -339,7 +437,17 @@
 - 🐛 [`731d3f6`](https://github.com/vicharanashala/tenali/commit/731d3f6a170724306df4fcc34fc5efcf04f46398) — **KCDharshan9** — remove version and build date behind hamburger
 - 🐛 [`8f4f031`](https://github.com/vicharanashala/tenali/commit/8f4f0316d783d0567ff367189820abc05460b961) — **KCDharshan9** — fix bugs & issues causing errors
 
+</details>
+
 #### 📅 2026-07-15  <sub>(45 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — define scalable MongoDB collections and fix route collision for offline/in-memory fallback ×9
+> - 🐛 **Fixes** — resolve reference errors (additionMode, difficulty, topicKey) in AdditionApp and makeQuizApp factory ×7
+> - 💄 **Style** — update celebration modal subtext since pinned badges feature is removed
+> - 🔧 **Chore** — export app from index.js and ignore local in-memory journey database
+
+<details><summary><b>📜 Show all 45 commits</b></summary>
 
 - 📌 [`53cd78e`](https://github.com/vicharanashala/tenali/commit/53cd78e5bcfd4f8bd6b793cff29d81003f6655aa) — **Ritish Karmakar** — Update lockfile after clean reinstall
 - 📌 [`04a092e`](https://github.com/vicharanashala/tenali/commit/04a092e52a5159faca09e1ab6fb6ef4bfeabe5b2) — **Ritish Karmakar** — Document latest UI and explanation changes
@@ -387,7 +495,18 @@
 - 🐛 [`74af340`](https://github.com/vicharanashala/tenali/commit/74af3400b6fe0b55bb24df2171e5bc48cbe8643e) — **varshini-nandula** — resolve duplicate identifier declarations in App.jsx
 - 📌 [`fc9dd2a`](https://github.com/vicharanashala/tenali/commit/fc9dd2a3e0cba32e95b24bd430b85c305fcb7bde) — **varshini-nandula** — Merge branch 'upstream/main' into feat/profile-achievement-showcase
 
+</details>
+
 #### 📅 2026-07-14  <sub>(56 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — implement numeric shortcuts, color-coded submission feedback, manual submit controls, and previous question navigation ×7
+> - 🐛 **Fixes** — resolve history view state overlap bug in placement test, add previous button, and hide redundant headers ×12
+> - ♻️ **Refactors** — modularize Vachana Literacy Lab into separate component files and clean up App.jsx ×4
+> - 📝 **Docs** — add curated CHANGELOG.md
+> - 🔧 **Chore** — ignore all PowerShell script files in .gitignore
+
+<details><summary><b>📜 Show all 56 commits</b></summary>
 
 - 🐛 [`79a9c71`](https://github.com/vicharanashala/tenali/commit/79a9c71679fb90ce18709b112ebc8274948d242c) — **KCDharshan9** — resolve submit button issue in addition app
 - 📌 [`3edd6ca`](https://github.com/vicharanashala/tenali/commit/3edd6cac6e8cb8fed693a49b7a702e7d3e5b6b54) — **Dipto Subhro** — Merge branch 'main' into add-timer
@@ -446,7 +565,18 @@
 - 📌 [`c30b976`](https://github.com/vicharanashala/tenali/commit/c30b976ba54ce0080a4302cf0620e6f87770083a) — **Vaibhav** — Merge upstream/main into feature branch
 - 📌 [`9b86577`](https://github.com/vicharanashala/tenali/commit/9b865779f3a54c63c684c737fce0acbe80a9026f) — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AL-learning-checkpoints
 
+</details>
+
 #### 📅 2026-07-13  <sub>(41 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — Replaced "❌ Try Again" with "Oh no, it's okay" rendered in theme-compliant warning/wrong color ×13
+> - 🐛 **Fixes** — hide the Guided Learning Journey banner from the Goal Selection view ×3
+> - ⚡ **Performance** — instant question transitions + visual counting caps
+> - 💄 **Style** — remove addition, mensuration, and coordinate geometry from hamburger menu ×2
+> - 🔧 **Chore** — resolve merge conflicts and update branch
+
+<details><summary><b>📜 Show all 41 commits</b></summary>
 
 - ✨ [`4f4a40f`](https://github.com/vicharanashala/tenali/commit/4f4a40f8cb94a570eec5390a0a4b9615897d0341) — **Vaibhav** — implement adaptive placement check, MCQ auto-submit, and guided exploration
 - 💄 [`e8c1b77`](https://github.com/vicharanashala/tenali/commit/e8c1b77ea729f78e9f3d9b5580134db3cbf86c8d) — **Shubh dixit** — remove addition, mensuration, and coordinate geometry from hamburger menu
@@ -490,12 +620,22 @@
 - ✨ [`5796f40`](https://github.com/vicharanashala/tenali/commit/5796f401c3862e9386e2cd701b6fbe65d45e9abe) — **Ahana Banerjee** — block access to succesive topics in learning journey
 - 📌 [`d42b5b6`](https://github.com/vicharanashala/tenali/commit/d42b5b6c3a4e3ec993cebf4773dc8c301b540af6) — **Ahana Banerjee** — integrated the new Learning Journey feature, enabling structured learning with sequential unlock rules, automatic integration with existing concept quiz modules, and cumulative 15-question topic checkpoints.
 
+</details>
+
 #### 📅 2026-07-12  <sub>(2 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — modular language puzzles framework & word creator
 
 - 📌 [`4c5096b`](https://github.com/vicharanashala/tenali/commit/4c5096b9bcf4bf55bceddff875510331ac952dce) — **Ahana Banerjee** — Merge remote-tracking branch 'origin/main' into feature/AN-goal-based-practice-sessions
 - ✨ [`db31c33`](https://github.com/vicharanashala/tenali/commit/db31c33b3b9884fe8d65db7f25d4b68dbb6834e1) — **Krishna Gelra** — modular language puzzles framework & word creator
 
 #### 📅 2026-07-11  <sub>(11 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — implement unified profile showcase with category dropdown, collapsible cabinet layout, circular close buttons and polished visual cards ×8
+> - 💄 **Style** — update bronze, gold, and silver topic badge designs
+> - 🔧 **Chore** — remove docs from directory
 
 - ✨ [`2b26b4d`](https://github.com/vicharanashala/tenali/commit/2b26b4d35ff129ac6061bb7375a7dde258ce7cca) — **KCDharshan9** — implement Word Explorer and enriched definition popovers with SVG visuals
 - ✨ [`208cc64`](https://github.com/vicharanashala/tenali/commit/208cc640f443caba4bd7491ed3a116677c340c7b) — **varshini-nandula** — implement unified profile showcase with category dropdown, collapsible cabinet layout, circular close buttons and polished visual cards
@@ -510,6 +650,14 @@
 - 🔧 [`fe8377d`](https://github.com/vicharanashala/tenali/commit/fe8377d99620136c4f6ad0470866a0ae679d6c41) — **varshini-nandula** — remove docs from directory
 
 #### 📅 2026-07-10  <sub>(23 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — implement minimalist grid dashboard layout to reduce cognitive load in v0.1.3 ×6
+> - ♻️ **Refactors** — apply Tenali Question & Hint Design Guide Part 1 to percentage, ratio, fractionadd, addition, and decimals modules ×3
+> - 📝 **Docs** — create exercise research references document ×2
+> - 💄 **Style** — normalize indentation in transferScenarios.js
+
+<details><summary><b>📜 Show all 23 commits</b></summary>
 
 - 📌 [`97ed83d`](https://github.com/vicharanashala/tenali/commit/97ed83dacba6a2110595c28437337ee60361b4e4) — **Vaibhav** — Fix PR #18 review findings: simplify word problem, resolve ESLint warnings, and update pedagogical references
 - 📌 [`cf3ae05`](https://github.com/vicharanashala/tenali/commit/cf3ae059c059fb505ec1c0fc2a8cd6db2ac345b4) — **Vaibhav** — Replace Error Communication with Root Decoder & update etymology references
@@ -535,7 +683,17 @@
 - 📌 [`717bd0f`](https://github.com/vicharanashala/tenali/commit/717bd0f14ef8bc128552e287db1febfa1427af00) — **muditagrawal2007** — change
 - 📌 [`88fb6fc`](https://github.com/vicharanashala/tenali/commit/88fb6fc6b6d22a60ef38962144b4d020e4f8fd1b) — **jgupta05072003-code** — 🔀 PR [#10](https://github.com/vicharanashala/tenali/pull/10) from `muditagrawal2007`
 
+</details>
+
 #### 📅 2026-07-09  <sub>(27 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — implement goal-based practice session as a standalone and isolate it from the main diagnostic and learning module ×11
+> - 🐛 **Fixes** — resolve temporal dead zone error and enhance transfer challenge UI ×4
+> - 📝 **Docs** — add docs directory to .gitignore
+> - 🔧 **Chore** — remove developer debug controls and reset progress button from dashboard ×4
+
+<details><summary><b>📜 Show all 27 commits</b></summary>
 
 - 📌 [`5356ef9`](https://github.com/vicharanashala/tenali/commit/5356ef991acced2616f057f5f17df454edf4287a) — **Ritish Karmakar** — Refactor Percentages layout to one-card-at-a-time and fix AudioContext singleton; update changelog
 - ✨ [`129f48c`](https://github.com/vicharanashala/tenali/commit/129f48cc3f3f197147690c7da622e19b1c72202e) — **Vaibhav** — implement Vachana Mathematical Literacy Lab
@@ -565,7 +723,15 @@
 - 🐛 [`05953e6`](https://github.com/vicharanashala/tenali/commit/05953e6b045b756fce8e1e021789fcc44ad0b9a7) — **varshini-nandula** — add missing learning modules to vite proxy config
 - 📝 [`8fd68ad`](https://github.com/vicharanashala/tenali/commit/8fd68adce338a0113b270d98ceac0e2e54c89a02) — **varshini-nandula** — add docs directory to .gitignore
 
+</details>
+
 #### 📅 2026-07-08  <sub>(13 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — implement Learning Intelligence Layer (LIL) architecture with goal based practise sessions functionality across all apps and question topic cards ×6
+> - 🐛 **Fixes** — fix ReferenceError and implement Stage 3 completion hook and Stage 4 Transfer CTA for AdditionApp ×2
+
+<details><summary><b>📜 Show all 13 commits</b></summary>
 
 - 📌 [`61997df`](https://github.com/vicharanashala/tenali/commit/61997df5f7447b280b558678ee8c3f8f5ffe582a) — **Ritish Karmakar** — Add comprehensive changelog for Percentages Level 1 feature
 - 📌 [`eed3ad8`](https://github.com/vicharanashala/tenali/commit/eed3ad86a1c433ef500c736dd654f148a4a705c6) — **Ritish Karmakar** — Implement step-wise diagnostic quiz for Percentages with kid-friendly UI
@@ -581,7 +747,12 @@
 - 🐛 [`1a00ce0`](https://github.com/vicharanashala/tenali/commit/1a00ce0b48c2aba7e6a597d1b628a3868117ec26) — **varshini-nandula** — correct topic key alignment to fix empty transfer questions
 - ✨ [`86ddece`](https://github.com/vicharanashala/tenali/commit/86ddece6804e27ae0b2be9f623f70972912bb579) — **varshini-nandula** — add Stage 4 learning transfer challenges for percentages, ratios, and fractions
 
+</details>
+
 #### 📅 2026-07-06  <sub>(1 commit)</sub>
+
+> **💡 What changed today**
+> - 🔧 **Chore** — add docs directory to gitignore
 
 - 🔧 [`2fbd8bb`](https://github.com/vicharanashala/tenali/commit/2fbd8bb6ad8e22bdb504d50896f2c75203b33779) — **varshini-nandula** — add docs directory to gitignore
 
@@ -594,9 +765,14 @@
 
 #### 📅 2026-05-11  <sub>(1 commit)</sub>
 
+> **💡 What changed today**
+> - ✨ **Features** — add Guess the Number (binary magic card trick)
+
 - ✨ [`6d4e9ad`](https://github.com/vicharanashala/tenali/commit/6d4e9ad4a6b4f71f1ce070431534ad5cf2c60dee) — **Vasuki** — add Guess the Number (binary magic card trick)
 
 #### 📅 2026-05-03  <sub>(21 commits)</sub>
+
+<details><summary><b>📜 Show all 21 commits</b></summary>
 
 - 📌 [`8ffb66e`](https://github.com/vicharanashala/tenali/commit/8ffb66e116509b0ac8c65295490d27e577729752) — **Sudarshan** — Add session summary doc
 - 📌 [`408c4f2`](https://github.com/vicharanashala/tenali/commit/408c4f2c8c071283a4219eb22cb76760ed5fd12a) — **Sudarshan** — Add L17 bridge 27 (+ − in Standard Form). Chapter 5 fully bridged.
@@ -619,6 +795,8 @@
 - 📌 [`8a127a0`](https://github.com/vicharanashala/tenali/commit/8a127a07d72920a244cd2ad5d4b0003e6b0d9d98) — **Sudarshan** — auto-commit 2026-05-03 18:18:58
 - 📌 [`3f49a2d`](https://github.com/vicharanashala/tenali/commit/3f49a2d18a98f0be0a6423e6f9ac02c67e9eb7a3) — **Sudarshan** — auto-commit 2026-05-03 17:10:36
 - 📌 [`8dbe6f6`](https://github.com/vicharanashala/tenali/commit/8dbe6f6c1f7fb2497038a7d089b542634f049963) — **Sudarshan** — auto-commit 2026-05-03 14:19:32
+
+</details>
 
 #### 📅 2026-05-02  <sub>(7 commits)</sub>
 
@@ -646,6 +824,8 @@
 
 #### 📅 2026-04-30  <sub>(21 commits)</sub>
 
+<details><summary><b>📜 Show all 21 commits</b></summary>
+
 - 📌 [`f393751`](https://github.com/vicharanashala/tenali/commit/f393751a2dd2684fe28715a55b40879dce11c8a3) — **Sudarshan** — auto-commit 2026-04-30 10:16:00
 - 📌 [`c65c7c1`](https://github.com/vicharanashala/tenali/commit/c65c7c1cef287f19b124a3a87bfc9ec7d0df346d) — **Sudarshan** — auto-commit 2026-04-30 09:57:46
 - 📌 [`71d189c`](https://github.com/vicharanashala/tenali/commit/71d189c0e910eb1609510fc9e5c4824f66cbb66c) — **Sudarshan** — auto-commit 2026-04-30 09:47:25
@@ -667,6 +847,8 @@
 - 📌 [`5dd1320`](https://github.com/vicharanashala/tenali/commit/5dd1320353a3f05cfb3ca379f52f0140bce80f11) — **Sudarshan** — auto-commit 2026-04-30 07:42:01
 - 📌 [`330cffe`](https://github.com/vicharanashala/tenali/commit/330cffec07f11389b55062000fe7669112cfa51f) — **Sudarshan** — auto-commit 2026-04-30 07:41:05
 - 📌 [`1a2e6e5`](https://github.com/vicharanashala/tenali/commit/1a2e6e5dbf46b62b613b08e4a0de0ea5212251af) — **Sudarshan** — auto-commit 2026-04-30 07:35:45
+
+</details>
 
 #### 📅 2026-04-29  <sub>(12 commits)</sub>
 
@@ -708,6 +890,8 @@
 
 #### 📅 2026-04-18  <sub>(26 commits)</sub>
 
+<details><summary><b>📜 Show all 26 commits</b></summary>
+
 - 📌 [`9707001`](https://github.com/vicharanashala/tenali/commit/9707001b047296e47fe9395b4db44040dbad0c84) — **Sudarshan** — auto-commit 2026-04-18 21:00:22
 - 📌 [`2a0c7d5`](https://github.com/vicharanashala/tenali/commit/2a0c7d5a6b3caedc83c465e9cad6412f92bc7959) — **Sudarshan** — auto-commit 2026-04-18 20:34:21
 - 📌 [`6a04d2c`](https://github.com/vicharanashala/tenali/commit/6a04d2ce85c60546b6a9f34596bb8bbd629a5f2f) — **Sudarshan** — auto-commit 2026-04-18 20:28:24
@@ -735,7 +919,15 @@
 - 📌 [`38dff87`](https://github.com/vicharanashala/tenali/commit/38dff87f4f8a63eb3048d68f213ffcddf6664a0d) — **Sudarshan** — auto-commit 2026-04-18 07:34:22
 - 📌 [`0f63e88`](https://github.com/vicharanashala/tenali/commit/0f63e8847c8941f80683f37fbf493d37b8073a3d) — **Sudarshan** — auto-commit 2026-04-18 07:30:48
 
+</details>
+
 #### 📅 2026-04-17  <sub>(20 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — trimmed mean (drop top/bottom 10%) for chart and adaptive logic ×7
+> - 🐛 **Fixes** — show lookup table in order (no shuffle), split into 2 rows of 5 ×6
+
+<details><summary><b>📜 Show all 20 commits</b></summary>
 
 - 📌 [`3c0a7d3`](https://github.com/vicharanashala/tenali/commit/3c0a7d3865d2069a066c04baf156b232abada6e2) — **Sudarshan** — auto-commit 2026-04-17 23:49:18
 - 📌 [`6b37d34`](https://github.com/vicharanashala/tenali/commit/6b37d3414ecc5282e4e99012a4deb253fa9b221c) — **Sudarshan** — auto-commit 2026-04-17 23:46:04
@@ -758,7 +950,15 @@
 - 📌 [`bb8db96`](https://github.com/vicharanashala/tenali/commit/bb8db9654f0572116c5ae86283e7a463f195fc34) — **Sudarshan** — Add SuperTables: 10-level multiplication learning app
 - ✨ [`b01e72b`](https://github.com/vicharanashala/tenali/commit/b01e72bea145873a6dc45513b0dd4707177f9411) — **Sudarshan** — add /lakshya route + spaced repetition for slow multipliers in /tables
 
+</details>
+
 #### 📅 2026-04-16  <sub>(16 commits)</sub>
+
+> **💡 What changed today**
+> - ✨ **Features** — add /yazdan route with 10-level progressive tables mastery ×3
+> - 🐛 **Fixes** — replace hardcoded dark colors with theme-aware CSS variables ×2
+
+<details><summary><b>📜 Show all 16 commits</b></summary>
 
 - ✨ [`209276d`](https://github.com/vicharanashala/tenali/commit/209276d3c396ad90c865ff5b1df8e638e5cca957) — **Sudarshan** — add /lakshya route with mastery multiplication program
 - ✨ [`dac69e8`](https://github.com/vicharanashala/tenali/commit/dac69e849adc99584df2f50006e5acd6cc8fbda9) — **Sudarshan** — add /jatin route with 10-level table learning strategy
@@ -777,7 +977,11 @@
 - 📌 [`f5d0294`](https://github.com/vicharanashala/tenali/commit/f5d029408c8321b29478f68670b8f3cec3f21368) — **Sudarshan** — Minimalist mobile-first layout for /taittiriya playing phase
 - 📌 [`35bcd86`](https://github.com/vicharanashala/tenali/commit/35bcd862c1206c676627b142dd4992cb2c5a2860) — **Sudarshan** — Redesign /taittiriya: 3-phase scaffolded tables with table chooser
 
+</details>
+
 #### 📅 2026-04-05  <sub>(27 commits)</sub>
+
+<details><summary><b>📜 Show all 27 commits</b></summary>
 
 - 📌 [`e0a5851`](https://github.com/vicharanashala/tenali/commit/e0a58510058ded7966ec003649451c8c522a936f) — **Sudarshan** — Update SRS.md to v4.0 with comprehensive project documentation
 - 📌 [`e79b546`](https://github.com/vicharanashala/tenali/commit/e79b546acb37963838a3473cbbc99629ee3962a1) — **Sudarshan** — Redesign solve card with stepped timeline layout
@@ -807,6 +1011,8 @@
 - 📌 [`6344395`](https://github.com/vicharanashala/tenali/commit/63443958829b90ecb58d56a185e817dd1ea490dd) — **Sudarshan** — Fix TatsavitApp + add prerequisite graph + fix server type bug
 - 📌 [`eb013eb`](https://github.com/vicharanashala/tenali/commit/eb013ebbc99a28a99c5d2ad312a86ee6fcd31e8e) — **Sudarshan** — Add Tatsavit progressive drill + limit Squaring to 2-digit (11-99)
 
+</details>
+
 #### 📅 2026-04-04  <sub>(11 commits)</sub>
 
 - 📌 [`0145abd`](https://github.com/vicharanashala/tenali/commit/0145abd6980476bc1ffe4578814883170de4eba5) — **Sudarshan** — Add Squaring puzzle — (a+b)² = a² + 2ab + b²
@@ -822,6 +1028,8 @@
 - 📌 [`0ba2252`](https://github.com/vicharanashala/tenali/commit/0ba22527fc12055a1c8561b1ab568e9fbb481871) — **Sudarshan** — Fix Dot Products: remove auto-tab, show proper vector dimensions
 
 #### 📅 2026-04-03  <sub>(31 commits)</sub>
+
+<details><summary><b>📜 Show all 31 commits</b></summary>
 
 - 📌 [`b53512e`](https://github.com/vicharanashala/tenali/commit/b53512eb3be4b40dbbc98129e533f843cc6a2673) — **Sudarshan** — Replace text inputs with visual matrix/vector grid boxes in Dot Products
 - 📌 [`4140445`](https://github.com/vicharanashala/tenali/commit/414044552ace4e77bf1b6ed8cd997f1248d6b5b1) — **Sudarshan** — Render matrices with proper bracket formatting in Dot Products
@@ -855,7 +1063,14 @@
 - 📌 [`e97a032`](https://github.com/vicharanashala/tenali/commit/e97a032b64d594dc7e67855ad272e59347636877) — **Sudarshan** — Add extensive code comments and rewrite all SKILL.md as formal specs
 - 📌 [`b6d4b61`](https://github.com/vicharanashala/tenali/commit/b6d4b61f58da3175c6164dbcebaca08d6561e7de) — **Sudarshan** — Fix vocab repetition: add dedup to vocab + GK, expand to ~4000 questions
 
+</details>
+
 #### 📅 2026-04-02  <sub>(43 commits)</sub>
+
+> **💡 What changed today**
+> - 🐛 **Fixes** — prevent a=0 in quadratic and allow minus sign on mobile keyboard
+
+<details><summary><b>📜 Show all 43 commits</b></summary>
 
 - 📌 [`ce262f9`](https://github.com/vicharanashala/tenali/commit/ce262f9d6d2c11e5a13a9fd4f4dc09239a23eb21) — **Sudarshan** — Add interval scheduling & extended Euclid pages, fix Custom Lesson crash
 - 📌 [`58ca1fd`](https://github.com/vicharanashala/tenali/commit/58ca1fd8b4d73df282a1dcd3f192a9c93970cd50) — **Sudarshan** — Rename GK subtitle to 'General Knowledge questions'
@@ -901,6 +1116,8 @@
 - 📌 [`6a7ddcf`](https://github.com/vicharanashala/tenali/commit/6a7ddcfdc22cb1164b3b7d0e150fa4bbfe4731c9) — **Sudarshan** — Add supermarket documentation hub and clean up old app docs
 - 📌 [`36a484e`](https://github.com/vicharanashala/tenali/commit/36a484e8b29754226414b96b3c7f934ba7285717) — **Sudarshan** — Redesign UI, add step-by-step feedback, quadratic difficulty levels, and 4x4 home grid
 
+</details>
+
 #### 📅 2026-04-01  <sub>(3 commits)</sub>
 
 - 📌 [`a1f10d6`](https://github.com/vicharanashala/tenali/commit/a1f10d6834dfaeafe4b434f46ff5b4122ae15c7a) — **S. R. S. Iyengar** — Add GitHub Pages deployment workflow with relative asset paths
@@ -912,6 +1129,8 @@
 - 📌 [`b3b7e5d`](https://github.com/vicharanashala/tenali/commit/b3b7e5d3634b09bbda0398b80b0fcf361bf87461) — **sudarshan** — Add quadratic lesson and sync current Tenali working tree
 
 #### 📅 2026-03-14  <sub>(17 commits)</sub>
+
+<details><summary><b>📜 Show all 17 commits</b></summary>
 
 - 📌 [`4185a9f`](https://github.com/vicharanashala/tenali/commit/4185a9fc8a46fdce275e9e540cc79e561623cf37) — **S. R. S. Iyengar** — Vendor nested quiz apps into main repo
 - 📌 [`9e20003`](https://github.com/vicharanashala/tenali/commit/9e20003197e12075e70f3859238d937e5d66f6a2) — **S. R. S. Iyengar** — Add missing Tenali app content for deployment
@@ -930,6 +1149,8 @@
 - 📌 [`caed3e8`](https://github.com/vicharanashala/tenali/commit/caed3e805589775bba98dd4ed7ea3c944c56eb38) — **S. R. S. Iyengar** — Proxy API through Vite for LAN clients
 - 📌 [`dce76e0`](https://github.com/vicharanashala/tenali/commit/dce76e001c08ee20a4bd96a87d4deb0af8782ab6) — **S. R. S. Iyengar** — Fix client API host for LAN access
 - 📌 [`0182e4b`](https://github.com/vicharanashala/tenali/commit/0182e4bf5cb304a381a5143d49e04d6843b2a7b1) — **S. R. S. Iyengar** — Scaffold Aryabhata kids addition app v1
+
+</details>
 
 <!-- live-changelog:end -->
 

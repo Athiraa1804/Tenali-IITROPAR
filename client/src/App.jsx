@@ -89,6 +89,7 @@ import VisualMathLabRedux, {
 } from './VisualMathLabRedux';
 import CoordinateGrid from './components/CoordinateGrid';
 import LanguageDashboard from './language/LanguageDashboard'
+import ContrastChallengeApp, { QuizLayoutExtension } from './ContrastChallengeApp'
 import { VOCAB_CORPUS } from './vocabCorpus'
 import PercentExplanationApp from './PercentExplanationApp'
 import { playSound } from './audioContext'
@@ -42739,6 +42740,22 @@ function App() {
   }, [completedTopics, goldMastery, coins, totalSolved, mode]);
 
 
+  // Sync current mode to window global for QuizLayoutExtension
+  useEffect(() => {
+    window.currentTenaliMode = mode;
+  }, [mode])
+
+  // Custom event listener to change modes
+  useEffect(() => {
+    const handleModeChange = (e) => {
+      if (e.detail) {
+        setMode(e.detail);
+      }
+    };
+    window.addEventListener('tenali-change-mode', handleModeChange);
+    return () => window.removeEventListener('tenali-change-mode', handleModeChange);
+  }, []);
+
   // Listen for navigation events from AuthMenu
   useEffect(() => {
     const onNav = (e) => { setMode(e.detail.mode) }
@@ -44665,7 +44682,8 @@ function App() {
     integ: IntegApp,               // Integration
     stdform: StdFormApp,           // Standard Form
     bounds: BoundsApp,             // Bounds
-    sdt: SDTApp,                   // Speed, Distance, Time
+    sdt: SDTApp,
+    contrastlist: ContrastChallengeApp,   // Contrast Challenge
     variation: VariationApp,       // Variation
     hcflcm: InteractiveLcmHcfApp,  // HCF & LCM
     idlivada: IdliVadaSambharApp,  // Idli–Vada–Sambhar (Multiples, Common Multiples & LCM)
@@ -44864,7 +44882,7 @@ function App() {
         {mode === 'vachana' ? (
           <Vachana onBack={() => setMode(null)} initialAdaptScore={diagnosticState[mode] || 0} />
         ) : (
-          <div className="card">
+          <div className={`card ${mode === 'contrastlist' ? 'is-wide' : ''}`}>
             {renderContent()}
           </div>
         )}
@@ -44890,6 +44908,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'randommix', name: 'Random Mix', subtitle: 'Adaptive cross-topic quiz', color: 'featured' },
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
     { key: 'gym', name: 'Gym', subtitle: 'Adaptive workout across all 7 gym puzzles', color: 'featured' },
+    { key: 'contrastlist', name: 'Contrast Challenge', subtitle: 'Distinguish similar concepts', color: 'featured' },
     { key: 'vachana', name: 'Vachana', subtitle: 'Mathematical Literacy Lab', color: 'featured' },
   ]
   // Visual Learning Universe lives only in the hamburger menu
@@ -68147,7 +68166,9 @@ export function QuizLayout({ title, subtitle, onBack, children, timer, sessionGo
         </div>
       </div>
       <h1 style={{ fontSize: 'clamp(1.8rem, 3.8vw, 2.4rem)' }}>{title}</h1>
+      {subtitle && <p className="subtitle">{subtitle}</p>}
       {processedChildren}
+      <QuizLayoutExtension children={children} />
     </>
   )
 }
@@ -69001,9 +69022,9 @@ function ProgressTrackerApp({ onBack }) {
                 {paginated.map(r => {
                   const spd = r.timeTakenSeconds > 0 ? parseFloat(((r.correctAnswers * 60) / r.timeTakenSeconds).toFixed(1)) : 0
                   return (
-                    <tr key={r.id} style={{ borderBottom: '1px solid var(--clr-border)' }}
+                    <tr key={r.id}
                       onClick={() => setSelectedPoint({ record: r, session: sortedRecords.indexOf(r) + 1 })}
-                      style={{ cursor: 'pointer' }}>
+                      style={{ borderBottom: '1px solid var(--clr-border)', cursor: 'pointer' }}>
                       <td style={{ padding: '8px 10px' }}>{formatDate(r.date)}</td>
                       <td style={{ padding: '8px 10px', textAlign: 'center' }}>{r.questionSummary?.easy || 0}</td>
                       <td style={{ padding: '8px 10px', textAlign: 'center' }}>{r.questionSummary?.medium || 0}</td>

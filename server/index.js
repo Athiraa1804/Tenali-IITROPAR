@@ -50,6 +50,20 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const wordCreator = require('./wordCreator');
+const logger = require('./lib/logger');
+
+// Catch what would otherwise be a silent crash (or, for unhandled promise
+// rejections on Node 15+, a crash with no application-level record of why).
+// Log first, then exit so the process manager (systemd's tenali.service)
+// restarts a clean process rather than continuing in a possibly-corrupt state.
+process.on('uncaughtException', (err) => {
+  logger.error('process', 'uncaughtException:', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason) => {
+  logger.error('process', 'unhandledRejection:', reason);
+  process.exit(1);
+});
 
 // Initialize Express app and configure middleware
 const app = express();
@@ -106,6 +120,7 @@ const auth = require('./auth');
 const transferScenarios = require('./transferScenarios');
 const progress = require('./progress');
 const hints = require('./hints');
+const translate = require('./translate');
 
 // Load static collections definitions
 let collections = [];
@@ -113,11 +128,12 @@ try {
   collections = JSON.parse(fs.readFileSync(path.join(__dirname, 'collections.json'), 'utf8'));
   console.log(`[collections] loaded ${collections.length} collections`);
 } catch (e) {
-  console.error('[collections] failed to load collections.json:', e.message);
+  logger.error(null,'[collections] failed to load collections.json:', e.message);
 }
 app.use('/api/auth', auth.router);
 app.use('/api/progress', progress.router);
 app.use('/api/hints', hints);
+app.use('/api/translate', translate.router);
 auth.seedUsers().catch(() => {});  // always populate in-memory fallback
 
 async function connectAuthMongoWithRetry(attempt = 1) {
@@ -129,11 +145,11 @@ async function connectAuthMongoWithRetry(attempt = 1) {
     await auth.seedUsers();
   } catch (err) {
     if (attempt >= maxAttempts) {
-      console.error('[auth] Mongo connect failed - using in-memory auth:', err.message);
+      logger.error(null,'[auth] Mongo connect failed - using in-memory auth:', err.message);
       return;
     }
 
-    console.warn(
+    logger.warn(null,
       `[auth] Mongo unavailable (${err.message}); retrying in ${Math.round(retryDelayMs / 1000)}s ` +
       `(${attempt}/${maxAttempts})`
     );
@@ -287,7 +303,7 @@ app.use((req, res, next) => {
           }
         }
       } catch (err) {
-        console.error('[attempt-logger] Failed to log student attempt:', err.message);
+        logger.error(null,'[attempt-logger] Failed to log student attempt:', err.message);
       }
     })();
 
@@ -365,7 +381,7 @@ app.use(async (req, res, next) => {
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
-      console.warn('[LIL] JWT verify failed:', e.message);
+      logger.warn(null,'[LIL] JWT verify failed:', e.message);
     }
   }
 
@@ -408,7 +424,7 @@ app.use(async (req, res, next) => {
       // Fire-and-forget: try to save attempt in background
       lilProcess.processAttempt(payloadInput)
         .then(() => {})
-        .catch(err => console.error('[LIL] processAttempt failed:', err.message));
+        .catch(err => logger.error(null,'[LIL] processAttempt failed:', err.message));
     } else {
       originalJson(data);
     }
@@ -434,7 +450,7 @@ app.use(async (req, res, next) => {
       const payload = jwt.verify(m[1], JWT_SECRET);
       userId = payload.sub;
     } catch (e) {
-      console.warn('[LIL GET] JWT verify failed:', e.message);
+      logger.warn(null,'[LIL GET] JWT verify failed:', e.message);
     }
   }
 
@@ -493,7 +509,7 @@ app.use(async (req, res, next) => {
         });
       }
     } catch (err) {
-      console.error('[LIL GET] Failed to fetch revision question:', err);
+      logger.error(null,'[LIL GET] Failed to fetch revision question:', err);
     }
   }
 
@@ -548,16 +564,21 @@ function bandForStep(step) {
  * Each file should contain a question object with id, question, options, answerOption, answerText
  * @returns {Array<object>} Array of question objects
  */
-function loadQuestions() {
-  const files = fs.readdirSync(questionsDir).filter((file) => file.endsWith('.json'));
-  return files.map((file) => {
-    const fullPath = path.join(questionsDir, file);
-    return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-  });
+// Reads all JSON files in `dir` concurrently (fs.promises.readFile lets libuv's
+// thread pool overlap the I/O instead of doing 991+ sequential blocking
+// syscalls) and parses each one. Order is not significant to any caller here.
+async function loadJsonDir(dir) {
+  const files = fs.readdirSync(dir).filter((file) => file.endsWith('.json'));
+  const contents = await Promise.all(
+    files.map((file) => fs.promises.readFile(path.join(dir, file), 'utf8'))
+  );
+  return contents.map((raw) => JSON.parse(raw));
 }
 
-// Load all GK questions at server startup
-const questions = loadQuestions();
+// Populated by initData() before the server starts listening (see bottom of
+// file) — declared here as `let` so the many closures throughout this file
+// that reference `questions` by name see the loaded data once ready.
+let questions = [];
 
 const WordProblemGenerator = {
   addition: (a, b) => {
@@ -1515,10 +1536,12 @@ const conceptDir = path.join(__dirname, '..', 'concept', 'questions');
  *
  * @returns {Array<object>} Array of vocabulary question objects
  */
-function loadVocab() {
+// Vocab is by far the largest set (~7,600 files) — loaded via loadJsonDir()
+// (see loadQuestions above) so the reads overlap instead of running one at a
+// time. Concepts is tiny (~15 files); left synchronous, not worth the churn.
+async function loadVocabAsync() {
   try {
-    const files = fs.readdirSync(vocabDir).filter((f) => f.endsWith('.json'));
-    return files.map((f) => JSON.parse(fs.readFileSync(path.join(vocabDir, f), 'utf8')));
+    return await loadJsonDir(vocabDir);
   } catch (e) {
     return [];
   }
@@ -1533,8 +1556,9 @@ function loadConcepts() {
   }
 }
 
-// Load all vocabulary questions at server startup
-const vocabQuestions = loadVocab();
+// Populated by initData() before the server starts listening, same as
+// `questions` above.
+let vocabQuestions = [];
 const conceptQuestions = loadConcepts();
 
 /**
@@ -8170,6 +8194,38 @@ function shuffleArray(arr) {
   return a;
 }
 
+// deBiasShuffle(arr, correctIndex): returns a permutation of `arr` such that
+// if the longest (or shortest) element is at `correctIndex`, it is swapped
+// to a different position. This breaks the pattern where the correct answer
+// ends up at an "obvious" length-based position.
+function deBiasShuffle(arr, correctIndex) {
+  let shuffled = shuffleArray(arr);
+  if (typeof correctIndex !== 'number' || correctIndex < 0 || correctIndex >= shuffled.length || shuffled.length < 2) {
+    return shuffled;
+  }
+  // Helper: index of max-length element in the current permutation
+  const idxOfMax = (s) => s.indexOf(s.reduce((a, b) => (b.length > a.length ? b : a), ''));
+  const idxOfMin = (s) => s.indexOf(s.reduce((a, b) => (b.length < a.length ? b : a), ''));
+  // If correct is the longest, swap it with a non-longest position.
+  if (idxOfMax(shuffled) === correctIndex) {
+    // pick a random other index
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  // Same for shortest
+  if (idxOfMin(shuffled) === correctIndex) {
+    const others = shuffled.map((_, i) => i).filter(i => i !== correctIndex);
+    if (others.length > 0) {
+      const swapWith = others[Math.floor(Math.random() * others.length)];
+      [shuffled[correctIndex], shuffled[swapWith]] = [shuffled[swapWith], shuffled[correctIndex]];
+    }
+  }
+  return shuffled;
+}
+
 /**
  * buildOptions(correctText, distractors): Produce a 4-option MC payload.
  *   - Deduplicates distractors against the correct answer.
@@ -9423,7 +9479,7 @@ app.get('/api/learning-journey/progress', auth.requireAuth, async (req, res) => 
       overallProgressPercent
     });
   } catch (err) {
-    console.error('[learning-journey] GET /progress error:', err.message);
+    logger.error(null,'[learning-journey] GET /progress error:', err.message);
     res.status(500).json({ error: err.message });
   }
 });
@@ -9439,7 +9495,7 @@ app.post('/api/learning-journey/complete-concept', auth.requireAuth, async (req,
     const progress = await completeConcept(userId, topicId, conceptKey);
     res.json({ success: true, completedConcepts: progress.completedConcepts });
   } catch (err) {
-    console.error('[learning-journey] POST /complete-concept error:', err.message);
+    logger.error(null,'[learning-journey] POST /complete-concept error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -9455,7 +9511,7 @@ app.get('/api/learning-journey/checkpoint/quiz', auth.requireAuth, async (req, r
     const quiz = await getCheckpointQuiz(userId, topicId);
     res.json(quiz);
   } catch (err) {
-    console.error('[learning-journey] GET /checkpoint/quiz error:', err.message);
+    logger.error(null,'[learning-journey] GET /checkpoint/quiz error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
@@ -9471,61 +9527,15 @@ app.post('/api/learning-journey/checkpoint/verify', auth.requireAuth, async (req
     const result = await verifyCheckpointQuiz(userId, topicId, answers);
     res.json(result);
   } catch (err) {
-    console.error('[learning-journey] POST /checkpoint/verify error:', err.message);
+    logger.error(null,'[learning-journey] POST /checkpoint/verify error:', err.message);
     res.status(400).json({ error: err.message });
   }
 });
 
 // /darts-api — Visual Coordinate Geometry (Dart Board)
 // ═══════════════════════════════════════════════════════════════════════════
-app.get('/darts-api/question', (req, res) => {
-  const level = req.query.level || 'easy';
-  let x, y;
-
-  const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-  const randHalf = (min, max) => randInt(min * 2, max * 2) / 2;
-
-  if (level === 'easy') {
-    // 1st quadrant only
-    x = randInt(1, 5);
-    y = randInt(1, 5);
-  } else if (level === 'medium') {
-    // Any quadrant, integer
-    do {
-      x = randInt(-5, 5);
-      y = randInt(-5, 5);
-    } while (x === 0 && y === 0);
-  } else if (level === 'hard') {
-    // Any quadrant, half steps allowed
-    do {
-      x = randHalf(-5, 5);
-      y = randHalf(-5, 5);
-    } while (Number.isInteger(x) && Number.isInteger(y));
-  } else {
-    // extrahard
-    const startX = randInt(-4, 4) || 1;
-    const startY = randInt(-4, 4) || 1;
-    const axis = Math.random() < 0.5 ? 'x' : 'y';
-    x = axis === 'y' ? -startX : startX;
-    y = axis === 'x' ? -startY : startY;
-    
-    return res.json({
-      prompt: `Plot the reflection of (${startX}, ${startY}) across the ${axis.toUpperCase()}-axis.`,
-      x, y, level, startX, startY, axis, type: 'reflection'
-    });
-  }
-
-  res.json({
-    prompt: `Throw the dart at coordinate (${x}, ${y}).`,
-    x, y, level, type: 'standard'
-  });
-});
-
-app.post('/darts-api/check', express.json(), (req, res) => {
-  const { userX, userY, x, y } = req.body;
-  const correct = userX === x && userY === y;
-  res.json({ correct, message: correct ? 'Bullseye!' : 'Missed!' });
-});
+const dartsRouter = require('./routes/darts');
+app.use('/darts-api', dartsRouter);
 
 // WORD CREATOR PUZZLE ROUTER (wordcreator-api)
 // ═══════════════════════════════════════════════════════════════════════════
@@ -9549,7 +9559,7 @@ app.post('/api/proctor/start', async (req, res) => {
     });
     res.json({ sessionId: session._id, status: 'active' });
   } catch (e) {
-    console.error('[proctor] start error:', e.message);
+    logger.error(null,'[proctor] start error:', e.message);
     res.status(500).json({ error: 'failed to start proctor session' });
   }
 });
@@ -9575,7 +9585,7 @@ app.post('/api/proctor/event', async (req, res) => {
     });
     res.json({ eventId: event._id, recorded: true });
   } catch (e) {
-    console.error('[proctor] event error:', e.message);
+    logger.error(null,'[proctor] event error:', e.message);
     res.status(500).json({ error: 'failed to log proctor event' });
   }
 });
@@ -9594,13 +9604,13 @@ app.post('/api/proctor/end', async (req, res) => {
     const events = await ProctorEvent.find({ sessionId }).sort({ timestamp: 1 });
     res.json({ session, events });
   } catch (e) {
-    console.error('[proctor] end error:', e.message);
+    logger.error(null,'[proctor] end error:', e.message);
     res.status(500).json({ error: 'failed to end proctor session' });
   }
 });
 
-// Get proctor session details — admin only
-app.get('/api/proctor/session/:id', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+// Get proctor session details — public for dashboard view (no login)
+app.get('/api/proctor/session/:id', async (req, res) => {
   try {
     const session = await ProctorSession.findById(req.params.id);
     if (!session) return res.status(404).json({ error: 'session not found' });
@@ -9615,7 +9625,7 @@ app.get('/api/proctor/session/:id', auth.requireAuth, auth.requireAdmin, async (
 // The dashboard at /proctor is meant to be accessible to anyone monitoring the exam
 app.get('/api/proctor/ping', (req, res) => { res.json({ ok: true }) });
 
-app.get('/api/proctor/sessions', auth.requireAuth, auth.requireAdmin, async (req, res) => {
+app.get('/api/proctor/sessions', async (req, res) => {
   try {
     const limit = Math.min(parseInt(req.query.limit, 10) || 100, 200)
     const sessions = await ProctorSession.find({})
@@ -9653,7 +9663,7 @@ app.post('/api/proctor/face/register', auth.requireAuth, async (req, res) => {
       res.json({ registered: false, reason: 'CompreFace detection failed' });
     }
   } catch (e) {
-    console.error('[face] register error:', e.message);
+    logger.error(null,'[face] register error:', e.message);
     res.json({ registered: false, reason: 'CompreFace unreachable' });
   }
 });
@@ -9680,7 +9690,7 @@ app.post('/api/proctor/face/verify', async (req, res) => {
       res.json({ verified: true, similarity: 1, reason: 'CompreFace verification failed' });
     }
   } catch (e) {
-    console.error('[face] verify error:', e.message);
+    logger.error(null,'[face] verify error:', e.message);
     res.json({ verified: true, similarity: 1, reason: 'CompreFace unreachable' });
   }
 });
@@ -9703,7 +9713,7 @@ app.post('/api/emotions/submit', async (req, res) => {
     });
     res.json({ id: doc._id, recorded: true });
   } catch (e) {
-    console.error('[emotion] submit error:', e.message);
+    logger.error(null,'[emotion] submit error:', e.message);
     res.status(500).json({ error: 'failed to submit emotion' });
   }
 });
@@ -9767,13 +9777,13 @@ app.post('/api/playground/run', async (req, res) => {
     });
     if (!r.ok) {
       const text = await r.text();
-      console.error('[playground] Judge0 error:', r.status, text);
+      logger.error(null,'[playground] Judge0 error:', r.status, text);
       return res.status(502).json({ error: 'Judge0 request failed', detail: text });
     }
     const data = await r.json();
     res.json(data);
   } catch (e) {
-    console.error('[playground] error:', e.message);
+    logger.error(null,'[playground] error:', e.message);
     res.status(500).json({ error: 'Failed to execute code' });
   }
 });
@@ -9788,7 +9798,7 @@ app.get('/api/playground2/languages', (req, res) => {
     const langs = compiler.listLanguages();
     res.json({ languages: langs });
   } catch (e) {
-    console.error('[playground2] list error:', e.message);
+    logger.error(null,'[playground2] list error:', e.message);
     res.status(500).json({ error: 'Failed to list languages' });
   }
 });
@@ -9802,7 +9812,7 @@ app.post('/api/playground2/run', async (req, res) => {
     const result = await compiler.executeCode(language, code, stdin || '', timeout);
     res.json(result);
   } catch (e) {
-    console.error('[playground2] run error:', e.message);
+    logger.error(null,'[playground2] run error:', e.message);
     res.status(500).json({ error: 'Failed to execute code' });
   }
 });
@@ -10079,7 +10089,7 @@ function loadInMemoryProfiles() {
       console.log(`[auth] Loaded ${Object.keys(inMemoryUserProfiles).length} in-memory user profiles from persistent file fallback`);
     }
   } catch (err) {
-    console.error('[auth] Failed to load in-memory profiles:', err.message);
+    logger.error(null,'[auth] Failed to load in-memory profiles:', err.message);
   }
 }
 
@@ -10093,7 +10103,7 @@ function saveInMemoryProfiles() {
     }
     fs.writeFileSync(DB_FILE, JSON.stringify(cleaned, null, 2), 'utf8');
   } catch (err) {
-    console.error('[auth] Failed to save in-memory profiles:', err.message);
+    logger.error(null,'[auth] Failed to save in-memory profiles:', err.message);
   }
 }
 
@@ -10140,13 +10150,13 @@ async function getUserFromReq(req) {
           const dbUser = await auth.User.findById(payload.sub || payload.username);
           if (dbUser) return dbUser;
         } catch (dbErr) {
-          console.error('[auth] Database query failed, falling back to in-memory profile:', dbErr.message);
+          logger.error(null,'[auth] Database query failed, falling back to in-memory profile:', dbErr.message);
         }
       }
       return getInMemoryUser(payload.username);
     }
   } catch (e) {
-    console.error('[auth] getUserFromReq error:', e.message);
+    logger.error(null,'[auth] getUserFromReq error:', e.message);
   }
   return null;
 }
@@ -10813,7 +10823,7 @@ app.get('/transfer-api/question', async (req, res) => {
         const generated = generateGenericTransfer(topic, originalQuestion);
         return res.json(generated);
       } catch (fetchErr) {
-        console.error(`Generic transfer fallback failed to fetch for topic '${topic}':`, fetchErr);
+        logger.error(null,`Generic transfer fallback failed to fetch for topic '${topic}':`, fetchErr);
         return res.status(404).json({ error: `No transfer scenarios available for topic: ${topic}. Fallback failed: ${fetchErr.message}` });
       }
     }
@@ -10885,7 +10895,7 @@ app.post('/transfer-api/check', express.json(), async (req, res) => {
           explanation = generateGenericExplanation(varTopic, originalQuestion, expectedAnswer);
         }
       } catch (checkErr) {
-        console.error(`Generic check call failed for topic ${varTopic}, falling back to compareAnswers:`, checkErr);
+        logger.error(null,`Generic check call failed for topic ${varTopic}, falling back to compareAnswers:`, checkErr);
         correct = compareAnswers(userAnswer, expectedAnswer);
         explanation = generateGenericExplanation(varTopic, originalQuestion, expectedAnswer);
       }
@@ -12274,6 +12284,76 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
       const unseen = pool.filter(q => !seenIds.has(q.id));
       const questions = unseen.length > 0 ? unseen : pool;
       const q = questions[Math.floor(Math.random() * questions.length)];
+      // Shuffle the MCQ choices per request so the user can't guess the
+      // answer by length/position. The check route matches by exact
+      // (normalized) text, so we keep `answer` as the literal correct text.
+      // Length-bias correction: when the correct option is the unique
+      // longest or unique shortest, pad the other options with neutral
+      // characters so length is no longer a giveaway. We add an invisible-
+      // looking suffix in parens (matches how some distractors are styled)
+      // to avoid visual oddity.
+      const correctText = q.correct_option;
+      const opts = Array.isArray(q.options) ? q.options.slice() : [];
+      // Detect if correct is unique-max or unique-min length
+      const lenOf = (s) => (s == null ? 0 : s.length);
+      const correctLen = lenOf(correctText);
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of opts) {
+        const l = lenOf(o);
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen;
+      const correctIsMin = correctLen === minLen;
+      // Padding strategy: bring all options within 1 char of median length,
+      // and ensure correct is not the unique longest/shortest.
+      const allLens = [correctLen, ...opts.map(lenOf)];
+      const median = allLens.slice().sort((a, b) => a - b)[Math.floor(allLens.length / 2)];
+      // Pad a candidate option to a target length using neutral filler
+      const pad = (s, target) => {
+        if (s == null || s.length >= target) return s;
+        const need = target - s.length;
+        // Use middle-dot `·` filler that reads like punctuation continuation;
+        // also pad with extra spaces if very short to keep the option block
+        // looking like a regular MCQ choice.
+        if (need <= 1) return s + ' ';
+        return s + ' (' + '·'.repeat(Math.max(0, need - 4)) + ')';
+      };
+      let paddedOpts = opts.slice();
+      if (correctIsMax && opts.length > 1) {
+        // Bring at least one distractor up to match (or exceed) the correct
+        // length so correct isn't the unique longest.
+        const target = correctLen;
+        // pick the distractor with the shortest length to pad
+        let minIdx = 0;
+        for (let i = 1; i < paddedOpts.length; i++) {
+          if (lenOf(paddedOpts[i]) < lenOf(paddedOpts[minIdx])) minIdx = i;
+        }
+        // Pad to AT LEAST target. Overhead for ' (·····)' wrapper is 3 chars
+        // (space + open-paren + close-paren), so filler length = need - 3.
+        const cur = paddedOpts[minIdx];
+        const need = Math.max(0, target - cur.length);
+        if (need > 0) {
+          const overhead = 3; // " (" + ")"
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            paddedOpts[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            // Need ≤ 3, just append spaces
+            paddedOpts[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      } else if (correctIsMin && opts.length > 1) {
+        // Bring at least one distractor down (truncate trailing filler)
+        // to match the correct length, but only if safe (i.e., correct
+        // isn't the only short one — meaning there's a longer distractor).
+        // Easiest: pad a shorter distractor UP, but correct is the
+        // shortest — pad is wrong direction. Instead, leave as-is: the
+        // user might guess from short length but that's a less reliable
+        // pattern than the longest.
+      }
+      // Shuffle after padding
+      const shuffled = shuffleArray(paddedOpts);
       return res.json({
         id,
         missionId,
@@ -12281,17 +12361,52 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
         type: 'mcq_' + q.id,
         answerType: 'mcq',
         prompt: q.question,
-        choices: q.options,
-        answer: q.correct_option,
-        display: q.correct_option,
+        choices: shuffled,
+        answer: correctText,
+        display: correctText,
         explanation: q.explanation,
       });
     }
     // Fallback to algorithmic generation
     const q = MQ(missionId, difficulty, seen);
+    // Shuffle MCQ choices so the user can't guess the answer by length/position.
+    // Check route (line 12303+) matches by exact (normalized) text, so we keep
+    // `answer`/`display` as literal correct text. Pad short distractors so the
+    // correct option is not the unique longest (length-bias correction).
+    if (q && Array.isArray(q.choices) && q.choices.length > 1) {
+      const correctText = q.answer || q.display || '';
+      const correctLen = (correctText || '').length;
+      let maxLen = correctLen, minLen = correctLen;
+      for (const o of q.choices) {
+        const l = (o || '').length;
+        if (l > maxLen) maxLen = l;
+        if (l < minLen) minLen = l;
+      }
+      const correctIsMax = correctLen === maxLen && maxLen > 0;
+      let padded = q.choices.slice();
+      if (correctIsMax) {
+        // pad the shortest distractor up to match (or exceed) correct length
+        let minIdx = 0;
+        for (let i = 1; i < padded.length; i++) {
+          if ((padded[i] || '').length < (padded[minIdx] || '').length) minIdx = i;
+        }
+        const cur = padded[minIdx] || '';
+        const need = Math.max(0, correctLen - cur.length);
+        if (need > 0) {
+          const overhead = 3;
+          const fillerLen = Math.max(0, need - overhead);
+          if (fillerLen > 0) {
+            padded[minIdx] = cur + ' (' + '·'.repeat(fillerLen) + ')';
+          } else {
+            padded[minIdx] = cur + ' '.repeat(need);
+          }
+        }
+      }
+      q.choices = shuffleArray(padded);
+    }
     res.json({ id, missionId, difficulty, ...q });
   } catch (e) {
-    console.error('Mission quiz question error:', e);
+    logger.error(null,'Mission quiz question error:', e);
     res.status(500).json({ error: 'Failed to generate question' });
   }
 });
@@ -12369,14 +12484,9 @@ const labRoutes = require('./labRoutes');
 app.use('/api', labRoutes);
 
 /**
- * CATCH-ALL ROUTE
- * ═══════════════════════════════════════════════════════════════════════════
- * Serves the React/Vue SPA index.html for all unmatched routes
- * Enables client-side routing to work properly
+ * CATCH-ALL ROUTE — moved to bottom of file (after all API routes)
+ * to avoid shadowing /<type>-api endpoints added later.
  */
-app.get(/.*/, (_req, res) => {
-  res.sendFile(path.join(clientDistPath, 'index.html'));
-});
 
 /**
  * POST /curiosity-api/variation
@@ -13021,13 +13131,197 @@ app.post('/curiosity-api/variation', (req, res) => {
 
     return res.json({ original: originalData, variation, newProblem, newAnswer, explanation });
   } catch (err) {
-    console.error('[curiosity-api] error:', err && err.stack ? err.stack : err);
+    logger.error(null,'[curiosity-api] error:', err && err.stack ? err.stack : err);
     return res.status(500).json({ error: 'internal error' });
   }
 });
 
+// ═══════════════════════════════════════════════════════════════════════════
+// MATRIX MYSTICS TEST QUESTIONS (matrixmystics-api)
+// ───────────────────────────────────────────────────────────────────────────
+// Comprehensive MCQ test bank covering 6 modules, 53 topics.
+// Each topic has 10 Easy + 10 Medium + 10 Hard + 5 Real-Application questions.
+// Questions are loaded from JSON files in linearalgebra/matrixmystics/.
+// ═══════════════════════════════════════════════════════════════════════════
+
+// fs and path already required at top of file
+
+// Flat bank: topicKey -> { module, topicId, title, mcqs, real_life_application }
+const mmQuestionBank = {};
+// Module index: moduleNumber -> [topicKey]
+const mmModules = {};
+
+function loadMatrixMysticsBank() {
+  const dir = path.join(__dirname, '..', 'linearalgebra', 'matrixmystics');
+  try {
+    const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+    let totalTopics = 0;
+    for (const file of files) {
+      try {
+        const data = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+        const mod = data.module || 0;
+        if (!mmModules[mod]) mmModules[mod] = [];
+        // Each file has { module, topics: [{ topicId, title, mcqs, real_life_application, ... }] }
+        const topics = Array.isArray(data.topics) ? data.topics : [];
+        for (const topic of topics) {
+          if (!topic.topicId) continue;
+          const topicKey = `${file.replace('.json', '')}_${topic.topicId}`;
+          mmQuestionBank[topicKey] = {
+            module: mod,
+            topicId: topic.topicId,
+            title: topic.title || '',
+            mcqs: topic.mcqs || {},
+            real_life_application: topic.real_life_application || [],
+          };
+          mmModules[mod].push(topicKey);
+          totalTopics++;
+        }
+      } catch (e) {
+        logger.error(null,`[matrixmystics] Failed to load ${file}:`, e.message);
+      }
+    }
+    console.log(`[matrixmystics] Loaded ${Object.keys(mmQuestionBank).length} topics across ${Object.keys(mmModules).length} modules (${totalTopics} topic entries)`);
+  } catch (e) {
+    logger.error(null,'[matrixmystics] Failed to read directory:', e.message);
+  }
+}
+
+loadMatrixMysticsBank();
+
+app.get('/matrixmystics-api/question', (req, res) => {
+  try {
+    const difficulty = req.query.difficulty || 'easy';
+    const module = req.query.module ? Number(req.query.module) : null;
+    const topic = req.query.topic || null;
+    const phase = req.query.phase || null; // 'realapp' to restrict to real_life_application tier
+    const seenParam = req.query.seen ? new Set(String(req.query.seen).split(',').filter(Boolean)) : null;
+    const diffKey = difficulty === 'extrahard' ? 'hard' : difficulty;
+
+    // Collect questions matching the filter
+    const candidates = [];
+    const keysToSearch = module && mmModules[module] ? mmModules[module] : Object.keys(mmQuestionBank);
+
+    const seenSet = seenParam;
+
+    for (const key of keysToSearch) {
+      const data = mmQuestionBank[key];
+      if (!data) continue;
+      if (topic && data.topicId !== topic) continue;
+      if (phase === 'realapp') {
+        // Real-life application pool only (used by Phase 2 of LA mission quiz)
+        const pool = data.real_life_application || [];
+        if (pool.length > 0) {
+          for (const q of pool) {
+            if (seenSet && seenSet.has(q.id)) continue;
+            candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+          }
+        }
+        continue;
+      }
+      const pool = data.mcqs && data.mcqs[diffKey];
+      if (pool && pool.length > 0) {
+        for (const q of pool) {
+          if (seenSet && seenSet.has(q.id)) continue;
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+      // Also include real_life_application at hard/extrahard tiers when not
+      // explicitly requesting Phase 2 — keeps backward compatibility for any
+      // existing matrixmystics-api callers.
+      if (phase !== 'realapp' && (diffKey === 'hard') && data.real_life_application && data.real_life_application.length > 0) {
+        for (const q of data.real_life_application) {
+          candidates.push({ ...q, _topic: data.topicId, _title: data.title, _module: data.module });
+        }
+      }
+    }
+
+    if (candidates.length === 0) {
+      return res.status(404).json({ error: 'No questions found for the given filters' });
+    }
+
+    const q = candidates[Math.floor(Math.random() * candidates.length)];
+
+    // Build 4-option shuffled MCQ
+    let options = Array.isArray(q.options) ? q.options : [];
+    if (options.length >= 4) {
+      const shuffled = shuffleArray(options.map((text, i) => ({ text, idx: i })));
+      const labels = ['A', 'B', 'C', 'D'];
+      options = shuffled.slice(0, 4).map((o, i) => ({ option: labels[i], text: String(o.text) }));
+      const correctIdx = shuffled.findIndex(o => String(o.text) === String(q.correct_option));
+      const correctOption = labels[correctIdx >= 0 ? correctIdx : 0];
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    // Fallback: build options from correct + remaining distractors
+    if (q.correct_option) {
+      const { options: opts, correctOption } = buildOptions(q.correct_option, options.filter(o => o !== q.correct_option));
+      return res.json({
+        id: q.id || `MM_${Date.now()}_${Math.random().toString(36).slice(2,6)}`,
+        difficulty: diffKey,
+        prompt: q.question,
+        options: opts,
+        correctOption,
+        correctDisplay: String(q.correct_option),
+        explanation: q.explanation || '',
+        topic: q._topic,
+        topicTitle: q._title,
+        module: q._module,
+      });
+    }
+
+    return res.status(500).json({ error: 'Question format error' });
+  } catch (err) {
+    logger.error(null,'[matrixmystics-api] error:', err);
+    return res.status(500).json({ error: 'internal error' });
+  }
+});
+
+app.post('/matrixmystics-api/check', express.json(), (req, res) => {
+  if (req.body && req.body.correctOption !== undefined) return mcCheck(req, res);
+  return res.status(400).json({ error: 'Missing correctOption in payload' });
+});
+
+app.get('/matrixmystics-api/stats', (req, res) => {
+  const stats = { totalTopics: Object.keys(mmQuestionBank).length, modules: {} };
+  for (const [mod, keys] of Object.entries(mmModules)) {
+    let total = 0;
+    for (const key of keys) {
+      const data = mmQuestionBank[key];
+      const m = data.mcqs || {};
+      total += (m.easy || []).length;
+      total += (m.medium || []).length;
+      total += (m.hard || []).length;
+      total += (data.real_life_application || []).length;
+    }
+    stats.modules[mod] = { topics: keys.length, questions: total };
+  }
+  res.json(stats);
+});
+
 /**
- * START SERVER
+ * CATCH-ALL ROUTE
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Serves the React/Vue SPA index.html for all unmatched routes.
+ * MUST be the last route — registered after all API endpoints so it does
+ * not shadow /<type>-api routes.
+ */
+app.get(/.*/, (_req, res) => {
+  res.sendFile(path.join(clientDistPath, 'index.html'));
+});
+
+/**
+ * START SERVER + BATTLE HANDLER
  * ═══════════════════════════════════════════════════════════════════════════
  * Attach Socket.IO to the same HTTP server as Express.
  * Connection limit: 500 concurrent sockets (safety cap).
@@ -13626,10 +13920,8 @@ function startSudokuRace(room) {
   room.sudokuRaceStart = Date.now();
   room.sudokuGrids = {};
   room.sudokuCompleted = {};
-  room.sudokuWrongCounts = {};
   for (const p of room.players) {
     room.sudokuGrids[p.socketId] = grid.map(row => [...row]);
-    room.sudokuWrongCounts[p.socketId] = 0;
   }
   io.to(room.code).emit('sudokuRaceStart', {
     puzzle: grid,
@@ -13881,25 +14173,11 @@ io.on('connection', (socket) => {
     const room = rooms.get(socket.roomCode);
     if (!room || room.state !== 'playing' || room.topic !== 'sudoku') return;
     if (!room.sudokuGrids?.[socket.id]) return;
-    if (room.sudokuCompleted[socket.id]) return;
     const num = Number(val);
-    if (r < 0 || r > 8 || c < 0 || c > 8 || isNaN(num) || num < 1 || num > 9) return;
+    if (r < 0 || r > 8 || c < 0 || c > 8 || isNaN(num) || num < 0 || num > 9) return;
     if (room.sudokuPuzzle[r][c] !== 0) return;
     room.sudokuGrids[socket.id][r][c] = num;
-    if (room.sudokuSolution[r][c] !== num) {
-      room.sudokuWrongCounts[socket.id] = (room.sudokuWrongCounts[socket.id] || 0) + 1;
-      socket.emit('cellResult', { correct: false, wrongCount: room.sudokuWrongCounts[socket.id] });
-      if (room.sudokuWrongCounts[socket.id] >= 5) {
-        room.sudokuCompleted[socket.id] = { time: Date.now() - room.sudokuRaceStart, tooManyWrong: true };
-        socket.emit('sudokuForcedEnd', { reason: 'tooManyWrong' });
-        socket.to(room.code).emit('opponentFinished', { playerId: socket.id, time: Date.now() - room.sudokuRaceStart });
-        if (Object.keys(room.sudokuCompleted).length >= 2) {
-          endSudokuRace(room);
-        }
-      }
-    } else {
-      socket.emit('cellResult', { correct: true, wrongCount: room.sudokuWrongCounts[socket.id] || 0 });
-    }
+    socket.to(room.code).emit('opponentCellUpdate', { r, c, val: num });
   });
 
   socket.on('sudokuComplete', () => {
@@ -13949,10 +14227,46 @@ io.on('connection', (socket) => {
   });
 });
 
+// Global error handler — catches anything an individual route didn't handle
+// itself (thrown errors, and in Express 5, rejected async handlers too).
+// Must be registered after all routes. Logs full detail server-side but
+// never leaks stack traces to the client.
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  logger.error('http', `${req.method} ${req.originalUrl} ->`, err);
+  if (res.headersSent) return;
+  res.status(err.status || 500).json({ error: 'Internal server error' });
+});
+
+// Loads the two large question sets concurrently (Promise.all lets their
+// internal per-file reads all overlap on libuv's thread pool, rather than
+// finishing the ~991 GK files, then starting the ~7,600 vocab files) and
+// assigns them into the module-level `questions`/`vocabQuestions` variables
+// that every route closure below already references by name.
+async function initData() {
+  const [loadedQuestions, loadedVocab] = await Promise.all([
+    loadJsonDir(questionsDir),
+    loadVocabAsync(),
+  ]);
+  questions = loadedQuestions;
+  vocabQuestions = loadedVocab;
+}
+
 if (require.main === module) {
-  httpServer.listen(PORT, '0.0.0.0', () => {
-    console.log(`Tenali app running on http://0.0.0.0:${PORT}`);
-  });
+  initData()
+    .then(() => {
+      httpServer.listen(PORT, '0.0.0.0', () => {
+        console.log(`Tenali app running on http://0.0.0.0:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      logger.error('startup', 'Failed to load question/vocab data:', err);
+      process.exit(1);
+    });
+} else {
+  // Required as a module (e.g. by tests) rather than run directly — still
+  // populate the data so route handlers work, without starting the listener.
+  initData().catch((err) => logger.error('startup', 'Failed to load question/vocab data:', err));
 }
 
 module.exports = app;

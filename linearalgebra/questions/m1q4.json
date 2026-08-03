@@ -23,9 +23,9 @@
         "question": "Does the line y = 2x + 1 pass through the origin (0,0)?",
         "options": [
           "No, because at x = 0, y = 1, not 0",
-          "Yes, all lines pass through the origin",
-          "Yes, because the slope is 2",
-          "Cannot be determined — does not match"
+          "all lines pass through the origin",
+          "because the slope is 2",
+          "Cant be determined — does t match"
         ],
         "correct_option": "No, because at x = 0, y = 1, not 0",
         "explanation": "Step 1: At (0,0): y = 2(0) + 1 = 1 ≠ 0. Step 2: The point (0,0) does not satisfy the equation. Step 3: The +1 constant shifts the line up by 1 unit, moving it away from the origin."
@@ -83,7 +83,7 @@
         "question": "For y = 2x + 1, what is the x-intercept (where y = 0)?",
         "options": [
           "x = -0.5",
-          "x = 0",
+          "x = 0 (xx)",
           "x = 0.5",
           "x = 1"
         ],
@@ -94,10 +94,10 @@
         "id": "M1Q4E8",
         "question": "Does y = 3x + 0 pass through the origin?",
         "options": [
-          "Yes, because b = 0                        ",
-          "No, because all lines with a constant miss...",
-          "Only if the slope is 1...                 ...",
-          "Cannot be determined — does not match     ..."
+          "Yes, because b = 0",
+          "because all lines with a constant miss",
+          "Only if the slope is 1...",
+          "Cant be determined — does t match"
         ],
         "correct_option": "Yes, because b = 0",
         "explanation": "Step 1: y = 3x + 0 simplifies to y = 3x. Step 2: At x = 0, y = 0. Step 3: When b = 0, the constant term vanishes and the line passes through the origin."
@@ -107,9 +107,9 @@
         "question": "In the equation y = 2x + 1, what physical scenario might the +1 represent?",
         "options": [
           "A starting amount or initial value before any change begins",
-          "A discount on purchases...                            ",
-          "A decrease over time — does not match                 ",
-          "The slope of the line...                              "
+          "A discount on purchases",
+          "A decrease over time — does t match",
+          "The slope of the line"
         ],
         "correct_option": "A starting amount or initial value before any change begins",
         "explanation": "Step 1: The +1 is the y-intercept — the value of y when x = 0. Step 2: In real-world contexts, x = 0 represents the starting point. Step 3: The +1 represents an initial value that exists before any variable input (time, distance, etc.) takes effect."
@@ -119,8 +119,8 @@
         "question": "What happens to the graph of y = 2x if you add +5 to get y = 2x + 5?",
         "options": [
           "The entire line shifts upward by 5 units",
-          "The slope increases to 5...",
-          "The line becomes horizontal",
+          "The slope increases to 5",
+          "The line becomes",
           "The line shifts to the right by 5 units"
         ],
         "correct_option": "The entire line shifts upward by 5 units",
@@ -133,9 +133,9 @@
         "question": "Why does y = 2x + 1 NOT pass through the origin, while y = 2x does?",
         "options": [
           "The +1 constant forces y = 1 when x = 0, so (0,0) is not on the line",
-          "The slope is different in both equations...                    ",
-          "Lines with odd intercepts never pass through the origin        ",
-          "Both equations actually pass through the origin...             "
+          "The slope is different in both equations",
+          "Lines with odd intercepts never pass through the origin",
+          "Both equations actually pass through the origin"
         ],
         "correct_option": "The +1 constant forces y = 1 when x = 0, so (0,0) is not on the line",
         "explanation": "Step 1: For y = 2x, at x = 0, y = 0 — origin is included. Step 2: For y = 2x + 1, at x = 0, y = 1 — origin is excluded. Step 3: The constant term is the sole reason the line is shifted off the origin."
@@ -145,9 +145,9 @@
         "question": "What does the y-intercept value of 25 in a taxi fare equation (y = 12x + 25) represent in real life?",
         "options": [
           "The base fare you pay before travelling any distance",
-          "The fare per kilometre...                      ",
-          "The total fare for a 25 km trip...             ",
-          "The distance you can travel for free...        "
+          "The fare per kilometre",
+          "The total fare for a 25 km trip",
+          "The distance you can travel for free"
         ],
         "correct_option": "The base fare you pay before travelling any distance",
         "explanation": "Step 1: The y-intercept is the fare at x = 0 km. Step 2: Even if you don't travel, you pay ₹25. Step 3: This base charge is why the line doesn't pass through the origin — you start in debt."
@@ -156,10 +156,10 @@
         "id": "M1Q4M3",
         "question": "A phone plan costs ₹199/month plus ₹1/extra minute. At 0 extra minutes, what is the total cost?",
         "options": [
-          "₹199              ",
-          "₹0 — not correct here",
-          "₹1 — not correct here",
-          "Cannot be determined"
+          "₹199",
+          "₹0 — t here",
+          "₹1 — t here",
+          "Cant be determined"
         ],
         "correct_option": "₹199",
         "explanation": "Step 1: The equation is y = 1x + 199. Step 2: At x = 0 extra minutes: y = 0 + 199 = 199. Step 3: The fixed monthly rental of ₹199 is the y-intercept — the minimum cost regardless of usage."
@@ -170,7 +170,7 @@
         "options": [
           "4 units",
           "2 units",
-          "1 unit",
+          "1 unit ()",
           "3 units"
         ],
         "correct_option": "4 units",
@@ -193,9 +193,9 @@
         "question": "Does the line y = -2x + 4 pass through the origin?",
         "options": [
           "No, because at x = 0, y = 4, not 0",
-          "Yes, because the slope is negative",
-          "Yes, because 4 is a small number",
-          "Cannot be determined"
+          "because the slope is negative",
+          "because 4 is a small number",
+          "Cant be determined"
         ],
         "correct_option": "No, because at x = 0, y = 4, not 0",
         "explanation": "Step 1: At x = 0: y = -2(0) + 4 = 4 ≠ 0. Step 2: The +4 shifts the line up, so it crosses the y-axis at (0,4). Step 3: The sign of the slope is irrelevant — only the constant term determines whether the origin is included."
@@ -217,9 +217,9 @@
         "question": "How many solutions does the system y = 2x + 1 and y = 2x - 3 have?",
         "options": [
           "Zero — the lines are parallel and never meet",
-          "Exactly one — does not match           ",
-          "Exactly two — does not match           ",
-          "Infinitely many — does not match       "
+          "Exactly one — does t match",
+          "Exactly two — does t match",
+          "Infinitely many — does t match"
         ],
         "correct_option": "Zero — the lines are parallel and never meet",
         "explanation": "Step 1: Both lines have slope 2 (parallel). Step 2: They have different y-intercepts (1 and -3). Step 3: Parallel lines with different intercepts never intersect, so there is no (x,y) that satisfies both equations."
@@ -229,9 +229,9 @@
         "question": "What does a negative y-intercept (e.g., y = 3x - 5) look like on a graph?",
         "options": [
           "The line crosses the y-axis below the origin at (0, -5)",
-          "The line crosses the y-axis above the origin      ",
-          "The line doesn't cross the y-axis...              ",
-          "The line is horizontal...                         "
+          "The line crosses the y-axis above the origin",
+          "The line doesn't cross the y-axis",
+          "The line is"
         ],
         "correct_option": "The line crosses the y-axis below the origin at (0, -5)",
         "explanation": "Step 1: The y-intercept is where x = 0: y = 3(0) - 5 = -5. Step 2: The point (0, -5) is below the origin on the y-axis. Step 3: A negative intercept shifts the line downward, while a positive intercept shifts it upward."
@@ -241,7 +241,7 @@
         "question": "The electricity bill has a fixed charge of ₹200 plus ₹8 per unit. If you use 0 units, what is your bill?",
         "options": [
           "₹200",
-          "₹0",
+          "₹0 (x)",
           "₹8",
           "₹192"
         ],
@@ -255,9 +255,9 @@
         "question": "Is the set S = {(x,y) : y = 2x + 1} a subspace of ℝ²?",
         "options": [
           "No: it does not contain the zero vector (0,0)",
-          "Yes: it is a straight line...           ",
-          "Yes: it is closed under addition        ",
-          "No: it is not a line — does not match"
+          "it is a straight line",
+          "it is closed under addition",
+          "it is t a line — does t match"
         ],
         "correct_option": "No: it does not contain the zero vector (0,0)",
         "explanation": "Step 1: Check zero vector: does 0 = 2(0) + 1? No, 0 ≠ 1. Step 2: A subspace must contain the zero vector. Step 3: Since (0,0) is not in S, it fails the first subspace condition. S is an affine subset (shifted line), not a vector subspace."
@@ -267,9 +267,9 @@
         "question": "Even though y = 2x + 1 is not a subspace, is it closed under addition? If (1,3) and (2,5) are both in S, is (3,8) in S?",
         "options": [
           "Yes: 8 = 2(3) + 1, so (3,8) is on the line — but this doesn't make S a subspace",
-          "No: (3,8) is not on the line...                                           ",
-          "Yes, and this makes S a subspace...                                       ",
-          "No, addition is not defined for points on a line...                       "
+          "(3,8) is t on the line",
+          "and this makes S a subspace",
+          "addition is t defined for points on a line"
         ],
         "correct_option": "Yes: 8 = 2(3) + 1, so (3,8) is on the line — but this doesn't make S a subspace",
         "explanation": "Step 1: (1,3) is on y = 2x + 1: 3 = 2(1) + 1 ✓. Step 2: (2,5) is on y = 2x + 1: 5 = 2(2) + 1 ✓. Step 3: Sum = (3, 8). Check: 8 = 2(3) + 1 = 7. Wait, 8 ≠ 7. Actually, this means the sum is NOT in S. The set is not closed under addition."
@@ -279,9 +279,9 @@
         "question": "If we subtract the y-intercept to get y' = y - 1, what happens to the equation y = 2x + 1?",
         "options": [
           "It becomes y' = 2x, which passes through the origin — this is the 'homogenization' trick",
-          "It becomes y' = 2x + 2...                                                          ",
-          "It becomes y' = x + 1...                                                           ",
-          "The equation cannot be simplified...                                               "
+          "It becomes y' = 2x + 2",
+          "It becomes y' = x + 1",
+          "The equation cant be simplified"
         ],
         "correct_option": "It becomes y' = 2x, which passes through the origin — this is the 'homogenization' trick",
         "explanation": "Step 1: Substitute y = y' + 1 into y = 2x + 1. Step 2: y' + 1 = 2x + 1, so y' = 2x. Step 3: This shifts the coordinate system so the line passes through the new origin — a technique used to convert affine problems into linear algebra problems."
@@ -291,8 +291,8 @@
         "question": "In the general form y = mx + b, what condition on m and b ensures the line passes through the origin?",
         "options": [
           "b = 0 (regardless of m)",
-          "m = 0 (incorrect)",
-          "m = b (incorrect)",
+          "m = 0)",
+          "m = b)",
           "m + b = 1"
         ],
         "correct_option": "b = 0 (regardless of m)",
@@ -304,8 +304,8 @@
         "options": [
           "Exactly one: the intersection point (3, 7)",
           "Zero: the lines are parallel",
-          "Infinitely many — does not match",
-          "Two solutions — does not match"
+          "Infinitely many — does t match",
+          "Two solutions — does t match"
         ],
         "correct_option": "Exactly one: the intersection point (3, 7)",
         "explanation": "Step 1: Set 2x + 1 = 3x - 2. Step 2: Solve: 1 + 2 = 3x - 2x → x = 3. Step 3: y = 2(3) + 1 = 7. The unique intersection is (3, 7). Different slopes guarantee exactly one solution."
@@ -327,9 +327,9 @@
         "question": "If T: ℝ² → ℝ² defined by T(x,y) = (2x + 1, 3y) is applied to the subspace y = 2x, is the image still a subspace?",
         "options": [
           "No, because T is not linear (the +1 breaks linearity)",
-          "Yes, because T preserves lines...               ",
-          "Yes, because the image contains the origin      ",
-          "Cannot be determined — does not match           "
+          "because T preserves lines",
+          "because the image contains the origin",
+          "Cant be determined — does t match"
         ],
         "correct_option": "No, because T is not linear (the +1 breaks linearity)",
         "explanation": "Step 1: T(0,0) = (1, 0) ≠ (0,0), so T doesn't map the zero vector to itself. Step 2: A linear transformation must satisfy T(0) = 0. Step 3: The +1 makes T an affine (not linear) transformation, so it doesn't necessarily preserve subspaces."
@@ -339,9 +339,9 @@
         "question": "What is the geometric interpretation of the y-intercept b in y = mx + b in terms of vector spaces?",
         "options": [
           "It represents a translation vector that shifts the subspace away from the origin",
-          "It is the direction vector of the line...                                  ",
-          "It determines the dimension of the space...                                ",
-          "It is the basis of the subspace...                                         "
+          "It is the direction vector of the line",
+          "It determines the dimension of the space",
+          "It is the basis of the subspace"
         ],
         "correct_option": "It represents a translation vector that shifts the subspace away from the origin",
         "explanation": "Step 1: y = mx is a subspace (line through origin). Step 2: y = mx + b is obtained by translating y = mx by b units vertically. Step 3: The intercept b acts as a translation vector, converting a subspace into an affine subset."
@@ -363,9 +363,9 @@
         "question": "In linear algebra, what is the difference between a 'linear equation' and a 'linear function' that passes through the origin?",
         "options": [
           "A linear equation y = mx + b can have b ≠ 0; a linear function (in the strict linear algebra sense) must satisfy f(0) = 0, i.e., b = 0",
-          "There is no difference...                                                                                                        ",
-          "A linear equation always passes through the origin...                                                                            ",
-          "A linear function cannot have a slope...                                                                                         "
+          "There is difference",
+          "A linear equation always passes through the origin",
+          "A linear function cant have a slope"
         ],
         "correct_option": "A linear equation y = mx + b can have b ≠ 0; a linear function (in the strict linear algebra sense) must satisfy f(0) = 0, i.e., b = 0",
         "explanation": "Step 1: In everyday math, 'linear' means degree-1: y = mx + b. Step 2: In linear algebra, a linear map must satisfy f(0) = 0 (additivity and homogeneity), which forces b = 0. Step 3: This is why y = 2x is a linear map but y = 2x + 1 is only affine — the +1 breaks the linearity conditions."
@@ -419,7 +419,7 @@
         "₹200 — the fixed monthly charge even with zero usage",
         "₹8 — the cost per unit",
         "₹208 — the total minimum bill",
-        "₹0 — there is no fixed charge"
+        "₹0 — there is fixed charge"
       ],
       "answer": "₹200 — the fixed monthly charge even with zero usage",
       "explanation": "Step 1: At x = 0 units: y = 8(0) + 200 = 200. Step 2: The ₹200 fixed charge is the y-intercept. Step 3: This is the minimum bill — you pay it regardless of how much electricity you actually consume."
@@ -434,9 +434,9 @@
       "question": "Does this tree growth line pass through the origin? Why or why not?",
       "options": [
         "No, because the sapling starts at 50 cm, not 0 cm",
-        "Yes, because all growth starts from zero",
-        "No, because trees don't grow linearly",
-        "Yes, because the slope is constant"
+        "because all growth starts from zero",
+        "because trees don't grow linearly",
+        "because the slope is constant"
       ],
       "answer": "No, because the sapling starts at 50 cm, not 0 cm",
       "explanation": "Step 1: At t = 0, height = 50 cm (not 0). Step 2: The y-intercept is 50, not 0. Step 3: The tree already has height when planted, so the growth line starts at (0, 50), not (0, 0)."

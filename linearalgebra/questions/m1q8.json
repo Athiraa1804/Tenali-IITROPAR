@@ -13,7 +13,7 @@
           "15",
           "25",
           "35",
-          "5"
+          "5 ()"
         ],
         "correct_option": "15",
         "explanation": "Step 1: Substitute x = 5 into f(x) = x² - 10. Step 2: f(5) = 5² - 10 = 25 - 10 = 15. Step 3: The point (5, 15) lies on the parabola."
@@ -23,7 +23,7 @@
         "question": "What is f(0) for f(x) = x² - 10?",
         "options": [
           "-10",
-          "0",
+          "0 (x)",
           "10",
           "1"
         ],
@@ -35,7 +35,7 @@
         "question": "What is f(3) for f(x) = x² - 10?",
         "options": [
           "-1",
-          "1",
+          "1 ()",
           "19",
           "7"
         ],
@@ -47,9 +47,9 @@
         "question": "Is f(5) = f(-5) for f(x) = x² - 10?",
         "options": [
           "Yes, because (-5)² = 25 = 5²",
-          "No, they give different values",
+          "they give different values",
           "Only if the function is linear",
-          "Cannot be determined"
+          "Cant be determined"
         ],
         "correct_option": "Yes, because (-5)² = 25 = 5²",
         "explanation": "Step 1: f(5) = 25 - 10 = 15. Step 2: f(-5) = (-5)² - 10 = 25 - 10 = 15. Step 3: Since squaring removes the sign, f(x) = f(-x) for all x — the parabola is symmetric about the y-axis."
@@ -84,7 +84,7 @@
         "options": [
           "(0, -10)",
           "(10, 0)",
-          "(0, 0)",
+          "(0, 0) (x)",
           "(-10, 0)"
         ],
         "correct_option": "(0, -10)",
@@ -107,9 +107,9 @@
         "question": "For f(x) = x² - 10, at what x-values does f(x) = 0?",
         "options": [
           "x = √10 and x = -√10 (approximately ±3.16)",
-          "x = 10 and x = -10 — does not match",
-          "x = 0 (incorrect)                    ",
-          "x = 5 and x = -5 — does not match"
+          "x = 10 and x = -10 — does t match",
+          "x = 0)",
+          "x = 5 and x = -5 — does t match"
         ],
         "correct_option": "x = √10 and x = -√10 (approximately ±3.16)",
         "explanation": "Step 1: Set x² - 10 = 0. Step 2: x² = 10, so x = ±√10 ≈ ±3.16. Step 3: These are the x-intercepts — where the parabola crosses the x-axis."
@@ -120,7 +120,7 @@
         "options": [
           "-18",
           "-20",
-          "0",
+          "0 (x)",
           "-10"
         ],
         "correct_option": "-18",
@@ -133,9 +133,9 @@
         "question": "The point (5, 15) lies on the parabola y = x² - 10. Is this the same as saying f(5) = 15?",
         "options": [
           "Yes — f(5) = 15 means the point (5, 15) is on the graph",
-          "No, they represent different things...            ",
-          "Only if the function is linear...                 ",
-          "Only if x = y — does not match                    "
+          "they represent different things",
+          "Only if the function is linear",
+          "Only if x = y — does t match"
         ],
         "correct_option": "Yes — f(5) = 15 means the point (5, 15) is on the graph",
         "explanation": "Step 1: f(5) = 15 means when input is 5, output is 15. Step 2: On a graph, this corresponds to the point (5, 15). Step 3: Function evaluation and plotting points are equivalent operations."
@@ -145,9 +145,9 @@
         "question": "Why is the parabola y = x² - 10 symmetric about the y-axis?",
         "options": [
           "Because f(x) = f(-x) for all x — squaring removes the sign",
-          "Because the vertex is at the origin...               ",
-          "Because all parabolas are symmetric...               ",
-          "Because -10 is negative...                           "
+          "Because the vertex is at the origin",
+          "Because all parabolas are symmetric",
+          "Because -10 is negative"
         ],
         "correct_option": "Because f(x) = f(-x) for all x — squaring removes the sign",
         "explanation": "Step 1: f(-x) = (-x)² - 10 = x² - 10 = f(x). Step 2: This means the function value is the same at x and -x. Step 3: The graph is a mirror image across the y-axis — this is called an even function."
@@ -157,9 +157,9 @@
         "question": "If g(x) = x² - 10 and h(x) = x² + 5, how do their graphs compare?",
         "options": [
           "Same shape (both parabolas opening upward), but h is shifted up by 15 units",
-          "Different shapes — does not match                                     ",
-          "Same position — does not match                                        ",
-          "h is narrower than g — does not match                                 "
+          "Different shapes — does t match",
+          "Same position — does t match",
+          "h is narrower than g — does t match"
         ],
         "correct_option": "Same shape (both parabolas opening upward), but h is shifted up by 15 units",
         "explanation": "Step 1: Both have the x² coefficient of 1 — same shape and width. Step 2: g has vertex at (0,-10), h has vertex at (0,5). Step 3: The constant difference of 15 means h is a vertical translation of g, shifted up by 15."
@@ -183,7 +183,7 @@
           "2100",
           "3000",
           "2700",
-          "30"
+          "30 (x)"
         ],
         "correct_option": "2100",
         "explanation": "Step 1: P(30) = -(30)² + 100(30) = -900 + 3000 = 2100. Step 2: The profit at 30 units is 2100. Step 3: The downward parabola shows profit increases then decreases — a common business pattern."
@@ -205,9 +205,9 @@
         "question": "As x increases from 0, does f(x) = x² - 10 increase or decrease initially?",
         "options": [
           "It increases (x² grows, making x² - 10 rise from -10)",
-          "It decreases — does not match                   ",
-          "It stays at -10 — does not match                ",
-          "It oscillates — does not match                  "
+          "It decreases — does t match",
+          "It stays at -10 — does t match",
+          "It oscillates — does t match"
         ],
         "correct_option": "It increases (x² grows, making x² - 10 rise from -10)",
         "explanation": "Step 1: At x = 0, f(0) = -10 (the minimum). Step 2: For x > 0, x² > 0 and increases. Step 3: Therefore x² - 10 increases from -10 as x increases from 0."
@@ -219,7 +219,7 @@
           "-10",
           "0",
           "10",
-          "No minimum"
+          "minimum"
         ],
         "correct_option": "-10",
         "explanation": "Step 1: x² ≥ 0 for all x. Step 2: Therefore x² - 10 ≥ -10 for all x. Step 3: The minimum occurs at x = 0, giving f(0) = -10. The parabola opens upward from this vertex."
@@ -241,9 +241,9 @@
         "question": "The ocean tide height follows h(t) = 2sin(t) + 5. What type of function models the tide — linear, quadratic, or trigonometric?",
         "options": [
           "Trigonometric (sine function)",
-          "Linear (incorrect)",
-          "Quadratic (incorrect)",
-          "Exponential — does not match"
+          "Linear)",
+          "Quadratic)",
+          "Exponential — does t match"
         ],
         "correct_option": "Trigonometric (sine function)",
         "explanation": "Step 1: The function uses sin(t), which is a trigonometric function. Step 2: Unlike linear or quadratic, trigonometric functions oscillate periodically. Step 3: The tide rises and falls in a wave pattern, making trigonometric functions the natural choice."
@@ -255,9 +255,9 @@
         "question": "For f(x) = x² - 10, is the function invertible over all real numbers?",
         "options": [
           "No — f(3) = f(-3) = -1, so it's not one-to-one",
-          "Yes, the inverse is √(x+10)...           ",
-          "Yes, every function has an inverse       ",
-          "Only for x ≥ 0 — does not match          "
+          "the inverse is √(x+10)",
+          "every function has an inverse",
+          "Only for x ≥ 0 — does t match"
         ],
         "correct_option": "No — f(3) = f(-3) = -1, so it's not one-to-one",
         "explanation": "Step 1: f(3) = 9 - 10 = -1 and f(-3) = 9 - 10 = -1. Step 2: Two different inputs give the same output — f is not one-to-one. Step 3: Non-one-to-one functions are not invertible over their full domain."
@@ -279,9 +279,9 @@
         "question": "The set V = {f: ℝ → ℝ : f(x) = ax² + b} is NOT a vector space. Why?",
         "options": [
           "Because the sum of two quadratic functions is quadratic (ok), but f(0) must be 0 for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
-          "Because quadratic functions can't be added...                                                                                                                             ",
-          "Because the set is finite...                                                                                                                                              ",
-          "Because parabolas don't pass through the origin...                                                                                                                        "
+          "Because quadratic functions can't be added",
+          "Because the set is finite",
+          "Because parabolas don't pass through the origin"
         ],
         "correct_option": "Because the sum of two quadratic functions is quadratic (ok), but f(0) must be 0 for the zero vector, which constrains b = 0 — and closure under addition fails for general a,b",
         "explanation": "Step 1: f₁(x) = x² - 10 and f₂(x) = -x² + 5 are both in V. Step 2: (f₁ + f₂)(x) = -5, which is a constant (degree 0), not degree 2. Step 3: The sum is not in V (not quadratic with degree exactly 2), so V is not closed under addition."
@@ -291,9 +291,9 @@
         "question": "For f(x) = x² - 10, what is the derivative f'(x), and what does it represent geometrically?",
         "options": [
           "f'(x) = 2x — the slope of the tangent line at any point x",
-          "f'(x) = x² — the area under the curve...            ",
-          "f'(x) = 2x - 10 — the shifted parabola...           ",
-          "f'(x) = 10 — the constant rate of change...         "
+          "f'(x) = x² — the area under the curve",
+          "f'(x) = 2x - 10 — the shifted parabola",
+          "f'(x) = 10 — the constant rate of change"
         ],
         "correct_option": "f'(x) = 2x — the slope of the tangent line at any point x",
         "explanation": "Step 1: The derivative of x² is 2x, and the derivative of -10 is 0. Step 2: f'(x) = 2x gives the instantaneous rate of change (slope) at any point. Step 3: At x = 0, the slope is 0 (vertex, horizontal tangent). At x = 5, slope = 10 (steep)."
@@ -304,7 +304,7 @@
         "options": [
           "20",
           "40",
-          "0",
+          "0 ()",
           "30"
         ],
         "correct_option": "20",
@@ -327,9 +327,9 @@
         "question": "For f(x) = x² - 10, the function values at x = 0, 1, 2, 3, 4 are -10, -9, -6, -1, 6. What pattern do you notice in the successive differences?",
         "options": [
           "The differences increase by 2 each time (1, 3, 5, 7) — characteristic of quadratics",
-          "The differences are constant...                                               ",
-          "The differences decrease...                                                   ",
-          "No pattern exists — does not match                                            "
+          "The differences are constant",
+          "The differences decrease",
+          "pattern exists — does t match"
         ],
         "correct_option": "The differences increase by 2 each time (1, 3, 5, 7) — characteristic of quadratics",
         "explanation": "Step 1: Differences: (-9)-(-10)=1, (-6)-(-9)=3, (-1)-(-6)=5, 6-(-1)=7. Step 2: Second differences: 3-1=2, 5-3=2, 7-5=2. Step 3: Constant second differences = 2 are the signature of a degree-2 (quadratic) function."
@@ -339,9 +339,9 @@
         "question": "Is the set S = {(x, y) : y = x² - 10} a subspace of ℝ²?",
         "options": [
           "No: it doesn't contain the origin, and it's not closed under addition",
-          "Yes: it's a curve in ℝ²...                                      ",
-          "Yes: because it passes through (0, -10)...                      ",
-          "Only for positive x-values...                                   "
+          "it's a curve in ℝ²",
+          "because it passes through (0, -10)",
+          "Only for positive x-values"
         ],
         "correct_option": "No: it doesn't contain the origin, and it's not closed under addition",
         "explanation": "Step 1: (0,0) is not in S since 0 ≠ 0² - 10 = -10. Step 2: Even if it contained the origin, sums of points on a parabola generally don't lie on the same parabola. Step 3: Parabolas are not linear objects — they cannot be vector subspaces."
@@ -351,7 +351,7 @@
         "question": "If f(x) = x² - 10 and g(x) = 2x + 3, what is (f ∘ g)(1)?",
         "options": [
           "-3",
-          "5",
+          "5 ()",
           "27",
           "-7"
         ],
@@ -363,9 +363,9 @@
         "question": "Can a polynomial of degree n have more than n real roots?",
         "options": [
           "No — the Fundamental Theorem of Algebra limits degree-n polynomials to at most n real roots",
-          "Yes, infinitely many — does not match                                                 ",
-          "Only if n is even — does not match                                                    ",
-          "Only if the polynomial is zero everywhere...                                          "
+          "infinitely many — does t match",
+          "Only if n is even — does t match",
+          "Only if the polymial is zero everywhere"
         ],
         "correct_option": "No — the Fundamental Theorem of Algebra limits degree-n polynomials to at most n real roots",
         "explanation": "Step 1: A degree-n polynomial can be factored into at most n linear factors over ℂ. Step 2: Over ℝ, some factors may be irreducible (complex roots). Step 3: Therefore at most n real roots exist — this is a fundamental result in algebra."

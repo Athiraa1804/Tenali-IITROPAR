@@ -13,7 +13,7 @@
           "a² - 10 = 54",
           "a² + 10 = 54",
           "2a - 10 = 54",
-          "a - 10 = 54"
+          "a - 10 = 54 (x)"
         ],
         "correct_option": "a² - 10 = 54",
         "explanation": "Step 1: f(a) = a² - 10 = 54. Step 2: This is the equation we need to solve. Step 3: Setting the function equal to 54 and solving for a gives us the input values that produce 54."
@@ -46,12 +46,12 @@
         "id": "M1Q9E4",
         "question": "Does f(8) = f(-8) for f(x) = x² - 10?",
         "options": [
-          "Yes, both equal 54",
-          "No, they give different values",
+          "both equal 54",
+          "they give different values",
           "Only for positive values",
-          "Cannot be determined"
+          "Cant be determined"
         ],
-        "correct_option": "Yes, both equal 54",
+        "correct_option": "both equal 54",
         "explanation": "Step 1: f(8) = 64 - 10 = 54. Step 2: f(-8) = 64 - 10 = 54. Step 3: Both inputs produce the same output — the parabola is symmetric."
       },
       {
@@ -59,9 +59,9 @@
         "question": "Why does the equation x² - 10 = 54 have TWO solutions?",
         "options": [
           "Because squaring both +8 and -8 gives the same result (64)",
-          "Because the equation is linear...                    ",
-          "Because 54 is a special number...                    ",
-          "Because the slope is positive...                     "
+          "Because the equation is linear",
+          "Because 54 is a special number",
+          "Because the slope is positive"
         ],
         "correct_option": "Because squaring both +8 and -8 gives the same result (64)",
         "explanation": "Step 1: 8² = 64 and (-8)² = 64. Step 2: Squaring erases the sign, so both ±8 satisfy a² = 64. Step 3: This is a fundamental property of quadratic equations — they can have two solutions."
@@ -71,9 +71,9 @@
         "question": "How many times does the horizontal line y = 54 intersect the parabola y = x² - 10?",
         "options": [
           "Exactly twice (at x = 8 and x = -8)",
-          "Once (incorrect)              ",
-          "Never (incorrect)             ",
-          "Infinitely many times         "
+          "Once)",
+          "Never)",
+          "Infinitely many times"
         ],
         "correct_option": "Exactly twice (at x = 8 and x = -8)",
         "explanation": "Step 1: The line y = 54 crosses the parabola where x² - 10 = 54. Step 2: x² = 64, so x = ±8. Step 3: Two intersection points means two solutions."
@@ -83,9 +83,9 @@
         "question": "Can a linear equation like 3x + 2 = 17 have two solutions?",
         "options": [
           "No — a linear equation has at most one solution",
-          "Yes, always two — does not match          ",
-          "Only if the slope is zero...              ",
-          "Only for negative coefficients...         "
+          "always two — does t match",
+          "Only if the slope is zero",
+          "Only for negative coefficients"
         ],
         "correct_option": "No — a linear equation has at most one solution",
         "explanation": "Step 1: 3x + 2 = 17 → 3x = 15 → x = 5 (unique). Step 2: Linear equations have a constant slope, so the line crosses any horizontal line at most once. Step 3: Only non-linear equations (like quadratics) can have multiple solutions."
@@ -107,9 +107,9 @@
         "question": "For f(x) = x² - 10, is f a one-to-one function?",
         "options": [
           "No, because f(8) = f(-8) = 54 — two inputs give the same output",
-          "Yes, every output has exactly one input...                ",
-          "Only for positive x — does not match                      ",
-          "It depends on the value of 54...                          "
+          "every output has exactly one input",
+          "Only for positive x — does t match",
+          "It depends on the value of 54"
         ],
         "correct_option": "No, because f(8) = f(-8) = 54 — two inputs give the same output",
         "explanation": "Step 1: f(8) = 54 and f(-8) = 54. Step 2: Two different inputs produce the same output. Step 3: This violates the one-to-one (injective) condition, so f is NOT one-to-one."
@@ -119,9 +119,9 @@
         "question": "Does f(x) = x² - 10 have an inverse function over all real numbers?",
         "options": [
           "No, because f is not one-to-one over all reals",
-          "Yes, the inverse is √(x+10)...           ",
-          "Yes, every function has an inverse       ",
-          "Only for x > 0 — does not match          "
+          "the inverse is √(x+10)",
+          "every function has an inverse",
+          "Only for x > 0 — does t match"
         ],
         "correct_option": "No, because f is not one-to-one over all reals",
         "explanation": "Step 1: Since f(8) = f(-8), the function maps two inputs to one output. Step 2: An inverse would need to map 54 back to both 8 and -8, which is not a function. Step 3: Non-one-to-one functions do not have inverses over their full domain."
@@ -133,9 +133,9 @@
         "question": "The parabola y = x² - 10 is symmetric. If f(8) = 54, what else must be true?",
         "options": [
           "f(-8) = 54 (symmetric point across y-axis)",
-          "f(8) = -54 (incorrect)               ",
-          "f(-8) = -54 — does not match         ",
-          "f(54) = 8 (incorrect)                "
+          "f(8) = -54)",
+          "f(-8) = -54 — does t match",
+          "f(54) = 8)"
         ],
         "correct_option": "f(-8) = 54 (symmetric point across y-axis)",
         "explanation": "Step 1: The parabola is symmetric about x = 0. Step 2: x = 8 and x = -8 are equidistant from the axis of symmetry. Step 3: Symmetric points have the same y-value, so f(-8) = f(8) = 54."
@@ -144,9 +144,9 @@
         "id": "M1Q9M2",
         "question": "How many intersection points does the horizontal line y = k have with y = x² - 10 when k > -10?",
         "options": [
-          "Exactly 2             ",
-          "Exactly 1 (incorrect)",
-          "0 — not correct here",
+          "Exactly 2",
+          "Exactly 1)",
+          "0 — t here",
           "Depends on the value of k"
         ],
         "correct_option": "Exactly 2",
@@ -169,9 +169,9 @@
         "question": "Does the parabola y = x² - 10 intersect y = -10?",
         "options": [
           "Yes, at exactly one point: the vertex (0, -10)",
-          "At two points — does not match           ",
-          "Never (incorrect)                        ",
-          "At infinitely many points...             "
+          "At two points — does t match",
+          "Never)",
+          "At infinitely many points"
         ],
         "correct_option": "Yes, at exactly one point: the vertex (0, -10)",
         "explanation": "Step 1: Set x² - 10 = -10. Step 2: x² = 0, so x = 0. Step 3: The only intersection is at the vertex (0, -10) — the horizontal line y = -10 is tangent to the parabola at its minimum."
@@ -182,8 +182,8 @@
         "options": [
           "The ball is at 54 m twice — once going up, once coming down",
           "The ball is at two different heights at the same time",
-          "The ball never reaches 54 m...                        ",
-          "There is an error in the calculation...               "
+          "The ball never reaches 54 m",
+          "There is an error in the calculation"
         ],
         "correct_option": "The ball is at 54 m twice — once going up, once coming down",
         "explanation": "Step 1: The parabola of height vs time is symmetric about the peak. Step 2: Any height below the maximum is reached at two different times. Step 3: The ball passes through 54 m on the way up and again on the way down."
@@ -193,9 +193,9 @@
         "question": "If f(x) = x² - 10, and we restrict the domain to x ≥ 0, is the restricted function one-to-one?",
         "options": [
           "Yes — on x ≥ 0, the function is strictly increasing, so each output comes from exactly one input",
-          "No, it's still not one-to-one...                                                           ",
-          "Only for x > 10 — does not match                                                           ",
-          "Only if the range is restricted too...                                                     "
+          "it's still t one-to-one",
+          "Only for x > 10 — does t match",
+          "Only if the range is restricted too"
         ],
         "correct_option": "Yes — on x ≥ 0, the function is strictly increasing, so each output comes from exactly one input",
         "explanation": "Step 1: For x ≥ 0, as x increases, x² increases, so f(x) increases. Step 2: Strictly increasing functions never produce the same output twice. Step 3: The restricted function is one-to-one, so it CAN be inverted on this domain."
@@ -218,7 +218,7 @@
         "options": [
           "Two distinct real solutions",
           "One solution",
-          "No real solutions",
+          "real solutions",
           "Infinitely many"
         ],
         "correct_option": "Two distinct real solutions",
@@ -241,9 +241,9 @@
         "question": "What does it mean geometrically that the parabola y = x² - 10 intersects y = 54 at two points?",
         "options": [
           "The horizontal line y = 54 cuts through the parabola at two symmetric locations",
-          "The line is tangent to the parabola...                                    ",
-          "The parabola has two vertices...                                          ",
-          "The two curves are parallel...                                            "
+          "The line is tangent to the parabola",
+          "The parabola has two vertices",
+          "The two curves are parallel"
         ],
         "correct_option": "The horizontal line y = 54 cuts through the parabola at two symmetric locations",
         "explanation": "Step 1: y = 54 is a horizontal line above the vertex. Step 2: The upward-opening parabola crosses this line on both sides of the axis of symmetry. Step 3: The two intersection points are mirror images, at x = 8 and x = -8."
@@ -255,9 +255,9 @@
         "question": "If f(x) = x² - 10 is not invertible over all reals, but f|_{x≥0} (restricted to x ≥ 0) IS invertible, what is the domain and range of the restricted inverse?",
         "options": [
           "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to non-negative inputs)",
-          "Domain: all reals, Range: all reals...                             ",
-          "Domain: x > 0, Range: x > 10...                                    ",
-          "The restricted inverse doesn't exist...                            "
+          "Domain: all reals, Range: all reals",
+          "Domain: x > 0, Range: x > 10",
+          "The restricted inverse doesn't exist"
         ],
         "correct_option": "Domain: x ≥ -10, Range: x ≥ 0 (inverse maps back to non-negative inputs)",
         "explanation": "Step 1: f maps [0, ∞) to [-10, ∞). Step 2: f⁻¹ maps [-10, ∞) back to [0, ∞). Step 3: Domain of f⁻¹ = range of f = [-10, ∞). Range of f⁻¹ = domain of f = [0, ∞)."
@@ -267,9 +267,9 @@
         "question": "In terms of linear algebra, why does the quadratic f(x) = x² - 10 fail the invertibility test that linear functions like g(x) = 3x + 2 pass?",
         "options": [
           "Because f is non-linear (degree 2), so its derivative changes sign, making it non-monotonic — unlike linear functions which are always monotonic",
-          "Because f has a negative constant...                                                                                                       ",
-          "Because the coefficient of x² is 1...                                                                                                      ",
-          "Because f passes through negative values...                                                                                                "
+          "Because f has a negative constant",
+          "Because the coefficient of x² is 1",
+          "Because f passes through negative values"
         ],
         "correct_option": "Because f is non-linear (degree 2), so its derivative changes sign, making it non-monotonic — unlike linear functions which are always monotonic",
         "explanation": "Step 1: Linear functions with non-zero slope are strictly monotonic (always increasing or always decreasing). Step 2: f(x) = x² - 10 decreases for x < 0 and increases for x > 0 — not monotonic. Step 3: Non-monotonic functions cannot be one-to-one, hence not invertible over their full domain."
@@ -279,9 +279,9 @@
         "question": "The fundamental theorem of algebra says a degree-n polynomial has exactly n roots (counting multiplicity, in ℂ). For x² - 64 = 0, how many roots exist?",
         "options": [
           "Exactly 2: x = 8 and x = -8 (both real)",
-          "Exactly 1: x = 8 — does not match",
-          "Exactly 0 (incorrect)             ",
-          "Infinitely many — does not match"
+          "Exactly 1: x = 8 — does t match",
+          "Exactly 0)",
+          "Infinitely many — does t match"
         ],
         "correct_option": "Exactly 2: x = 8 and x = -8 (both real)",
         "explanation": "Step 1: x² - 64 is degree 2. Step 2: By the fundamental theorem, it has exactly 2 roots in ℂ. Step 3: Both roots (8 and -8) happen to be real, so both appear as x-intercepts of the graph."
@@ -291,9 +291,9 @@
         "question": "If we view the equation x² - 64 = 0 as finding the kernel of a non-linear operator, what is the geometric interpretation?",
         "options": [
           "The x-intercepts of the parabola — points where the function maps to zero",
-          "The y-intercept — does not match                                    ",
-          "The vertex of the parabola...                                       ",
-          "The axis of symmetry — does not match                               "
+          "The y-intercept — does t match",
+          "The vertex of the parabola",
+          "The axis of symmetry — does t match"
         ],
         "correct_option": "The x-intercepts of the parabola — points where the function maps to zero",
         "explanation": "Step 1: f(x) = 0 means the function maps x to zero. Step 2: These are the roots/zeros of the function. Step 3: Geometrically, they are the x-intercepts — where the parabola crosses the x-axis."
@@ -303,9 +303,9 @@
         "question": "For a quadratic y = ax² + bx + c with a > 0, under what condition does the horizontal line y = k intersect the parabola at two points?",
         "options": [
           "When k is strictly greater than the minimum value (vertex y-coordinate)",
-          "When k = 0 (incorrect)                                            ",
-          "For all values of k — does not match                              ",
-          "When k < 0 (incorrect)                                            "
+          "When k = 0)",
+          "For all values of k — does t match",
+          "When k < 0)"
         ],
         "correct_option": "When k is strictly greater than the minimum value (vertex y-coordinate)",
         "explanation": "Step 1: The vertex is the minimum point when a > 0. Step 2: A horizontal line above the vertex cuts the upward-opening parabola twice. Step 3: At the vertex height, there's exactly one intersection (tangent). Below the vertex, there are none."
@@ -315,9 +315,9 @@
         "question": "If f(x) = x² - 10 and g(x) = x² - 10 restricted to x ≥ 0, what is the relationship between the ranges of f and g?",
         "options": [
           "f: ℝ → [-10, ∞) and g: [0,∞) → [-10, ∞) — same range, different domains",
-          "Different ranges — does not match                                 ",
-          "f has no range — does not match                                   ",
-          "g has a larger range — does not match                             "
+          "Different ranges — does t match",
+          "f has range — does t match",
+          "g has a larger range — does t match"
         ],
         "correct_option": "f: ℝ → [-10, ∞) and g: [0,∞) → [-10, ∞) — same range, different domains",
         "explanation": "Step 1: f takes all real x and produces all values ≥ -10. Step 2: g takes only x ≥ 0 and also produces all values ≥ -10. Step 3: The range is the same [-10, ∞) because the right half of the parabola alone covers all y ≥ -10."
@@ -327,9 +327,9 @@
         "question": "The two solutions x = 8 and x = -8 of x² = 64 are symmetric about x = 0. In general, for x² = k (k > 0), the solutions are:",
         "options": [
           "x = √k and x = -√k, symmetric about x = 0",
-          "x = k and x = -k — does not match",
-          "x = √k only — does not match",
-          "x = k² and x = -k² — does not match"
+          "x = k and x = -k — does t match",
+          "x = √k only — does t match",
+          "x = k² and x = -k² — does t match"
         ],
         "correct_option": "x = √k and x = -√k, symmetric about x = 0",
         "explanation": "Step 1: x² = k means x = ±√k. Step 2: √k and -√k are equidistant from 0. Step 3: This symmetry about x = 0 is a direct consequence of the even nature of x²."
@@ -339,9 +339,9 @@
         "question": "In a quadratic regression model y = ax² + bx + c fitting real data, having two x-values for the same y-value means:",
         "options": [
           "The model predicts the same outcome at two different input values — a non-unique mapping",
-          "The model is always linear...                                                      ",
-          "The data is perfectly symmetric...                                                 ",
-          "The model has no real solutions...                                                 "
+          "The model is always linear",
+          "The data is perfectly symmetric",
+          "The model has real solutions"
         ],
         "correct_option": "The model predicts the same outcome at two different input values — a non-unique mapping",
         "explanation": "Step 1: If y = ax² + bx + c gives the same y for two x-values, the model is not one-to-one. Step 2: This means knowing the output doesn't uniquely determine the input. Step 3: In practice, this could indicate an optimal input value (vertex) with symmetrical performance on either side."
@@ -351,9 +351,9 @@
         "question": "Consider the set V = {f : ℝ → ℝ | f(x) = ax² + bx + c, a,b,c ∈ ℝ}. Is V closed under addition?",
         "options": [
           "Yes — the sum of two degree-≤2 polynomials is still degree ≤ 2",
-          "No — adding two quadratics can give degree 4...          ",
-          "Only if both have the same a value...                    ",
-          "Only for c = 0 — does not match                          "
+          "— adding two quadratics can give degree 4",
+          "Only if both have the same a value",
+          "Only for c = 0 — does t match"
         ],
         "correct_option": "Yes — the sum of two degree-≤2 polynomials is still degree ≤ 2",
         "explanation": "Step 1: (a₁x² + b₁x + c₁) + (a₂x² + b₂x + c₂) = (a₁+a₂)x² + (b₁+b₂)x + (c₁+c₂). Step 2: The sum is still degree ≤ 2. Step 3: V is closed under addition (and scalar multiplication), making it a 3-dimensional vector space."
@@ -363,9 +363,9 @@
         "question": "Why can't a parabola y = x² - 10 be a level set of a linear function?",
         "options": [
           "Because linear functions have straight level sets (lines), not curved parabolas",
-          "Because the constant is -10...                                            ",
-          "Because the coefficient is 1...                                           ",
-          "Because it passes through negative values...                              "
+          "Because the constant is -10",
+          "Because the coefficient is 1",
+          "Because it passes through negative values"
         ],
         "correct_option": "Because linear functions have straight level sets (lines), not curved parabolas",
         "explanation": "Step 1: A linear function f(x,y) = ax + by + c has level sets that are straight lines. Step 2: y = x² - 10 is a curve (parabola), not a straight line. Step 3: Parabolas arise from non-linear (quadratic) functions, not linear ones."

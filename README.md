@@ -496,12 +496,15 @@ Five-step recipe:
 ## 🌐 Deployment Topology
 
 ```
-tenali.fun (DNS → 143.110.241.156)
+tenali.fun (DNS → <production IP — redacted from public docs>)
   └── Nginx (SSL via Let's Encrypt)
         └── proxy_pass http://127.0.0.1:4000
               └── tenali.service (systemd, runs as tenali user)
                     └── node /home/tenali/tenali/server/index.js
 ```
+
+> 🔒 **Security note:** The droplet IP, SSH host, and admin SSH credentials live only in
+> GitHub Actions secrets (`SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`) — never committed to source.
 
 ---
 
@@ -549,8 +552,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 <!-- live-rank:end -->
 
-> 🥷 **Bonus contributor — not on the GitHub contributor graph but credited in git history:**
-> - **shubh dixit** · [@Shubhdix9](https://github.com/Shubhdix9) · **15 commits** · Premium Core Educational Suite (UI standardization, dark theme, crossword + word search games, `InteractiveLcmHcfApp`)
+
 
 ### 🪪 Contributor Cards — Profile, Real Name & Features
 

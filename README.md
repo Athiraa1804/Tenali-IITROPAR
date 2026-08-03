@@ -4,7 +4,7 @@
 
 # 🧠 Tenali — Adaptive Math Quiz Platform
 
-### *An advanced, AI-style adaptive learning platform featuring interactive puzzles in Mathematics, Logic, and General Knowledge.*
+### *An advanced,  adaptive learning platform featuring interactive puzzles in Mathematics, Logic, and General Knowledge.*
 
 <p>
   <a href="https://tenali.fun"><img src="https://img.shields.io/badge/Live-tenali.fun-FF6B6B?style=for-the-badge&logo=globe&logoColor=white" alt="Live"/></a>
@@ -1042,18 +1042,12 @@ Every merged PR bumps your spot in the leaderboard 🏅
 
 ---
 
-## 📜 License
-
-Released under the **MIT License** — see [`LICENSE`](LICENSE) for details.
-
----
 
 <div align="center">
 
 **Built with ❤️ by the Tenali community**
 
-[🌐 tenali.fun](https://tenali.fun) · [🐛 Report a Bug](https://github.com/muditagrawal2007/Tenali_123/issues)
-
+[🌐 tenali.fun](https://tenali.fun) ·
 <sub>⭐ If Tenali helps your classroom or your kids, drop a star — it fuels the next release.</sub>
 
 </div>

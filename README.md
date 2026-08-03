@@ -78,7 +78,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>721</b><br/><sub>commits</sub></td>
+      <td align="center"><b>722</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
@@ -521,7 +521,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **721** | **44** | **17** | **69** | **7,662** | **991** |
+| **722** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -532,7 +532,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect & Curriculum Author |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **122** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **122** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **J. Gupta**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
@@ -594,14 +594,19 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🏆 122 commits · 9 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>🥈 Repo Owner · Battle Arena · Linear Algebra</h4>
+        <h4>🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground</h4>
         <ul>
           <li>⚔️ <b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO</li>
           <li>🧮 <b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b></li>
+          <li>🔢 <b>Sudoku (<code>SudokuApp.jsx</code>)</b> — 9×9 puzzle generator, validator, and player UI</li>
+          <li>💻 <b>Code Playground</b> — run code in <b>50+ languages</b> via Judge0 CE, plus Python-Tutor-style visualizer with code + arrow + memory boxes</li>
+          <li>🎨 <b>Playground live preview</b> — HTML/CSS/JS live preview, dark terminal output, language categories, history with View Code / Load buttons</li>
+          <li>🛡️ <b>Proctoring suite</b> — Dashboard, FloatingVideo, Picture-in-Picture, face-api.js + CompreFace Docker setup, speech-to-text transcripts</li>
+          <li>🧠 <b>Math Riddles</b> — 48 riddles (find-rule, sequence, logic, image) + <code>/riddle</code> pathname route</li>
           <li>🐛 <b>React hook violation fixes</b> — UI stability across the main <code>App</code> component</li>
           <li>🔀 <b>Merge integration</b> — merged <code>vicharanashala/main</code> 5× to keep the fork in sync</li>
           <li>🛡️ <b>Admin-only Proctor endpoints</b> — secured <code>/api/proctor/*</code> with <code>requireAdmin</code></li>
-          <li>🧹 <b>Component-wide lint fixes</b> — 20+ components cleaned up</li>
+          <li>🧹 <b>Component-wide lint fixes</b> — 20+ components cleaned up across the codebase</li>
           <li>📦 <b>PRs merged:</b> #10, #19, #39, #41, #44, #48, #81, #84</li>
         </ul>
       </td>

@@ -79,8 +79,8 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>729</b><br/><sub>commits</sub></td>
-      <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
+      <td align="center"><b>780</b><br/><sub>commits</sub></td>
+      <td align="center"><b>60</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>18</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
       <td align="center"><b>🍴 58</b><br/><sub>forks</sub></td>
@@ -523,7 +523,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **729** | **44** | **18** | **69** | **7,662** | **991** |
+| **780** | **60** | **18** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -534,8 +534,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **135** | 9  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
-| 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | Upstream Repo Maintainer & PR Reviewer |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **161** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |

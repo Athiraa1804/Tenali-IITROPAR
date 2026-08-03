@@ -531,7 +531,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Top Features |
 |--:|:-------------|:-------------|----------:|-----:|:----------------|
 | 🥇 | **S. R. S. Iyengar** *(Sudarshan)* | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | Lead Architect & Curriculum Author |
-| 🥈 | **muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **119** | 9  | Repo Owner · Battle Arena · Linear Algebra |
+| 🥈 | **MUDIT AGRAWAL muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **119** | 9  | Repo Owner · Battle Arena · Linear Algebra |
 | 🥉 | **jgupta05072003-code** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **24F3005086** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
@@ -590,7 +590,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🏆 117 commits · 7 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>🥈 Repo Owner · Battle Arena · Linear Algebra</h4>
+        <h4>🥈· Battle Arena · Linear Algebra</h4>
         <ul>
           <li>⚔️ <b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO</li>
           <li>🧮 <b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b></li>

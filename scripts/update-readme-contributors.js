@@ -34,6 +34,7 @@ const REPO = process.env.TENALI_REPO || 'vicharanashala/tenali';
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const README = path.resolve(PROJECT_ROOT, 'README.md');
 const CONTRIBUTORS = path.resolve(PROJECT_ROOT, 'CONTRIBUTORS.md');
+const CHANGELOG = path.resolve(PROJECT_ROOT, 'CHANGELOG.md');
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const TOKEN = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || '';
@@ -122,6 +123,98 @@ function gatherGitLog() {
     prsByAuthor[user].add(num);
   });
 
+  // Full commit list — used to power the auto-generated CHANGELOG.md
+  // Two parallel streams:
+  //   1. Metadata per commit: sha, shortSha, author, date, subject
+  //   2. File stats per commit: which files were touched, +/− line counts
+  // These are joined by sha so each commit object carries its full stats.
+  const commits = sh(`git log --pretty=format:"%H|%h|%an|%ae|%ad|%s" --date=short`)
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => {
+      const [sha, shortSha, author, email, date, ...rest] = line.split('|');
+      return {
+        sha,
+        shortSha,
+        author,
+        // Email is intentionally stripped from the rendered output
+        email,
+        date,
+        subject: rest.join('|'),
+        filesChanged: [],
+        insertions: 0,
+        deletions: 0,
+      };
+    });
+
+  // Per-commit file stats via `git log --numstat`.
+  // Output format:
+  //   COMMIT:<full-sha>
+  //   <added>\t<removed>\t<file>
+  //   <added>\t<removed>\t<file>
+  //   ...
+  //   COMMIT:<full-sha>
+  // We walk the stream once and bucket lines per commit.
+  const statBySha = {};
+  let currentSha = null;
+  const numstatOutput = sh(`git log --pretty=format:"COMMIT:%H" --numstat --no-merges`);
+  for (const rawLine of numstatOutput.split('\n')) {
+    if (rawLine.startsWith('COMMIT:')) {
+      currentSha = rawLine.slice('COMMIT:'.length).trim();
+      if (currentSha && !statBySha[currentSha]) {
+        statBySha[currentSha] = { files: [], add: 0, del: 0 };
+      }
+      continue;
+    }
+    if (!currentSha || !rawLine.trim()) continue;
+    const [add, del, file] = rawLine.split('\t');
+    const a = parseInt(add, 10);
+    const d = parseInt(del, 10);
+    if (Number.isNaN(a) || Number.isNaN(d)) continue; // binary files show "-\t-\t"
+    if (!statBySha[currentSha]) continue;
+    statBySha[currentSha].files.push({ file, additions: a, deletions: d });
+    statBySha[currentSha].add += a;
+    statBySha[currentSha].del += d;
+  }
+
+  // Merge stats into commit objects
+  for (const c of commits) {
+    const s = statBySha[c.sha];
+    if (s) {
+      c.filesChanged = s.files;
+      c.insertions = s.add;
+      c.deletions = s.del;
+    }
+  }
+
+  // Capture commit body (multi-line message after the subject) — used as a
+  // quoted block under each commit so the "why" is preserved alongside the "what".
+  // Format from `git log`: subject on first line, body on subsequent lines.
+  const bodyBySha = {};
+  let bodySha = null;
+  const bodyBuffer = [];
+  const bodyOutput = sh(`git log --pretty=format:"COMMIT:%H%nSUBJECT:%s" --date=short`);
+  for (const rawLine of bodyOutput.split('\n')) {
+    if (rawLine.startsWith('COMMIT:')) {
+      if (bodySha && bodyBuffer.length > 0) {
+        bodyBySha[bodySha] = bodyBuffer.join('\n').trim();
+      }
+      bodySha = rawLine.slice('COMMIT:'.length).trim();
+      bodyBuffer.length = 0;
+      continue;
+    }
+    if (rawLine.startsWith('SUBJECT:')) continue;
+    if (rawLine.trim()) bodyBuffer.push(rawLine);
+  }
+  if (bodySha && bodyBuffer.length > 0) {
+    bodyBySha[bodySha] = bodyBuffer.join('\n').trim();
+  }
+
+  // Attach bodies to commits
+  for (const c of commits) {
+    if (bodyBySha[c.sha]) c.body = bodyBySha[c.sha];
+  }
+
   return {
     totalCommits: total,
     uniqueAuthors: authorCount,
@@ -131,6 +224,7 @@ function gatherGitLog() {
     ),
     totalPRs: allPRs.size,
     allPRNumbers: [...allPRs].sort((a, b) => +a - +b),
+    commits,
   };
 }
 
@@ -743,6 +837,156 @@ function renderCards(rows) {
   return rows.map(renderCard).join('\n\n');
 }
 
+// ─── CHANGELOG rendering ────────────────────────────────────────────────────
+
+// Map conventional commit prefix → emoji + label
+const COMMIT_TYPE_ICONS = {
+  feat: '✨', feature: '✨',
+  fix: '🐛', bugfix: '🐛',
+  docs: '📝', doc: '📝',
+  chore: '🔧',
+  refactor: '♻️',
+  style: '💄',
+  test: '🧪', tests: '🧪',
+  perf: '⚡',
+  build: '📦',
+  ci: '👷',
+  revert: '⏪',
+  merge: '🔀',
+  init: '🎉',
+  release: '🚀',
+};
+
+function commitTypeIcon(subject) {
+  const m = String(subject || '').toLowerCase().match(/^([a-z]+)(?:\(.*?\))?!?:/);
+  if (!m) return '📌'; // default for non-conventional commits
+  return COMMIT_TYPE_ICONS[m[1]] || '📌';
+}
+
+// Parse "Merge pull request #N from <user>/<branch>" → PR info
+function parseMergeInfo(subject) {
+  const m = String(subject || '').match(/Merge pull request #(\d+) from ([^/]+)\//i);
+  if (!m) return null;
+  return { prNumber: m[1], prAuthor: m[2] };
+}
+
+// Strip the conventional-commit prefix from a subject for cleaner display
+function cleanSubject(subject) {
+  return String(subject || '').replace(/^[a-z]+(?:\([^)]*\))?!?:\s*/i, '');
+}
+
+// Render the per-commit deep-details block: files changed + line counts
+// + optional commit body. Returned as a list of markdown lines (without
+// the leading "- " bullet — caller adds that).
+const MAX_FILES_SHOWN = 8;     // cap file list to keep changelog scannable
+const MAX_BODY_LINES = 8;      // cap multi-line commit body
+
+function renderCommitDetails(c, repoUrl, commitUrl) {
+  const out = [];
+
+  // ── Files changed line ──
+  const files = c.filesChanged || [];
+  const fileCount = files.length;
+
+  if (fileCount > 0) {
+    let fileLine;
+    if (fileCount <= MAX_FILES_SHOWN) {
+      // Show every file with inline per-file +/− stats
+      const parts = files.map((f) => {
+        const ad = (f.additions || 0) + (f.deletions || 0);
+        // Inline per-file stats: only show numbers when they're meaningful
+        if (f.additions === 0 && f.deletions === 0) return `\`${f.file}\``;
+        return `\`${f.file}\` \`+${f.additions} −${f.deletions}\``;
+      });
+      fileLine = `📁 **${fileCount} file${fileCount === 1 ? '' : 's'}:** ${parts.join(', ')}`;
+    } else {
+      // Truncate the file list with "+N more"
+      const shown = files.slice(0, MAX_FILES_SHOWN);
+      const remaining = fileCount - MAX_FILES_SHOWN;
+      const parts = shown.map((f) => {
+        if (f.additions === 0 && f.deletions === 0) return `\`${f.file}\``;
+        return `\`${f.file}\` \`+${f.additions} −${f.deletions}\``;
+      });
+      fileLine = `📁 **${fileCount} files:** ${parts.join(', ')} *(+${remaining} more in [\`${c.shortSha}\`](${commitUrl(c.sha)}))*`;
+    }
+    out.push(fileLine);
+  }
+
+  // ── Line stats summary line ──
+  if (c.insertions || c.deletions || fileCount > 0) {
+    const ins = c.insertions || 0;
+    const del = c.deletions || 0;
+    const fLabel = fileCount > 0 ? ` · ${fileCount} file${fileCount === 1 ? '' : 's'}` : '';
+    out.push(`📊 **\`+${ins} −${del}\`**${fLabel}`);
+  }
+
+  // ── Commit body (if present and non-trivial) ──
+  if (c.body) {
+    const bodyLines = c.body.split('\n').slice(0, MAX_BODY_LINES);
+    const more = c.body.split('\n').length - bodyLines.length;
+    const quoted = bodyLines.map((l) => `> ${l}`).join('\n');
+    const moreNote = more > 0 ? `\n> *…(${more} more line${more === 1 ? '' : 's'})*` : '';
+    out.push(`💬 **What & why:**\n${quoted}${moreNote}`);
+  }
+
+  return out;
+}
+
+function renderChangelog(git) {
+  const commits = git.commits || [];
+  if (commits.length === 0) return '_No commits yet._';
+
+  // Group commits by date (YYYY-MM-DD)
+  const byDate = new Map();
+  for (const c of commits) {
+    if (!byDate.has(c.date)) byDate.set(c.date, []);
+    byDate.get(c.date).push(c);
+  }
+
+  // Sort dates newest-first
+  const sortedDates = [...byDate.keys()].sort((a, b) => (a < b ? 1 : -1));
+
+  // Build a clickable commit URL: clicking the short SHA jumps to the
+  // diff on GitHub so developers can see exactly what changed.
+  const repoUrl = `https://github.com/${REPO}`;
+  const commitUrl = (sha) => `${repoUrl}/commit/${sha}`;
+
+  const lines = [];
+  lines.push(`### 📊 Total: ${commits.length} commits · ${byDate.size} active days · ${git.uniqueAuthors} unique authors\n`);
+  lines.push(`> **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file \`+additions −deletions\`, the **total line stats**, and (when present) the **commit body** explaining what & why.\n`);
+
+  for (const date of sortedDates) {
+    const dayCommits = byDate.get(date);
+    lines.push(`#### 📅 ${date}  <sub>(${dayCommits.length} commit${dayCommits.length === 1 ? '' : 's'})</sub>\n`);
+
+    // Per-commit deep details — every commit gets its own bullet block
+    for (const c of dayCommits) {
+      const icon = commitTypeIcon(c.subject);
+      const merge = parseMergeInfo(c.subject);
+      const shaLink = `[\`${c.shortSha}\`](${commitUrl(c.sha)})`;
+
+      let mainLine;
+      if (merge) {
+        const prLink = `[#${merge.prNumber}](${repoUrl}/pull/${merge.prNumber})`;
+        mainLine = `- ${icon} ${shaLink} — **${c.author}** — 🔀 PR ${prLink} from \`${merge.prAuthor}\` — ${cleanSubject(c.subject.replace(/^Merge pull request.*from [^\/]+\/?/, '')) || c.subject}`;
+      } else {
+        mainLine = `- ${icon} ${shaLink} — **${c.author}** — ${cleanSubject(c.subject)}`;
+      }
+      lines.push(mainLine);
+
+      // Append deep details (files + stats + body) as 4-space-indented sub-bullets
+      const details = renderCommitDetails(c, repoUrl, commitUrl);
+      for (const detail of details) {
+        lines.push(`    - ${detail}`);
+      }
+    }
+
+    lines.push(''); // blank line between dates
+  }
+
+  return lines.join('\n');
+}
+
 // ─── README mutation ────────────────────────────────────────────────────────
 
 function replaceMarkerBlock(readme, startMarker, endMarker, newContent) {
@@ -792,9 +1036,18 @@ async function main() {
   const snapshot = renderSnapshot(totals);
   const atAGlance = renderAtAGlance(totals);
   const cards = renderCards(rows);
+  const changelog = renderChangelog(git);
 
   let readme = fs.readFileSync(README, 'utf8');
   let contributorsDoc = fs.readFileSync(CONTRIBUTORS, 'utf8');
+
+  // CHANGELOG.md — point-wise commit log grouped by date
+  let changelogDoc = fs.existsSync(CHANGELOG)
+    ? fs.readFileSync(CHANGELOG, 'utf8')
+    : null;
+  if (changelogDoc) {
+    changelogDoc = replaceMarkerBlock(changelogDoc, '<!-- live-changelog:start -->', '<!-- live-changelog:end -->', changelog);
+  }
 
   // README.md — only the at-a-glance, snapshot, leaderboard (no cards)
   readme = replaceMarkerBlock(readme, '<!-- live-at-a-glance:start -->', '<!-- live-at-a-glance:end -->', atAGlance);
@@ -816,7 +1069,8 @@ async function main() {
 
   fs.writeFileSync(README, readme);
   fs.writeFileSync(CONTRIBUTORS, contributorsDoc);
-  log(`✅ README.md + CONTRIBUTORS.md updated (${rows.length} contributors rendered)`);
+  if (changelogDoc) fs.writeFileSync(CHANGELOG, changelogDoc);
+  log(`✅ README.md + CONTRIBUTORS.md${changelogDoc ? ' + CHANGELOG.md' : ''} updated (${rows.length} contributors · ${git.commits.length} commits rendered)`);
 }
 
 main().catch((e) => {

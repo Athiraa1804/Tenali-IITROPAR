@@ -100,14 +100,13 @@ function gatherGitLog() {
   const authorCount = parseInt(
     sh(`git log --pretty=format:"%ae" | sort -u | wc -l`), 10) || 0;
 
-  // Commits per author (by name as it appears in git log) + collect emails too
+  // Commits per author (by name as it appears in git log)
+  // Emails are NOT collected — kept private, never rendered in the README.
   const byAuthor = {};
-  const emailsByName = {};
   sh(`git log --pretty=format:"%an|%ae"`).split('\n').forEach((line) => {
     if (!line) return;
-    const [name, email] = line.split('|');
+    const [name] = line.split('|');
     byAuthor[name] = (byAuthor[name] || 0) + 1;
-    if (email) emailsByName[name] = email;
   });
 
   // PRs per author (parsed from "Merge pull request #N from <user>/<branch>")
@@ -126,7 +125,6 @@ function gatherGitLog() {
     totalCommits: total,
     uniqueAuthors: authorCount,
     commitsByName: byAuthor,
-    emailsByName,
     prsByUser: Object.fromEntries(
       Object.entries(prsByAuthor).map(([k, v]) => [k, v.size])
     ),
@@ -496,21 +494,17 @@ const GIT_NAME_TO_LOGIN = {
 
 function mergeData(git, apiContribs) {
   // Join git commits by author name → login → API profile (or fallback)
+  // Emails are intentionally NOT collected or rendered (privacy).
   const byLogin = {};
   for (const [gitName, count] of Object.entries(git.commitsByName)) {
     const login = GIT_NAME_TO_LOGIN[gitName];
-    if (!login) continue; // skip emails that don't map (e.g. Vasuki)
+    if (!login) continue; // skip names that don't map (e.g. Vasuki)
     byLogin[login] = byLogin[login] || {
       login,
       gitNames: [],
-      gitEmails: [],
       commits: 0,
     };
     byLogin[login].gitNames.push(gitName);
-    const email = git.emailsByName[gitName];
-    if (email && !byLogin[login].gitEmails.includes(email)) {
-      byLogin[login].gitEmails.push(email);
-    }
     byLogin[login].commits += count;
   }
 
@@ -628,16 +622,14 @@ function renderCard(r) {
   if (r.note) metaSubs.push(`<i>(${r.note})</i>`);
   const metaLine = metaSubs.length > 0 ? `\n        <br/><sub>${metaSubs.join(' · ')}</sub>` : '';
 
-  // Merge indicator — show all other git author names + emails
+  // Merge indicator — show all other git author names (emails are intentionally
+  // NOT rendered here for privacy)
   const others = (r.gitNames || []).filter(
     (n) => n !== name && n !== fb.name && n !== r.login
   );
   const mergeSubs = [];
   if (others.length > 0) {
     mergeSubs.push(`<sub>🔗 also commits as: <b>${others.join('</b>, <b>')}</b></sub>`);
-  }
-  if (r.gitEmails && r.gitEmails.length > 0) {
-    mergeSubs.push(`<sub>📧 ${r.gitEmails.join(', ')}</sub>`);
   }
   const mergeLine = mergeSubs.length > 0 ? `\n        <br/>${mergeSubs.join('\n        <br/>')}` : '';
 

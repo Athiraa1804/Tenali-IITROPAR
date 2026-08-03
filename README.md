@@ -4,7 +4,7 @@
 
 # 🧠 Tenali — Adaptive Math Quiz Platform
 
-### *An advanced,  adaptive learning platform featuring interactive puzzles in Mathematics, Logic, and General Knowledge.*
+### *An adaptive math learning platform with interactive puzzles, real-time multiplayer, and step-by-step explanations.*
 
 <p>
   <a href="https://tenali.fun"><img src="https://img.shields.io/badge/Live-tenali.fun-FF6B6B?style=for-the-badge&logo=globe&logoColor=white" alt="Live"/></a>
@@ -26,7 +26,7 @@
 
 ---
 
-### ✨ **69 puzzle types · 7,662 vocab words · 991 GK questions · Adaptive difficulty · Live multiplayer · Zero question storage**
+### ✨ **69 math topics · Algorithmically generated · Adaptive difficulty · Live multiplayer · Step-by-step solutions**
 
 </div>
 
@@ -67,7 +67,7 @@
 
 ## 🌟 What is Tenali?
 
-Tenali (named after the legendary **Tenali Raman** — the witty Indian scholar who outwitted entire courts with logic) is a **stateless adaptive learning platform** for math, logic, language and general knowledge. Every question is **generated algorithmically** on each request — there is no question database. Difficulty adapts per learner in real time.
+Tenali (named after the legendary **Tenali Raman** — the witty Indian scholar who outwitted entire courts with logic) is an **adaptive math learning platform** featuring 69 algorithmically-generated puzzle types, real-time multiplayer battles, and step-by-step solutions for every problem. Every question is generated on the fly — there is no question database — so practice is infinite and never repeats. Difficulty adapts to each learner in real time.
 
 It is built to run on a single VPS — `tenali.fun` — with one Node process serving the React app, the puzzle APIs, the JWT auth, the Socket.IO Battle Arena, and the multi-language code playground.
 
@@ -187,11 +187,11 @@ Coins for every correct answer, XP & streak tracking, pinned badges, and album-s
 ### 🎲 10. Random Mix & Custom Lesson
 Random Mix pulls a question from your weakest areas. Custom Lesson lets you pick exactly which topics appear and how many of each.
 
-### 🔤 11. Vocabulary Trainer
-**7,662** curated vocab words with definitions and contextual clues, served from `vocab/questions/`.
+### 🔤 11. Vocabulary Trainer (bonus)
+**7,662** curated vocab words with definitions and contextual clues, served from `vocab/questions/`. Secondary feature — for breaks between math practice.
 
-### 🌍 12. GK Quiz Bank
-**991** General Knowledge questions across geography, history, science, sports and culture.
+### 🌍 12. GK Quiz Bank (bonus)
+**991** General Knowledge questions across geography, history, science, sports and culture. Secondary feature — for variety between math sessions.
 
 ### 📊 13. Progress & Profile
 Per-topic mastery, public badge board, collection completion.

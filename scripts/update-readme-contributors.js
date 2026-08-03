@@ -197,7 +197,7 @@ const FALLBACK_PROFILES = {
     bio: 'Scientist/Teacher',
     blog: 'http://www.sudarshaniyengar.com',
     color: '#FFD93D',
-    role: '🥇 Lead Architect · Curriculum Author · 69 puzzle families',
+    descriptor: 'Lead Architect · Curriculum Author · 69 puzzle families',
     topFeatures: [
       { icon: '🧠', text: '<b>Adaptive difficulty core</b> — <code>adaptScore</code> → band mapping drives every <code>*api/question</code>' },
       { icon: '🌉', text: '<b>Prerequisite bridges</b> — Lessons 1–27 (arithmetic → fractions → standard form), Chapter 5 fully bridged' },
@@ -220,7 +220,7 @@ const FALLBACK_PROFILES = {
     name: 'Mudit Agrawal',
     avatar: 'https://avatars.githubusercontent.com/u/228782706?v=4',
     color: '#C0C0C0',
-    role: '🥈 Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground',
+    descriptor: 'Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground',
     topFeatures: [
       { icon: '⚔️', text: '<b>Battle Arena (<code>BattleApp.jsx</code>)</b> — live fastest-finger duels via Socket.IO' },
       { icon: '🧮', text: '<b>Linear Algebra overhaul</b> — curated JSON MCQs for all <b>56 missions × 6 modules</b>' },
@@ -240,7 +240,7 @@ const FALLBACK_PROFILES = {
     name: 'Lakshmi Varshini Nandula',
     avatar: 'https://avatars.githubusercontent.com/u/174730796?v=4',
     color: '#CD7F32',
-    role: '🥉 Profile Showcase & Offline Storage',
+    descriptor: 'Profile Showcase & Offline Storage',
     topFeatures: [
       { icon: '🏅', text: '<b>Profile Achievement Showcase (PR #59)</b> — badge cabinet, category dropdown, circular close buttons' },
       { icon: '📦', text: '<b>Scalable MongoDB collections</b> — <code>UserStats</code>, <code>UserMilestone</code>, <code>UserTopicProgress</code>, <code>UserCollectionProgress</code>' },
@@ -253,10 +253,11 @@ const FALLBACK_PROFILES = {
     ],
   },
   'jgupta05072003-code': {
-    name: 'J. Gupta',
+    name: 'Jinal Gupta',
+    git: 'J. Gupta',
     avatar: 'https://avatars.githubusercontent.com/u/267273120?v=4',
     color: '#4D96FF',
-    role: '4️⃣ Upstream Repo Maintainer & PR Reviewer',
+    descriptor: 'Upstream Repo Maintainer & PR Reviewer',
     topFeatures: [
       { icon: '🔍', text: '<b>Reviewed and merged 30+ PRs</b> into <code>vicharanashala/tenali</code>' },
       { icon: '🔧', text: '<b>Hardened JWT auth</b> — centralized JWT_SECRET, removed duplicate declarations (#96)' },
@@ -272,7 +273,7 @@ const FALLBACK_PROFILES = {
     name: 'Sameer Mishra',
     avatar: 'https://avatars.githubusercontent.com/u/189242179?v=4',
     color: '#6BCB77',
-    role: '5️⃣ i18n · Accessibility · Concept Labs',
+    descriptor: 'i18n · Accessibility · Concept Labs',
     topFeatures: [
       { icon: '🌍', text: '<b>Internationalization (PR #51)</b> — full i18n framework, locales directory, translation layer' },
       { icon: '♿', text: '<b>Accessibility panel (PR #50)</b> — high-contrast toggle, reduced motion, keyboard nav, ARIA roles' },
@@ -290,7 +291,7 @@ const FALLBACK_PROFILES = {
     color: '#FF6B6B',
     location: 'India',
     twitter: 'vee42O',
-    role: '6️⃣ Vachana Literacy Lab & Vocabulary',
+    descriptor: 'Vachana Literacy Lab & Vocabulary',
     topFeatures: [
       { icon: '🆕', text: '<b>Vachana Mathematical Literacy Lab (PR #18)</b> — standalone literacy module with grid dashboard, 8+ exercises across v0.1.x' },
       { icon: '🔤', text: '<b>Notation Literacy Exercise (PR #57)</b> — teaches math notation & root decoding with etymology references' },
@@ -306,7 +307,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/248255769?v=4',
     color: '#9B59B6',
     location: 'COOCH BEHAR',
-    role: '7️⃣ Tutorial System + Noise Filter Refactor',
+    descriptor: 'Tutorial System + Noise Filter Refactor',
     topFeatures: [
       { icon: '🆕', text: '<b>Tenali Main overhaul (PR #58)</b> — full UI standardization, premium dark theme, module layout improvements' },
       { icon: '🧹', text: '<b>Noise Filter refactor</b> — cleaned up level boundaries, removed subject intros, shortened Level 1 questions' },
@@ -321,7 +322,7 @@ const FALLBACK_PROFILES = {
     name: 'Ritish Karmakar',
     avatar: 'https://avatars.githubusercontent.com/u/214147769?v=4',
     color: '#E67E22',
-    role: '8️⃣ Percentages Level-wise Explanation',
+    descriptor: 'Percentages Level-wise Explanation',
     topFeatures: [
       { icon: '📈', text: '<b>Level-wise Percentages (PR #9)</b> — diagnostic quiz for Percentages with kid-friendly UI' },
       { icon: '🪜', text: '<b>Percentages Level 1 (Find)</b> — first explanation level with hover info popups, boxed theory cards, mobile-responsive fixes' },
@@ -336,7 +337,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/196636372?v=4',
     color: '#1ABC9C',
     location: 'India',
-    role: '9️⃣ Tap-to-Define Word Glossary',
+    descriptor: 'Tap-to-Define Word Glossary',
     topFeatures: [
       { icon: '📖', text: '<b>Tap-to-Define Word Glossary (PR #20)</b> — Word Explorer + enriched definition popovers with SVG visuals' },
       { icon: '🆕', text: '<b>Learn These Words pre-quiz (Feature AQ)</b> — vocab warmup section' },
@@ -351,7 +352,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/166562662?v=4',
     color: '#E91E63',
     location: 'Hyderabad, India',
-    role: '🔟 Goal Practice & Learning Journey',
+    descriptor: 'Goal Practice & Learning Journey',
     topFeatures: [
       { icon: '📚', text: '<b>Goal-based Practice Sessions (PR #11)</b> — isolated goal-practice module that hides "standard mode" pills' },
       { icon: '🧠', text: '<b>Learning Intelligence Layer (LIL)</b> — architected LIL with cross-app goal-practice integration' },
@@ -368,7 +369,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/212879841?v=4',
     color: '#34495E',
     location: 'Jaipur',
-    role: '1️⃣1️⃣ Premium UI Suite + Word Games',
+    descriptor: 'Premium UI Suite + Word Games',
     topFeatures: [
       { icon: '🏆', text: '<b>Premium Core Educational Suite (PR #53)</b> — UI standardization, premium dark theme, module layout improvements' },
       { icon: '➕', text: '<b>Addition crash fix</b> — fixed ReferenceError for <code>setIsGoalMode</code> and removed extra modes' },
@@ -386,7 +387,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/261205962?v=4',
     color: '#16A085',
     note: 'SemiColonSlayer',
-    role: '1️⃣2️⃣ Math Detective Agency',
+    descriptor: 'Math Detective Agency',
     topFeatures: [
       { icon: '🕵️', text: '<b>Math Detective Agency (PR #54)</b> — story-based mystery math cases with chained clue progression' },
       { icon: '🪪', text: '<b>Badge detail modal</b> — CSS for badge detail modal in <code>App.css</code>' },
@@ -398,7 +399,7 @@ const FALLBACK_PROFILES = {
     name: 'Pandraju Poorvi Pravallika',
     avatar: 'https://avatars.githubusercontent.com/u/207549779?v=4',
     color: '#F39C12',
-    role: '1️⃣3️⃣ HCF/LCM Interactive Module',
+    descriptor: 'HCF/LCM Interactive Module',
     topFeatures: [
       { icon: '🍕', text: '<b>Interactive LCM & HCF (PR #12)</b> — dynamic quiz with stepper locks, validation popups, accordion examples, mistake redirection' },
       { icon: '🎯', text: '<b>Confidence meter</b> — confidence-based quiz progression with sequential redirection' },
@@ -411,7 +412,7 @@ const FALLBACK_PROFILES = {
     name: 'Rukmender T',
     avatar: 'https://avatars.githubusercontent.com/u/206398340?v=4',
     color: '#8E44AD',
-    role: '1️⃣4️⃣ Curiosity Mode',
+    descriptor: 'Curiosity Mode',
     topFeatures: [
       { icon: '🤔', text: '<b>Curiosity Mode (PR #56)</b> — variation discovery puzzles that explore "what if" scenarios' },
       { icon: '🪟', text: '<b>Hamburger menu integration</b> — restored Curiosity Mode after upstream merges' },
@@ -423,7 +424,7 @@ const FALLBACK_PROFILES = {
     name: 'Krishna Gelra',
     avatar: 'https://avatars.githubusercontent.com/u/155518412?v=4',
     color: '#27AE60',
-    role: '1️⃣5️⃣ Language Puzzles Framework',
+    descriptor: 'Language Puzzles Framework',
     topFeatures: [
       { icon: '🧩', text: '<b>Modular Language Puzzles framework (PR #35)</b> — pluggable architecture for word/letter puzzles' },
       { icon: '🆕', text: '<b>Word Creator</b> — fill-in-the-blanks to create new words' },
@@ -435,7 +436,7 @@ const FALLBACK_PROFILES = {
     name: 'S. Hamsalekha',
     avatar: 'https://avatars.githubusercontent.com/u/247533500?v=4',
     color: '#2C3E50',
-    role: '1️⃣6️⃣ Track User Progress',
+    descriptor: 'Track User Progress',
     topFeatures: [
       { icon: '📊', text: '<b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones' },
       { icon: '🗂️', text: '<b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics' },
@@ -447,7 +448,7 @@ const FALLBACK_PROFILES = {
     avatar: 'https://avatars.githubusercontent.com/u/113899062?v=4',
     color: '#7F8C8D',
     blog: 'https://anshulkanodia.vercel.app',
-    role: '1️⃣7️⃣ Geometry Game Restoration',
+    descriptor: 'Geometry Game Restoration',
     topFeatures: [
       { icon: '🔺', text: '<b>Re-added Geometry Game (PR #8)</b> — restored the 20-July geometry game after it was lost in a merge' },
       { icon: '🔀', text: '<b>Upstream merge integration</b> for <code>patnaikArpita/Re-added-geometry-game-20July</code>' },
@@ -542,11 +543,23 @@ function mergeData(git, apiContribs) {
     };
   }
 
-  // Sort by commits desc
-  return Object.values(byLogin).sort((a, b) => b.commits - a.commits);
+  // Sort by commits desc, then assign 1-indexed rank
+  return Object.values(byLogin)
+    .sort((a, b) => b.commits - a.commits)
+    .map((r, idx) => ({ ...r, rank: idx + 1 }));
 }
 
 // ─── rendering ──────────────────────────────────────────────────────────────
+
+// Compute the rank emoji for a given 1-indexed position.
+//   rank 1, 2, 3  → 🥇 🥈 🥉 (podium)
+//   rank ≥4       → "<n>." (e.g. "4.")
+// This is the single source of truth for rank formatting — every render
+// (leaderboard, profile card <h4>) goes through here so positions can never
+// drift out of sync.
+function rankEmoji(rank) {
+  return ['🥇', '🥈', '🥉'][rank - 1] || `${rank}.`;
+}
 
 // Build the "↳ also commits as: X, Y" merge indicator for a contributor.
 // Always shown when a GitHub login has more than one git author name OR
@@ -565,12 +578,12 @@ function renderMergeNote(r) {
 }
 
 function renderLeaderboard(rows, totals) {
-  const medals = ['🥇', '🥈', '🥉'];
   const lines = [];
   lines.push('| # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |');
   lines.push('|--:|:-------------|:-------------|----------:|-----:|:--------|');
-  rows.forEach((r, idx) => {
-    const medal = medals[idx] || `${idx + 1}.`;
+  rows.forEach((r) => {
+    // Medal column uses the computed rank (single source of truth)
+    const medal = rankEmoji(r.rank);
     // Prefer fallback name (real name), then git author name, then login
     const displayName =
       r.name && r.name !== r.login ? `**${r.name}**` : `**${r.login}**`;
@@ -585,7 +598,8 @@ function renderLeaderboard(rows, totals) {
     }
 
     const ghLink = `[${r.login}](https://github.com/${r.login})`;
-    const role = r.role || '—';
+    // Role column uses the descriptor (no rank — rank lives in the medal column)
+    const role = r.descriptor || '—';
     lines.push(
       `| ${medal} | ${displayName}${mergeSuffix} | ${ghLink} | **${r.commits}** | ${r.prs}  | ${role} |`
     );
@@ -623,7 +637,9 @@ function renderCard(r) {
   const avatar = r.avatar || fb.avatar || `https://github.com/${r.login}.png?size=120`;
   const color = r.color || fb.color || '#888888';
   const name = r.name || fb.name || r.login;
-  const role = r.role || fb.role || 'Contributor';
+  // Card title = computed rank + curated descriptor (rank is dynamic, never drifts)
+  const descriptor = r.descriptor || fb.descriptor || 'Contributor';
+  const role = `${rankEmoji(r.rank)} ${descriptor}`;
   const features = (r.topFeatures || fb.topFeatures || []).map(
     (f) => `          <li>${f.icon} ${f.text}</li>`
   ).join('\n');

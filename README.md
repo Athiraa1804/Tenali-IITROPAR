@@ -510,12 +510,14 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 
 ## 🏆 Contributors — Real Names & GitHub IDs
 
-> All contributor data below was fetched live from the [GitHub Contributors API](https://github.com/muditagrawal2007/Tenali_123/graphs/contributors). Each contributor card shows the **real name** (from their GitHub profile), their **GitHub ID**, and the **commits they contributed**.
+> All contributor data below was fetched live from the [GitHub Contributors API](https://github.com/vicharanashala/tenali/graphs/contributors). Each contributor card shows the **real name** (from their GitHub profile), their **GitHub ID**, and the **commits they contributed**.
+
+> 🔄 **Bot refresh cadence:** Every 12 hours (UTC 00:00 & 12:00) via cron. Only repo admins/maintainers can trigger manually — see [CONTRIBUTORS.md → Bot refresh cadence](CONTRIBUTORS.md#-bot-refresh-cadence-every-12-hours-utc-0000--1200).
 
 ### 🌟 Live Wall (auto-updated)
 
-<a href="https://github.com/muditagrawal2007/Tenali_123/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=muditagrawal2007/Tenali_123&max=100&columns=20" alt="Contributors wall" />
+<a href="https://github.com/vicharanashala/tenali/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vicharanashala/tenali&max=100&columns=20" alt="Contributors wall" />
 </a>
 
 ### 📊 Repo at a glance

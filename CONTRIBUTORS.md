@@ -23,7 +23,19 @@
 3. [🥇 Leaderboard](#-leaderboard)
 4. [🪪 Contributor Cards](#-contributor-cards--profile-real-name--features) — full per-contributor profiles
 5. [📈 PR Distribution](#-pr-distribution)
-6. [🤝 How to become a contributor](#-how-to-become-a-contributor)
+ 6. [🤝 How to become a contributor](#-how-to-become-a-contributor)
+
+---
+
+> 🔄 **Bot refresh cadence:** Every 12 hours (UTC 00:00 & 12:00) via cron.
+>
+> 👤 **Need an immediate refresh?** Only repo admins / maintainers can trigger
+> the bot manually via
+> [Actions → Update README contributors → Run workflow](https://github.com/vicharanashala/tenali/actions/workflows/update-readme.yml).
+>
+> 📌 **Contributors** — if you just merged a PR and want to see your stats
+> sooner than the next 12-hour tick, ping a maintainer in the PR or open an
+> issue requesting a refresh.
 
 ---
 

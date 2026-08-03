@@ -1,77 +1,188 @@
 ﻿import { useState, useEffect } from "react";
 const LEVELS = [
   {
-    id:1,
+  id: 1,
+  title: "Play & Read",
+  questions: [
+    {
+      type: "tap",
+      quiz: "🧼 Before 🍽️, wash your hands.\nTap what happens first.",
+      options: [
+        { label: "🧼", value: "Wash" },
+        { label: "🍽️", value: "Eat" },
+        { label: "📖", value: "Read" },
+        { label: "🛏️", value: "Sleep" }
+      ],
+      correct: "Wash",
+      explanation: "Before eating, we wash our hands first."
+    },
+
+    {
+  type: "tap",
+  quiz: "🧍🏼‍♂️Aman gave Riya🧍🏼‍♀️ his toy🧸.\nWho got the toy?",
+  options: [
+    { label: "🧍🏼‍♂️", value: "Aman" },
+    { label: "🧍🏼‍♀️", value: "Riya" },
+    { label: "🧸 ", value: "Toy" },
+    { label: "🧍🏼‍♂️🧍🏼‍♀️", value: "Both" }
+  ],
+  correct: "Riya",
+  explanation: "Riya received the toy from Aman."
+},
+
+    {
+      type: "tap",
+      quiz: "Which animal is NOT a bird?",
+      options: [
+        { label: "🦜", value: "parrot" },
+        { label: "🦉", value: "Owl" },
+        { label: "🐶", value: "Dog" },
+        { label: "🦩", value: "Flamingo" }
+      ],
+      correct: "Dog",
+      explanation: "A dog is not a bird."
+    },
+
+    {
+  type: "match",
+  quiz: "Match the word to the picture.",
+
+  words: [
+    "Apple",
+    "Ball",
+    "Cat"
+  ],
+
+  emojis: [
+    "🐱",
+    "🍎",
+    "⚽"
+  ],
+
+  correctMatches: [
+    { text: "Apple", emoji: "🍎" },
+    { text: "Ball", emoji: "⚽" },
+    { text: "Cat", emoji: "🐱" }
+  ],
+   correct: "matched",
+  explanation: "Each word matches its correct picture."
+},
+
+   {
+  type: "order",
+  quiz: "Tap these in order.",
+  items: [
+    { emoji: "🏫", text: "Go to school" },
+    { emoji: "🍽️", text: "Eat breakfast" },
+    { emoji: "😴", text: "Wake up" },
+    { emoji: "🪥", text: "Brush teeth" }
+  ],
+  correctOrder: [
+    { emoji: "😴", text: "Wake up" },
+    { emoji: "🪥", text: "Brush teeth" },
+    { emoji: "🍽️", text: "Eat breakfast" },
+    { emoji: "🏫", text: "Go to school" }
+  ],
+  correct: "correct-order",
+  explanation: "We wake up, brush our teeth, eat, and then go to school."
+},
+  ]
+},
+  {
+    id:2,
     title: "See the Math",
     questions: [
   {
-    quiz: "⭐⭐⭐ + ⭐⭐ → ⭐⭐⭐⭐⭐\n\nWhat happened?",
-    options: [
-      "Two less ⭐",
-      "Double ⭐",
-      "Same ⭐",
-      "Two more ⭐"
-    ],
-    correct: "Two more ⭐",
-    explanation:
-      "Adding means we put groups together. ⭐⭐⭐ + ⭐⭐ gives two more stars."
-  },
+  
+  quiz: 'What happened?',
+
+  questionVisual: ['⭐','⭐','⭐'],
+  expressionText: '➕',
+  rightVisual: ['⭐','⭐'],
+
+  resultVisual: ['⭐','⭐','⭐','⭐','⭐'],
+
+  options: [
+    'Two less ⭐',
+    'Double ⭐',
+    'Same ⭐',
+    'Two more ⭐'
+  ],
+
+  correct: 'Two more ⭐',
+
+  explanation:
+    'Adding means we put groups together. ⭐⭐⭐ + ⭐⭐ gives two more stars.'
+},
 
   {
-    quiz: "🍎🍎🍎🍎\t÷ 2 → 🍎🍎\n\nWhat happened?",
-    options: [
-      "Double",
-      "Half",
-      "More",
-      "Same"
-    ],
-    correct: "Half",
-    explanation:
-      "Dividing into 2 equal groups means half."
-  },
+  type: 'drag-drop',
+  quiz: 'Drag the correct word into the box.',
+  questionVisual: ['🍎','🍎','🍎','🍎'],
+  expressionText: '➗ 2 = [ ❔ ]', 
+  choices:[
+    { label: '🍎🍎🍎', value: 'Less' },
+    { label: '🍎🍎🍎🍎🍎', value: 'More' },
+    { label: '🍎🍎', value: 'Half' },
+    { label: '🍎🍎🍎🍎🍎🍎', value: 'Double' }
+  ],
+  correct: 'Half',
+  explanation: 'Dividing by 2 makes half.'
+},
+{
+  type: 'drag-drop',
+  quiz: 'Drag the correct result into the box.',
+  questionVisual: ['🍎','🍎'],
+  expressionText: '✖️ 2 = [ ❔ ]',
 
-  {
-    quiz: "🐟🐟🐟\t=\t🐟🐟🐟\n\nThese groups are...",
-    options: [
-      "More",
-      "Equal",
-      "Less",
-      "Double"
-    ],
-    correct: "Equal",
-    explanation:
-      "Both sides have the same number. Equal is written as =."
-  },
+  choices: [
+    { label: '🍎🍎🍎🍎', value: 'Double' },
+    { label: '🍎🍎🍎', value: 'Less' },
+    { label: '🍎🍎', value: 'Same' },
+    { label: '🍎', value: 'Half' }
+  ],
 
-  {
-    quiz: "⭐⭐⭐⭐>⭐⭐\nThis means...",
-    options: [
-      "Lesser than",
-      "Same",
-      "Greater than",
-      "Half"
-    ],
-    correct: "Greater than",
-    explanation:
-      "The > symbol means the left side has more."
-  },
+  correct: 'Double',
 
+  explanation: 'Doubling 🍎🍎 gives 🍎🍎🍎🍎.'
+},
   {
-    quiz: "🍎🍎 × 2 → 🍎🍎 🍎🍎\n\nThis means...",
-    options: [
-      "Double",
-      "Half",
-      "Add 2",
-      "Remove 2"
-    ],
-    correct: "Double",
-    explanation:
-      "×2 means the amount becomes two times bigger."
-  }
+  type: 'tap',
+  quiz: 'Tap the correct symbol.',
+
+  questionVisual: ['🐟','🐟','🐟'],
+  expressionText: '[❔]',
+  rightVisual: ['🐟','🐟','🐟'],
+
+  options: [
+    { label: '➕', value: 'plus' },
+    { label: '➖', value: 'minus' },
+    { label: '🟰', value: 'equal to' },
+    { label: '✖️', value: 'into' }
+  ],
+
+  correct: 'equal to',
+
+  explanation: 'Both groups have the same number, so we use =.'
+},
+ {
+  type: 'input',
+  quiz: 'Type the symbol that makes this true:',
+
+  questionVisual: ['⭐','⭐','⭐','⭐'],
+  expressionText: '❔',
+  rightVisual: ['⭐','⭐'],
+
+  correct: '>',
+
+  placeholder: 'Type >, <, or =',
+
+  explanation: '4 stars is greater than 2 stars.'
+}
 ]
 },
   {
-  id: 2,
+  id: 3,
   title: "Crack the Code ",
   questions: [
     {
@@ -141,7 +252,7 @@ const LEVELS = [
   ]
 },
   {
-  id: 3,
+  id: 4,
   title: "Spot the Phrase",
   questions: [
     {
@@ -212,7 +323,7 @@ const LEVELS = [
   ]
 },
   {
-    id: 4,
+    id: 5,
     title: "Order Matters",
     questions: [
       {
@@ -259,7 +370,7 @@ const LEVELS = [
   },
 
    {
-  id: 5,
+  id: 6,
   title: "Boundary Detective",
   questions: [
     {
@@ -330,7 +441,7 @@ const LEVELS = [
 },
 
 {
-  id: 6,
+  id: 7,
   title: "Read Between the Lines",
   questions: [
     {
@@ -375,7 +486,7 @@ const LEVELS = [
   ]
 },
   {
-  id: 7,
+  id: 8,
   title: "Master Challenge",
   questions: [
     {
@@ -445,6 +556,38 @@ const LEVELS = [
   ]
 },
 ];
+function EmojiRow({ emojis }) {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        gap: '8px',
+        flexWrap: 'wrap',
+        margin: '8px 0',
+      }}
+    >
+      {emojis.map((emoji, index) => (
+        <div
+          key={index}
+          style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '16px',
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '1.8rem',
+          }}
+        >
+          {emoji}
+        </div>
+      ))}
+    </div>
+  );
+}
 export default function ReadingTraps() {
   const [idx, setIdx] = useState(0);
   const [ans, setAns] = useState(null);
@@ -454,6 +597,13 @@ export default function ReadingTraps() {
   const [hoveredLevel, setHoveredLevel] = useState(null);
   const [checked, setChecked] = useState(false);
   const [score, setScore] = useState(0);
+  const [selectedTap, setSelectedTap] = useState(null);
+  const [selectedLeft, setSelectedLeft] = useState(null);
+  const [matchedPairs, setMatchedPairs] = useState([]);
+  const [orderSelection, setOrderSelection] = useState([]);
+  const [draggedChoice, setDraggedChoice] = useState(null);
+  const [dropAnswer, setDropAnswer] = useState('');
+  const [textAnswer, setTextAnswer] = useState('');
   const currentLevel = LEVELS.find(level => level.id === selectedLevel);
   const questions = currentLevel?.questions || [];
   useEffect(() => {
@@ -470,7 +620,7 @@ export default function ReadingTraps() {
       setChecked(true);
       setCurrentScreen("results");
     }
-  }, 7000);
+  }, 20000);
 
   return () => clearTimeout(timer);
 }, [idx, checked, currentScreen, questions.length]);
@@ -530,7 +680,7 @@ if (currentScreen === "levels") {
           textAlign: "center",
         }}
       >
-        Choose a Level
+        Reading Traps
       </h2>
 
       <p
@@ -649,21 +799,28 @@ if (currentScreen === "levels") {
   );
 }
 if (currentScreen === "quiz") {
+  const q = questions[idx];
+  const isTapQuestion = q.type === "tap";
+  const isMatchQuestion = q.type === "match";
+  const isOrderQuestion = q.type === "order";
+  const isDragQuestion = q.type === 'drag-drop';
+  const isInputQuestion = q.type === 'input';
   return (
     <div>
 
       <div style={{ background: "var(--clr-surface)",
-    padding: "16px",
+    padding: "10px",
     borderRadius: "12px",
     border: "1px solid var(--clr-border)",
     display: "flex",
     flexDirection: "column",
+    marginBottom:"10px",
     alignItems: "center",
     textAlign: "center", }}>
       <div
   style={{
     width: "100%",
-    marginBottom: "24px",
+    marginBottom: "2px",
   }}
 >
   <div
@@ -699,6 +856,7 @@ if (currentScreen === "quiz") {
         fontSize: "0.95rem",
         fontWeight: "600",
         opacity: 0.75,
+
       }}
     >
       Question {idx + 1} of {questions.length}
@@ -731,8 +889,29 @@ if (currentScreen === "quiz") {
   }}
 >
 </h3>
-        <h3 style={{ margin: '0 0 6px 0', fontSize: '1.15rem', color: 'var(--clr-accent)' }}>{questions[idx].title}</h3>
-        <p style={{ margin: '0 0 12px 0', fontSize: '0.95rem', lineHeight: '1.5' }}>{questions[idx].concept}</p>
+        {q.title && (
+  <h3
+    style={{
+      margin: '0 0 6px 0',
+      fontSize: '1.15rem',
+      color: 'var(--clr-accent)'
+    }}
+  >
+    {q.title}
+  </h3>
+)}
+
+{q.concept && (
+  <p
+    style={{
+      margin: '0 0 12px 0',
+      fontSize: '0.95rem',
+      lineHeight: '1.5'
+    }}
+  >
+    {q.concept}
+  </p>
+)}
         
       </div>
       <div style={{ background: "var(--clr-surface)",
@@ -756,111 +935,611 @@ if (currentScreen === "quiz") {
     whiteSpace: "pre-line",
   }}
 >
-  {questions[idx].quiz}
+  {q.quiz}
 </p>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "16px",
-            marginBottom: "20px",
-            width: "100%",
-          }}
-        >
-           {questions[idx].options.map((opt, index) => (
-    <button
-      key={opt}
-      disabled={checked}
-      onClick={() => setAns(opt)}
+{q.questionVisual && (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '10px',
+      flexWrap: 'nowrap',
+      marginBottom: '14px',
+    }}
+  >
+
+    {/* Left visual */}
+    {q.questionVisual.map((emoji, index) => (
+      <div
+        key={`left-${index}`}
+        style={{
+          width: '56px',
+          height: '56px',
+          borderRadius: '16px',
+          background: 'rgba(255,255,255,0.08)',
+          border: '1px solid rgba(255,255,255,0.12)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          fontSize: '1.8rem',
+        }}
+      >
+        {emoji}
+      </div>
+    ))}
+
+    {/* Expression */}
+    <div
       style={{
-        width: "100%",
-        padding: "18px 24px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        borderRadius: "16px",
-        border:
-          ans === opt
-            ? "2px solid var(--clr-accent)"
-            : "1px solid var(--clr-border)",
-        background:
-          ans === opt
-            ? "rgba(255,145,77,0.12)"
-            : "var(--clr-surface)",
-        color: "inherit",
-        cursor: checked ? "default" : "pointer",
-        transition: "0.2s ease",
+        fontSize: '1.8rem',
+        fontWeight: 700,
+        whiteSpace: 'nowrap',
+        margin: '0 4px',
       }}
     >
-      <div
+      {q.expressionText}
+    </div>
+
+    {/* Right visual */}
+    {q.rightVisual &&
+      q.rightVisual.map((emoji, index) => (
+        <div
+          key={`right-${index}`}
+          style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '16px',
+            background: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '1.8rem',
+          }}
+        >
+          {emoji}
+        </div>
+      ))}
+
+    {/* Result visual */}
+    {q.resultVisual && (
+      <>
+        <div
+          style={{
+            fontSize: '1.8rem',
+            fontWeight: 700,
+            margin: '0 4px',
+          }}
+        >
+          →
+        </div>
+
+        {q.resultVisual.map((emoji, index) => (
+          <div
+            key={`result-${index}`}
+            style={{
+              width: '56px',
+              height: '56px',
+              borderRadius: '16px',
+              background: 'rgba(255,255,255,0.08)',
+              border: '1px solid rgba(255,255,255,0.12)',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              fontSize: '1.8rem',
+            }}
+          >
+            {emoji}
+          </div>
+        ))}
+      </>
+    )}
+
+  </div>
+)}
+{isMatchQuestion ? (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '24px',
+      width: '100%',
+      maxWidth: '700px',
+      marginBottom: '20px',
+      alignItems: 'start',
+    }}
+  >
+
+    {/* LEFT COLUMN - WORDS */}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+      }}
+    >
+      {q.words.map((word) => {
+        const alreadyMatched = matchedPairs.some(
+          (pair) => pair.text === word
+        );
+
+        return (
+          <button
+            key={word}
+            disabled={alreadyMatched}
+            onClick={() => setSelectedLeft(word)}
+            style={{
+              width: '100%',
+              minHeight: '90px',
+              borderRadius: '20px',
+              border:
+                selectedLeft === word
+                  ? '2px solid var(--clr-accent)'
+                  : '1px solid var(--clr-border)',
+              background:
+                selectedLeft === word
+                  ? 'rgba(255,145,77,0.12)'
+                  : 'var(--clr-surface)',
+              fontSize: '1rem',
+              fontWeight: 700,
+              cursor: alreadyMatched ? 'default' : 'pointer',
+              opacity: alreadyMatched ? 0.6 : 1,
+              transition: '0.2s ease',
+            }}
+          >
+            {word}
+          </button>
+        );
+      })}
+    </div>
+
+    {/* RIGHT COLUMN - EMOJIS */}
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '14px',
+      }}
+    >
+      {q.emojis.map((emoji) => {
+        const alreadyUsed = matchedPairs.some(
+          (pair) => pair.emoji === emoji
+        );
+
+        return (
+          <button
+            key={emoji}
+            disabled={alreadyUsed || !selectedLeft}
+            onClick={() => {
+              setMatchedPairs((prev) => [
+                ...prev,
+                { text: selectedLeft, emoji }
+              ]);
+              setSelectedLeft(null);
+            }}
+            style={{
+              width: '100%',
+              minHeight: '90px',
+              borderRadius: '20px',
+              border: '1px solid var(--clr-border)',
+              background: 'var(--clr-surface)',
+              fontSize: '2rem',
+              cursor:
+                alreadyUsed || !selectedLeft
+                  ? 'default'
+                  : 'pointer',
+              opacity: alreadyUsed ? 0.6 : 1,
+              transition: '0.2s ease',
+            }}
+          >
+            {emoji}
+          </button>
+        );
+      })}
+    </div>
+
+  </div>
+) : isOrderQuestion ? (
+  <div
+    style={{
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "25px",
+      justifyContent: "center",
+      marginBottom: "20px",
+      width: "100%",
+      maxWidth: "700px",
+    }}
+  >
+    {q.items.map((item) => {
+      const selected = orderSelection.some(
+  (selectedItem) => selectedItem.emoji === item.emoji
+);
+      return (
+        <button
+          key={item.emoji}
+          disabled={(checked && !isOrderQuestion) || selected}
+          onClick={() => {
+            if (!selected) {
+              setOrderSelection((prev) => [...prev, item]);
+            }
+          }}
+          style={{
+            minWidth: "110px",
+            minHeight: "110px",
+            padding: "16px",
+            borderRadius: "22px",
+            border: selected
+              ? "2px solid var(--clr-accent)"
+              : "1px solid var(--clr-border)",
+            background: selected
+              ? "rgba(255,145,77,0.12)"
+              : "var(--clr-surface)",
+            fontSize: "1.2rem",
+            fontWeight: 700,
+            cursor: checked || selected ? "default" : "pointer",
+            transition: "0.2s ease",
+          }}
+        >
+          <div>
+  <span>{item.emoji}</span>
+  <p>{item.text}</p>
+</div>
+        </button>
+      );
+    })}
+  </div>
+) : isDragQuestion ? (
+  <div
+    style={{
+      width: '100%',
+      maxWidth: '520px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '18px',
+      marginBottom: '20px',
+    }}
+  >
+
+    <div
+      style={{
+        fontSize: '2rem',
+        fontWeight: 700,
+        textAlign: 'center',
+      }}
+    >
+    </div>
+
+    <div
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={() => setDropAnswer(draggedChoice)}
+      style={{
+        width: '220px',
+        minHeight: '80px',
+        border: '2px dashed var(--clr-accent)',
+        borderRadius: '18px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '1.1rem',
+        fontWeight: 700,
+        background: 'rgba(255,145,77,0.08)',
+      }}
+    >
+     {dropAnswer
+  ? q.choices.find(c => c.value === dropAnswer)?.label
+  : 'Drop here'}
+    </div>
+
+    <div
+      style={{
+        display: 'flex',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        gap: '12px',
+      }}
+    >
+      {q.choices.map((choice) => (
+  <div
+    key={choice.value}
+    draggable
+    onDragStart={() => setDraggedChoice(choice.value)}
+    style={{
+      padding: '12px 18px',
+      borderRadius: '16px',
+      border: '1px solid var(--clr-border)',
+      background: 'var(--clr-surface)',
+      cursor: 'grab',
+      userSelect: 'none',
+      minWidth: '120px',
+      textAlign: 'center',
+    }}
+  >
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '6px',
+      }}
+    >
+      <span style={{ fontSize: '1.6rem' }}>
+        {choice.label}
+      </span>
+
+      <span
         style={{
+          fontSize: '0.95rem',
+          fontWeight: 700,
+        }}
+      >
+        {choice.value}
+      </span>
+    </div>
+  </div>
+))}
+    </div>
+
+  </div>
+) : isInputQuestion ? (
+  <div
+    style={{
+      width: '100%',
+      maxWidth: '420px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '18px',
+      marginBottom: '20px',
+    }}
+  >
+
+    <div
+      style={{
+        fontSize: '2rem',
+        fontWeight: 700,
+        textAlign: 'center',
+      }}
+    >
+      {q.prompt}
+    </div>
+
+    <input
+  type="text"
+  value={textAnswer}
+  onChange={(e) => setTextAnswer(e.target.value)}
+  placeholder={q.placeholder}
+  maxLength={1}
+  style={{
+    width: '140px',
+    height: '64px',
+    textAlign: 'center',
+    fontSize: '2rem',
+    fontWeight: 700,
+    borderRadius: '16px',
+    border: '2px solid var(--clr-border)',
+    background: 'var(--clr-surface)',
+    color: 'inherit',
+    outline: 'none',
+  }}
+/>
+
+  </div>
+) : isTapQuestion ? (
+  <div
+    style={{
+      display: "grid",
+      gridTemplateColumns: "repeat(2, minmax(140px, 180px))",
+      gap: "16px",
+      justifyContent: "center",
+      marginBottom: "20px",
+      width: "100%",
+    }}
+  >
+    {q.options.map((opt) => (
+      <button
+  key={opt.value}
+  onClick={() => {
+    if (!checked) setAns(opt.value);
+  }}
+  disabled={checked && q.type === "tap"}
+  style={{
+    minHeight: "140px",
+    padding: "20px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    borderRadius: "24px",
+    border:
+      ans === opt.value
+        ? "2px solid var(--clr-accent)"
+        : "1px solid rgba(255,255,255,0.10)",
+    background:
+      ans === opt.value
+        ? "rgba(255,145,77,0.16)"
+        : "rgba(255,255,255,0.03)",
+    boxShadow:
+      ans === opt.value
+        ? "0 0 0 4px rgba(255,145,77,0.10)"
+        : "0 4px 16px rgba(0,0,0,0.15)",
+    color: "inherit",
+    cursor: checked ? "default" : "pointer",
+    transition: "transform 0.15s ease, box-shadow 0.15s ease",
+  }}
+>
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "8px",
+    }}
+  >
+    <span style={{ fontSize: "2rem" }}>
+      {opt.label}
+    </span>
+
+    <span
+      style={{
+        fontSize: "0.95rem",
+        fontWeight: 600,
+      }}
+    >
+      {opt.value.charAt(0).toUpperCase() + opt.value.slice(1)}
+    </span>
+  </div>
+</button>
+    ))}
+  </div>
+) : (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      gap: "16px",
+      marginBottom: "20px",
+      width: "100%",
+    }}
+  >
+    {questions[idx].options.map((opt, index) => (
+      <button
+        key={index}
+        disabled={checked}
+        onClick={() => setAns(opt)}
+        style={{
+          width: "100%",
+          padding: "18px 24px",
           display: "flex",
+          justifyContent: "space-between",
           alignItems: "center",
-          gap: "18px",
+          borderRadius: "16px",
+          border:
+            ans === opt
+              ? "2px solid var(--clr-accent)"
+              : "1px solid var(--clr-border)",
+          background:
+            ans === opt
+              ? "rgba(255,145,77,0.12)"
+              : "var(--clr-surface)",
+          color: "inherit",
+          cursor: checked ? "default" : "pointer",
+          transition: "0.2s ease",
         }}
       >
         <div
           style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            background: "rgba(255,255,255,.08)",
             display: "flex",
-            justifyContent: "center",
             alignItems: "center",
-            fontWeight: "bold",
+            gap: "18px",
           }}
         >
-          {index + 1}
-        </div>
+          <div
+            style={{
+              width: "36px",
+              height: "36px",
+              borderRadius: "50%",
+              background: "rgba(255,255,255,.08)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {index + 1}
+          </div>
 
-        <span
-          style={{
-            fontSize: "1rem",
-            fontWeight: 600,
-          }}
-        >
-          {opt}
-        </span>
-      </div>
-    </button>
-  ))}
-
+          <span
+            style={{
+              fontSize: "1rem",
+              fontWeight: 600,
+            }}
+          >
+            {opt}
+          </span>
         </div>
+      </button>
+    ))}
+  </div>
+)}
         {!checked && (
-      <div style={{ marginBottom: "16px" }}>
-        <button
-          className="submit-btn"
-          disabled={!ans}
-          onClick={() => check(ans)}
-        >
-          Submit
-        </button>
-      </div>
-    )}
+  <div style={{ marginBottom: "16px" }}>
+    <button
+      className="submit-btn"
+      disabled={
+  isMatchQuestion
+    ? matchedPairs.length !== q.correctMatches.length
+    : isOrderQuestion
+    ? orderSelection.length !== q.correctOrder.length
+    : isDragQuestion
+    ? !dropAnswer
+    : isInputQuestion
+    ? !textAnswer.trim()
+    : !ans
+}
+      onClick={() => {
+  if (isMatchQuestion) {
+    const correct = 
+      JSON.stringify(
+        matchedPairs.sort((a,b)=>a.text.localeCompare(b.text))
+      ) ===
+      JSON.stringify(
+        q.correctMatches.sort((a,b)=>a.text.localeCompare(b.text))
+      );
+
+    check(correct ? 'matched' : 'wrong-match');
+
+  } else if (isOrderQuestion) {
+    const correct =
+      JSON.stringify(orderSelection) ===
+      JSON.stringify(q.correctOrder);
+
+    check(correct ? 'correct-order' : 'wrong-order');
+
+  } else if (isDragQuestion) {
+    check(dropAnswer);
+  
+  } else if (isInputQuestion) {
+  check(textAnswer.trim());
+
+  } else {
+    check(ans);
+  }
+}}
+    >
+      Submit
+    </button>
+  </div>
+)}
         {msg && <span style={{ fontSize: '0.9rem', color: msg.startsWith('✅') ? 'var(--clr-correct)' : 'red' }}>{msg}</span>}
-        {checked && idx < questions.length - 1 && (
+        {checked && (
   <div style={{ marginTop: "18px" }}>
     <button
       className="submit-btn"
       onClick={() => {
-        setIdx(idx + 1);
-        setAns(null);
-        setMsg("");
-        setChecked(false);
+        if (idx === questions.length - 1) {
+          setCurrentScreen("results");
+        } else {
+          setIdx(idx + 1);
+          setAns(null);
+          setMsg("");
+          setChecked(false);
+          setSelectedTap(null);
+          setMatchedPairs([]);      
+          setOrderSelection([]);   
+          setDropAnswer('');
+          setTextAnswer('');
+          setDraggedChoice(null);
+          
+        }
       }}
     >
-      Next Question →
-    </button>
-  </div>
-)}
-{checked && idx === questions.length - 1 && (
-  <div style={{ marginTop: "20px" }}>
-    <button
-      className="submit-btn"
-      onClick={() => setCurrentScreen("results")}
-    >
-      Finish Level
+      {idx === questions.length - 1
+        ? "Finish Level"
+        : "Next Question →"}
     </button>
   </div>
 )}

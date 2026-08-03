@@ -79,7 +79,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>783</b><br/><sub>commits</sub></td>
+      <td align="center"><b>784</b><br/><sub>commits</sub></td>
       <td align="center"><b>60</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>19</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
@@ -523,7 +523,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **783** | **60** | **19** | **69** | **7,662** | **991** |
+| **784** | **60** | **19** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -534,7 +534,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **162** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **163** | 13  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **82** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |

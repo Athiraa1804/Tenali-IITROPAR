@@ -78,7 +78,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>718</b><br/><sub>commits</sub></td>
+      <td align="center"><b>719</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
@@ -521,7 +521,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **718** | **44** | **17** | **69** | **7,662** | **991** |
+| **719** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -532,20 +532,20 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect & Curriculum Author |
-| 🥈 | **muditagrawal2007** | [muditagrawal2007](https://github.com/muditagrawal2007) | **121** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra |
-| 🥉 | **jgupta05072003-code**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
-| 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
-| 5. | **24F3005086** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **121** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra |
+| 🥉 | **J. Gupta**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
+| 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
+| 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | 6️⃣ Vachana Literacy Lab & Vocabulary |
-| 7. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | 7️⃣ Tutorial System + Noise Filter Refactor |
+| 7. | **Diptosubhro Datta**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | 7️⃣ Tutorial System + Noise Filter Refactor |
 | 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | 8️⃣ Percentages Level-wise Explanation |
 | 9. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | 9️⃣ Tap-to-Define Word Glossary |
 | 10. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | 🔟 Goal Practice & Learning Journey |
 | 11. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | 1️⃣1️⃣ Premium UI Suite + Word Games |
-| 12. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | 1️⃣2️⃣ Math Detective Agency |
+| 12. | **Sharonya Banerjee** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | 1️⃣2️⃣ Math Detective Agency |
 | 13. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | 1️⃣3️⃣ HCF/LCM Interactive Module |
-| 14. | **RukmenderT** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | 1️⃣4️⃣ Curiosity Mode |
-| 15. | **S-Hamsalekha-annamai**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | 1️⃣6️⃣ Track User Progress |
+| 14. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | 1️⃣4️⃣ Curiosity Mode |
+| 15. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | 1️⃣6️⃣ Track User Progress |
 | 16. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | 1️⃣5️⃣ Language Puzzles Framework |
 | 17. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | 1️⃣7️⃣ Geometry Game Restoration |
 <!-- live-rank:end -->
@@ -589,8 +589,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="muditagrawal2007"/></a>
-        <br/><b>muditagrawal2007</b>
+        <a href="https://github.com/muditagrawal2007"><img src="https://avatars.githubusercontent.com/u/228782706?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #C0C0C0;" alt="Mudit Agrawal"/></a>
+        <br/><b>Mudit Agrawal</b>
         <br/><a href="https://github.com/muditagrawal2007">@muditagrawal2007</a>
         <br/><sub>🏆 121 commits · 9 PRs merged</sub>
         <br/><sub>📧 muditagrawal9415369961@gmail.com</sub>
@@ -615,8 +615,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/jgupta05072003-code"><img src="https://avatars.githubusercontent.com/u/267273120?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #4D96FF;" alt="jgupta05072003-code"/></a>
-        <br/><b>jgupta05072003-code</b>
+        <a href="https://github.com/jgupta05072003-code"><img src="https://avatars.githubusercontent.com/u/267273120?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #4D96FF;" alt="J. Gupta"/></a>
+        <br/><b>J. Gupta</b>
         <br/><a href="https://github.com/jgupta05072003-code">@jgupta05072003-code</a>
         <br/><sub>🏆 57 commits · 0 PRs merged</sub>
         <br/><sub>🔗 also commits as: <b>Jinal Gupta</b></sub>
@@ -643,8 +643,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula "/></a>
-        <br/><b>Lakshmi Varshini Nandula </b>
+        <a href="https://github.com/varshini-nandula"><img src="https://avatars.githubusercontent.com/u/174730796?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #CD7F32;" alt="Lakshmi Varshini Nandula"/></a>
+        <br/><b>Lakshmi Varshini Nandula</b>
         <br/><a href="https://github.com/varshini-nandula">@varshini-nandula</a>
         <br/><sub>🏆 43 commits · 1 PR merged</sub>
         <br/><sub>📧 varshininandula2006@gmail.com</sub>
@@ -670,8 +670,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/24F3005086"><img src="https://avatars.githubusercontent.com/u/189242179?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #6BCB77;" alt="24F3005086"/></a>
-        <br/><b>24F3005086</b>
+        <a href="https://github.com/24F3005086"><img src="https://avatars.githubusercontent.com/u/189242179?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #6BCB77;" alt="Sameer Mishra"/></a>
+        <br/><b>Sameer Mishra</b>
         <br/><a href="https://github.com/24F3005086">@24F3005086</a>
         <br/><sub>🏆 36 commits · 4 PRs merged</sub>
         <br/><sub>📧 sameermishra0912@gmail.com</sub>
@@ -701,7 +701,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Vaibhav Satish</b>
         <br/><a href="https://github.com/Vaibhav-sa30">@Vaibhav-sa30</a>
         <br/><sub>🏆 35 commits · 2 PRs merged</sub>
-        <br/><sub>📍 India · 🐦 @vee42O · 🌐 https://vaibhav-sa30.github.io/vaibhavsatish/</sub>
+        <br/><sub>📍 India · 🐦 @vee42O</sub>
         <br/><sub>🔗 also commits as: <b>Vaibhav</b></sub>
         <br/><sub>📧 vaibhavsatish9@gmail.com</sub>
       </td>
@@ -725,8 +725,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="DIPTOSUBHRO DATTA"/></a>
-        <br/><b>DIPTOSUBHRO DATTA</b>
+        <a href="https://github.com/diptosubhro-ctrl"><img src="https://avatars.githubusercontent.com/u/248255769?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #9B59B6;" alt="Diptosubhro Datta"/></a>
+        <br/><b>Diptosubhro Datta</b>
         <br/><a href="https://github.com/diptosubhro-ctrl">@diptosubhro-ctrl</a>
         <br/><sub>🏆 33 commits · 1 PR merged</sub>
         <br/><sub>📍 COOCH BEHAR</sub>
@@ -808,7 +808,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><b>Ahana Banerjee</b>
         <br/><a href="https://github.com/ahana4banerjee">@ahana4banerjee</a>
         <br/><sub>🏆 20 commits · 2 PRs merged</sub>
-        <br/><sub>📍 Hyderabad, India · 🌐 banerjeeahana4@gmail.com</sub>
+        <br/><sub>📍 Hyderabad, India</sub>
         <br/><sub>📧 banerjeeahana4@gmail.com</sub>
       </td>
       <td valign="top" width="*">
@@ -861,9 +861,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="SemiColonSlayer"/></a>
-        <br/><b>SemiColonSlayer</b>
-        <br/><sub><i>(git: Sharonya Banerjee)</i></sub>
+        <a href="https://github.com/sharonyamita-spec"><img src="https://avatars.githubusercontent.com/u/261205962?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #16A085;" alt="Sharonya Banerjee"/></a>
+        <br/><b>Sharonya Banerjee</b>
         <br/><a href="https://github.com/sharonyamita-spec">@sharonyamita-spec</a>
         <br/><sub>🏆 6 commits · 1 PR merged</sub>
         <br/><sub><i>(SemiColonSlayer)</i></sub>
@@ -910,8 +909,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/RukmenderT"><img src="https://avatars.githubusercontent.com/u/206398340?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #8E44AD;" alt="RukmenderT"/></a>
-        <br/><b>RukmenderT</b>
+        <a href="https://github.com/RukmenderT"><img src="https://avatars.githubusercontent.com/u/206398340?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #8E44AD;" alt="Rukmender T"/></a>
+        <br/><b>Rukmender T</b>
         <br/><a href="https://github.com/RukmenderT">@RukmenderT</a>
         <br/><sub>🏆 5 commits · 1 PR merged</sub>
         <br/><sub>📧 rukmendert07@gmail.com</sub>
@@ -933,8 +932,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S-Hamsalekha-annamai"/></a>
-        <br/><b>S-Hamsalekha-annamai</b>
+        <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S. Hamsalekha"/></a>
+        <br/><b>S. Hamsalekha</b>
         <br/><a href="https://github.com/S-Hamsalekha-annamai">@S-Hamsalekha-annamai</a>
         <br/><sub>🏆 3 commits · 1 PR merged</sub>
         <br/><sub>🔗 also commits as: <b>S Hamsalekha</b></sub>

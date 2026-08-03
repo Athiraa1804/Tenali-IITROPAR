@@ -517,14 +517,19 @@ function mergeData(git, apiContribs) {
   // PR counts: keyed by github login (source branch prefix)
   const prsByLogin = git.prsByUser;
 
-  // Merge profile data — fallback first, API on top but only with non-empty values
+  // Merge profile data — fallback first, API on top but only with non-empty values.
+  // If the API `name` equals the login (meaning /users/{login} fetch failed due
+  // to rate limiting and we fell back to using the login as the name), prefer
+  // the curated fallback real name.
   for (const login of Object.keys(byLogin)) {
     const api = apiContribs.find((c) => c.login === login);
     const fb = FALLBACK_PROFILES[login] || {};
+    const apiClean = stripEmpty(api || {});
+    if (apiClean.name === login) delete apiClean.name;
     byLogin[login] = {
       ...byLogin[login],
       ...fb,
-      ...stripEmpty(api || {}),
+      ...apiClean,
       prs: prsByLogin[login] || 0,
     };
   }

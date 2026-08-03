@@ -78,7 +78,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>722</b><br/><sub>commits</sub></td>
+      <td align="center"><b>723</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
@@ -521,7 +521,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **722** | **44** | **17** | **69** | **7,662** | **991** |
+| **723** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -531,7 +531,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
-| 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect & Curriculum Author |
+| 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect · Curriculum Author · 69 puzzle families |
 | 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **122** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **J. Gupta**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
@@ -569,15 +569,23 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
         <br/><sub>🔗 also commits as: <b>Sudarshan</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>🥇 Lead Architect & Curriculum Author</h4>
+        <h4>🥇 Lead Architect · Curriculum Author · 69 puzzle families</h4>
         <ul>
           <li>🧠 <b>Adaptive difficulty core</b> — <code>adaptScore</code> → band mapping drives every <code>*api/question</code></li>
-          <li>🌉 <b>Prerequisite bridges</b> — Lessons 1–27 (arithmetic → fractions → standard form)</li>
+          <li>🌉 <b>Prerequisite bridges</b> — Lessons 1–27 (arithmetic → fractions → standard form), Chapter 5 fully bridged</li>
+          <li>🎯 <b>Puzzle families shipped: 69+</b> — including Trig, Inequalities, Coord Geom, Probability, Statistics, Matrices, Vectors, Transformations, Mensuration, Bearings, Logarithms, Differentiation, Number Bases, Circle Theorems, Sets, Sequences, Ratio, Percentages, Surds, Indices, Integration, Standard Form, Bounds, SDT, Variation, HCF/LCM, Profit/Loss, Rounding, Binomial, Complex Numbers, Fractions, Dot Products, Angles, Triangles, Congruence, Pythagoras, Polygons, Similarity</li>
           <li>🍕 <b>Idli-Vada-Sambhar LCM game</b> — gamified multiples/LCM with <code>LcmHcfApp</code></li>
-          <li>➗ <b>Standard Form & Percentage bridges</b> — ×÷ in scientific notation, multiplier method, reverse %, success %</li>
-          <li>🧮 <b>In-memory auth fallback</b> — added <code>inMemoryUsers</code> when MongoDB is unavailable</li>
-          <li>🧰 <b>Auto-fix tooling</b> — <code>NoiseFilter</code>, lint sweeps across stages 1–5 + completion screen</li>
-          <li>🧾 <b>Diagnostic quiz pipeline</b> — DiagnosticQuiz, MasteryBadge, questionFormatters</li>
+          <li>📊 <b>Tables mastery routes</b> — <code>/taittiriya</code>, <code>/tatsavit</code> (interactive line-fitter), <code>/supertables</code>, <code>/supertables1</code> (2-phase speed drill), <code>/yazdan</code>, <code>/jatin</code>, <code>/lakshya</code> (spaced repetition)</li>
+          <li>🎓 <b>IGCSE 0606 Add Math bank</b> — <code>/riya</code> with 65 MCQs across 14 topics, keyboard navigation (arrows/Enter/A-D/1-4)</li>
+          <li>🎲 <b>Random Mix & Custom Lesson</b> — adaptive cross-topic quiz with progressive difficulty, accessible from hamburger menu</li>
+          <li>📚 <b>Vocab Builder</b> — forward + reverse vocab quiz, dedup logic, expanded to ~4000 questions</li>
+          <li>🎯 <b>Spot It (Twin Hunt)</b> — find the common object in two panels</li>
+          <li>➗ <b>Standard Form & Percentage bridges</b> — ×÷ in scientific notation, multiplier method, reverse %, success %, successive %</li>
+          <li>🔢 <b>Extended Euclidean</b> — BigInt support for 20+ digit numbers, wider inputs, proper subscripts</li>
+          <li>⌨️ <b>Keyboard shortcuts</b> — 1-4 / a-d for MCQs, Enter to advance, on-screen numeric keypad</li>
+          <li>🧮 <b>In-memory auth fallback</b> — <code>inMemoryUsers</code> when MongoDB is unavailable</li>
+          <li>🎨 <b>UI overhaul</b> — dark/light theme, responsive grid, uniform badges, Tenali Raman mascot on landing page</li>
+          <li>📜 <b>All 37 SKILL.md</b> updated to comprehensive formal specifications</li>
         </ul>
       </td>
     </tr>

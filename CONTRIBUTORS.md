@@ -29,8 +29,8 @@
 
 ## 🌟 Live Wall (auto-updated)
 
-<a href="https://github.com/muditagrawal2007/Tenali_123/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=muditagrawal2007/Tenali_123&max=100&columns=20" alt="Contributors wall" />
+<a href="https://github.com/vicharanashala/tenali/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=vicharanashala/tenali&max=100&columns=20" alt="Contributors wall" />
 </a>
 
 ## 📊 Repo at a Glance
@@ -38,7 +38,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **727** | **44** | **17** | **69** | **7,662** | **991** |
+| **728** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard

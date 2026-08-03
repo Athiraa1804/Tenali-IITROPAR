@@ -8,9 +8,10 @@
 
 <p>
   <a href="https://tenali.fun"><img src="https://img.shields.io/badge/Live-tenali.fun-FF6B6B?style=for-the-badge&logo=globe&logoColor=white" alt="Live"/></a>
-  <a href="https://github.com/muditagrawal2007/Tenali_123/stargazers"><img src="https://img.shields.io/github/stars/muditagrawal2007/Tenali_123?style=for-the-badge&logo=github&color=FFD93D" alt="Stars"/></a>
-  <a href="https://github.com/muditagrawal2007/Tenali_123/network/members"><img src="https://img.shields.io/github/forks/muditagrawal2007/Tenali_123?style=for-the-badge&logo=github&color=6BCB77" alt="Forks"/></a>
-  <a href="#-contributors--real-names--github-ids"><img src="https://img.shields.io/badge/Contributors-20-4D96FF?style=for-the-badge&logo=github" alt="Contributors"/></a>
+  <a href="https://github.com/vicharanashala/tenali/stargazers"><img src="https://img.shields.io/github/stars/vicharanashala/tenali?style=for-the-badge&logo=github&color=FFD93D" alt="Stars"/></a>
+  <a href="https://github.com/vicharanashala/tenali/network/members"><img src="https://img.shields.io/github/forks/vicharanashala/tenali?style=for-the-badge&logo=github&color=6BCB77" alt="Forks"/></a>
+  <a href="https://github.com/vicharanashala/tenali/issues"><img src="https://img.shields.io/github/issues/vicharanashala/tenali?style=for-the-badge&logo=github&color=FF6B6B" alt="Issues"/></a>
+  <a href="CONTRIBUTORS.md"><img src="https://img.shields.io/badge/Contributors-20-4D96FF?style=for-the-badge&logo=github" alt="Contributors"/></a>
 </p>
 
 <p>
@@ -78,7 +79,7 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>727</b><br/><sub>commits</sub></td>
+      <td align="center"><b>728</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
@@ -522,7 +523,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **727** | **44** | **17** | **69** | **7,662** | **991** |
+| **728** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard

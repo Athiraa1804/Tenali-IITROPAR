@@ -169,7 +169,22 @@ async function fetchContributors() {
       };
     })
   );
-  return enriched;
+
+  // Fetch repo-level stats (stars, forks, watchers, open issues)
+  // — these power the bot-managed at-a-glance table so they're never stale.
+  let repoStats = { stars: 0, forks: 0, watchers: 0, openIssues: 0 };
+  const repo = await ghFetch(`/repos/${REPO}`);
+  if (repo) {
+    repoStats = {
+      stars: repo.stargazers_count ?? 0,
+      forks: repo.forks_count ?? 0,
+      watchers: repo.subscribers_count ?? 0,
+      openIssues: repo.open_issues_count ?? 0,
+    };
+    log(`  → repo stats: ⭐ ${repoStats.stars} stars · 🍴 ${repoStats.forks} forks · 👀 ${repoStats.watchers} watchers · 🐛 ${repoStats.openIssues} open issues`);
+  }
+
+  return { contributors: enriched, repoStats };
 }
 
 // Curated fallback profiles — used when GitHub API is rate-limited or for
@@ -617,6 +632,7 @@ function renderSnapshot(totals) {
 }
 
 function renderAtAGlance(totals) {
+  const stats = totals.repoStats || { stars: 0, forks: 0, watchers: 0, openIssues: 0 };
   return [
     '<p align="center">',
     '  <table>',
@@ -624,8 +640,9 @@ function renderAtAGlance(totals) {
     `      <td align="center"><b>${totals.totalCommits}</b><br/><sub>commits</sub></td>`,
     `      <td align="center"><b>${totals.totalPRs}</b><br/><sub>PRs merged</sub></td>`,
     `      <td align="center"><b>${Object.keys(totals.byLogin || {}).length || 16}</b><br/><sub>GitHub contributors</sub></td>`,
-    '      <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>',
-    '      <td align="center"><b>47,000+</b><br/><sub>lines of client code</sub></td>',
+    `      <td align="center"><b>⭐ ${stats.stars}</b><br/><sub>stars</sub></td>`,
+    `      <td align="center"><b>🍴 ${stats.forks}</b><br/><sub>forks</sub></td>`,
+    `      <td align="center"><b>🐛 ${stats.openIssues}</b><br/><sub>open issues</sub></td>`,
     '    </tr>',
     '  </table>',
     '</p>',
@@ -714,8 +731,11 @@ async function main() {
   log(`  → ${git.totalCommits} commits · ${git.totalPRs} merged PRs · ${git.uniqueAuthors} unique authors`);
 
   let apiContribs = [];
+  let repoStats = { stars: 0, forks: 0, watchers: 0, openIssues: 0 };
   try {
-    apiContribs = await fetchContributors();
+    const fetched = await fetchContributors();
+    apiContribs = fetched.contributors;
+    repoStats = fetched.repoStats;
     log(`  → ${apiContribs.length} GitHub contributors with profile data`);
   } catch (e) {
     log('⚠ API fetch failed entirely, using fallback profiles only:', e.message);
@@ -727,7 +747,11 @@ async function main() {
     ? `_Live data — last regenerated ${new Date().toISOString().split('T')[0]} · auto-refreshed by [\`github-actions[bot]\`](https://github.com/features/actions) on every push to \`main\` and every 12h._`
     : '';
 
-  const totals = { ...git, byLogin: Object.fromEntries(rows.map((r) => [r.login, r])) };
+  const totals = {
+    ...git,
+    repoStats,
+    byLogin: Object.fromEntries(rows.map((r) => [r.login, r])),
+  };
 
   const leaderboard = banner + '\n\n' + renderLeaderboard(rows, totals);
   const snapshot = renderSnapshot(totals);

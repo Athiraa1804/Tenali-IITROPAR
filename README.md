@@ -78,11 +78,12 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>726</b><br/><sub>commits</sub></td>
+      <td align="center"><b>727</b><br/><sub>commits</sub></td>
       <td align="center"><b>44</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>17</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>9,000+</b><br/><sub>lines of server code</sub></td>
-      <td align="center"><b>47,000+</b><br/><sub>lines of client code</sub></td>
+      <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
+      <td align="center"><b>🍴 58</b><br/><sub>forks</sub></td>
+      <td align="center"><b>🐛 52</b><br/><sub>open issues</sub></td>
     </tr>
   </table>
 </p>
@@ -521,7 +522,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **726** | **44** | **17** | **69** | **7,662** | **991** |
+| **727** | **44** | **17** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard

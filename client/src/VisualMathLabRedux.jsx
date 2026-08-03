@@ -55,20 +55,22 @@ function fireConfetti() {
 
 /* ── Floating BG symbols (stable — never re-renders) ─────────────── */
 const BG_SYMS = ['×','÷','+','=','%','π','√','∑','3','5','9'];
-const FloatingBg = memo(function FloatingBg() {
-  const itemsRef = useRef(null);
-  if (itemsRef.current === null) {
-    const seeds = Array.from({ length: 16 }, (_, i) => i);
-    itemsRef.current = seeds.map((i, idx) => ({
+const generateBgItems = () => {
+  const seeds = Array.from({ length: 16 }, (_, i) => i);
+  return seeds.map((i, idx) => {
+    const x = (Math.floor(Math.random() * 100) + idx) % 100;
+    const y = (Math.floor(Math.random() * 100) + idx * 3) % 100;
+    const size = 11 + Math.floor(Math.random() * 18);
+    const delay = Math.random() * 8;
+    const dur = 12 + Math.floor(Math.random() * 10);
+    return {
       id: i, sym: BG_SYMS[i % BG_SYMS.length],
-      x: (Math.floor(Math.random() * 100) + idx) % 100,
-      y: (Math.floor(Math.random() * 100) + idx * 3) % 100,
-      size: 11 + Math.floor(Math.random() * 18), 
-      delay: Math.random() * 8, 
-      dur: 12 + Math.floor(Math.random() * 10),
-    }));
-  }
-  const items = itemsRef.current;
+      x, y, size, delay, dur,
+    };
+  });
+};
+const FloatingBg = memo(function FloatingBg() {
+  const [items] = useState(generateBgItems);
   return (
     <div style={{ position: 'fixed', inset: 0, overflow: 'hidden', pointerEvents: 'none', zIndex: 0 }}>
       {items.map(s => (
@@ -126,7 +128,7 @@ const FrogSVG = memo(function FrogSVG({ size = 80, happy, sad }) {
 });
 
 /* ── Frog Jump Template ──────────────────────────────────────────── */
-export const FrogJumpTemplate = memo(function FrogJumpTemplate({ q, ans: _ans, setAns, revealed }) {
+export const FrogJumpTemplate = memo(function FrogJumpTemplate({ q, setAns, revealed }) {
   const total  = q.jumps * q.step;
   const maxNum = total + q.step;
   const nums   = useMemo(() => Array.from({ length: maxNum + 1 }, (_, i) => i), [maxNum]);
@@ -664,11 +666,12 @@ export default function VisualMathLabRedux({ onBack, initialDifficulty, initialN
 
   // Handle finish condition separately to avoid re-triggering fetch
   useEffect(() => {
-    if (started && !finished && questionNumber > 0 && questionNumber > totalQ) {
+    if (started && questionNumber > 0 && questionNumber > totalQ) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setFinished(true);
       timer.reset();
     }
-  }, [questionNumber, totalQ, started, finished, timer]);
+  }, [questionNumber, totalQ, started, timer]);
 
   const submitAns = useCallback(async (optAns) => {
     if (!question || revealed) return;

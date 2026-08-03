@@ -22,12 +22,15 @@
  * without CORS issues during development.
  */
 
+import process from 'node:process'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // Serves from root path (no /sub/path)
-  base: '/',
+  // Base path is read from the VITE_BASE_PATH env var so deployments under a
+  // subpath (e.g. /summership/) no longer need the `--base=/summership/` CLI flag.
+  // Falls back to '/' for root deployments and local dev.
+  base: process.env.VITE_BASE_PATH || '/',
   // Enable React support for JSX compilation
   plugins: [react()],
   resolve: {
@@ -158,6 +161,7 @@ export default defineConfig({
       '/circmeasure-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       '/conics-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       '/diffeq-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
+      '/matrixmystics-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       '/linearalgebra-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       '/la-mission-quiz-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },
       '/darts-api': { target: 'http://127.0.0.1:4000', changeOrigin: true },

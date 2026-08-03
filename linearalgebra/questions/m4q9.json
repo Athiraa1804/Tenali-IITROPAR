@@ -37,7 +37,7 @@
           "The number of rows (m)",
           "The number of columns (n)",
           "The rank of A",
-          "0 — not correct here"
+          "0 — t here"
         ],
         "correct_option": "The number of columns (n)",
         "explanation": "Step 1: The rank-nullity theorem states rank + nullity = n. Step 2: n is the number of columns (dimension of the domain). Step 3: This is a fundamental theorem — the dimensions of the row space and null space add up to the domain's dimension."
@@ -71,7 +71,7 @@
         "question": "If A is 5×2 with rank 2, nullity(A) =:",
         "options": [
           "0",
-          "1",
+          "1x",
           "2",
           "3"
         ],
@@ -107,7 +107,7 @@
         "question": "For a 3×3 identity matrix, rank = 3. What is nullity?",
         "options": [
           "0",
-          "1",
+          "1x",
           "2",
           "3"
         ],
@@ -121,7 +121,7 @@
           "A line (1D)",
           "A plane (2D)",
           "A point (0D)",
-          "All of R³"
+          "All of R³ (xx)"
         ],
         "correct_option": "A plane (2D)",
         "explanation": "Step 1: nullity = 3 - 1 = 2. Step 2: The null space is 2D (a plane through the origin). Step 3: Most of the domain is in the null space — only a 1D line of inputs produces non-zero outputs."
@@ -240,9 +240,9 @@
         "id": "M4Q9M10",
         "question": "If A : R² → R² has rank 1, the null space is:",
         "options": [
-          "Just {0} (incorrect)",
+          "Just {0})",
           "A line through the origin",
-          "All of R² (incorrect)",
+          "All of R²)",
           "A point other than origin"
         ],
         "correct_option": "A line through the origin",
@@ -254,7 +254,7 @@
         "id": "M4Q9H1",
         "question": "For A : R⁵ → R³, the rank-nullity theorem tells us rank(A) ≤ 3. If rank(A) = 3, the null space is 2D. What geometric relationship holds between the row space and null space?",
         "options": [
-          "They are parallel — does not match",
+          "They are parallel — does t match",
           "They are orthogonal complements in R⁵",
           "They are the same subspace",
           "They intersect in a line"
@@ -279,7 +279,7 @@
         "question": "If A : R⁴ → R⁴ is a projection onto a 2D plane, what are rank(A) and nullity(A)?",
         "options": [
           "rank = 2, nullity = 2",
-          "rank = 4, nullity = 0",
+          "rank = 4, nullity = 0x",
           "rank = 1, nullity = 3",
           "rank = 0, nullity = 4"
         ],
@@ -326,10 +326,10 @@
         "id": "M4Q9H7",
         "question": "If A : R⁵ → R⁵ has rank 3, can A be invertible?",
         "options": [
-          "Yes, as long as rank > 0...           ",
+          "as long as rank > 0",
           "No — invertible matrices must have rank = 5",
-          "Only if nullity = 0 — does not match",
-          "Only for specific entries of A        "
+          "Only if nullity = 0 — does t match",
+          "Only for specific entries of A"
         ],
         "correct_option": "No — invertible matrices must have rank = 5",
         "explanation": "Step 1: rank = 3 means nullity = 2. Step 2: The null space contains non-zero vectors, so A(x) = 0 for some x ≠ 0. Step 3: An invertible matrix must have nullity = 0 (rank = n = 5). Since 3 < 5, A is not invertible — it loses information."
@@ -340,8 +340,8 @@
         "options": [
           "Orthogonality",
           "Bijectivity (invertibility)",
-          "Nilpotency (incorrect)",
-          "Idempotency — does not match"
+          "Nilpotency)",
+          "Idempotency — does t match"
         ],
         "correct_option": "Bijectivity (invertibility)",
         "explanation": "Step 1: rank = n means range = Rⁿ (surjective). Step 2: nullity = 0 means null space = {0} (injective). Step 3: A map that is both injective and surjective is bijective — invertible. Rank-Nullity shows that for square matrices, injective ⟺ surjective ⟺ invertible."
@@ -403,7 +403,7 @@
       "options": [
         "The 3 useful signal components",
         "The 2 dimensions of signal that are lost (unrecoverable)",
-        "The noise in the system",
+        "The ise in the system",
         "The encoded signal"
       ],
       "correct_option": "The 2 dimensions of signal that are lost (unrecoverable)",
@@ -428,7 +428,7 @@
         "All 8 materials are essential",
         "4 independent combinations of raw materials have no effect on output (redundancies)",
         "The factory produces 8 products",
-        "The factory cannot produce anything"
+        "The factory cant produce anything"
       ],
       "correct_option": "4 independent combinations of raw materials have no effect on output (redundancies)",
       "explanation": "Step 1: rank = 4, nullity = 4. Step 2: 4 independent material combinations are in the null space — changing them doesn't affect the 4 products. Step 3: The factory has 4 degrees of freedom in raw material allocation that don't impact production — these are pure redundancies or waste pathways."

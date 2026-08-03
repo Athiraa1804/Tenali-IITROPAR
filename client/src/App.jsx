@@ -90,6 +90,13 @@ import LanguageDashboard from './language/LanguageDashboard'
 import { VOCAB_CORPUS } from './vocabCorpus'
 import PercentExplanationApp from './PercentExplanationApp'
 import { playSound } from './audioContext'
+import GeometryApp from './GeometryApp';
+import EquationSandboxApp from './lib/EquationSandboxApp.jsx';
+import QFormulaConceptApp from './lib/concept/QFormulaConceptApp.jsx';
+import SimulConceptApp from './lib/simul-concept/SimulConceptApp.jsx';
+import DiagnosticQuiz from './lib/DiagnosticQuiz.jsx';
+import { useI18n } from './lib/i18n.jsx';
+import CuriosityApp from './Curiosity.jsx';
 import ProctoredQuiz from './proctor/ProctoredQuiz'
 import useProctor from './proctor/useProctor'
 import ProctorDashboard from './proctor/ProctorDashboard'
@@ -98,13 +105,6 @@ import PlaygroundApp from './PlaygroundApp'
 import LocalCompilerApp from './LocalCompilerApp'
 import BattleApp from './BattleApp'
 import SudokuApp from './SudokuApp'
-import EquationSandboxApp from './lib/EquationSandboxApp.jsx';
-import QFormulaConceptApp from './lib/concept/QFormulaConceptApp.jsx';
-import SimulConceptApp from './lib/simul-concept/SimulConceptApp.jsx';
-import DiagnosticQuiz from './lib/DiagnosticQuiz.jsx';
-import { useI18n } from './lib/i18n.jsx';
-import CuriosityApp from './Curiosity.jsx';
-import GeometryApp from './GeometryApp';
 
 // API base URL from environment variables (Vite)
 const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -41587,7 +41587,7 @@ function CoordGeomInteractiveApp({ onBack }) {
 
   const loadQuestion = async () => {
     try {
-      const r = await fetch(`/coordgeom-api/question?difficulty=${difficulty}`);
+      const r = await fetch(`${API}/coordgeom-api/question?difficulty=${difficulty}`);
       if (!r.ok) throw new Error('Server error');
       const data = await r.json();
       setCurrentQ(data);
@@ -41629,7 +41629,7 @@ function CoordGeomInteractiveApp({ onBack }) {
         ...currentQ,
         userAnswer: currentQ.type === 'coord' ? `(${dartPos.x}, ${dartPos.y})` : textAnswer
       };
-      const r = await fetch('/coordgeom-api/check', {
+      const r = await fetch(`${API}/coordgeom-api/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -41852,7 +41852,7 @@ function DartBoardApp({ onBack }) {
 
   const loadQuestion = async () => {
     try {
-      const r = await fetch(`/darts-api/question?level=${currentLevel}`);
+      const r = await fetch(`${API}/darts-api/question?level=${currentLevel}`);
       if (!r.ok) throw new Error('Server error');
       const data = await r.json();
       setCurrentQ(data);
@@ -41915,7 +41915,7 @@ function DartBoardApp({ onBack }) {
         userX: dartPos.x,
         userY: dartPos.y,
       };
-      const r = await fetch('/darts-api/check', {
+      const r = await fetch(`${API}/darts-api/check`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -43382,38 +43382,8 @@ function App() {
     )
   }
 
-  // Route: /proctor → Proctor Dashboard (admin only)
+  // Route: /proctor → Proctor Dashboard (instructor view)
   if (pathname === '/proctor') {
-    if (!user) {
-      return (
-        <div className="app-shell">
-          <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <div className="card" style={{ padding: 40, textAlign: 'center' }}>
-            <h2>🔒 Admin Login Required</h2>
-            <p style={{ color: 'var(--clr-text-soft)', marginBottom: 20 }}>Please log in with an admin account to access the Proctor Dashboard.</p>
-            <AuthGate>
-              <div />
-            </AuthGate>
-          </div>
-        </div>
-      )
-    }
-    if (user.role !== 'admin') {
-      return (
-        <div className="app-shell">
-          <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
-            {theme === 'dark' ? '☀️' : '🌙'}
-          </button>
-          <div className="card" style={{ padding: 40, textAlign: 'center' }}>
-            <h2>⛔ Access Denied</h2>
-            <p style={{ color: 'var(--clr-text-soft)', marginBottom: 20 }}>You need admin privileges to access the Proctor Dashboard.</p>
-            <button onClick={() => { window.location.href = '/' }} style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: 'var(--clr-accent)', color: '#fff', cursor: 'pointer', fontWeight: 600 }}>Back to Home</button>
-          </div>
-        </div>
-      )
-    }
     const ProctorDash = ProctorDashboard
     return (
       <>
@@ -44223,7 +44193,7 @@ function App() {
       try {
         const typeParam = type ? `&type=${encodeURIComponent(type)}` : ''
         const usedParam = usedIdsRef.current.length ? `&used=${encodeURIComponent(JSON.stringify(usedIdsRef.current))}` : ''
-        const r = await fetch(`/riddle-api/question?difficulty=${difficulty}${typeParam}${usedParam}`)
+        const r = await fetch(`${API}/riddle-api/question?difficulty=${difficulty}${typeParam}${usedParam}`)
         const data = await r.json()
         if (data.id != null) usedIdsRef.current = [...usedIdsRef.current, data.id]
         setQuestion(data)
@@ -44261,7 +44231,7 @@ function App() {
     const selectType = async (type) => {
       setSelectedType(type)
       try {
-        const r = await fetch(`/riddle-api/count?type=${encodeURIComponent(type)}`)
+        const r = await fetch(`${API}/riddle-api/count?type=${encodeURIComponent(type)}`)
         const data = await r.json()
         const max = data.count || 44
         setMaxForType(max)
@@ -44285,7 +44255,7 @@ function App() {
       submittedRef.current = true
 
       try {
-        const r = await fetch('/riddle-api/check', {
+        const r = await fetch(`${API}/riddle-api/check`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: question.id, answer: userAnswer })
@@ -44306,7 +44276,7 @@ function App() {
     const fetchSolution = async () => {
       if (!question) return
       try {
-        const r = await fetch('/riddle-api/solution', {
+        const r = await fetch(`${API}/riddle-api/solution`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id: question.id })
@@ -44643,9 +44613,9 @@ function App() {
     'visual-math-lab-redux': VisualMathLabRedux,
     'mensuration-lab': MensurationLabApp,
     'basic-arith-lab': BasicArithmeticLabApp,
+    geocraft: GeometryApp,
     battle: BattleApp,          // Live fastest-finger duels
     sudoku: SudokuApp,          // 9x9 Sudoku puzzle
-    geocraft: GeometryApp,
 
     'comic-addition': ComicAdditionApp,
     gk: GKApp,                    // General Knowledge
@@ -44738,8 +44708,9 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
-    riddle: RiddleApp,              // Math Riddles
+    // matrixmystics mode removed — Matrix Mystics content now embedded in LinearAlgebraApp's mission quiz
     trackProgress: null,
+    riddle: RiddleApp,              // Math Riddles
   }
 
   // Get the component to render (or null if mode not set)
@@ -44889,7 +44860,7 @@ function App() {
       </button>
       <div>
         {mode === 'vachana' ? (
-          <Vachana onBack={() => setMode(null)} />
+          <Vachana onBack={() => setMode(null)} initialAdaptScore={diagnosticState[mode] || 0} />
         ) : (
           <div className="card">
             {renderContent()}
@@ -45019,7 +44990,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'lineqgym', name: 'LinearEquations-Gym', subtitle: 'Solve linear equations (MCQ)', color: 'blue' },
     { key: 'indicesgym', name: 'Indices-Gym', subtitle: 'Index laws (MCQ)', color: 'green' },
     { key: 'polygym', name: 'Polynomials Gym', subtitle: 'Arithmetic → monomial algebra (MCQ)', color: 'blue' },
-  ]
+  ] // end regularApps (MatrixMystics tile removed — uses LinearAlgebraApp via linearalgebra mode)
 
   // Combined list for search filtering
   const allApps = [...hamburgerApps, ...regularApps]
@@ -45166,6 +45137,18 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
             </button>
 
             {filteredHamburgerApps.map(app => (
+              <button key={app.key} onClick={() => { setMenuOpen(false); onSelect(app.key) }} style={{
+                display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
+                background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
+                fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'
+              }} onMouseEnter={e => e.target.style.background = 'var(--clr-hover-strong)'}
+                onMouseLeave={e => e.target.style.background = 'none'}>
+                <strong style={{ color: 'var(--clr-accent)' }}>{app.name}</strong>
+                <span style={{ display: 'block', fontSize: '0.78rem', color: 'var(--clr-text-soft)', marginTop: '2px' }}>{app.subtitle}</span>
+              </button>
+            ))}
+
+            {featuredApps.map(app => (
               <button key={app.key} onClick={() => { setMenuOpen(false); onSelect(app.key) }} style={{
                 display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
                 background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
@@ -45457,7 +45440,7 @@ function AchievementCollections({ completedTopics = [], onSelectTopic }) {
       {selectedBook && (
         <div className="book-modal-overlay" onClick={() => setSelectedBook(null)}>
           <div className="book-modal-content" onClick={e => e.stopPropagation()}>
-            <button className="book-modal-close" onClick={() => setSelectedBook(null)}>✕</button>
+            <button className="book-modal-close" onClick={() => setSelectedBook(null)} aria-label="Close">✕</button>
             <h2 className="book-modal-title">{selectedBook.name}</h2>
             <p className="book-modal-desc">{selectedBook.description}</p>
 
@@ -45916,7 +45899,7 @@ function ProfileShowcase({ completedTopics = [], onSelectTopic }) {
       {activeBadgeDetail && (
         <div className="badge-detail-overlay" onClick={() => setActiveBadgeDetail(null)}>
           <div className="badge-detail-modal" onClick={e => e.stopPropagation()}>
-            <button className="badge-detail-close" onClick={() => setActiveBadgeDetail(null)}>✕</button>
+            <button className="badge-detail-close" onClick={() => setActiveBadgeDetail(null)} aria-label="Close">✕</button>
 
             <div className="badge-detail-hero">
               <div className={`badge-detail-aura level-${activeBadgeDetail.level}`} style={{ background: activeBadgeDetail.isLocked ? '#e11d48' : '' }} />
@@ -47369,6 +47352,12 @@ function GKApp({ onBack, markTopicCompleted, isGoalMode = false }) {
   const timer = useTimer()
   // Guard ref: prevents double-fetch from React StrictMode concurrent effect invocations
   const fetchingRef = useRef(false)
+  // Tracks the in-flight question fetch so unmounting can cancel it — the
+  // fetchingRef guard above already stops a second overlapping call from
+  // starting, but nothing previously stopped a pending fetch's setState
+  // calls from firing after the component unmounts.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   /**
    * loadQuestion(excludeIds?): Fetch next GK question from API
@@ -47395,19 +47384,27 @@ function GKApp({ onBack, markTopicCompleted, isGoalMode = false }) {
     setFeedback('')
     setIsCorrect(null)
     setRevealed(false)
-    const ids = excludeIds || seenIds
-    const excludeParam = ids.length ? `?exclude=${ids.join(',')}` : ''
-    const res = await fetch(`${API}/gk-api/question${excludeParam}`)
-    const data = await res.json()
-    setQuestion(data)
-    // Track this question ID so we don't ask it again (persist to localStorage)
-    const newSeen = [...ids, data.id]
-    setSeenIds(newSeen)
-    saveGKSeen(newSeen)
-    setQuestionNumber((n) => n + 1)
-    setLoading(false)
-    fetchingRef.current = false
-    timer.start()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+    try {
+      const ids = excludeIds || seenIds
+      const excludeParam = ids.length ? `?exclude=${ids.join(',')}` : ''
+      const res = await fetch(`${API}/gk-api/question${excludeParam}`, { signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
+      // Track this question ID so we don't ask it again (persist to localStorage)
+      const newSeen = [...ids, data.id]
+      setSeenIds(newSeen)
+      saveGKSeen(newSeen)
+      setQuestionNumber((n) => n + 1)
+      timer.start()
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to load GK question:', e)
+    } finally {
+      setLoading(false)
+      fetchingRef.current = false
+    }
   }
 
   /**
@@ -47650,6 +47647,11 @@ function ColumnAdditionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   const answerRefs = useRef([])
   const carryRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => { if (!isGoalMode) setSessionGoal('standard') }, [isGoalMode])
 
@@ -47663,16 +47665,23 @@ function ColumnAdditionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-addition-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-addition-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setAnswerInputs(new Array(data.answerDigits.length).fill(''))
       setCarryInputs(new Array(data.carries.length).fill(''))
       setCorrectAnswerDigits(null); setCorrectCarryDigits(null)
       setTimeout(() => { if (answerRefs.current[data.answerDigits.length - 1]) answerRefs.current[data.answerDigits.length - 1].focus() }, 100)
-    } catch (e) { console.error('Fetch column addition question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column addition question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -47985,6 +47994,11 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
   const answerRefs = useRef([])
   const carryRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   const [isMulti, setIsMulti] = useState(false)
   const [currentPP, setCurrentPP] = useState(0)
@@ -48013,9 +48027,13 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-multiplication-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-multiplication-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       const multi = !!data.multiDigitMultiplier
@@ -48043,7 +48061,10 @@ function ColumnMultiplicationApp({ onBack, initialDifficulty, initialNumQuestion
           if (answerRefs.current[lastIdx]) answerRefs.current[lastIdx].focus()
         }, 100)
       }
-    } catch (e) { console.error('Fetch column multiplication question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column multiplication question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -48853,6 +48874,11 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   const remainderRefs = useRef([])
   const borrowRefs = useRef({})
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   const COL = 40
   const BRACKET = 80
@@ -48868,9 +48894,13 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-division-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-division-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setQuotientInputs(new Array(data.quotientDigits.length).fill(''))
@@ -48879,7 +48909,10 @@ function ColumnDivisionApp({ onBack, initialDifficulty, initialNumQuestions, ini
       setBorrowInputs({})
       setActiveBorrows(new Set())
       setTimeout(() => { if (quotientRefs.current[0]) quotientRefs.current[0].focus() }, 100)
-    } catch (e) { console.error('Fetch column division question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column division question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -49492,6 +49525,11 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
   const answerRefs = useRef([])
   const borrowRefs = useRef([])
   const advanceTimerRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => { if (!isGoalMode) setSessionGoal('standard') }, [isGoalMode])
 
@@ -49505,9 +49543,13 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
   }
 
   const fetchQuestion = async (diff) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     try {
-      const r = await fetch(`${API}/column-subtraction-api/question?difficulty=${diff || difficulty}`)
+      const r = await fetch(`${API}/column-subtraction-api/question?difficulty=${diff || difficulty}`, { signal: controller.signal })
       const data = await r.json()
       setQuestion(data)
       setAnswerInputs(new Array(data.answerDigits.length).fill(''))
@@ -49517,7 +49559,10 @@ function ColumnSubtractionApp({ onBack, initialDifficulty, initialNumQuestions, 
         const lastIdx = data.answerDigits.length - 1
         if (answerRefs.current[lastIdx]) answerRefs.current[lastIdx].focus()
       }, 100)
-    } catch (e) { console.error('Fetch column subtraction question failed:', e) }
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Fetch column subtraction question failed:', e)
+    }
     setLoading(false)
   }
 
@@ -49948,6 +49993,11 @@ function AdditionApp({ onBack, completedTopics = [], goldMastery = [], markTopic
   // Timer for response timing
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => {
     if (finished) {
@@ -50003,6 +50053,10 @@ function AdditionApp({ onBack, completedTopics = [], goldMastery = [], markTopic
   }
 
 const fetchQuestion = async (selectedDifficulty = difficulty) => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     setFeedback('')
     setAnswer('')
@@ -50016,43 +50070,48 @@ const fetchQuestion = async (selectedDifficulty = difficulty) => {
     const sumMax = additionMode === 'counting' ? sumMaxMap[diffLevel] : null
     const sumMaxParam = sumMax ? `&sumMax=${sumMax}` : ''
 
-    const res = await fetch(`${API}/addition-api/question?digits=${digits}${sumMaxParam}`)
-    const data = await res.json()
-    setQuestion(data)
+    try {
+      const res = await fetch(`${API}/addition-api/question?digits=${digits}${sumMaxParam}`, { signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
 
-    const targetTotal = Number(data.a) + Number(data.b)
+      const targetTotal = Number(data.a) + Number(data.b)
 
-    if (additionMode === 'counting') {
-      // Initialize apples for Visual Counting mode
-      const totalApples = Math.max(15, targetTotal + 5)
-      const initialItems = Array.from({ length: totalApples }, (_, i) => ({ id: `apple-${i}`, icon: '🍎' }))
-      setSourceItems(initialItems)
-      setTargetItems([])
-    } else if (additionMode === 'scale') {
-      // Initialize weights for Balance Scale mode
-      let initBank = []
-      if (diffLevel === 'easy') {
-        if (targetTotal >= 10) {
-          const numTens = Math.floor(targetTotal / 10) + 2;
-          const numOnes = Math.max(12, (targetTotal % 10) + 5);
-          for (let i = 0; i < numTens; i++) {
-            initBank.push({ id: `bank-10-${i}-${Math.random()}`, val: 10 });
-          }
-          for (let i = 0; i < numOnes; i++) {
-            initBank.push({ id: `bank-1-${i}-${Math.random()}`, val: 1 });
+      if (additionMode === 'counting') {
+        // Initialize apples for Visual Counting mode
+        const totalApples = Math.max(15, targetTotal + 5)
+        const initialItems = Array.from({ length: totalApples }, (_, i) => ({ id: `apple-${i}`, icon: '🍎' }))
+        setSourceItems(initialItems)
+        setTargetItems([])
+      } else if (additionMode === 'scale') {
+        // Initialize weights for Balance Scale mode
+        let initBank = []
+        if (diffLevel === 'easy') {
+          if (targetTotal >= 10) {
+            const numTens = Math.floor(targetTotal / 10) + 2;
+            const numOnes = Math.max(12, (targetTotal % 10) + 5);
+            for (let i = 0; i < numTens; i++) {
+              initBank.push({ id: `bank-10-${i}-${Math.random()}`, val: 10 });
+            }
+            for (let i = 0; i < numOnes; i++) {
+              initBank.push({ id: `bank-1-${i}-${Math.random()}`, val: 1 });
+            }
+          } else {
+            initBank = Array.from({ length: Math.max(15, targetTotal + 2) }, (_, i) => ({ id: `bank-1-${i}-${Math.random()}`, val: 1 }));
           }
         } else {
-          initBank = Array.from({ length: Math.max(15, targetTotal + 2) }, (_, i) => ({ id: `bank-1-${i}-${Math.random()}`, val: 1 }));
+          initBank = createDynamicWeightBank(targetTotal)
         }
-      } else {
-        initBank = createDynamicWeightBank(targetTotal)
+        setBankBlocks(initBank)
+        setRightBlocks([])
       }
-      setBankBlocks(initBank)
-      setRightBlocks([])
-    }
 
+      timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to fetch addition question:', e)
+    }
     setLoading(false)
-    timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
   }
 
   /**
@@ -51537,6 +51596,11 @@ function BasicArithApp({ onBack, completedTopics = [], goldMastery = [], markTop
   // Timer
   const timer = useTimer()
   const advanceFnRef = useRef(null)
+  // Tracks the in-flight question fetch so a newer fetchQuestion() call (or
+  // unmount) can cancel a still-pending older one — see makeQuizApp's
+  // loadQuestion() for the same pattern and the race it prevents.
+  const questionAbortRef = useRef(null)
+  useEffect(() => () => questionAbortRef.current?.abort(), [])
 
   useEffect(() => {
     if (finished) {
@@ -51574,13 +51638,22 @@ function BasicArithApp({ onBack, completedTopics = [], goldMastery = [], markTop
   }
 
 const fetchQuestion = async () => {
+    questionAbortRef.current?.abort()
+    const controller = new AbortController()
+    questionAbortRef.current = controller
+
     setLoading(true)
     setFeedback(''); setAnswer(''); setRevealed(false); setIsCorrect(null)
-    const res = await fetch(`${API}/basicarith-api/question?difficulty=${effectiveDiff()}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' } })
-    const data = await res.json()
-    setQuestion(data)
+    try {
+      const res = await fetch(`${API}/basicarith-api/question?difficulty=${effectiveDiff()}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' }, signal: controller.signal })
+      const data = await res.json()
+      setQuestion(data)
+      timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
+    } catch (e) {
+      if (e.name === 'AbortError') return
+      console.error('Failed to fetch basic arithmetic question:', e)
+    }
     setLoading(false)
-    timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(difficulty ?? 'easy', isAdaptive ?? false))
   }
 
   /**
@@ -52355,7 +52428,7 @@ function VisualMathApp({ onBack }) {
     setLoading(true); resetInteractive()
     const mode = pickMode()
     try {
-      const r = await fetch(`/visual-math-api/question?type=${operation}&mode=${mode}&difficulty=${difficulty}`)
+      const r = await fetch(`${API}/visual-math-api/question?type=${operation}&mode=${mode}&difficulty=${difficulty}`)
       const q = await r.json()
       setQuestion(q)
     } catch (e) { console.error(e) }
@@ -54536,6 +54609,12 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
     // Guards against double-submit and double-advance race conditions
     const submittedRef = useRef(false)
     const advancedRef = useRef(false)
+    // Tracks the in-flight question fetch so a newer loadQuestion() call (or
+    // unmount) can cancel a still-pending older one — otherwise an
+    // out-of-order response can land after a newer question and silently
+    // overwrite it, or a leftover fetch can setState after unmount.
+    const questionAbortRef = useRef(null)
+    useEffect(() => () => questionAbortRef.current?.abort(), [])
 
     useEffect(() => {
       if (finished) {
@@ -54557,11 +54636,18 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
     }
 
     const loadQuestion = async () => {
+      // Cancel any still-pending question fetch before starting a new one,
+      // so an out-of-order response from the old request can never land
+      // after (and overwrite) this newer one.
+      questionAbortRef.current?.abort()
+      const controller = new AbortController()
+      questionAbortRef.current = controller
+
       setLoading(true)
       setLoadError('')
       try {
         const diff = effectiveDifficulty()
-        const r = await fetch(`${API}/${apiPath}/question?difficulty=${diff}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' } })
+        const r = await fetch(`${API}/${apiPath}/question?difficulty=${diff}&goal=${sessionGoal}`, { headers: { 'Authorization': authGetToken() ? `Bearer ${authGetToken()}` : '' }, signal: controller.signal })
         if (!r.ok) throw new Error(`Server returned ${r.status}`)
         const data = await r.json()
         // Defensive: a question must have a non-empty prompt to be displayable.
@@ -54579,6 +54665,10 @@ function makeQuizApp({ title, subtitle, apiPath, diffLabels, placeholders, tip, 
         advancedRef.current = false
         timer.start(sessionGoal, handleTimeout, getSpeedRunLimit(effectiveDifficulty ? effectiveDifficulty() : (difficulty || 'easy'), isAdaptive))
       } catch (e) {
+        // A cancelled-on-purpose fetch (superseded by a newer loadQuestion()
+        // call, or the component unmounted) isn't a real failure — don't
+        // show an error for it.
+        if (e.name === 'AbortError') return
         console.error(`Failed to load ${title} question:`, e)
         setQuestion(null)
         setLoadError(`Couldn't load a ${title} question (${e.message || 'unknown error'}). Tap Retry to try again.`)
@@ -55607,6 +55697,25 @@ const PolyGymApp = makeMCQuizApp({
     extrahard: 'Extra Hard — squaring & collect like terms',
   },
   tip: 'Every multiplication reduces to two single-digit numbers. Watch the signs and the powers.',
+})
+
+// ───────────────────────────────────────────────────────────────────────────
+// MATRIX MYSTICS — comprehensive linear algebra MCQ test bank
+// 6 modules, 53 topics, 1855+ questions across easy/medium/hard + real app.
+// ───────────────────────────────────────────────────────────────────────────
+
+const MatrixMysticsApp = makeMCQuizApp({
+  title: 'Matrix Mystics',
+  subtitle: 'Linear Algebra — 6 modules, 53 topics',
+  apiPath: 'matrixmystics-api',
+  adaptiveOnly: true,
+  diffLabels: {
+    easy: 'Easy',
+    medium: 'Medium',
+    hard: 'Hard',
+    extrahard: 'Extra Hard',
+  },
+  tip: 'All questions are MCQ. Read carefully — options are similar length to test real understanding.',
 })
 
 // ───────────────────────────────────────────────────────────────────────────
@@ -65242,7 +65351,7 @@ function IntervalSchedulingApp() {
                   >
                     <span className="is-interval-label">{intv.start}–{intv.end}</span>
                     {step < 0 && (
-                      <button className="is-interval-remove" onClick={(e) => { e.stopPropagation(); removeInterval(intv.id) }}>×</button>
+                      <button className="is-interval-remove" onClick={(e) => { e.stopPropagation(); removeInterval(intv.id) }} aria-label="Remove interval">×</button>
                     )}
                   </div>
                 )

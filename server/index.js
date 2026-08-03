@@ -65,6 +65,7 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 
+
 // Initialize Express app and configure middleware
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -9538,6 +9539,11 @@ app.use('/darts-api', dartsRouter);
 // ═══════════════════════════════════════════════════════════════════════════
 const wordCreatorRouter = require('./routes/wordCreator');
 app.use('/wordcreator-api', wordCreatorRouter);
+
+// CONTRAST CHALLENGE PUZZLE ROUTER (contrast-api)
+// ═══════════════════════════════════════════════════════════════════════════
+const contrastRouter = require('./routes/contrast');
+app.use('/contrast-api', contrastRouter);
 
 // PROCTOR API — Session management, anomaly logging, emotion tracking
 // ═══════════════════════════════════════════════════════════════════════════

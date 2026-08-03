@@ -469,20 +469,37 @@ const FALLBACK_PROFILES = {
       { icon: '🔀', text: '<b>Upstream merge integration</b> for <code>patnaikArpita/Re-added-geometry-game-20July</code>' },
     ],
   },
+
+  'vasuki-tenali': {
+    name: 'Vasuki',
+    avatar: 'https://github.com/identicons/vasuki-tenali.png',
+    color: '#95A5A6',
+    descriptor: 'Infra contributor',
+    topFeatures: [
+      { icon: '🔧', text: '<b>Single administrative / infrastructure commit</b> to the project' },
+      { icon: '📧', text: '<i>Email was private — no public GitHub profile linked</i>' },
+    ],
+  },
 };
 
 // Map git-log author-name → GitHub login so we can join local commits to GH profiles.
 // Note: a single GitHub login can have multiple git author names — the bot
 // renders all of them and adds a "+" indicator in the contributor card.
+// IMPORTANT: keep this exhaustive — any unmapped name is auto-added as a
+// generic placeholder (works, but less rich than a curated profile).
 const GIT_NAME_TO_LOGIN = {
-  // S. R. S. Iyengar — one person, two git author names
+  // S. R. S. Iyengar — one person, three git author names (capitalization variants)
   Sudarshan: 'sudarshansudarshan',
+  sudarshan: 'sudarshansudarshan',
   'S. R. S. Iyengar': 'sudarshansudarshan',
 
+  // Mudit Agrawal — one person, two git author names
   muditagrawal2007: 'muditagrawal2007',
+  'Mudit Agrawal': 'muditagrawal2007',
+
   'varshini-nandula': 'varshini-nandula',
 
-  // J. Gupta — one person, two git author names (j.gupta + jinalbirla)
+  // Jinal Gupta — one person, three git author names (Jinal / Jinal Gupta / jgupta-code)
   'jgupta05072003-code': 'jgupta05072003-code',
   Jinal: 'jgupta05072003-code',
   'Jinal Gupta': 'jgupta05072003-code',
@@ -518,17 +535,23 @@ const GIT_NAME_TO_LOGIN = {
 
   'Shubh dixit': 'Shubhdix9',
   Shubh: 'Shubhdix9',
+
+  // Vasuki — separate contributor with 1 commit, no GH profile (shown as placeholder)
+  Vasuki: 'vasuki-tenali',
 };
 
 // ─── data merging ───────────────────────────────────────────────────────────
 
 function mergeData(git, apiContribs) {
-  // Join git commits by author name → login → API profile (or fallback)
+  // Join git commits by author name → login → API profile (or fallback).
+  // For git author names NOT in GIT_NAME_TO_LOGIN, auto-create a synthetic
+  // entry so any new contributor shows up immediately (bot is future-proof).
   // Emails are intentionally NOT collected or rendered (privacy).
   const byLogin = {};
+  const unmappedNames = [];
   for (const [gitName, count] of Object.entries(git.commitsByName)) {
-    const login = GIT_NAME_TO_LOGIN[gitName];
-    if (!login) continue; // skip names that don't map (e.g. Vasuki)
+    const login = GIT_NAME_TO_LOGIN[gitName] || gitName.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    if (!GIT_NAME_TO_LOGIN[gitName]) unmappedNames.push(gitName);
     byLogin[login] = byLogin[login] || {
       login,
       gitNames: [],
@@ -536,6 +559,11 @@ function mergeData(git, apiContribs) {
     };
     byLogin[login].gitNames.push(gitName);
     byLogin[login].commits += count;
+  }
+
+  if (unmappedNames.length > 0) {
+    log(`  ℹ auto-added ${unmappedNames.length} unmapped git author(s): ${unmappedNames.join(', ')}`);
+    log(`     (these will appear in the leaderboard with a generic avatar — add a FALLBACK_PROFILES entry to enrich them)`);
   }
 
   // PR counts: keyed by github login (source branch prefix)
@@ -651,13 +679,20 @@ function renderAtAGlance(totals) {
 
 function renderCard(r) {
   const fb = FALLBACK_PROFILES[r.login] || {};
+  // For auto-added contributors with no profile data, use a GitHub identicon
+  // (deterministic per-login) and a neutral gray ring.
   const avatar = r.avatar || fb.avatar || `https://github.com/${r.login}.png?size=120`;
   const color = r.color || fb.color || '#888888';
   const name = r.name || fb.name || r.login;
   // Card title = computed rank + curated descriptor (rank is dynamic, never drifts)
-  const descriptor = r.descriptor || fb.descriptor || 'Contributor';
+  const descriptor = r.descriptor || fb.descriptor || 'New Contributor';
   const role = `${rankEmoji(r.rank)} ${descriptor}`;
-  const features = (r.topFeatures || fb.topFeatures || []).map(
+  // Auto-added contributors with no FALLBACK_PROFILES entry get a placeholder feature list
+  const features = (r.topFeatures || fb.topFeatures || [
+    { icon: '🆕', text: '<b>New contributor</b> — auto-added by the readme-bot' },
+    { icon: '📊', text: `<b>${r.commits} commits</b> across this repo's history` },
+    { icon: '🔗', text: '<i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i>' },
+  ]).map(
     (f) => `          <li>${f.icon} ${f.text}</li>`
   ).join('\n');
 

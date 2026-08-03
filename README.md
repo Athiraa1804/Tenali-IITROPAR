@@ -532,8 +532,8 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar** | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **280** | 0  | 🥇 Lead Architect & Curriculum Author |
-| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **121** | 9  | 🥈 Repo Owner · Battle Arena · Linear Algebra |
-| 🥉 | **J. Gupta**<br/><sub>↳ also commits as <b>Jinal Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
+| 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **121** | 9  | 🥈  Battle Arena · Linear Algebra |
+| 🥉 | **Jinal Gupta**<br/><sub>↳ also commits as <b>J. Gupta</b></sub> | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **57** | 0  | 4️⃣ Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | 🥉 Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | 5️⃣ i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | 6️⃣ Vachana Literacy Lab & Vocabulary |
@@ -616,7 +616,7 @@ _Live data — last regenerated 2026-08-03 · auto-refreshed by [`github-actions
     <tr>
       <td align="center" width="220">
         <a href="https://github.com/jgupta05072003-code"><img src="https://avatars.githubusercontent.com/u/267273120?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #4D96FF;" alt="J. Gupta"/></a>
-        <br/><b>J. Gupta</b>
+        <br/><b>Jinal Gupta</b>
         <br/><a href="https://github.com/jgupta05072003-code">@jgupta05072003-code</a>
         <br/><sub>🏆 57 commits · 0 PRs merged</sub>
         <br/><sub>🔗 also commits as: <b>Jinal Gupta</b></sub>

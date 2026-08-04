@@ -144,7 +144,7 @@ const LEVELS = [
 
   correct: 'Double',
 
-  explanation: 'Doubling 🍎🍎 gives 🍎🍎🍎🍎.'
+  explanation: 'Multiplying by 2 gives double.'
 },
   {
   type: 'tap',
@@ -186,139 +186,204 @@ const LEVELS = [
   title: "Crack the Code ",
   questions: [
     {
-      quiz: "7 → 10\n\nWhat does this mean?\n",
-      options: [
-        "3 less",
-        "3 more",
-        "Double",
-        "Half"
-      ],
-      correct: "3 more",
-      explanation:
-        '"3 more" means the number increased by 3.'
-    },
+  type: 'drag-drop',
+  quiz: 'Drag the missing diamonds into the box.',
 
-    {
-      quiz: "10  11  12 . . .\n\nWhat does this mean?",
-      options: [
-        "Exactly 10",
-        "10 or more",
-        "Less than 10",
-        "9 or fewer"
-      ],
-      correct: "10 or more",
-      explanation:
-        '"At least" means the number can be 10 or greater.'
-    },
+  questionVisual: ['💎','💎','💎'],
+  expressionText: '➕ [ ❔ ] =',
+  resultVisual: ['💎','💎','💎','💎','💎'],
 
-    {
-      quiz: "12  ?  7\n\nChoose the correct symbol:",
-      options: [
-        "=",
-        "<",
-        ">",
-        "+"
-      ],
-      correct: ">",
-      explanation:
-        "12 is greater than 7, so we use the '>' symbol."
-    },
+  choices: [
+    { label: '💎', value: '1 more' },
+    { label: '💎💎', value: '2 more' },
+    { label: '💎💎💎', value: '3 more' },
+    { label: '💎💎💎💎', value: '4 more' }
+  ],
 
-    {
-      quiz: "5  •──── ❓ ────•  10\n\nDecode:",
-      options: [
-        "Before",
-        "After",
-        "In the middle of two values",
-        "Equal to"
-      ],
-      correct: "In the middle of two values",
-      explanation:
-        '"Between" means somewhere in the middle of two numbers.'
-    },
+  correct: '2 more',
 
+  explanation: '3 diamonds plus 2 diamonds makes 5 diamonds.'
+},
+
+   {
+  type: 'rocket-drop',
+
+  quiz: 'Drag the rocket to a landing pad with a number that is 5 or bigger.',
+
+  rocket: '🚀',
+
+  targets: [
+    { label: '7️⃣', value: '7' },
+    { label: '1️⃣', value: '1' },
+    { label: '3️⃣', value: '3' },
+    { label: '4️⃣', value: '4' }
+  ],
+
+  correct: '7',
+
+  explanation:
+    '7 is greater than 5'
+},
+
+   {
+  type: 'drag-drop',
+
+  quiz: '😋 The child is hungry. Drag the child toward the side with more pizza.',
+
+   questionVisual: ['🍕','🍕','🍕','🍕','🍕','🍕'],
+  expressionText: '[ ❔ ]',
+  resultVisual: ['🍕','🍕','🍕'],
+
+   choices: [
+    { label: '🚶🏼‍♀️', value: '>' },
+    { label: '🚶🏼‍♀️‍➡️', value: '<' },
+    { label: '🤷🏼', value: '=' }
+  ],
+
+  correct: '>',
+
+  explanation:
+    'The left side has more pizza, so the child walks left.'
+},
+
+   {
+  type: 'tap',
+
+  quiz: '🏠 Mia lives between House 5 and House 10. Tap the house Mia can visit.',
+
+  questionVisual: ['5️⃣','❔','🔟'],
+
+  options: [
+    { label: '🏠 4', value: 'before' },
+    { label: '🏡 7', value: 'middle' },
+    { label: '🏠 10', value: 'end' },
+    { label: '🏠 11', value: 'after' }
+  ],
+
+  correct: 'middle',
+
+  explanation:
+    '7 is between 5 and 10 because it is in the middle.'
+},
     {
-      quiz: "... 18  19  20\n\nDecode:",
-      options: [
-        "20 or more",
-        "Exactly 20",
-        "20 or less",
-        "More than 20"
-      ],
-      correct: "20 or less",
-      explanation:
-        '"At most" means the value cannot be greater than 20.'
-    }
+  type: 'multi-tap',
+
+  quiz: '🔐 The vault code must be "at most 20".\n\nTap all numbers that can unlock the vault.',
+
+  options: [
+    { label: '1️8', value: '18' },
+    { label: '2️0', value: '20' },
+    { label: '2️5', value: '25' },
+    { label: '3️0', value: '30' }
+  ],
+
+  correct: ['18', '20'],
+
+  explanation:
+    '"At most 20" means the number can be 20 or any smaller value. 18 and 20 work, but 25 and 30 are too large.'
+}
   ]
 },
-  {
+{
   id: 4,
-  title: "Spot the Phrase",
+  title: 'Cookie Clues',
   questions: [
-    {
-      quiz: "🍎 (A) are 3 × 🍌 (B).\n\nWhich equation is correct?",
-      options: [
-        "3A = B",
-        "A = B + 3",
-        "B = A + 3",
-         "A = 3B",
 
+    // Q1: 3 times as many
+    {
+      type: 'drag-drop',
+
+      quiz:
+        'Tray B: 🍪\nTray A: Tray B × 3\nTray A: ?',
+
+      choices: [
+        { label: '🍪🍪🍪', value: '3' },
+        { label: '🍪🍪', value: '2' },
+        { label: '🍪🍪🍪🍪', value: '4' }
       ],
-      correct: "A = 3B",
+
+      correct: '3',
+
       explanation:
-        '"Three times as many" means multiply bananas by 3 to get apples.'
+        'Tray B has 1 cookie. Three times Tray B means Tray A has 3 cookies.'
     },
 
+    // Q2: 2 more than
     {
-      quiz: "🍎 (A) are 5 more than 🍌 (B).\n\nWhich equation is correct?",
-      options: [
-        "A = 5B",
-        "A = B + 5",
-        "B = A + 5",
-        "A = B - 5"
+      type: 'drag-drop',
+
+      quiz:
+        'Tray B: 🍪🍪\nTray A: Tray B + 2\nTray A: ?',
+
+      choices: [
+        { label: '🍪🍪🍪🍪', value: '4' },
+        { label: '🍪🍪🍪', value: '3' },
+        { label: '🍪🍪', value: '2' }
       ],
-      correct: "A = B + 5",
+
+      correct: '4',
+
       explanation:
-        '"5 more than" means add 5 to the second quantity.'
+        'Tray B has 2 cookies. Adding 2 more gives Tray A 4 cookies.'
     },
 
+    // Q3: 2 fewer than
     {
-      quiz: "🍎 (A) are 7 less than 🍌 (B).\n\nWhich equation is correct?",
-      options: [
-        "A = 7 - B",
-        "A = B - 7",
-        "A = 7B",
-        "B = A - 7"
+      type: 'drag-drop',
+
+      quiz:
+        'Tray B: 🍪🍪🍪🍪🍪\nTray A: Tray B - 2\nTray A: ?',
+
+      choices: [
+        { label: '🍪🍪🍪', value: '3' },
+        { label: '🍪🍪', value: '2' },
+        { label: '🍪🍪🍪🍪', value: '4' }
       ],
-      correct: "A = B - 7",
+
+      correct: '3',
+
       explanation:
-        '"7 less than" means subtract 7 from the second quantity.'
+        'Tray B has 5 cookies. Two fewer cookies means Tray A has 3 cookies.'
     },
 
+    // Q4: Half (tap)
     {
-      quiz: "🍎 (A) are half of 🍌 (B).\n\nWhich equation is correct?",
+      type: 'tap',
+
+      quiz:
+        'Tray B: 🍪🍪🍪🍪\nTray A: Tray B ÷ 2\nTray A: ?',
+
       options: [
-        "A = B ÷ 2",
-        "A = 2B",
-        "B = A ÷ 2",
-        "A = B + 2"
+        { label: '🍪🍪', value: '2' },
+        { label: '🍪', value: '1' },
+        { label: '🍪🍪🍪', value: '3' },
+        { label: '🍪🍪🍪🍪', value: '4' }
       ],
-      correct: "A = B ÷ 2",
+
+      correct: '2',
+
       explanation:
-        '"Half of" means divide by 2.'
+        'Half of 4 cookies is 2 cookies, so Tray A has 2 cookies.'
     },
 
+    // Q5: Add 3 more (tap)
     {
-      quiz: "🍎 (A) and 8 make 🍌 (B).\n\nWhich equation is correct?",
+      type: 'tap',
+
+      quiz:
+        'Tray B: 🍪🍪\nTray A: Tray B + 3\nTray A: ?',
+
       options: [
-        "B = A + 8",
-        "A = B + 8",
-        "B = 8A",
-        "A = B - 8"
+        { label: '🍪🍪🍪🍪🍪', value: '5' },
+        { label: '🍪🍪🍪🍪', value: '4' },
+        { label: '🍪🍪🍪', value: '3' },
+        { label: '🍪🍪', value: '2' }
       ],
-      correct: "B = A + 8",
+
+      correct: '5',
+
       explanation:
-        'Adding 8 to A gives B.'
+        'Tray B has 2 cookies. Adding 3 more gives Tray A 5 cookies.'
     }
   ]
 },
@@ -604,6 +669,7 @@ export default function ReadingTraps() {
   const [draggedChoice, setDraggedChoice] = useState(null);
   const [dropAnswer, setDropAnswer] = useState('');
   const [textAnswer, setTextAnswer] = useState('');
+  const [multiAns, setMultiAns] = useState([]);
   const currentLevel = LEVELS.find(level => level.id === selectedLevel);
   const questions = currentLevel?.questions || [];
   useEffect(() => {
@@ -628,7 +694,11 @@ const check = (a) => {
   setAns(a);
   setChecked(true);
 
-  if (a === questions[idx].correct) {
+  const isCorrect = Array.isArray(questions[idx].correct)
+  ? a === 'multi-correct'
+  : a === questions[idx].correct;
+
+if (isCorrect) {
   setScore(score + 1);
   setMsg("✅ Correct! " + questions[idx].explanation);
 } else {
@@ -805,6 +875,8 @@ if (currentScreen === "quiz") {
   const isOrderQuestion = q.type === "order";
   const isDragQuestion = q.type === 'drag-drop';
   const isInputQuestion = q.type === 'input';
+  const isRocketDropQuestion = q.type === 'rocket-drop';
+  const isMultiTapQuestion = q.type === 'multi-tap';
   return (
     <div>
 
@@ -937,7 +1009,20 @@ if (currentScreen === "quiz") {
 >
   {q.quiz}
 </p>
-{q.questionVisual && (
+{q.helperText && (
+  <p
+    style={{
+      margin: '0 0 14px 0',
+      fontSize: '1rem',
+      fontWeight: 700,
+      color: 'var(--clr-accent)',
+      textAlign: 'center'
+    }}
+  >
+    {q.helperText}
+  </p>
+)}
+{q.questionVisual && !isDragQuestion && (
   <div
     style={{
       display: 'flex',
@@ -948,6 +1033,7 @@ if (currentScreen === "quiz") {
       marginBottom: '14px',
     }}
   >
+
 
     {/* Left visual */}
     {q.questionVisual.map((emoji, index) => (
@@ -1202,16 +1288,6 @@ if (currentScreen === "quiz") {
       marginBottom: '20px',
     }}
   >
-
-    <div
-      style={{
-        fontSize: '2rem',
-        fontWeight: 700,
-        textAlign: 'center',
-      }}
-    >
-    </div>
-
     <div
       onDragOver={(e) => e.preventDefault()}
       onDrop={() => setDropAnswer(draggedChoice)}
@@ -1228,9 +1304,13 @@ if (currentScreen === "quiz") {
         background: 'rgba(255,145,77,0.08)',
       }}
     >
-     {dropAnswer
-  ? q.choices.find(c => c.value === dropAnswer)?.label
-  : 'Drop here'}
+     {dropAnswer ? (
+  <div style={{ fontSize: '1.6rem' }}>
+    {q.choices.find(c => c.value === dropAnswer)?.label}
+  </div>
+) : (
+  'Drop here'
+)}
     </div>
 
     <div
@@ -1244,42 +1324,130 @@ if (currentScreen === "quiz") {
       {q.choices.map((choice) => (
   <div
     key={choice.value}
-    draggable
-    onDragStart={() => setDraggedChoice(choice.value)}
+    draggable={!checked}
+    onDragStart={() => {
+      if (!checked) setDraggedChoice(choice.value);
+    }}
     style={{
       padding: '12px 18px',
       borderRadius: '16px',
       border: '1px solid var(--clr-border)',
       background: 'var(--clr-surface)',
-      cursor: 'grab',
+      cursor: checked ? 'default' : 'grab',
+      opacity: checked ? 0.6 : 1,
       userSelect: 'none',
+      pointerEvents: checked ? 'none' : 'auto',
       minWidth: '120px',
       textAlign: 'center',
     }}
   >
     <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: '6px',
-      }}
-    >
-      <span style={{ fontSize: '1.6rem' }}>
-        {choice.label}
-      </span>
+  style={{
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '6px',
+  }}
+>
+  <span
+    style={{
+      fontSize: '1.3rem',
+      fontWeight: 700,
+      textAlign: 'center',
+    }}
+  >
+    {choice.label}
+  </span>
 
-      <span
-        style={{
-          fontSize: '0.95rem',
-          fontWeight: 700,
-        }}
-      >
-        {choice.value}
-      </span>
-    </div>
+  <span
+    style={{
+      fontSize: '0.9rem',
+      fontWeight: 600,
+      textAlign: 'center',
+      opacity: 0.9,
+    }}
+  >
+    {choice.value}
+  </span>
+</div>
   </div>
 ))}
+    </div>
+
+  </div>
+) : isRocketDropQuestion ? (
+  <div
+    style={{
+      width: '100%',
+      maxWidth: '520px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      gap: '20px',
+      marginBottom: '20px',
+    }}
+  >
+
+    {/* Draggable rocket */}
+    <div
+      draggable={!checked}
+      onDragStart={() => !checked && setDraggedChoice('rocket')}
+      style={{
+        width: '84px',
+        height: '84px',
+        borderRadius: '22px',
+        border: '1px solid var(--clr-border)',
+        background: 'var(--clr-surface)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '2.5rem',
+        cursor: checked ? 'default' : 'grab',
+        opacity: checked ? 0.6 : 1,
+      }}
+    >
+      {q.rocket}
+    </div>
+
+    {/* Drop targets */}
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, minmax(120px, 1fr))',
+        gap: '16px',
+        width: '100%',
+      }}
+    >
+      {q.targets.map((target) => (
+        <div
+          key={target.value}
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={() => {
+            if (!checked && draggedChoice === 'rocket') {
+              setAns(target.value);
+            }
+          }}
+          style={{
+            minHeight: '100px',
+            borderRadius: '20px',
+            border:
+              ans === target.value
+                ? '2px solid var(--clr-accent)'
+                : '2px dashed var(--clr-border)',
+            background:
+              ans === target.value
+                ? 'rgba(255,145,77,0.12)'
+                : 'var(--clr-surface)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontSize: '2rem',
+            transition: '0.2s ease',
+          }}
+        >
+          {target.label}
+        </div>
+      ))}
     </div>
 
   </div>
@@ -1326,6 +1494,54 @@ if (currentScreen === "quiz") {
   }}
 />
 
+  </div>
+) : isMultiTapQuestion ? (
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, minmax(140px, 180px))',
+      gap: '16px',
+      justifyContent: 'center',
+      marginBottom: '20px',
+      width: '100%',
+    }}
+  >
+    {q.options.map((opt) => {
+      const selected = multiAns.includes(opt.value);
+
+      return (
+        <button
+          key={opt.value}
+          disabled={checked}
+          onClick={() => {
+            if (checked) return;
+
+            setMultiAns(prev =>
+              prev.includes(opt.value)
+                ? prev.filter(v => v !== opt.value)
+                : [...prev, opt.value]
+            );
+          }}
+          style={{
+            minHeight: '120px',
+            padding: '18px',
+            borderRadius: '22px',
+            border: selected
+              ? '2px solid var(--clr-accent)'
+              : '1px solid var(--clr-border)',
+            background: selected
+              ? 'rgba(255,145,77,0.12)'
+              : 'var(--clr-surface)',
+            cursor: checked ? 'default' : 'pointer',
+            transition: '0.2s ease',
+            fontSize: '1.2rem',
+            fontWeight: 700,
+          }}
+        >
+          {opt.label}
+        </button>
+      );
+    })}
   </div>
 ) : isTapQuestion ? (
   <div
@@ -1476,8 +1692,12 @@ if (currentScreen === "quiz") {
     ? orderSelection.length !== q.correctOrder.length
     : isDragQuestion
     ? !dropAnswer
+    : isMultiTapQuestion
+    ? multiAns.length === 0
     : isInputQuestion
     ? !textAnswer.trim()
+    : isRocketDropQuestion
+    ? !ans
     : !ans
 }
       onClick={() => {
@@ -1504,6 +1724,15 @@ if (currentScreen === "quiz") {
   
   } else if (isInputQuestion) {
   check(textAnswer.trim());
+  } else if (isMultiTapQuestion) {
+  const correct =
+    JSON.stringify([...multiAns].sort()) ===
+    JSON.stringify([...q.correct].sort());
+
+  check(correct ? 'multi-correct' : 'multi-wrong');
+
+  } else if (isRocketDropQuestion) {
+  check(ans);
 
   } else {
     check(ans);
@@ -1533,6 +1762,7 @@ if (currentScreen === "quiz") {
           setDropAnswer('');
           setTextAnswer('');
           setDraggedChoice(null);
+          setMultiAns([]);
           
         }
       }}

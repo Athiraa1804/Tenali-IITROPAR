@@ -1,6 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { getOrCreateAnonymousId } from '../anonId'
 import './treasurehunt.css'
 import EquationGate from './EquationGate'
+import LifeHearts from './LifeHearts'
 
 const API = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -31,17 +33,98 @@ function loadAllProgress() {
   } catch { return {} }
 }
 
-function saveWorldProgress(worldId, topicTiers) {
+function saveWorldProgress(worldId, topicTiers, hasPlayed) {
   const all = loadAllProgress()
-  all[worldId] = { topicTiers, lastPlayed: Date.now() }
+  const existing = all[worldId] || {}
+  all[worldId] = {
+    ...existing,
+    topicTiers,
+    lastPlayed: Date.now(),
+    ...(hasPlayed ? { hasPlayed: true } : {}),
+  }
   try {
     localStorage.setItem(getProgressKey(), JSON.stringify(all))
-  } catch {}
+  } catch { }
 }
 
 function getWorldProgress(worldId) {
   const all = loadAllProgress()
   return all[worldId] || null
+}
+
+const TOPIC_LABELS = {
+  addition: 'Addition',
+  multiply: 'Multiplication',
+  basicarith: 'Basic Arithmetic',
+  decimals: 'Decimals',
+  fractionadd: 'Fraction Addition',
+  percent: 'Percentages',
+  ratio: 'Ratio',
+  rounding: 'Rounding',
+  profitloss: 'Profit & Loss',
+  banking: 'Banking',
+  gst: 'GST',
+  shares: 'Shares',
+  sdt: 'Speed, Distance & Time',
+  variation: 'Variation',
+  stdform: 'Standard Form',
+  bounds: 'Bounds',
+  hcflcm: 'HCF & LCM',
+  primefactor: 'Prime Factorization',
+  squaring: 'Squaring',
+  sqrt: 'Square Roots',
+  bases: 'Number Bases',
+  tatsavit: 'Tatsavit Drill',
+  lineareq: 'Linear Equations',
+  quadratic: 'Quadratics',
+  ineq: 'Inequalities',
+  indices: 'Indices',
+  qformula: 'Quadratic Formula',
+  funceval: 'Function Evaluation',
+  surds: 'Surds',
+  remfactor: 'Remainder & Factor Theorem',
+  binomial: 'Binomial Expansion',
+  complex: 'Complex Numbers',
+  polymul: 'Polynomial Multiplication',
+  polyfactor: 'Polynomial Factorization',
+  log: 'Logarithms',
+  integ: 'Integration',
+  limits: 'Limits',
+  diff: 'Differentiation',
+  diffeq: 'Differential Equations',
+  matrix: 'Matrices',
+  vectors: 'Vectors',
+  dotprod: 'Dot Product',
+  linprog: 'Linear Programming',
+  lineq: 'Line Equations',
+  angles: 'Angles',
+  triangles: 'Triangles',
+  congruence: 'Congruence',
+  pythag: 'Pythagoras',
+  polygons: 'Polygons',
+  similarity: 'Similarity',
+  heron: "Heron's Formula",
+  mensur: 'Mensuration',
+  coordgeom: 'Coordinate Geometry',
+  transform: 'Transformations',
+  circmeasure: 'Circle Measure',
+  conics: 'Conics',
+  circleth: 'Circle Theorems',
+  section: 'Section Formula',
+  trig: 'Trigonometry',
+  invtrig: 'Inverse Trigonometry',
+  bearings: 'Bearings',
+  prob: 'Probability',
+  stats: 'Statistics',
+  sequences: 'Sequences',
+  sets: 'Sets',
+  permcomb: 'Permutations & Combinations',
+}
+
+function formatTopicName(topic) {
+  if (!topic) return ''
+  if (TOPIC_LABELS[topic]) return TOPIC_LABELS[topic]
+  return topic.charAt(0).toUpperCase() + topic.slice(1)
 }
 
 export default function TreasureHuntApp({ onBack }) {
@@ -63,6 +146,9 @@ export default function TreasureHuntApp({ onBack }) {
 
   // Resume-or-fresh prompt state (Part H)
   const [resumePrompt, setResumePrompt] = useState(null)  // { worldId, worldName, savedTiers }
+
+  // World topics preview (shown after world card click)
+  const [worldPreview, setWorldPreview] = useState(null)
 
   // Confidence select (no extra state needed beyond selectedWorld)
 
@@ -87,9 +173,11 @@ export default function TreasureHuntApp({ onBack }) {
   const [revealError, setRevealError] = useState('')
   const [revealing, setRevealing] = useState(false)
   const [activeGateCell, setActiveGateCell] = useState(null)
-  const [gameOver, setGameOver] = useState(false)
+  const [gameEnd, setGameEnd] = useState(null)
   const [hintCell, setHintCell] = useState(null)
   const [hasTappedOnce, setHasTappedOnce] = useState(false)
+  const [statusBarBreaking, setStatusBarBreaking] = useState(null)
+  const prevLivesRef = useRef(3)
 
   const dismissHowToPlay = () => {
     sessionStorage.setItem('th-how-to-play-seen', '1')
@@ -124,10 +212,15 @@ export default function TreasureHuntApp({ onBack }) {
   const handleWorldClick = (world) => {
     setSelectedWorldId(world.id)
     setSelectedWorld(world)
+    setWorldPreview(world)
+  }
 
-    // Part H: Check localStorage for saved progress
+  const handleWorldPreviewContinue = () => {
+    const world = worldPreview
+    setWorldPreview(null)
+    if (!world) return
     const saved = getWorldProgress(world.id)
-    if (saved && saved.topicTiers) {
+    if (saved && saved.topicTiers && saved.hasPlayed) {
       setResumePrompt({
         worldId: world.id,
         worldName: world.name,
@@ -136,6 +229,12 @@ export default function TreasureHuntApp({ onBack }) {
     } else {
       setPhase('confidenceSelect')
     }
+  }
+
+  const handleWorldPreviewCancel = () => {
+    setWorldPreview(null)
+    setSelectedWorldId(null)
+    setSelectedWorld(null)
   }
 
   // Part H: Resume with saved tiers
@@ -230,7 +329,12 @@ export default function TreasureHuntApp({ onBack }) {
       const r = await fetch(`${API}/treasurehunt-api/session/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ worldId: selectedWorldId, topicTiers: tiers, gridSize: 5 }),
+        body: JSON.stringify({
+          worldId: selectedWorldId,
+          topicTiers: tiers,
+          gridSize: 5,
+          anonId: getOrCreateAnonymousId(),
+        }),
       })
       if (!r.ok) {
         const err = await r.json().catch(() => ({}))
@@ -245,7 +349,7 @@ export default function TreasureHuntApp({ onBack }) {
       setHintCell(data.hintCell || null)
       setHasTappedOnce(false)
       setRevealError('')
-      setGameOver(false)
+      setGameEnd(null)
       setPhase('playing')
     } catch (e) {
       setStartError(e.message || 'Failed to start session')
@@ -266,8 +370,18 @@ export default function TreasureHuntApp({ onBack }) {
     })
   }
 
+  const handleGameEnd = (status, summary) => {
+    if (status && status !== 'in_progress') {
+      setGameEnd({ status, summary: summary || null })
+      setActiveGateCell(null)
+      if (topicTiers && selectedWorldId) {
+        saveWorldProgress(selectedWorldId, topicTiers, true)
+      }
+    }
+  }
+
   const handleCellTap = async (row, col) => {
-    if (phase !== 'playing' || !sessionId || revealing || gameOver) return
+    if (phase !== 'playing' || !sessionId || revealing || gameEnd) return
     const cell = cells[row][col]
     if (cell.status !== 'hidden') return
 
@@ -288,7 +402,11 @@ export default function TreasureHuntApp({ onBack }) {
       if (data.type === 'treasure') {
         setCells((prev) => {
           const next = prev.map((r) => r.map((c) => ({ ...c })))
-          next[row][col] = { status: 'treasure', neighborCount: data.neighborCount }
+          next[row][col] = {
+            status: 'treasure',
+            neighborCount: data.neighborCount,
+            justRevealed: true,
+          }
           return next
         })
       } else if (data.type === 'revealed') {
@@ -298,6 +416,7 @@ export default function TreasureHuntApp({ onBack }) {
         // Open the EquationGate popup
         setActiveGateCell({ row, col })
       }
+      handleGameEnd(data.status, data.summary)
     } catch (e) {
       setRevealError(e.message || 'Failed to reveal cell')
     } finally {
@@ -305,7 +424,7 @@ export default function TreasureHuntApp({ onBack }) {
     }
   }
 
-  const handleGateCorrect = (neighborCount, newTier, livesLeft, floodCells) => {
+  const handleGateCorrect = (neighborCount, newTier, livesLeft, floodCells, status, summary) => {
     const { row, col } = activeGateCell
     setCells((prev) => {
       const next = prev.map((r) => r.map((c) => ({ ...c })))
@@ -319,31 +438,191 @@ export default function TreasureHuntApp({ onBack }) {
     if (floodCells && floodCells.length > 0) {
       applyFloodCells(floodCells)
     }
+    handleGameEnd(status, summary)
   }
 
-  const handleGateWrong = (livesLeft, newTier) => {
+  const handleGateWrong = (livesLeft, newTier, status, summary) => {
+    // Trigger heartbreak on status bar heart
+    const lostIndex = livesLeft // the heart at this index is the one that was lost
+    setStatusBarBreaking(lostIndex)
     setTier(newTier)
     setLives(livesLeft)
     setActiveGateCell(null)
-    if (livesLeft === 0) {
-      setGameOver(true)
-      // Part H: save progress on game over
-      if (topicTiers && selectedWorldId) {
-        saveWorldProgress(selectedWorldId, topicTiers)
-      }
-    }
+    handleGameEnd(status, summary)
+    // Clear breaking state after animation
+    setTimeout(() => setStatusBarBreaking(null), 2000)
   }
 
   const handleGateClose = () => {
     setActiveGateCell(null)
   }
+  const handleBackToWorlds = () => {
+    setGameEnd(null)
+    setSessionId(null)
+    setSelectedWorldId(null)
+    setSelectedWorld(null)
+    setTopicTiers(null)
+    setPhase('worldSelect')
+  }
 
-  // Part H: save progress when navigating back
-  const handleBack = () => {
-    if (topicTiers && selectedWorldId && phase === 'playing') {
-      saveWorldProgress(selectedWorldId, topicTiers)
+  const handlePlayAgain = () => {
+    if (topicTiers) {
+      setGameEnd(null)
+      startGame(topicTiers)
     }
-    onBack()
+  }
+
+  const renderSessionSummary = (summary) => {
+    if (!summary) return null
+    const { topicBreakdown, weakestTopic, treasuresFound, totalTreasures } = summary
+    return (
+      <div className="th-summary">
+        <p className="th-summary-heading">What you practiced</p>
+        {topicBreakdown && topicBreakdown.length > 0 ? (
+          <ul className="th-summary-list">
+            {topicBreakdown.map((entry) => (
+              <li key={entry.topic}>
+                {formatTopicName(entry.topic)}: {entry.correct}/{entry.attempted} correct
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="th-summary-empty">No questions this round — great exploring!</p>
+        )}
+        {weakestTopic && (
+          <p className="th-summary-weakest">
+            Focus next time: {formatTopicName(weakestTopic)}
+          </p>
+        )}
+        {totalTreasures != null && (
+          <p className="th-summary-treasures">
+            Treasures found: {treasuresFound}/{totalTreasures}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  const renderCelebration = () => {
+    const emojis = ['🎉', '🏆', '⭐', '🎊', '✨', '💎', '🥇', '🌟']
+    return (
+      <div className="th-celebration-container">
+        {Array.from({ length: 30 }, (_, i) => (
+          <span
+            key={i}
+            className="th-confetti-piece"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 1.5}s`,
+              animationDuration: `${2 + Math.random() * 2}s`,
+              fontSize: `${1 + Math.random() * 1.5}rem`,
+            }}
+          >
+            {emojis[i % emojis.length]}
+          </span>
+        ))}
+      </div>
+    )
+  }
+
+  const renderEndScreen = () => {
+    if (!gameEnd) return null
+    const { status, summary } = gameEnd
+    const isWin = status === 'won'
+
+    return (
+      <div className={`th-end-screen ${isWin ? 'th-end-win' : 'th-end-lose'}`}>
+        {isWin && renderCelebration()}
+        {isWin ? (
+          <>
+            <div className="th-win-trophy">🏆</div>
+            <h2 className="th-end-title th-win-title">
+              You cleared the grid!
+            </h2>
+            <p className="th-end-message">
+              Every cell searched — the treasure hunt is complete!
+            </p>
+            {renderSessionSummary(summary)}
+            <div className="th-end-actions">
+              <button type="button" className="th-htp-btn" onClick={handlePlayAgain}>
+                Play Again
+              </button>
+              <button
+                type="button"
+                className="th-htp-btn th-end-secondary-btn"
+                onClick={handleBackToWorlds}
+              >
+                Back to Worlds
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="th-lose-emoji">😤</div>
+            <h2 className="th-end-title th-lose-title">
+              Oh shit! Better luck next time
+            </h2>
+            <p className="th-end-message">
+              You found {summary?.treasuresFound ?? 0} treasure{(summary?.treasuresFound ?? 0) === 1 ? '' : 's'} before your lives ran out.
+            </p>
+            <div className="th-lose-hearts">
+              <LifeHearts lives={0} maxLives={3} size="lg" />
+            </div>
+            <p className="th-lose-inspire">
+              Every expert was once a beginner. Get back in there and crush it! 💪🔥
+            </p>
+            {renderSessionSummary(summary)}
+            <div className="th-end-actions">
+              <button type="button" className="th-htp-btn" onClick={handlePlayAgain}>
+                Try Again
+              </button>
+              <button
+                type="button"
+                className="th-htp-btn th-end-secondary-btn"
+                onClick={handleBackToWorlds}
+              >
+                Back to Worlds
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    )
+  }
+
+  const handleBack = () => {
+    if (phase === 'worldSelect') {
+      onBack()
+      return
+    }
+    if (phase === 'confidenceSelect') {
+      setPhase('worldSelect')
+      setSelectedWorldId(null)
+      setSelectedWorld(null)
+      return
+    }
+    if (phase === 'diagnostic') {
+      setPhase('confidenceSelect')
+      setDiagnosticId(null)
+      setDiagnosticQuestions([])
+      setDiagnosticIndex(0)
+      setDiagnosticLoading(false)
+      setDiagnosticSubmitting(false)
+      return
+    }
+    if (phase === 'playing') {
+      if (topicTiers && selectedWorldId) {
+        saveWorldProgress(selectedWorldId, topicTiers, true)
+      }
+      setGameEnd(null)
+      setSessionId(null)
+      setActiveGateCell(null)
+      setCells(emptyGrid(gridSize))
+      setPhase('worldSelect')
+      setSelectedWorldId(null)
+      setSelectedWorld(null)
+      setTopicTiers(null)
+    }
   }
 
   // ── World name for display ─────────────────────────────────────────────────
@@ -354,18 +633,101 @@ export default function TreasureHuntApp({ onBack }) {
       {/* How to Play modal */}
       {showHowToPlay && (
         <div className="th-htp-overlay">
-          <div className="th-htp-popup">
-            <h2 className="th-htp-title">How to Play: Treasure Hunt — Solve & Seek</h2>
-            <ul className="th-htp-rules">
-              <li>Tap a cell to search for treasure</li>
-              <li>Find treasure and the cell opens right away, showing how many more treasures are hiding nearby</li>
-              <li>Tap an empty cell and you'll need to solve a quick question first</li>
-              <li>Get it right, the cell opens. Get it wrong, you lose a life</li>
-              <li>Clear the whole grid to win!</li>
-            </ul>
+          <div className="th-htp-popup th-htp-popup--welcome">
+            <h2 className="th-htp-title">Welcome, explorer</h2>
+            <p className="th-htp-subtitle">Treasure is hidden across this grid</p>
+
+            <div className="th-htp-steps">
+              {/* Step 1 — Tap */}
+              <div className="th-htp-step">
+                <div className="th-htp-step-icon th-htp-icon--tap">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M18 8V2H6v6" /><path d="M4 10h16v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10z" /><line x1="12" y1="14" x2="12" y2="18" />
+                  </svg>
+                </div>
+                <div className="th-htp-step-text">
+                  <span className="th-htp-step-title">Tap any cell</span>
+                  <span className="th-htp-step-body">Start your search anywhere on the grid.</span>
+                </div>
+              </div>
+
+              {/* Step 2 — Treasure */}
+              <div className="th-htp-step">
+                <div className="th-htp-step-icon th-htp-icon--treasure">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                  </svg>
+                </div>
+                <div className="th-htp-step-text">
+                  <span className="th-htp-step-title">Found treasure? It opens right away</span>
+                  <span className="th-htp-step-body">Nearby cells reveal a number — how many more are hiding close by.</span>
+                </div>
+              </div>
+
+              {/* Step 3 — Question */}
+              <div className="th-htp-step">
+                <div className="th-htp-step-icon th-htp-icon--question">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10" /><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" /><line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <div className="th-htp-step-text">
+                  <span className="th-htp-step-title">Empty cell? Solve to open it</span>
+                  <span className="th-htp-step-body">A quick question stands in your way.</span>
+                </div>
+              </div>
+
+              {/* Step 4 — Lives */}
+              <div className="th-htp-step">
+                <div className="th-htp-step-icon th-htp-icon--lives">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                  </svg>
+                </div>
+                <div className="th-htp-step-text">
+                  <span className="th-htp-step-title">Wrong answer costs a life</span>
+                  <span className="th-htp-step-body">You get 3 — clear the whole grid before they run out.</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="th-htp-tip">
+              Tip: use the revealed numbers as clues to find treasure faster.
+            </div>
+
             <button type="button" className="th-htp-btn" onClick={dismissHowToPlay}>
-              Let the hunt begin!
+              Let the hunt begin
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* World topics preview modal */}
+      {worldPreview && (
+        <div className="th-htp-overlay">
+          <div className="th-htp-popup">
+            <h2 className="th-htp-title">{worldPreview.icon} {worldPreview.name}</h2>
+            <p className="th-world-topics-heading">Topics in this world</p>
+            <ul className="th-world-topics-list">
+              {worldPreview.topics.map((t) => (
+                <li key={t.topic} className={t.status !== 'active' ? 'th-topic-soon' : ''}>
+                  {formatTopicName(t.topic)}
+                  {t.status !== 'active' && <span className="th-topic-badge"> (coming soon)</span>}
+                </li>
+              ))}
+            </ul>
+            <div className="th-world-preview-actions">
+              <button type="button" className="th-htp-btn" onClick={handleWorldPreviewContinue}>
+                Continue
+              </button>
+              <button
+                type="button"
+                className="th-htp-btn th-end-secondary-btn"
+                onClick={handleWorldPreviewCancel}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -376,11 +738,11 @@ export default function TreasureHuntApp({ onBack }) {
           <div className="th-htp-popup">
             <h2 className="th-htp-title">{resumePrompt.worldName}</h2>
             <p style={{ color: 'var(--clr-text-soft)', marginBottom: '20px' }}>
-              You have saved progress in this world.
+              You've played this world before. Use your previous difficulty levels or recalibrate from scratch.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button type="button" className="th-htp-btn" onClick={handleResume}>
-                Continue where you left off
+                Use previous difficulty levels
               </button>
               <button
                 type="button"
@@ -396,7 +758,7 @@ export default function TreasureHuntApp({ onBack }) {
       )}
 
       <div className="header-row">
-        <button type="button" className="back-button" onClick={handleBack}>← Home</button>
+        <button type="button" className="back-button" onClick={handleBack}>← Back</button>
       </div>
       <h1>Treasure Hunt</h1>
       <p className="subtitle">Solve &amp; seek on a treasure grid</p>
@@ -515,24 +877,12 @@ export default function TreasureHuntApp({ onBack }) {
         <>
           <div className="th-status-row">
             <div className="progress-pill">{worldDisplayName}</div>
-            <div className="progress-pill">Lives: {lives}</div>
-          </div>
-          {gameOver ? (
-            <div className="th-gameover">
-              <h2>Game Over</h2>
-              <button
-                type="button"
-                className="th-htp-btn"
-                style={{ marginTop: '16px' }}
-                onClick={() => {
-                  setPhase('worldSelect')
-                  setGameOver(false)
-                  setSessionId(null)
-                }}
-              >
-                Back to Worlds
-              </button>
+            <div className="progress-pill th-lives-pill">
+              <LifeHearts lives={lives} maxLives={3} breakingIndex={statusBarBreaking} size="md" />
             </div>
+          </div>
+          {gameEnd ? (
+            renderEndScreen()
           ) : (
             <div
               className="th-grid"
@@ -542,20 +892,31 @@ export default function TreasureHuntApp({ onBack }) {
                 row.map((cell, c) => {
                   let label = '?'
                   if (cell.status === 'treasure') {
-                    label = cell.neighborCount > 0 ? cell.neighborCount : '★'
+                    label = '★'
                   } else if (cell.status === 'revealed') {
                     label = cell.neighborCount > 0 ? cell.neighborCount : '·'
                   }
                   const isHint = !hasTappedOnce && hintCell &&
                     r === hintCell.row && c === hintCell.col &&
                     cell.status === 'hidden'
+                  const treasureAnim = cell.status === 'treasure' && cell.justRevealed
                   return (
                     <button
                       key={`${r}-${c}`}
                       type="button"
-                      className={`th-cell ${cell.status}${isHint ? ' th-hint-glow' : ''}`}
-                      disabled={cell.status !== 'hidden' || revealing || gameOver}
+                      className={`th-cell ${cell.status}${isHint ? ' th-hint-glow' : ''}${treasureAnim ? ' th-treasure-reveal' : ''}`}
+                      disabled={cell.status !== 'hidden' || revealing || !!gameEnd}
                       onClick={() => handleCellTap(r, c)}
+                      onAnimationEnd={() => {
+                        if (!cell.justRevealed) return
+                        setCells((prev) => {
+                          const next = prev.map((rowCells) => rowCells.map((c) => ({ ...c })))
+                          if (next[r][c].justRevealed) {
+                            next[r][c] = { ...next[r][c], justRevealed: false }
+                          }
+                          return next
+                        })
+                      }}
                       aria-label={`Cell ${r + 1}, ${c + 1}`}
                     >
                       {cell.status === 'hidden' ? '?' : label}
@@ -567,7 +928,7 @@ export default function TreasureHuntApp({ onBack }) {
           )}
           {revealError && <p className="th-error">{revealError}</p>}
 
-          {activeGateCell && (
+          {activeGateCell && !gameEnd && (
             <EquationGate
               sessionId={sessionId}
               row={activeGateCell.row}

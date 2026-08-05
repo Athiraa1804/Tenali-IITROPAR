@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './equationgate.css'
+import LifeHearts from './LifeHearts'
 
 const API = import.meta.env.VITE_API_BASE_URL || ''
 
@@ -26,11 +27,20 @@ export default function EquationGate({
   // Wrong-answer feedback state
   const [wrongResult, setWrongResult] = useState(null) // { correctAnswer, tip, livesLeft, newTier }
 
+  // Heartbreak animation state
+  const [breakingIndex, setBreakingIndex] = useState(null)
+  const [showHeartbreakOverlay, setShowHeartbreakOverlay] = useState(false)
+
   // Fetch question on mount
   useEffect(() => {
     let cancelled = false
     setLoading(true)
     setFetchError('')
+    setWrongResult(null)
+    setQuestionText('')
+    setOptions([])
+    setBreakingIndex(null)
+    setShowHeartbreakOverlay(false)
 
     fetch(`${API}/treasurehunt-api/question?sessionId=${encodeURIComponent(sessionId)}`)
       .then((r) => {
@@ -52,7 +62,7 @@ export default function EquationGate({
       })
 
     return () => { cancelled = true }
-  }, [sessionId])
+  }, [sessionId, row, col])
 
   const handleOptionClick = async (selectedOption) => {
     if (checking || wrongResult) return
@@ -68,15 +78,39 @@ export default function EquationGate({
       const data = await r.json()
 
       if (data.correct) {
-        onCorrect(data.neighborCount, data.newTier, data.livesLeft, data.floodCells || [])
+        onCorrect(
+          data.neighborCount,
+          data.newTier,
+          data.livesLeft,
+          data.floodCells || [],
+          data.status,
+          data.summary,
+        )
       } else {
-        // Show wrong-answer view; don't close yet
+        // Trigger heartbreak animation on the life just lost
+        const lostHeartIndex = data.livesLeft // 0-indexed: if 2 lives left, heart at index 2 is breaking
+        setBreakingIndex(lostHeartIndex)
+        setShowHeartbreakOverlay(true)
+
+        // Show wrong-answer view after heartbreak animation
         setWrongResult({
           correctAnswer: data.correctAnswer,
           tip: data.tip,
           livesLeft: data.livesLeft,
           newTier: data.newTier,
+          status: data.status,
+          summary: data.summary,
         })
+
+        // Clear heartbreak overlay after animation
+        setTimeout(() => {
+          setShowHeartbreakOverlay(false)
+        }, 2000)
+
+        // Clear breaking index after animation completes
+        setTimeout(() => {
+          setBreakingIndex(null)
+        }, 1800)
       }
     } catch (e) {
       setFetchError(e.message || 'Failed to check answer')
@@ -87,13 +121,18 @@ export default function EquationGate({
 
   const handleContinue = () => {
     if (wrongResult) {
-      onWrong(wrongResult.livesLeft, wrongResult.newTier)
+      onWrong(
+        wrongResult.livesLeft,
+        wrongResult.newTier,
+        wrongResult.status,
+        wrongResult.summary,
+      )
     }
   }
 
-  // Life dots: filled for remaining lives, empty for lost
   const maxLives = 3
   const currentLives = wrongResult ? wrongResult.livesLeft : lives
+  const isGameOver = wrongResult && wrongResult.livesLeft <= 0
 
   return (
     <div className="eg-overlay" onClick={onClose}>
@@ -105,6 +144,19 @@ export default function EquationGate({
             {moduleName} ({wrongResult ? wrongResult.newTier : currentTier})
           </span>
         </div>
+
+        {/* Heartbreak overlay animation */}
+        {showHeartbreakOverlay && (
+          <div className="eg-heartbreak-overlay">
+            <div className="eg-heartbreak-icon">💔</div>
+            <div className="eg-heartbreak-crack eg-crack-1"></div>
+            <div className="eg-heartbreak-crack eg-crack-2"></div>
+            <div className="eg-heartbreak-crack eg-crack-3"></div>
+            <div className="eg-heartbreak-shatter eg-shard-1">💔</div>
+            <div className="eg-heartbreak-shatter eg-shard-2">♥</div>
+            <div className="eg-heartbreak-shatter eg-shard-3">💔</div>
+          </div>
+        )}
 
         {/* Body */}
         <div className="eg-body">
@@ -130,7 +182,7 @@ export default function EquationGate({
             </>
           )}
 
-          {wrongResult && (
+          {wrongResult && !isGameOver && (
             <div className="eg-wrong-view">
               <h3 className="eg-wrong-heading">Not quite!</h3>
               <p className="eg-correct-label">
@@ -147,14 +199,36 @@ export default function EquationGate({
             </div>
           )}
 
-          {/* Life dots */}
+          {isGameOver && (
+            <div className="eg-gameover-view">
+              <div className="eg-gameover-emoji">💀</div>
+              <h3 className="eg-gameover-heading">Oh shit!</h3>
+              <p className="eg-gameover-message">Better luck next time</p>
+              <p className="eg-correct-label">
+                Correct answer: <strong>{String(wrongResult.correctAnswer)}</strong>
+              </p>
+              <p className="eg-tip">{wrongResult.tip}</p>
+              <p className="eg-gameover-inspire">
+                Every expert was once a beginner. You'll crush it next time! 💪
+              </p>
+              <button
+                type="button"
+                className="eg-gameover-btn"
+                onClick={handleContinue}
+              >
+                See Results
+              </button>
+            </div>
+          )}
+
+          {/* Life hearts */}
           <div className="eg-lives">
-            {Array.from({ length: maxLives }, (_, i) => (
-              <span
-                key={i}
-                className={`eg-life-dot ${i < currentLives ? 'filled' : 'empty'}`}
-              />
-            ))}
+            <LifeHearts
+              lives={currentLives}
+              maxLives={maxLives}
+              breakingIndex={breakingIndex}
+              size="lg"
+            />
           </div>
         </div>
 

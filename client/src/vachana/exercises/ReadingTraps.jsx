@@ -6,7 +6,7 @@ const LEVELS = [
   questions: [
     {
       type: "tap",
-      quiz: "🧼 Before 🍽️, wash your hands.\nTap what happens first.",
+      quiz: "Before you eat🍽️, wash your hands🧼.\nTap what happens first.",
       options: [
         { label: "🧼", value: "Wash" },
         { label: "🍽️", value: "Eat" },
@@ -65,7 +65,7 @@ const LEVELS = [
     { text: "Cat", emoji: "🐱" }
   ],
    correct: "matched",
-  explanation: "Each word matches its correct picture."
+  explanation: 'Apple goes with 🍎, Ball goes with ⚽, and Cat goes with 🐱. We look at the word and find the picture that shows the same thing.'
 },
 
    {
@@ -117,6 +117,7 @@ const LEVELS = [
 
   {
   type: 'drag-drop',
+  showVisualRow: true,
   quiz: 'Drag the correct word into the box.',
   questionVisual: ['🍎','🍎','🍎','🍎'],
   expressionText: '➗ 2 = [ ❔ ]', 
@@ -131,6 +132,7 @@ const LEVELS = [
 },
 {
   type: 'drag-drop',
+  showVisualRow: true,
   quiz: 'Drag the correct result into the box.',
   questionVisual: ['🍎','🍎'],
   expressionText: '✖️ 2 = [ ❔ ]',
@@ -187,6 +189,7 @@ const LEVELS = [
   questions: [
     {
   type: 'drag-drop',
+  showVisualRow: true,
   quiz: 'Drag the missing diamonds into the box.',
 
   questionVisual: ['💎','💎','💎'],
@@ -227,7 +230,7 @@ const LEVELS = [
 
    {
   type: 'drag-drop',
-
+  showVisualRow: true,
   quiz: '😋 The child is hungry. Drag the child toward the side with more pizza.',
 
    questionVisual: ['🍕','🍕','🍕','🍕','🍕','🍕'],
@@ -292,7 +295,7 @@ const LEVELS = [
     // Q1: 3 times as many
     {
       type: 'drag-drop',
-
+      showVisualRow: true,
       quiz:
         'Tray B: 🍪\nTray A: Tray B × 3\nTray A: ?',
 
@@ -311,7 +314,7 @@ const LEVELS = [
     // Q2: 2 more than
     {
       type: 'drag-drop',
-
+      showVisualRow: true,
       quiz:
         'Tray B: 🍪🍪\nTray A: Tray B + 2\nTray A: ?',
 
@@ -330,7 +333,7 @@ const LEVELS = [
     // Q3: 2 fewer than
     {
       type: 'drag-drop',
-
+      showVisualRow: true,
       quiz:
         'Tray B: 🍪🍪🍪🍪🍪\nTray A: Tray B - 2\nTray A: ?',
 
@@ -346,207 +349,318 @@ const LEVELS = [
         'Tray B has 5 cookies. Two fewer cookies means Tray A has 3 cookies.'
     },
 
-    // Q4: Half (tap)
+    // Q4: Match sentence to expression
+    {
+      type: 'match',
+
+      quiz: 'Match the sentence to the expression.',
+
+      words: [
+        'Tray A has 3 times as many cookies as Tray B',
+        'Tray A has 2 more cookies than Tray B',
+        'Tray A has 2 fewer cookies than Tray B'
+      ],
+
+      emojis: [
+        'Tray A = Tray B × 3',
+        'Tray A = Tray B - 2',
+        'Tray A = Tray B + 2'
+      ],
+
+      correctMatches: [
+        {
+          text: 'Tray A has 3 times as many cookies as Tray B',
+          emoji: 'Tray A = Tray B × 3'
+        },
+        {
+          text: 'Tray A has 2 more cookies than Tray B',
+          emoji: 'Tray A = Tray B + 2'
+        },
+        {
+          text: 'Tray A has 2 fewer cookies than Tray B',
+          emoji: 'Tray A = Tray B - 2'
+        }
+      ],
+
+      correct: 'matched',
+
+      explanation:
+        '“Times” means multiply, “more than” means add, and “fewer than” means subtract.'
+    },
+
+    // Q5: Match sentence to expression
+    {
+      type: 'match',
+
+      quiz: 'Match the sentence to the expression.',
+
+      words: [
+        'Tray A is half of Tray B',
+        'Tray A has 3 more cookies than Tray B',
+        'Tray A has twice as many cookies as Tray B'
+      ],
+
+      emojis: [
+        'Tray A = Tray B + 3',
+        'Tray A = Tray B × 2',
+        'Tray A = Tray B ÷ 2'
+      ],
+
+      correctMatches: [
+        {
+          text: 'Tray A is half of Tray B',
+          emoji: 'Tray A = Tray B ÷ 2'
+        },
+        {
+          text: 'Tray A has 3 more cookies than Tray B',
+          emoji: 'Tray A = Tray B + 3'
+        },
+        {
+          text: 'Tray A has twice as many cookies as Tray B',
+          emoji: 'Tray A = Tray B × 2'
+        }
+      ],
+
+      correct: 'matched',
+
+      explanation:
+        'Half means divide by 2, more than means add, and twice means multiply by 2.'
+    }
+  ]
+},
+{
+  id: 5,
+  title: 'Order Matters',
+  questions: [
+
+    {
+      title: 'Twice x, then minus 3',
+      concept: 'Do the multiplication before subtraction.',
+      quiz:
+        'Start with twice x.\nThen take away 3.\n\nWhich expression matches?',
+
+      options: [
+        '3 - 2x',
+        '2(x - 3)',
+        '3x - 2',
+        '2x - 3'
+      ],
+
+      correct: '2x - 3',
+
+      explanation:
+        'First make twice x (2x). Then subtract 3, so the expression is 2x - 3.'
+    },
+
+    {
+      title: 'Multiply first, then add',
+      concept: 'Find the product before adding.',
+      quiz:
+        'First find a × b.\nThen add 4.\n\nWhich expression matches?',
+
+      options: [
+        '(a + 4)b',
+        '4ab',
+        'ab + 4',
+        'a(b + 4)'
+      ],
+
+      correct: 'ab + 4',
+
+      explanation:
+        'The product is ab. Adding 4 gives ab + 4.'
+    },
+
+    {
+      title: 'Add first, then double',
+      concept: 'The whole sum is multiplied by 2.',
+      quiz:
+        'First add x and y.\nThen multiply the total by 2.\n\nWhich expression matches?',
+
+      options: [
+        '2(x + y)',
+        '2x + y',
+        'x + 2y',
+        'x + y + 2'
+      ],
+
+      correct: '2(x + y)',
+
+      explanation:
+        'Add x and y first. Then multiply the whole sum by 2.'
+    },
+
+    {
+      title: 'Subtract first, then halve',
+      concept: 'Find the difference before dividing.',
+      quiz:
+        'First find the difference between m and 6.\nThen divide that result by 2.\n\nWhich expression matches?',
+
+      options: [
+        'm - 3',
+        'm/2 - 6',
+        '(m - 6)/2',
+        '(6 - m)/2'
+      ],
+
+      correct: '(m - 6)/2',
+
+      explanation:
+        'Find m - 6 first. Then divide the result by 2.'
+    },
+
+    {
+      title: 'Add first, then square',
+      concept: 'The entire sum is squared.',
+      quiz:
+        'First add x and 2.\nThen square the result.\n\nWhich expression matches?',
+
+      options: [
+        'x² + 2',
+        '(x + 2)²',
+        'x² + 4',
+        '2x²'
+      ],
+
+      correct: '(x + 2)²',
+
+      explanation:
+        'Add x and 2 first. Then square the whole sum.'
+    }
+  ]
+},
+{
+  id: 6,
+  title: 'Read Between the Lines',
+  questions: [
+
+    {
+      quiz: 'There are three times as many boys as girls.\nIf there are 12 boys, how many girls?',
+      options: ['3', '4', '6', '36'],
+      correct: '4',
+      explanation: 'Three times as many boys means Boys = 3 × Girls.\n12 = 3 × Girls, so Girls = 12 ÷ 3 = 4.'
+    },
+
+    {
+      quiz: 'There are 2 more cookies in Tray A than Tray B.\nTray B has 3 cookies.\nHow many cookies are in Tray A?',
+      options: ['3', '4', '5', '6'],
+      correct: '5',
+      explanation: 'Tray A has 2 more cookies than Tray B.\nTray B has 3 cookies, so Tray A = 3 + 2 = 5 cookies.'
+    },
+
+    {
+      quiz: 'There are 2 fewer cats than dogs.\nThere are 7 dogs.\nHow many cats are there?',
+      options: ['5', '7', '9', '14'],
+      correct: '5',
+      explanation: 'Cats are 2 fewer than dogs.\nDogs = 7, so Cats = 7 - 2 = 5.'
+    },
+
+    {
+      quiz: 'There are twice as many students as teachers.\nThere are 10 students.\nHow many teachers are there?',
+      options: ['5', '10', '15', '20'],
+      correct: '5',
+      explanation: 'Twice as many students means Students = 2 × Teachers.\n10 = 2 × Teachers, so Teachers = 10 ÷ 2 = 5.'
+    },
+
+    {
+      quiz: 'Tray A has 3 more cookies than Tray B.\nTray B has 2 cookies.\nHow many cookies are in Tray A?',
+      options: ['3', '4', '5', '6'],
+      correct: '5',
+      explanation: 'Tray A has 3 more cookies than Tray B.\nTray B has 2 cookies, so Tray A = 2 + 3 = 5 cookies.'
+    }
+  ]
+},
+  {
+  id: 7,
+  title: 'Boundary Detective',
+  questions: [
+
+    // Q1: Tap
     {
       type: 'tap',
 
       quiz:
-        'Tray B: 🍪🍪🍪🍪\nTray A: Tray B ÷ 2\nTray A: ?',
+        '🎟️ Ticket counter sign:\nTickets 1 to 5 are available today.\n\nCan someone choose ticket 4?',
 
       options: [
-        { label: '🍪🍪', value: '2' },
-        { label: '🍪', value: '1' },
-        { label: '🍪🍪🍪', value: '3' },
-        { label: '🍪🍪🍪🍪', value: '4' }
+  { label: '✅', value: 'Yes' },
+  { label: '❌', value: 'No' }
+],
+
+      correct: 'Yes',
+
+      explanation:
+        'Ticket 4 is part of the range 1 to 5.'
+    },
+
+    // Q2: Tap
+    {
+      type: 'tap',
+
+      quiz:
+        '🔒 Locker notice:\nUse lockers between 10 and 20 only.\n\nCan you use locker 20?',
+
+      options: [
+  { label: '✅', value: 'Yes' },
+  { label: '❌', value: 'No' }
+],
+
+      correct: 'No',
+
+      explanation:
+        '“Between 10 and 20” leaves out the end lockers.'
+    },
+
+    // Q3: Drag
+    {
+      type: 'rocket-drop',
+
+      quiz:
+        '💰A treasure chest is locked.\nThe key works only on a number between 1 and 5.\n\nDrag the key to a number that opens the chest.',
+
+      rocket: '🗝️',
+
+      targets: [
+        { label: '1️⃣', value: '1' },
+        { label: '2️⃣', value: '2' },
+        { label: '5️⃣', value: '5' },
+        { label: '6️⃣', value: '6' }
       ],
 
       correct: '2',
 
       explanation:
-        'Half of 4 cookies is 2 cookies, so Tray A has 2 cookies.'
+        '2 is between 1 and 5. The end numbers 1 and 5 do not open the chest.'
     },
 
-    // Q5: Add 3 more (tap)
+    // Q4: Input
     {
-      type: 'tap',
+      type: 'input',
 
       quiz:
-        'Tray B: 🍪🍪\nTray A: Tray B + 3\nTray A: ?',
+        '🗺️ A map says the treasure is hidden at a number between 3 and 7.\nType one possible hiding place.',
 
-      options: [
-        { label: '🍪🍪🍪🍪🍪', value: '5' },
-        { label: '🍪🍪🍪🍪', value: '4' },
-        { label: '🍪🍪🍪', value: '3' },
-        { label: '🍪🍪', value: '2' }
-      ],
+      placeholder: 'Type a number',
 
-      correct: '5',
+      correctAnswers: ['4', '5', '6'],
 
       explanation:
-        'Tray B has 2 cookies. Adding 3 more gives Tray A 5 cookies.'
-    }
-  ]
-},
-  {
-    id: 5,
-    title: "Order Matters",
-    questions: [
-      {
-        title: "Three Less Than",
-        concept: "The order of subtraction matters.",
-        quiz: 'Which expression represents "three less than twice x"?',
-        options: ["3 - 2x", "2(x - 3)", "3x - 2","2x - 3"],
-        correct: "2x - 3",
-        explanation: 'Start with twice x, then subtract 3.'
-      },
-      {
-        title: "Product Then Add",
-        concept: "Identify multiplication before addition.",
-        quiz: 'Which expression represents "four more than the product of a and b"?',
-        options: ["(a + 4)b", "4ab","ab + 4", "a(b + 4)"],
-        correct: "ab + 4",
-        explanation: "Find the product first, then add four."
-      },
-      {
-        title: "Twice the Sum",
-        concept: "Parentheses matter.",
-        quiz: 'Which expression represents "twice the sum of x and y"?',
-        options: ["2(x + y)", "2x + y", "x + 2y", "x + y + 2"],
-        correct: "2(x + y)",
-        explanation: "The entire sum is multiplied by 2."
-      },
-      {
-        title: "Half the Difference",
-        concept: "Difference comes before division.",
-        quiz: 'Which expression represents "half the difference between m and 6"?',
-        options: ["m - 3", "m/2 - 6","(m - 6)/2", "(6 - m)/2"],
-        correct: "(m - 6)/2",
-        explanation: "Subtract first, then divide by two."
-      },
-      {
-        title: "Square of the Sum",
-        concept: "The whole sum is squared.",
-        quiz: 'Which expression represents "the square of the sum of x and 2"?',
-        options: ["x² + 2","(x + 2)²", "x² + 4", "2x²"],
-        correct: "(x + 2)²",
-        explanation: "The parentheses are squared together."
-      }
-    ]
-  },
-
-   {
-  id: 6,
-  title: "Boundary Detective",
-  questions: [
-    {
-      title: "Inclusive Counting",
-      concept: "Inclusive means count both ends.",
-      quiz: "10 ●────────● 20\n\nHow many integers are from 10 to 20 inclusive?",
-      options: ["9", "10", "11", "12"],
-      correct: "11",
-      explanation:
-        "Inclusive means both 10 and 20 are counted, so there are 11 integers."
+        '4, 5, or 6 are all between 3 and 7.'
     },
 
+    // Q5: Input
     {
-      title: "Exclusive Counting",
-      concept: "Exclusive excludes both ends.",
-      quiz: "10 ○────────○ 20\n\nWhich list is correct?",
-      options: [
-        "11, 12, 13, 14, 15, 16, 17, 18, 19",
-        "10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20",
-        "12, 13, 14, 15, 16, 17, 18",
-        "10, 11, 12, 13, 14, 15, 16, 17, 18, 19"
-      ],
-      correct: "11, 12, 13, 14, 15, 16, 17, 18, 19",
-      explanation:
-        "Exclusive means we do not count 10 or 20."
-    },
+      type: 'input',
 
-    {
-      title: "Which Ends Count?",
-      concept: "Read the boundary carefully.",
-      quiz: "5 ●──────● 9\n\nWhich numbers are counted?",
-      options: [
-        "Only 5",
-        "Both 5 and 9",
-        "Only 9",
-        "Neither 5 nor 9"
-      ],
-      correct: "Both 5 and 9",
-      explanation:
-        "Filled circles (●) show that both endpoints are included."
-    },
+      quiz:
+        '🎟️ A concert uses reserved seats 12 to 15.\nType one reserved seat number.',
 
-    {
-      title: "Across Zero",
-      concept: "Inclusive counting also works across zero.",
-      quiz: "−2 ●────0────● 2\n\nHow many integers are from −2 to 2 inclusive?",
-      options: ["3", "4", "5", "6"],
-      correct: "5",
-      explanation:
-        "The integers are −2, −1, 0, 1 and 2."
-    },
+      placeholder: 'Type a seat number',
 
-    {
-      title: "Spot the Boundary",
-      concept: "Exclusive means leave out the endpoints.",
-      quiz: "−2 ○────0────○ 2\n\nWhich numbers are NOT counted?",
-      options: [
-        "−2 and 2",
-        "−1 and 1",
-        "−2 and 1",
-        "−1 and 2"
-      ],
-      correct: "−2 and 2",
-      explanation:
-        "Open circles (○) mean the endpoints are excluded."
-    }
-  ]
-},
+      correctAnswers: ['12', '13', '14', '15'],
 
-{
-  id: 7,
-  title: "Read Between the Lines",
-  questions: [
-    {
-      quiz: "There are three times as many boys as girls.\nIf there are 24 boys, how many girls?",
-      options: ["6", "8", "12", "72"],
-      correct: "8",
       explanation:
-        "Three times as many means Boys = 3 × Girls. So Girls = 24 ÷ 3 = 8."
-    },
-
-    {
-      quiz: "There are 5 fewer cats than dogs.\nIf there are 12 dogs, how many cats?",
-      options: ["7", "12", "17", "60"],
-      correct: "7",
-      explanation:
-        '"5 fewer than" means subtract 5 from the number of dogs.'
-    },
-
-    {
-      quiz: "There are twice as many students as teachers.\nIf there are 18 students, how many teachers?",
-      options: ["18", "36", "9","16"],
-      correct: "9",
-      explanation:
-        'Twice as many means Students = 2 × Teachers. So Teachers = 18 ÷ 2 = 9.'
-    },
-
-    {
-      quiz: "How many integers are from 30 to 40 inclusive?",
-      options: ["10", "11", "12", "13"],
-      correct: "11",
-      explanation:
-        'Inclusive means count both 30 and 40.'
-    },
-
-    {
-      quiz: 'A number is three less than twice x.\nIf x = 6, what is the value?',
-      options: ["9", "12", "15", "18"],
-      correct: "9",
-      explanation:
-        'Translate first: 2x − 3. Then substitute x = 6.'
+        '12, 13, 14, and 15 are all reserved seats.'
     }
   ]
 },
@@ -694,9 +808,13 @@ const check = (a) => {
   setAns(a);
   setChecked(true);
 
-  const isCorrect = Array.isArray(questions[idx].correct)
+  const currentQuestion = questions[idx];
+
+const isCorrect = currentQuestion.correctAnswers
+  ? currentQuestion.correctAnswers.includes(a)
+  : Array.isArray(currentQuestion.correct)
   ? a === 'multi-correct'
-  : a === questions[idx].correct;
+  : a === currentQuestion.correct;
 
 if (isCorrect) {
   setScore(score + 1);
@@ -1022,7 +1140,7 @@ if (currentScreen === "quiz") {
     {q.helperText}
   </p>
 )}
-{q.questionVisual && !isDragQuestion && (
+{q.questionVisual && (!isDragQuestion || q.showVisualRow) && (
   <div
     style={{
       display: 'flex',
@@ -1479,7 +1597,7 @@ if (currentScreen === "quiz") {
   value={textAnswer}
   onChange={(e) => setTextAnswer(e.target.value)}
   placeholder={q.placeholder}
-  maxLength={1}
+  maxLength={2}
   style={{
     width: '140px',
     height: '64px',
@@ -1723,8 +1841,15 @@ if (currentScreen === "quiz") {
     check(dropAnswer);
   
   } else if (isInputQuestion) {
-  check(textAnswer.trim());
-  } else if (isMultiTapQuestion) {
+  const answer = textAnswer.trim();
+
+  if (q.correctAnswers) {
+    check(q.correctAnswers.includes(answer) ? answer : 'wrong');
+  } else {
+    check(answer);
+  }
+}
+   else if (isMultiTapQuestion) {
   const correct =
     JSON.stringify([...multiAns].sort()) ===
     JSON.stringify([...q.correct].sort());

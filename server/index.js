@@ -14110,8 +14110,11 @@ io.on('connection', (socket) => {
   socket.on('createRoom', ({ name, topic, numQuestions }, cb) => {
     const code = generateRoomCode();
     const nq = BATTLE_QUESTION_COUNTS.includes(numQuestions) ? numQuestions : 5;
+    if (!BATTLE_TOPICS.includes(topic)) {
+      return cb?.({ ok: false, error: `Unknown topic: ${topic}` });
+    }
     const room = {
-      code, topic: BATTLE_TOPICS.includes(topic) ? topic : 'arithmetic',
+      code, topic,
       numQuestions: nq,
       players: [{ socketId: socket.id, name: (name || 'Player').slice(0, 20), score: 0, ready: false }],
       round: 0, state: 'waiting', currentQuestion: null, roundStartTime: 0, answers: {}, roundTimer: null,
@@ -14209,8 +14212,15 @@ io.on('connection', (socket) => {
     if (!room) return;
     room.players = room.players.filter(p => p.socketId !== socket.id);
     socket.leave(room.code);
-    if (room.players.length === 0) { clearTimeout(room.roundTimer); rooms.delete(room.code); }
-    else { io.to(room.code).emit('opponentLeft', { name: 'Opponent' }); clearTimeout(room.roundTimer); rooms.delete(room.code); }
+    clearTimeout(room.roundTimer);
+    if (room.players.length === 0) {
+      rooms.delete(room.code);
+    } else {
+      io.to(room.code).emit('opponentLeft', { name: 'Opponent' });
+      // Mark the room as ended so any leftover submit/ready events from
+      // the leaving socket can't keep score flowing into a phantom match.
+      room.state = 'ended';
+    }
     socket.roomCode = null;
     broadcastOpenRooms();
   });
@@ -14227,8 +14237,15 @@ io.on('connection', (socket) => {
     const player = room.players.find(p => p.socketId === socket.id);
     room.players = room.players.filter(p => p.socketId !== socket.id);
     clearTimeout(room.roundTimer);
-    if (room.players.length === 0) rooms.delete(room.code);
-    else { io.to(room.code).emit('opponentLeft', { name: player?.name || 'Opponent' }); rooms.delete(room.code); }
+    if (room.players.length === 0) {
+      rooms.delete(room.code);
+    } else {
+      io.to(room.code).emit('opponentLeft', { name: player?.name || 'Opponent' });
+      // Same fix as in 'leave': don't delete the room out from under the
+      // remaining player. Mark it ended so any in-flight events from the
+      // disconnecting socket can't continue to mutate it.
+      room.state = 'ended';
+    }
     broadcastOpenRooms();
   });
 });

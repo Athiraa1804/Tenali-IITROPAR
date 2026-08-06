@@ -1721,6 +1721,13 @@ function ScaffoldedTablesApp({ studentName, defaultTable = 2 }) {
   const [appPhase, setAppPhase] = useState('choosing')
   const [currentTable, setCurrentTable] = useState(null)
 
+  // Stable celebration emoji — picked once when the "MASTERED" screen
+  // mounts so the emoji doesn't flicker between 🎉 / 🏆 / ⭐ / 🌟 / 🎊 on
+  // every unrelated re-render (timer ticks, level transitions, etc.).
+  const [masteryEmoji] = useState(
+    () => ['🎉', '🏆', '⭐', '🌟', '🎊'][Math.floor(Math.random() * 5)]
+  )
+
   // ── Level:
   // 1 = show answer (13×2=26, student types 26)
   // 2 = partial table (5 rows, left or right column only)
@@ -2193,7 +2200,7 @@ function ScaffoldedTablesApp({ studentName, defaultTable = 2 }) {
           </h1>
           <div className="welcome-box">
             <p style={{ fontSize: '3rem', margin: '0.5rem 0' }}>
-              {['🎉', '🏆', '⭐', '🌟', '🎊'][Math.floor(Math.random() * 5)]}
+              {masteryEmoji}
             </p>
             <p className="welcome-text" style={{ fontSize: '1.3rem', color: 'var(--clr-accent)' }}>
               Fantastic work! You nailed {MASTERY_STREAK} in a row!
@@ -42433,6 +42440,23 @@ function App() {
   const [transferTopic, setTransferTopic] = useState(null)
   const syncTimeoutRef = useRef(null)
 
+  // Generate confetti particles once per active celebration card so they
+  // don't teleport to new positions on every parent re-render (timer
+  // ticks, theme toggle, etc.). Keyed on the active celebration's identity
+  // so dismissing + re-enqueuing the same card produces a fresh burst.
+  const confettiParticles = React.useMemo(() => {
+    const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444'];
+    return Array.from({ length: 40 }).map((_, idx) => ({
+      id: idx,
+      left: Math.random() * 100,
+      delay: Math.random() * 2,
+      duration: Math.random() * 2 + 1.5,
+      size: Math.random() * 10 + 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rotation: Math.random() * 360,
+    }));
+  }, [celebrationQueue[0]?.title, celebrationQueue[0]?.message]);
+
   // Journey & Goal states from upstream
   const [isGoalMode, setIsGoalMode] = useState(false)
   const [journeyContext, setJourneyContext] = useState(null)
@@ -42791,36 +42815,23 @@ function App() {
       setCelebrationQueue(prev => prev.slice(1));
     };
 
-    // Confetti particles generator (40 random floating pieces)
-    const renderConfetti = () => {
-      return Array.from({ length: 40 }).map((_, idx) => {
-        const left = Math.random() * 100;
-        const delay = Math.random() * 2;
-        const duration = Math.random() * 2 + 1.5;
-        const size = Math.random() * 10 + 6;
-        const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6', '#ef4444'];
-        const color = colors[Math.floor(Math.random() * colors.length)];
-        return (
-          <div
-            key={idx}
-            className="confetti-piece"
-            style={{
-              left: `${left}%`,
-              animationDelay: `${delay}s`,
-              animationDuration: `${duration}s`,
-              backgroundColor: color,
-              width: `${size}px`,
-              height: `${size}px`,
-              transform: `rotate(${Math.random() * 360}deg)`
-            }}
-          />
-        );
-      });
-    };
-
     return (
       <div className="celebration-overlay" onClick={dismissCelebration}>
-        {renderConfetti()}
+        {confettiParticles.map(p => (
+          <div
+            key={p.id}
+            className="confetti-piece"
+            style={{
+              left: `${p.left}%`,
+              animationDelay: `${p.delay}s`,
+              animationDuration: `${p.duration}s`,
+              backgroundColor: p.color,
+              width: `${p.size}px`,
+              height: `${p.size}px`,
+              transform: `rotate(${p.rotation}deg)`
+            }}
+          />
+        ))}
         <div className="celebration-card" onClick={e => e.stopPropagation()}>
           <h2 className="celebration-title">{active.title}</h2>
           <div className="celebration-badge-container">

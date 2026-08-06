@@ -12418,7 +12418,14 @@ app.get('/la-mission-quiz-api/question', (req, res) => {
 });
 
 app.post('/la-mission-quiz-api/check', (req, res) => {
-  const { answer: expected, answerType, type, data, prompt } = req.body;
+  const { answer: expected, answerType } = req.body;
+  // Refuse malformed payloads with a clean 400 instead of a 500. The
+  // norm(expected) call below would otherwise TypeError on undefined and
+  // fall through to the global error handler (returning
+  // {"error":"Internal server error"} to the client).
+  if (expected === undefined || expected === null) {
+    return res.status(400).json({ error: 'answer is required' });
+  }
   const raw = (req.body.userAnswer || '').trim();
   const norm = (s) => s.replace(/\s+/g, '').replace(/\u2212/g, '-').toLowerCase();
   const n = norm(raw);

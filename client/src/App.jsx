@@ -42401,11 +42401,11 @@ function App() {
       const currentMode = params.get('mode');
       if (mode) {
         if (currentMode !== mode) {
-          window.history.replaceState({}, '', `/?mode=${mode}`);
+          window.history.replaceState({}, '', `${BASE}/?mode=${mode}`);
         }
       } else {
         if (currentMode) {
-          window.history.replaceState({}, '', '/');
+          window.history.replaceState({}, '', `${BASE}/`);
         }
       }
     } catch (e) {
@@ -42944,7 +42944,7 @@ function App() {
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <div className="app-shell"><div className="card">
-          <RiddleApp onBack={() => { window.location.href = '/' }} />
+          <RiddleApp onBack={() => { window.location.href = withBase('/') }} />
         </div></div>
       </>
     )
@@ -43388,13 +43388,13 @@ function App() {
         <div className="app-shell"><div className="card">
           <ProctoredQuiz
             quizType="linear-algebra"
-            onBack={() => { window.location.href = '/' }}
+            onBack={() => { window.location.href = withBase('/') }}
             autoStartConsent={true}
           >
-            <LinearAlgebraApp onBack={() => { window.location.href = '/' }} />
+            <LinearAlgebraApp onBack={() => { window.location.href = withBase('/') }} />
           </ProctoredQuiz>
         </div></div>
-        <a href="/proctor" className="proctor-dashboard-fab" title="Instructor Dashboard — view all proctor sessions">
+        <a href={withBase('/proctor')} className="proctor-dashboard-fab" title="Instructor Dashboard — view all proctor sessions">
           📊 Dashboard
         </a>
       </>
@@ -43410,7 +43410,7 @@ function App() {
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
         <div className="app-shell"><div className="card">
-          <ProctorDash onBack={() => { window.location.href = '/' }} />
+          <ProctorDash onBack={() => { window.location.href = withBase('/') }} />
         </div></div>
       </>
     )
@@ -43423,7 +43423,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <PlaygroundApp onBack={() => { window.location.href = '/' }} />
+        <PlaygroundApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -43435,7 +43435,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <BattleApp onBack={() => { window.location.href = '/' }} />
+        <BattleApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -43447,7 +43447,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '☀️' : '🌙'}
         </button>
-        <SudokuApp onBack={() => { window.location.href = '/' }} />
+        <SudokuApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -43460,7 +43460,7 @@ function App() {
         <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
           {theme === 'dark' ? '\u2600\uFE0F' : '\uD83C\uDF19'}
         </button>
-        <LocalCompilerApp onBack={() => { window.location.href = '/' }} />
+        <LocalCompilerApp onBack={() => { window.location.href = withBase('/') }} />
       </>
     )
   }
@@ -45121,7 +45121,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
               <button key={app.key} onClick={() => {
                 setMenuOpen(false);
                 if (app.isRedirect) {
-                  window.location.href = app.path;
+                  window.location.href = withBase(app.path);
                 } else {
                   onSelect(app.key);
                 }
@@ -45183,7 +45183,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
 
             <div style={{ height: '1px', background: 'var(--clr-border)', margin: '4px 0' }} />
 
-            <button onClick={() => { setMenuOpen(false); window.location.href = '/playground'; }} style={{
+            <button onClick={() => { setMenuOpen(false); window.location.href = withBase('/playground'); }} style={{
               display: 'block', width: '100%', textAlign: 'left', padding: '10px 16px',
               background: 'none', border: 'none', cursor: 'pointer', color: 'var(--clr-text)',
               fontFamily: 'var(--font-body)', fontSize: '0.95rem', transition: 'background var(--transition)'

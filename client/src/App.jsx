@@ -48,7 +48,7 @@ import LinearAlgebraApp from './LinearAlgebraApp'
 function useProgressSubmit(revealed, isCorrect, topic, questionId) {
   useEffect(() => {
     if (!revealed) return;
-    const token = localStorage.getItem('tenali-token');
+    const token = localStorage.getItem('tenali-auth-token');
     if (!token || !topic) return;
 
     const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -42509,7 +42509,7 @@ function App() {
     const fetchJourneyProgress = async () => {
       const API = import.meta.env.VITE_API_BASE_URL || '';
       try {
-        const token = localStorage.getItem('tenali-token');
+        const token = localStorage.getItem('tenali-auth-token');
         if (token) {
           const res = await fetch(`${API}/api/progress`, {
             headers: { 'Authorization': `Bearer ${token}` }

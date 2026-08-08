@@ -50,13 +50,13 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **869** | **73** | **21** | **69** | **7,662** | **991** |
+| **870** | **73** | **21** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
 
 <!-- live-rank:start -->
-_Live data — last regenerated 2026-08-07 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
+_Live data — last regenerated 2026-08-08 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
 
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
@@ -70,8 +70,8 @@ _Live data — last regenerated 2026-08-07 · auto-refreshed by [`github-actions
 | 8. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
 | 9. | **saniyajos**<br/><sub>↳ also commits as <b>SaniyaJos</b></sub> | [saniyajos](https://github.com/saniyajos) | **22** | 0  | — |
 | 10. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
-| 11. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
-| 12. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **19** | 0  | — |
+| 11. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **20** | 0  | — |
+| 12. | **Ahana Banerjee** | [ahana4banerjee](https://github.com/ahana4banerjee) | **20** | 2  | Goal Practice & Learning Journey |
 | 13. | **harshyy07** | [harshyy07](https://github.com/harshyy07) | **16** | 1  | — |
 | 14. | **Shubh Dixit**<br/><sub>↳ also commits as <b>Shubh dixit</b></sub> | [Shubhdix9](https://github.com/Shubhdix9) | **16** | 2  | Premium UI Suite + Word Games |
 | 15. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
@@ -362,23 +362,18 @@ _Live data — last regenerated 2026-08-07 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/ahana4banerjee"><img src="https://avatars.githubusercontent.com/u/166562662?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #E91E63;" alt="Ahana Banerjee"/></a>
-        <br/><b>Ahana Banerjee</b>
-        <br/><a href="https://github.com/ahana4banerjee">@ahana4banerjee</a>
-        <br/><sub>🏆 20 commits · 2 PRs merged</sub>
-        <br/><sub>📍 Hyderabad, India · 🌐 banerjeeahana4@gmail.com</sub>
+        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
+        <br/><b>github-actions-bot-</b>
+        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
+        <br/><sub>🏆 20 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>11. Goal Practice & Learning Journey</h4>
+        <h4>11. New Contributor</h4>
         <ul>
-          <li>📚 <b>Goal-based Practice Sessions (PR #11)</b> — isolated goal-practice module that hides "standard mode" pills</li>
-          <li>🧠 <b>Learning Intelligence Layer (LIL)</b> — architected LIL with cross-app goal-practice integration</li>
-          <li>🪜 <b>AL Learning Checkpoints (PR #34)</b> — sequential unlock rules with <b>15-question topic checkpoints</b></li>
-          <li>🎯 <b>Targeted concept revision loop</b> — automatically revisits weak concepts</li>
-          <li>🎉 <b>Confetti animations</b> — checkpoint completion celebrations</li>
-          <li>🚫 <b>Block successive topics</b> — locked topics until the previous is mastered</li>
-          <li>🛡️ <b>"Oh no, it's okay"</b> — replaced harsh wrong-answer copy with kid-friendly wording</li>
-          <li>🔀 <b>6× merge conflict resolutions</b> — clean upstream merges for both feature branches</li>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>20 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>
@@ -389,18 +384,23 @@ _Live data — last regenerated 2026-08-07 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
-        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
-        <br/><b>github-actions-bot-</b>
-        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
-        <br/><sub>🏆 19 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
+        <a href="https://github.com/ahana4banerjee"><img src="https://avatars.githubusercontent.com/u/166562662?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #E91E63;" alt="Ahana Banerjee"/></a>
+        <br/><b>Ahana Banerjee</b>
+        <br/><a href="https://github.com/ahana4banerjee">@ahana4banerjee</a>
+        <br/><sub>🏆 20 commits · 2 PRs merged</sub>
+        <br/><sub>📍 Hyderabad, India · 🌐 banerjeeahana4@gmail.com</sub>
       </td>
       <td valign="top" width="*">
-        <h4>12. New Contributor</h4>
+        <h4>12. Goal Practice & Learning Journey</h4>
         <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>19 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+          <li>📚 <b>Goal-based Practice Sessions (PR #11)</b> — isolated goal-practice module that hides "standard mode" pills</li>
+          <li>🧠 <b>Learning Intelligence Layer (LIL)</b> — architected LIL with cross-app goal-practice integration</li>
+          <li>🪜 <b>AL Learning Checkpoints (PR #34)</b> — sequential unlock rules with <b>15-question topic checkpoints</b></li>
+          <li>🎯 <b>Targeted concept revision loop</b> — automatically revisits weak concepts</li>
+          <li>🎉 <b>Confetti animations</b> — checkpoint completion celebrations</li>
+          <li>🚫 <b>Block successive topics</b> — locked topics until the previous is mastered</li>
+          <li>🛡️ <b>"Oh no, it's okay"</b> — replaced harsh wrong-answer copy with kid-friendly wording</li>
+          <li>🔀 <b>6× merge conflict resolutions</b> — clean upstream merges for both feature branches</li>
         </ul>
       </td>
     </tr>

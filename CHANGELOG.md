@@ -19,9 +19,15 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 871 commits · 47 active days · 23 unique authors
+### 📊 Total: 872 commits · 48 active days · 23 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
+
+#### 📅 2026-08-08  <sub>(1 commit)</sub>
+
+- 📌 [`af7e965`](https://github.com/vicharanashala/tenali/commit/af7e965121848cd0ae58f6ad55958c46eac5f748) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+27 −27`, `README.md` `+5 −5`
+    - 📊 **`+37 −34`** · 3 files
 
 #### 📅 2026-08-07  <sub>(2 commits)</sub>
 

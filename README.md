@@ -517,6 +517,8 @@ The Onboarding Document exists to ensure that every contributor:
 - **Location:** the PR must add the file to the [`Ideas/`](Ideas) folder.
 - **Format:** Markdown (`.md`). PDF, `.docx`, or plain `.txt` will not be accepted.
 
+> ⚠️ **Raise the PR for your onboarding document against the [`Ideas/`](Ideas) folder specifically** — not `docs/`, not the repo root, and not any other folder. PRs that add the onboarding document elsewhere will be closed and asked to resubmit.
+
 ### Required Sections
 
 The document must contain the following six sections, in this order.

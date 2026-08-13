@@ -19,9 +19,26 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 881 commits · 52 active days · 23 unique authors
+### 📊 Total: 887 commits · 53 active days · 23 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
+
+#### 📅 2026-08-13  <sub>(6 commits)</sub>
+
+- 📌 [`6a5cf3e`](https://github.com/vicharanashala/tenali/commit/6a5cf3e6d948e5a3387d48f9ee2193114d02b36c) — **jgupta05072003-code** — 🔀 PR [#158](https://github.com/vicharanashala/tenali/pull/158) from `vicharanashala` — add-contributor-onboarding-rules
+- 📌 [`115a540`](https://github.com/vicharanashala/tenali/commit/115a5405ab52c8eae0ebedf056501b848b085f24) — **Jinal Gupta** — Clarify onboarding PRs must target the Ideas/ folder
+    - 📁 **1 file:** `README.md` `+2 −0`
+    - 📊 **`+2 −0`** · 1 file
+- 📌 [`12a5827`](https://github.com/vicharanashala/tenali/commit/12a582774218c3534885aac8bb17de2188f23ac5) — **Jinal Gupta** — Add mandatory Contributor Onboarding Document rules to README
+    - 📁 **1 file:** `README.md` `+73 −0`
+    - 📊 **`+73 −0`** · 1 file
+- 📌 [`315bd83`](https://github.com/vicharanashala/tenali/commit/315bd8369b75d0ed2374b3c6bebd1b397c975db2) — **jgupta05072003-code** — 🔀 PR [#157](https://github.com/vicharanashala/tenali/pull/157) from `vicharanashala` — add-ideas-folder
+- 📌 [`148f423`](https://github.com/vicharanashala/tenali/commit/148f423ee006ce9b461913af265face5ceb535f6) — **Jinal Gupta** — Add Ideas folder
+    - 📁 **1 file:** `Ideas/README.md` `+3 −0`
+    - 📊 **`+3 −0`** · 1 file
+- 📌 [`fee89cc`](https://github.com/vicharanashala/tenali/commit/fee89ccae1c3eb12e730dca253ce713a0030633e) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+5 −5`
+    - 📊 **`+15 −12`** · 3 files
 
 #### 📅 2026-08-12  <sub>(2 commits)</sub>
 

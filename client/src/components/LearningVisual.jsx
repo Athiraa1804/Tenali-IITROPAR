@@ -80,22 +80,22 @@ const LearningVisual = ({ visual }) => {
   if (visual === 'straight-line') {
     return (
       <div style={containerStyle}>
-        <svg width="250" height="120" viewBox="0 0 250 120" style={svgBaseStyle}>
+        <svg width="260" height="145" viewBox="0 0 260 145" style={svgBaseStyle}>
           {/* Straight line */}
-          <line x1="20" y1="100" x2="230" y2="100" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+          <line x1="20" y1="115" x2="240" y2="115" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
           {/* Intersecting line */}
-          <line x1="125" y1="100" x2="185" y2="30" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
-          <circle cx="125" cy="100" r="5" fill={strokeColor} />
+          <line x1="130" y1="115" x2="195" y2="35" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+          <circle cx="130" cy="115" r="5" fill={strokeColor} />
           
           {/* 110 deg Arc */}
-          <path d="M 85 100 A 40 40 0 0 1 155 65" fill="none" stroke={secondaryColor} strokeWidth="3" />
-          <text x="80" y="65" fontSize="16" fill={secondaryColor}>110°</text>
+          <path d="M 90 115 A 40 40 0 0 1 157 84" fill="none" stroke={secondaryColor} strokeWidth="3" />
+          <text x="65" y="55" fontSize="16" fill={secondaryColor}>110°</text>
           
           {/* 70 deg Arc */}
-          <path d="M 155 65 A 40 40 0 0 1 165 100" fill="none" stroke={highlightColor} strokeWidth="3" />
-          <text x="175" y="80" fontSize="16" fill={highlightColor}>70°</text>
+          <path d="M 157 84 A 40 40 0 0 1 170 115" fill="none" stroke={highlightColor} strokeWidth="3" />
+          <text x="178" y="90" fontSize="16" fill={highlightColor}>70°</text>
 
-          <text x="125" y="115" fontSize="14" textAnchor="middle" fill={strokeColor}>110° + 70° = 180°</text>
+          <text x="130" y="140" fontSize="14" textAnchor="middle" fill={strokeColor}>110° + 70° = 180°</text>
         </svg>
       </div>
     );
@@ -104,20 +104,20 @@ const LearningVisual = ({ visual }) => {
   if (visual === 'worked-example') {
     return (
       <div style={containerStyle}>
-        <svg width="250" height="120" viewBox="0 0 250 120" style={svgBaseStyle}>
+        <svg width="260" height="140" viewBox="0 0 260 140" style={svgBaseStyle}>
           {/* Straight line */}
-          <line x1="20" y1="100" x2="230" y2="100" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+          <line x1="20" y1="115" x2="240" y2="115" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
           {/* Intersecting line */}
-          <line x1="125" y1="100" x2="195" y2="30" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
-          <circle cx="125" cy="100" r="5" fill={strokeColor} />
+          <line x1="130" y1="115" x2="200" y2="30" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+          <circle cx="130" cy="115" r="5" fill={strokeColor} />
           
           {/* 135 deg Arc */}
-          <path d="M 75 100 A 50 50 0 0 1 165 60" fill="none" stroke={secondaryColor} strokeWidth="3" />
-          <text x="80" y="55" fontSize="16" fill={secondaryColor}>135°</text>
+          <path d="M 80 115 A 50 50 0 0 1 162 76" fill="none" stroke={secondaryColor} strokeWidth="3" />
+          <text x="55" y="48" fontSize="16" fill={secondaryColor}>135°</text>
           
-          {/* ? / 45 deg Arc */}
-          <path d="M 165 60 A 50 50 0 0 1 175 100" fill="none" stroke={highlightColor} strokeWidth="3" />
-          <text x="185" y="80" fontSize="16" fill={highlightColor}>45°</text>
+          {/* 45 deg Arc */}
+          <path d="M 162 76 A 50 50 0 0 1 180 115" fill="none" stroke={highlightColor} strokeWidth="3" />
+          <text x="190" y="88" fontSize="16" fill={highlightColor}>45°</text>
         </svg>
       </div>
     );
@@ -128,24 +128,32 @@ const LearningVisual = ({ visual }) => {
       <div style={{ ...containerStyle, gap: '3rem', flexWrap: 'wrap' }}>
         {/* Straight line = 180 */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <svg width="120" height="80" viewBox="0 0 120 80" style={svgBaseStyle}>
-            <line x1="10" y1="60" x2="110" y2="60" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
-            <circle cx="60" cy="60" r="4" fill={strokeColor} />
-            <path d="M 20 60 A 40 40 0 0 1 100 60" fill="none" stroke={highlightColor} strokeWidth="3" />
-            <text x="60" y="30" fontSize="14" textAnchor="middle" fill={highlightColor}>180°</text>
+          <svg width="130" height="110" viewBox="0 0 130 110" style={svgBaseStyle}>
+            {/* Degree label — above the arc */}
+            <text x="65" y="18" fontSize="16" fontWeight="700" textAnchor="middle" fill={highlightColor}>180°</text>
+            {/* Baseline */}
+            <line x1="10" y1="90" x2="120" y2="90" stroke={strokeColor} strokeWidth="3" strokeLinecap="round" />
+            {/* Center dot */}
+            <circle cx="65" cy="90" r="4" fill={strokeColor} />
+            {/* Semicircle arc */}
+            <path d="M 20 90 A 45 45 0 0 1 110 90" fill="none" stroke={highlightColor} strokeWidth="3" />
           </svg>
-          <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Straight Line</span>
+          <span style={{ fontSize: '0.9rem', fontWeight: 'bold', marginTop: '4px' }}>Straight Line</span>
         </div>
         
         {/* Full circle = 360 */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <svg width="120" height="80" viewBox="0 0 120 80" style={svgBaseStyle}>
-            <line x1="10" y1="40" x2="110" y2="40" stroke={strokeColor} strokeWidth="2" strokeDasharray="4" />
-            <circle cx="60" cy="40" r="4" fill={strokeColor} />
-            <path d="M 60 10 A 30 30 0 1 1 59.9 10" fill="none" stroke={secondaryColor} strokeWidth="3" />
-            <text x="60" y="45" fontSize="14" textAnchor="middle" fill={secondaryColor}>360°</text>
+          <svg width="130" height="110" viewBox="0 0 130 110" style={svgBaseStyle}>
+            {/* Degree label — above the circle */}
+            <text x="65" y="18" fontSize="16" fontWeight="700" textAnchor="middle" fill={secondaryColor}>360°</text>
+            {/* Circle */}
+            <path d="M 65 35 A 32 32 0 1 1 64.9 35" fill="none" stroke={secondaryColor} strokeWidth="3" />
+            {/* Dashed diameter */}
+            <line x1="33" y1="67" x2="97" y2="67" stroke={strokeColor} strokeWidth="2" strokeDasharray="4" />
+            {/* Center dot */}
+            <circle cx="65" cy="67" r="4" fill={strokeColor} />
           </svg>
-          <span style={{ fontSize: '0.9rem', fontWeight: 'bold' }}>Full Circle</span>
+          <span style={{ fontSize: '0.9rem', fontWeight: 'bold', marginTop: '4px' }}>Full Circle</span>
         </div>
       </div>
     );

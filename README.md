@@ -74,6 +74,7 @@
 **🤝 Community**
 - [⚙️ Quick Start](#-quick-start)
 - [🧩 Add a Puzzle](#-add-a-new-puzzle)
+- [📝 Contributor Onboarding](#-contributor-onboarding-mandatory)
 - [🏆 Contributors → CONTRIBUTORS.md](CONTRIBUTORS.md)
 
 </td>
@@ -507,6 +508,80 @@ Five-step recipe:
 3. **Component** — Build a quiz component with the `makeQuizApp({ title, apiPath, diffLabels, placeholders, answerField })` factory in `client/src/App.jsx`.
 4. **Register** — Map the key in `modeMap` and add an entry to `regularApps` for the home grid.
 5. **Explain** — Add a `case` to `generateExplanation()` so the Solve button works.
+
+---
+
+## 📝 Contributor Onboarding (Mandatory)
+
+Every student contributing to the Tenali project is required to submit an **Onboarding Document** (`.md`) before their first pull request. The document is a record of your understanding of the project and your plan for contributing to it. Submissions that omit any of the sections below will be returned for revision.
+
+### Purpose
+
+The Onboarding Document exists to ensure that every contributor:
+
+1. Has a working understanding of what Tenali is and the problem it solves.
+2. Has read the existing codebase and can describe its current state in their own words.
+3. Has independently identified weaknesses, gaps, and risks in the current implementation.
+4. Has formed opinions and proposed ideas for improving the project.
+5. Has a concrete plan for tackling at least one identified gap.
+6. Has produced a tangible contribution (code, documentation, tests, or design) that advances the project.
+
+> Reading the code without forming a view is not enough. The document is intended to surface misunderstanding early and to surface good ideas quickly.
+
+### File Naming and Location
+
+- **File name:** `ONBOARDING-<your-name>.md`
+- **Location:** the PR must add the file to the [`Ideas/`](Ideas) folder.
+- **Format:** Markdown (`.md`). PDF, `.docx`, or plain `.txt` will not be accepted.
+
+> ⚠️ **Raise the PR for your onboarding document against the [`Ideas/`](Ideas) folder specifically** — not `docs/`, not the repo root, and not any other folder. PRs that add the onboarding document elsewhere will be closed and asked to resubmit.
+
+### Required Sections
+
+The document must contain the following six sections, in this order.
+
+**1. What is Tenali?**
+Describe, in your own words, what Tenali is, the domain it operates in (adaptive math learning / education), the population it serves, and the problem it aims to solve. Do not copy the project description verbatim — paraphrase it. A reader who has never heard of Tenali should be able to understand the project's purpose from this section alone.
+
+**2. What do you understand by Tenali (as a system)?**
+Go beyond the mission statement. Describe Tenali as a system: the users (students, and where relevant, maintainers/admins), the main entities (puzzle types, difficulty tiers, the Battle Arena, the code playground, auth/sessions), and the high-level flow of data through it — e.g. how a question is generated, checked, and explained. This section is about demonstrating that you understand how the pieces fit together, not just what the project is for.
+
+**3. Current State of the Repository — What Has Been Done So Far**
+Walk through the repository and describe what already exists:
+- Tech stack (frontend, backend, database, auth, deployment).
+- Implemented features (the 69 puzzle types, adaptive difficulty, Battle Arena multiplayer, step-by-step explanations, the code playground, auth, etc.).
+
+**4. Gaps Observed in the Code**
+This is the most important section. List concrete weaknesses, bugs, missing features, or design problems you found while reading the code. You can also pick issues stated on the Tenali GitHub repo and solve them. For each gap, include:
+- **Where** — file path and line range or component.
+- **What** — what is wrong or missing.
+- **Why it matters** — the impact on users, maintainability, performance, or correctness.
+
+**5. Ideas for the Project**
+Propose improvements, new features, or refactors that would make Tenali better. Each idea should include:
+- **What** — the proposed change in one or two sentences.
+- **Why** — the problem it solves or the value it adds.
+- **How** — a sketch of the implementation.
+
+**6. Your Contribution**
+Describe the actual work you have done as part of this onboarding. A contribution can be any of:
+- A bug fix.
+- A new feature or endpoint (e.g. a new puzzle type — see [🧩 Add a New Puzzle](#-add-a-new-puzzle)).
+- A refactor.
+- Tests (unit, integration, or end-to-end).
+- Documentation (this onboarding document counts only if it is exceptional; the document itself is mandatory, not the contribution).
+- A design document or architectural proposal.
+
+### Review Criteria
+
+A reviewer will check the Onboarding Document against the following:
+
+- All six sections are present and in order.
+- Section 4 cites real files and real code, not vague impressions.
+- Section 5 ideas are grounded in the gaps from Section 4.
+- The document is written in the contributor's own words, not generated by an AI without understanding.
+
+> A document that reads as if it was written without reading the codebase will be sent back.
 
 ---
 

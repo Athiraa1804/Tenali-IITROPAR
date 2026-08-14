@@ -80,12 +80,12 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
 <p align="center">
   <table>
     <tr>
-      <td align="center"><b>886</b><br/><sub>commits</sub></td>
+      <td align="center"><b>888</b><br/><sub>commits</sub></td>
       <td align="center"><b>75</b><br/><sub>PRs merged</sub></td>
-      <td align="center"><b>21</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
-      <td align="center"><b>🍴 64</b><br/><sub>forks</sub></td>
-      <td align="center"><b>🐛 56</b><br/><sub>open issues</sub></td>
+      <td align="center"><b>22</b><br/><sub>GitHub contributors</sub></td>
+      <td align="center"><b>⭐ 0</b><br/><sub>stars</sub></td>
+      <td align="center"><b>🍴 0</b><br/><sub>forks</sub></td>
+      <td align="center"><b>🐛 0</b><br/><sub>open issues</sub></td>
     </tr>
   </table>
 </p>
@@ -600,13 +600,13 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **886** | **75** | **21** | **69** | **7,662** | **991** |
+| **888** | **75** | **22** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
 
 <!-- live-rank:start -->
-_Live data — last regenerated 2026-08-13 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
+_Live data — last regenerated 2026-08-14 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
 
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
@@ -617,7 +617,7 @@ _Live data — last regenerated 2026-08-13 · auto-refreshed by [`github-actions
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
 | 7. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
-| 8. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **31** | 0  | — |
+| 8. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **32** | 0  | — |
 | 9. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
 | 10. | **saniyajos**<br/><sub>↳ also commits as <b>SaniyaJos</b></sub> | [saniyajos](https://github.com/saniyajos) | **22** | 0  | — |
 | 11. | **K C Dharshan** | [KCDharshan9](https://github.com/KCDharshan9) | **21** | 1  | Tap-to-Define Word Glossary |
@@ -630,7 +630,8 @@ _Live data — last regenerated 2026-08-13 · auto-refreshed by [`github-actions
 | 18. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
 | 19. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 20. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 21. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
+| 21. | **athira**<br/><sub>↳ also commits as <b>Athira</b></sub> | [athira](https://github.com/athira) | **1** | 0  | — |
+| 22. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 
 

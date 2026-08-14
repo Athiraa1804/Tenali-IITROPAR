@@ -1,4 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import {
+  Plus, X, Calculator, CircleDot, PieChart, Percent, Scale, ArrowLeftRight,
+  TrendingUp, Landmark, Receipt, LineChart, Gauge, FunctionSquare, Hash,
+  Brackets, Layers, Divide, Square, SquareRadical, Binary, Equal, Sigma,
+  Triangle, Infinity, Variable, BookOpen, Grid3x3, ArrowUpRight, Compass,
+  Shapes, Ruler, MapPin, RotateCw, Circle, Cone, Waves, Dice5, BarChart3,
+  ListOrdered, Sparkles, ChevronUp, Superscript, Activity, Box, GitBranch,
+  CircleDot as DotIcon,
+} from 'lucide-react'
 import { getOrCreateAnonymousId } from '../anonId'
 import './treasurehunt.css'
 import EquationGate from './EquationGate'
@@ -125,6 +134,88 @@ function formatTopicName(topic) {
   if (!topic) return ''
   if (TOPIC_LABELS[topic]) return TOPIC_LABELS[topic]
   return topic.charAt(0).toUpperCase() + topic.slice(1)
+}
+
+const TOPIC_ICONS = {
+  addition: Plus,
+  multiply: X,
+  basicarith: Calculator,
+  decimals: CircleDot,
+  fractionadd: PieChart,
+  percent: Percent,
+  ratio: Scale,
+  rounding: ArrowLeftRight,
+  profitloss: TrendingUp,
+  banking: Landmark,
+  gst: Receipt,
+  shares: LineChart,
+  sdt: Gauge,
+  variation: FunctionSquare,
+  stdform: Hash,
+  bounds: Brackets,
+  hcflcm: Layers,
+  primefactor: Divide,
+  squaring: Square,
+  sqrt: SquareRadical,
+  bases: Binary,
+  tatsavit: Sparkles,
+  lineareq: Equal,
+  quadratic: Sigma,
+  ineq: ChevronUp,
+  indices: Superscript,
+  qformula: Sigma,
+  funceval: FunctionSquare,
+  surds: SquareRadical,
+  remfactor: Variable,
+  binomial: BookOpen,
+  complex: Infinity,
+  polymul: X,
+  polyfactor: Divide,
+  log: Activity,
+  integ: Sigma,
+  limits: TrendingUp,
+  diff: GitBranch,
+  diffeq: Waves,
+  matrix: Grid3x3,
+  vectors: ArrowUpRight,
+  dotprod: DotIcon,
+  linprog: Grid3x3,
+  lineq: Equal,
+  angles: Compass,
+  triangles: Triangle,
+  congruence: Shapes,
+  pythag: Ruler,
+  polygons: Shapes,
+  similarity: Shapes,
+  heron: Ruler,
+  mensur: Box,
+  coordgeom: MapPin,
+  transform: RotateCw,
+  circmeasure: Circle,
+  conics: Cone,
+  circleth: Circle,
+  section: MapPin,
+  trig: Waves,
+  invtrig: RotateCw,
+  bearings: Compass,
+  prob: Dice5,
+  stats: BarChart3,
+  sequences: ListOrdered,
+  sets: Layers,
+  permcomb: Layers,
+}
+
+const TOPIC_TINTS = [
+  'th-topic-tint-1',
+  'th-topic-tint-2',
+  'th-topic-tint-3',
+  'th-topic-tint-4',
+  'th-topic-tint-5',
+  'th-topic-tint-6',
+]
+
+function getTopicIcon(topic) {
+  return TOPIC_ICONS[topic] || BookOpen
 }
 
 export default function TreasureHuntApp({ onBack }) {
@@ -705,24 +796,42 @@ export default function TreasureHuntApp({ onBack }) {
       {/* World topics preview modal */}
       {worldPreview && (
         <div className="th-htp-overlay">
-          <div className="th-htp-popup">
-            <h2 className="th-htp-title">{worldPreview.icon} {worldPreview.name}</h2>
-            <p className="th-world-topics-heading">Topics in this world</p>
-            <ul className="th-world-topics-list">
-              {worldPreview.topics.map((t) => (
-                <li key={t.topic} className={t.status !== 'active' ? 'th-topic-soon' : ''}>
-                  {formatTopicName(t.topic)}
-                  {t.status !== 'active' && <span className="th-topic-badge"> (coming soon)</span>}
-                </li>
-              ))}
-            </ul>
+          <div className="th-htp-popup th-world-preview-popup">
+            <div className="th-world-preview-header">
+              <div className="th-world-preview-badge" aria-hidden="true">
+                {worldPreview.icon}
+              </div>
+              <div className="th-world-preview-header-text">
+                <h2 className="th-htp-title th-world-preview-title">{worldPreview.name}</h2>
+                <p className="th-world-topics-heading">Topics in this world</p>
+              </div>
+            </div>
+            <div className="th-world-topics-grid">
+              {worldPreview.topics.map((t, i) => {
+                const Icon = getTopicIcon(t.topic)
+                return (
+                  <div
+                    key={t.topic}
+                    className={`th-topic-card ${TOPIC_TINTS[i % TOPIC_TINTS.length]}${t.status !== 'active' ? ' th-topic-soon' : ''}`}
+                  >
+                    <span className="th-topic-card-icon" aria-hidden="true">
+                      <Icon size={20} strokeWidth={2.2} />
+                    </span>
+                    <span className="th-topic-card-name">{formatTopicName(t.topic)}</span>
+                    {t.status !== 'active' && (
+                      <span className="th-topic-badge">Soon</span>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
             <div className="th-world-preview-actions">
               <button type="button" className="th-htp-btn" onClick={handleWorldPreviewContinue}>
                 Continue
               </button>
               <button
                 type="button"
-                className="th-htp-btn th-end-secondary-btn"
+                className="th-htp-btn th-world-preview-cancel-btn"
                 onClick={handleWorldPreviewCancel}
               >
                 Cancel

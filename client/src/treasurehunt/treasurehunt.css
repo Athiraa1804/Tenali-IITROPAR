@@ -500,42 +500,130 @@
 }
 
 /* ── World topics preview modal ─────────────────────── */
+.th-world-preview-popup {
+  max-width: 420px;
+}
+
+.th-world-preview-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.th-world-preview-badge {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  background: rgba(124, 77, 255, 0.15);
+  border: 1px solid rgba(124, 77, 255, 0.35);
+  border-radius: var(--radius-sm, 10px);
+}
+
+.th-world-preview-header-text {
+  min-width: 0;
+}
+
+.th-world-preview-title {
+  margin-bottom: 2px;
+  text-align: left;
+}
+
 .th-world-topics-heading {
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.82rem;
   color: var(--clr-text-soft, #a89e94);
-  margin-bottom: 10px;
-}
-
-.th-world-topics-list {
+  margin: 0;
   text-align: left;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 20px;
-  max-height: 240px;
+}
+
+.th-world-topics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
+  max-height: 280px;
   overflow-y: auto;
+  padding-right: 2px;
 }
 
-.th-world-topics-list li {
-  padding: 5px 0;
+.th-topic-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: var(--radius-sm, 10px);
+  border: 1px solid transparent;
+  text-align: center;
+  min-height: 72px;
+}
+
+.th-topic-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.95;
+}
+
+.th-topic-card-name {
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--clr-text, #ede8e3);
-  font-size: 0.9rem;
+  line-height: 1.25;
 }
 
-.th-topic-soon {
-  opacity: 0.55;
+.th-topic-tint-1 { background: rgba(124, 77, 255, 0.14); border-color: rgba(124, 77, 255, 0.28); }
+.th-topic-tint-1 .th-topic-card-icon { color: #c4b5fd; }
+.th-topic-tint-2 { background: rgba(76, 175, 80, 0.12);  border-color: rgba(76, 175, 80, 0.28); }
+.th-topic-tint-2 .th-topic-card-icon { color: #a5d6a7; }
+.th-topic-tint-3 { background: rgba(66, 165, 245, 0.12); border-color: rgba(66, 165, 245, 0.28); }
+.th-topic-tint-3 .th-topic-card-icon { color: #90caf9; }
+.th-topic-tint-4 { background: rgba(255, 152, 0, 0.12); border-color: rgba(255, 152, 0, 0.28); }
+.th-topic-tint-4 .th-topic-card-icon { color: #ffcc80; }
+.th-topic-tint-5 { background: rgba(171, 71, 188, 0.12); border-color: rgba(171, 71, 188, 0.28); }
+.th-topic-tint-5 .th-topic-card-icon { color: #ce93d8; }
+.th-topic-tint-6 { background: rgba(38, 198, 218, 0.12); border-color: rgba(38, 198, 218, 0.28); }
+.th-topic-tint-6 .th-topic-card-icon { color: #80deea; }
+
+.th-topic-card.th-topic-soon {
+  opacity: 0.5;
 }
 
 .th-topic-badge {
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   color: var(--clr-text-soft, #a89e94);
   font-style: italic;
+  margin-top: -2px;
 }
 
 .th-world-preview-actions {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.th-world-preview-actions .th-htp-btn {
+  width: 100%;
+  padding: 12px 32px;
+}
+
+.th-world-preview-cancel-btn {
+  background: transparent !important;
+  border: 2px solid rgba(255, 255, 255, 0.18) !important;
+  color: var(--clr-text, #ede8e3) !important;
+  box-shadow: none !important;
+}
+
+.th-world-preview-cancel-btn:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  transform: translateY(-2px);
 }
 
 /* ── Lives pill (hearts in status bar) ─────────────── */

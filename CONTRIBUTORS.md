@@ -50,7 +50,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **890** | **75** | **22** | **69** | **7,662** | **991** |
+| **896** | **75** | **22** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -64,9 +64,9 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
 | 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **191** | 24  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **89** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
-| 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
-| 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
-| 7. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **34** | 0  | — |
+| 5. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **38** | 0  | — |
+| 6. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
+| 7. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
 | 8. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |
 | 9. | **Ritish Karmakar** | [Ritish007-svg](https://github.com/Ritish007-svg) | **27** | 1  | Percentages Level-wise Explanation |
 | 10. | **saniyajos**<br/><sub>↳ also commits as <b>SaniyaJos</b></sub> | [saniyajos](https://github.com/saniyajos) | **22** | 0  | — |
@@ -77,10 +77,10 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
 | 15. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
 | 16. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
 | 17. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 18. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 19. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 20. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 21. | **athira**<br/><sub>↳ also commits as <b>Athira</b></sub> | [athira](https://github.com/athira) | **1** | 0  | — |
+| 18. | **athira**<br/><sub>↳ also commits as <b>Athira</b></sub> | [athira](https://github.com/athira) | **3** | 0  | — |
+| 19. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 20. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
+| 21. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
 | 22. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 
@@ -212,13 +212,35 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
+        <br/><b>github-actions-bot-</b>
+        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
+        <br/><sub>🏆 38 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>5. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>38 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/24F3005086"><img src="https://avatars.githubusercontent.com/u/189242179?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #6BCB77;" alt="Sameer Mishra"/></a>
         <br/><b>Sameer Mishra</b>
         <br/><a href="https://github.com/24F3005086">@24F3005086</a>
         <br/><sub>🏆 36 commits · 4 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>5. i18n · Accessibility · Concept Labs</h4>
+        <h4>6. i18n · Accessibility · Concept Labs</h4>
         <ul>
           <li>🌍 <b>Internationalization (PR #51)</b> — full i18n framework, locales directory, translation layer</li>
           <li>♿ <b>Accessibility panel (PR #50)</b> — high-contrast toggle, reduced motion, keyboard nav, ARIA roles</li>
@@ -246,7 +268,7 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
         <br/><sub>🔗 also commits as: <b>Vaibhav</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>6. Vachana Literacy Lab & Vocabulary</h4>
+        <h4>7. Vachana Literacy Lab & Vocabulary</h4>
         <ul>
           <li>🆕 <b>Vachana Mathematical Literacy Lab (PR #18)</b> — standalone literacy module with grid dashboard, 8+ exercises across v0.1.x</li>
           <li>🔤 <b>Notation Literacy Exercise (PR #57)</b> — teaches math notation & root decoding with etymology references</li>
@@ -255,28 +277,6 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
           <li>🪟 <b>History view fix</b> — placement-test state overlap fix + previous button</li>
           <li>♻️ <b>Modularization</b> — split Vachana Literacy Lab into separate component files</li>
           <li>📚 <b>Exercise research docs</b> — pedagogical references + CHANGELOG entries for every v0.1.x release</li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
-        <a href="https://github.com/github-actions-bot-"><img src="https://github.com/github-actions-bot-.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="github-actions-bot-"/></a>
-        <br/><b>github-actions-bot-</b>
-        <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
-        <br/><sub>🏆 34 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>7. New Contributor</h4>
-        <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>34 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>
@@ -530,6 +530,28 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/athira"><img src="https://github.com/athira.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="athira"/></a>
+        <br/><b>athira</b>
+        <br/><a href="https://github.com/athira">@athira</a>
+        <br/><sub>🏆 3 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>Athira</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>18. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>3 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/S-Hamsalekha-annamai"><img src="https://avatars.githubusercontent.com/u/247533500?v=4&s=120" width="120" style="border-radius:50%; border:3px solid #2C3E50;" alt="S. Hamsalekha"/></a>
         <br/><b>S. Hamsalekha</b>
         <br/><a href="https://github.com/S-Hamsalekha-annamai">@S-Hamsalekha-annamai</a>
@@ -537,7 +559,7 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
         <br/><sub>🔗 also commits as: <b>S Hamsalekha</b></sub>
       </td>
       <td valign="top" width="*">
-        <h4>18. Track User Progress</h4>
+        <h4>19. Track User Progress</h4>
         <ul>
           <li>📊 <b>Track User Progress (PR #77)</b> — per-user attempt log, progress timeline, mastery milestones</li>
           <li>🗂️ <b><code>StudentAttemptLog</code></b> model in MongoDB for fine-grained analytics</li>
@@ -558,7 +580,7 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
         <br/><sub>🏆 3 commits · 1 PR merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>19. Language Puzzles Framework</h4>
+        <h4>20. Language Puzzles Framework</h4>
         <ul>
           <li>🧩 <b>Modular Language Puzzles framework (PR #35)</b> — pluggable architecture for word/letter puzzles</li>
           <li>🆕 <b>Word Creator</b> — fill-in-the-blanks to create new words</li>
@@ -581,32 +603,10 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
         <br/><sub>📍 india · 🌐 anshulkanodia.me</sub>
       </td>
       <td valign="top" width="*">
-        <h4>20. Geometry Game Restoration</h4>
+        <h4>21. Geometry Game Restoration</h4>
         <ul>
           <li>🔺 <b>Re-added Geometry Game (PR #8)</b> — restored the 20-July geometry game after it was lost in a merge</li>
           <li>🔀 <b>Upstream merge integration</b> for <code>patnaikArpita/Re-added-geometry-game-20July</code></li>
-        </ul>
-      </td>
-    </tr>
-  </table>
-</p>
-
-<p align="center">
-  <table>
-    <tr>
-      <td align="center" width="220">
-        <a href="https://github.com/athira"><img src="https://github.com/athira.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="athira"/></a>
-        <br/><b>athira</b>
-        <br/><a href="https://github.com/athira">@athira</a>
-        <br/><sub>🏆 1 commits · 0 PRs merged</sub>
-        <br/><sub>🔗 also commits as: <b>Athira</b></sub>
-      </td>
-      <td valign="top" width="*">
-        <h4>21. New Contributor</h4>
-        <ul>
-          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
-          <li>📊 <b>1 commits</b> across this repo's history</li>
-          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>
       </td>
     </tr>

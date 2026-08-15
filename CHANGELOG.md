@@ -19,12 +19,24 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 887 commits · 53 active days · 23 unique authors
+### 📊 Total: 890 commits · 54 active days · 23 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-13  <sub>(6 commits)</sub>
+#### 📅 2026-08-14  <sub>(2 commits)</sub>
 
+- 📌 [`17c6c95`](https://github.com/vicharanashala/tenali/commit/17c6c953dd693cb04c6be9a7214c83b0d59f6cf7) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+26 −26`, `README.md` `+4 −4`
+    - 📊 **`+37 −31`** · 3 files
+- 📌 [`bc0ec7a`](https://github.com/vicharanashala/tenali/commit/bc0ec7ab7ab6c2ef8d99f66a9959283537e48d44) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
+    - 📊 **`+14 −11`** · 3 files
+
+#### 📅 2026-08-13  <sub>(7 commits)</sub>
+
+- 📌 [`21d0bbb`](https://github.com/vicharanashala/tenali/commit/21d0bbb2c3a63ea6d2c679fb86600de1544cae43) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+18 −1`, `CONTRIBUTORS.md` `+6 −6`, `README.md` `+6 −6`
+    - 📊 **`+30 −13`** · 3 files
 - 📌 [`6a5cf3e`](https://github.com/vicharanashala/tenali/commit/6a5cf3e6d948e5a3387d48f9ee2193114d02b36c) — **jgupta05072003-code** — 🔀 PR [#158](https://github.com/vicharanashala/tenali/pull/158) from `vicharanashala` — add-contributor-onboarding-rules
 - 📌 [`115a540`](https://github.com/vicharanashala/tenali/commit/115a5405ab52c8eae0ebedf056501b848b085f24) — **Jinal Gupta** — Clarify onboarding PRs must target the Ideas/ folder
     - 📁 **1 file:** `README.md` `+2 −0`

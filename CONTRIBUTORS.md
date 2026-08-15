@@ -50,7 +50,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **889** | **75** | **21** | **69** | **7,662** | **991** |
+| **890** | **75** | **22** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -80,7 +80,8 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
 | 18. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
 | 19. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
 | 20. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 21. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
+| 21. | **athira**<br/><sub>↳ also commits as <b>Athira</b></sub> | [athira](https://github.com/athira) | **1** | 0  | — |
+| 22. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 
 ---
@@ -594,13 +595,35 @@ _Live data — last regenerated 2026-08-15 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/athira"><img src="https://github.com/athira.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="athira"/></a>
+        <br/><b>athira</b>
+        <br/><a href="https://github.com/athira">@athira</a>
+        <br/><sub>🏆 1 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>Athira</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>21. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>1 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/vasuki-tenali"><img src="https://github.com/identicons/vasuki-tenali.png&s=120" width="120" style="border-radius:50%; border:3px solid #95A5A6;" alt="Vasuki"/></a>
         <br/><b>Vasuki</b>
         <br/><a href="https://github.com/vasuki-tenali">@vasuki-tenali</a>
         <br/><sub>🏆 1 commits · 0 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>21. Infra contributor</h4>
+        <h4>22. Infra contributor</h4>
         <ul>
           <li>🔧 <b>Single administrative / infrastructure commit</b> to the project</li>
           <li>📧 <i>Email was private — no public GitHub profile linked</i></li>

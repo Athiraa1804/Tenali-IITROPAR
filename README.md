@@ -29,25 +29,62 @@
 ### ✨ **69 math topics · Algorithmically generated · Adaptive difficulty · Live multiplayer · Step-by-step solutions**
 
 </div>
+## 🧠 Pedagogical Features: Progressive & Interactive Learning
 
-### 🧠 Pedagogical Features: Progressive Disclosure & Time-Bounded Learning
+### The Problem
 
-**The Problem**: In digital learning environments, students often develop habits of rapidly skipping through theoretical material just to reach the interactive quizzes, completely bypassing the essential conceptual understanding.
+Students may rush through theoretical content to reach quizzes, while
+text-heavy learning can be less engaging for younger learners.
 
-**Our Contribution & Solution**: To enforce true conceptual mastery, we engineered a state-driven **Time-Bounded Progressive Disclosure** system. 
+### Our Solution
 
-#### 1. Progressive Disclosure (Step-by-Step Unlocking)
-- **Feature**: Instead of presenting a wall of text, the 5 learning blocks are hidden by default and progressively disclosed one at a time.
-- **Merits**: Reduces cognitive overload. It breaks down complex mathematical concepts into digestible, bite-sized chunks, keeping the student focused entirely on the current step without feeling overwhelmed.
-- **Mechanism**: A dynamic *"Got it, next step ↓"* button controls the flow. The final assessment entry point is strictly hidden until the user has successfully revealed the entire sequence, making skipping physically impossible.
+Tenali combines **Progressive Disclosure** with a child-friendly
+**"Learn by Playing"** approach:
 
-#### 2. Soft Time-Bounded Gating (The 60-Second Rule)
-- **Feature**: An active time-tracking mechanism measures exactly how long a student spends on a specific conceptual block.
-- **Merits**: Prevents students from simply rapid-clicking the "Next Step" button to bypass the progressive disclosure. It forces them to slow down and actually *read* the material.
-- **Mechanism**: When a student attempts to proceed to the next block or start the quiz, the system calculates the time elapsed since the block was revealed. If it has been less than 1 minute, progression is halted. 
-- **User Experience**: Rather than rigidly disabling buttons (which can feel broken), the UI allows the click but instantly renders a custom warning modal (*"Hold on! Please take your time..."*). The student must dismiss the popup and wait out the remainder of the minute, striking a balance between strict pedagogical enforcement and interactive UX.
+**Understand → Interact → Discover → Practice → Test**
 
----
+### 1. Progressive Disclosure
+
+Learning content is revealed step-by-step to reduce cognitive overload
+and encourage focused learning. In the enhanced **Angles** module,
+students progress through:
+
+1. What Is an Angle?
+2. Types of Angles
+3. Find 90° Challenge
+4. Rules & Examples
+5. Angle Detective
+6. Completion & Test
+
+### 2. Interactive Learning
+
+Instead of relying only on text, students actively explore concepts through:
+
+- 🖐️ Draggable angle visualization
+- 📐 Angle-type discovery
+- 🎯 90° challenge
+- 🔍 Real-world Angle Detective activity
+
+### 3. Learn → Test Gateway
+
+The learning flow connects directly to the existing assessment:
+
+**Learn → Explore → Practice → Complete → Test**
+
+The existing quiz logic remains unchanged.
+
+### 4. Child-Friendly Design
+
+The experience uses simple explanations, interactive SVG visuals,
+large touch targets, rounded cards, and subtle feedback to make
+mathematical concepts easier and more engaging for young learners.
+
+### 5. Data-Driven Architecture
+
+Learning content remains separated from UI logic:
+
+```text
+Learning JSON → learnContent.js → Learning Page → Interactive Components
 
 ## 📑 Table of Contents
 

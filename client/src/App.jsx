@@ -108,6 +108,7 @@ import PlaygroundApp from './PlaygroundApp'
 import LocalCompilerApp from './LocalCompilerApp'
 import BattleApp from './BattleApp'
 import SudokuApp from './SudokuApp'
+import AnglesLearnPage from './components/learning/AnglesLearnPage'
 
 // API base URL from environment variables (Vite)
 export const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -44702,7 +44703,7 @@ function App() {
     rounding: RoundingApp,         // Rounding
     binomial: BinomialApp,         // Binomial Theorem
     complex: ComplexApp,           // Complex Numbers
-    angles: AnglesApp,             // Angles
+    angles: AnglesPage,            // Angles (Learn -> Test)
     triangles: TrianglesApp,       // Triangles
     congruence: CongruenceApp,     // Congruence
     pythag: PythagApp,             // Pythagoras' Theorem
@@ -55548,6 +55549,85 @@ const AnglesApp = makeQuizApp({
   diffLabels: { easy: 'Easy — Straight line', medium: 'Medium — At a point', hard: 'Hard — Vertically opposite', extrahard: 'Extra Hard — Parallel lines' },
   placeholders: 'e.g. 65',
 })
+
+function AnglesPage(props) {
+  const [learningPhase, setLearningPhase] = useState(() => {
+    try {
+      return localStorage.getItem('tenali_angles_learned') === 'true' ? 'test' : 'select';
+    } catch(e) {
+      return 'select';
+    }
+  }); // 'select', 'learn', 'test'
+  
+  const [showQuizBelow, setShowQuizBelow] = useState(false);
+  const quizRef = useRef(null);
+
+  const startQuizBelow = () => {
+    setShowQuizBelow(true);
+    setTimeout(() => {
+      quizRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  if (learningPhase === 'select') {
+    return (
+      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '40px' }}>
+        <div className="card" style={{ maxWidth: 900, width: '90%', padding: '3rem', color: 'var(--clr-text)', textAlign: 'center', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', background: 'var(--clr-card)' }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+            <button className="kid-btn-secondary" onClick={props.onBack} style={{ padding: '8px 16px', borderRadius: '20px', fontWeight: 'bold', border: 'none', background: 'rgba(0,0,0,0.05)', cursor: 'pointer', color: 'var(--clr-text)' }}>
+              ← Back to Home
+            </button>
+          </div>
+          <h1 style={{ marginBottom: 12, fontSize: '2.8rem', color: 'var(--clr-accent, #FF7E67)', fontWeight: '800' }}>
+            Angles
+          </h1>
+          <p style={{ fontSize: '1.25rem', opacity: 0.8, fontWeight: '500', marginBottom: 40 }}>
+            🤔 How would you like to proceed?
+          </p>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => setLearningPhase('learn')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #2ea043', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📖</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Learn</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Understand the concepts through interactive play 💡</span>
+            </button>
+            <button onClick={() => setLearningPhase('test')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #0275d8', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📝</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Test</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Assess your understanding with a fast-paced quiz 🎯</span>
+            </button>
+          </div>
+          <p style={{ marginTop: 32, fontSize: '1rem', opacity: 0.6, fontStyle: 'italic', fontWeight: '500' }}>
+            "Understand First. Test Later. Learn Better. 🌟"
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (learningPhase === 'learn') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <AnglesLearnPage 
+          onStartTest={startQuizBelow} 
+          onBack={props.onBack} 
+        />
+        {showQuizBelow && (
+          <div ref={quizRef} className="fade-in" style={{ paddingBottom: '40px', marginTop: '20px' }}>
+            <div style={{ textAlign: 'center', margin: '40px 0 20px', padding: '20px', borderTop: '2px dashed rgba(0,0,0,0.1)' }}>
+               <h2 style={{ color: 'var(--clr-text)', fontSize: '2rem' }}>📝 Existing Angles Quiz</h2>
+               <p style={{ color: 'var(--clr-text-soft)' }}>Your interactive learning is above. Good luck on the test!</p>
+            </div>
+            <AnglesApp {...props} onBack={() => { setShowQuizBelow(false); setLearningPhase('select'); }} />
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (learningPhase === 'test') {
+    return <AnglesApp {...props} onBack={() => setLearningPhase('select')} />;
+  }
+}
 
 const TrianglesApp = makeQuizApp({
   title: 'Triangles', subtitle: 'Angle sum, isosceles, exterior angle', apiPath: 'triangles-api', topicKey: 'triangles',

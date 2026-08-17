@@ -1,0 +1,35 @@
+{
+  "title": "Angles: Measuring the Turn",
+  "blocks": [
+    {
+      "icon": "📐",
+      "title": "1. What Is an Angle?",
+      "visual": "angle-concept",
+      "content": "An angle measures a **turn** between two lines that meet.\n\n• Measured in **degrees (°)**\n• A full circle is **360°**"
+    },
+    {
+      "icon": "📏",
+      "title": "2. The Angle Family",
+      "visual": "angle-types",
+      "content": "• **Acute (< 90°):** Small and sharp.\n• **Right (90°):** Perfect L-shape [ ∟ ].\n• **Obtuse (> 90°):** Wide and open.\n• **Straight (180°):** A flat line."
+    },
+    {
+      "icon": "🧩",
+      "title": "3. Angle Rules",
+      "visual": "straight-line",
+      "content": "**1. Angles on a straight line = 180°**\n*(If one is 110°, the other is 70°)*\n\n**2. Vertically opposite angles are equal**\n*(When lines cross, opposite angles match)*"
+    },
+    {
+      "icon": "💡",
+      "title": "4. Example",
+      "visual": "worked-example",
+      "content": "Two angles sit on a straight line. One is **135°**.\n\n**Step 1:** Straight line = 180°\n**Step 2:** 180° - 135° = 45°\n\n**Answer:** **45°**"
+    },
+    {
+      "icon": "⚠️",
+      "title": "5. Pitfalls",
+      "visual": "pitfall",
+      "content": "Don't confuse a **straight line (180°)** with a **full circle (360°)**!\n\nCheck if the angles sit on a line or go all the way around a point."
+    }
+  ]
+}

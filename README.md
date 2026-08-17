@@ -83,9 +83,9 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
       <td align="center"><b>899</b><br/><sub>commits</sub></td>
       <td align="center"><b>75</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>22</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>⭐ 0</b><br/><sub>stars</sub></td>
-      <td align="center"><b>🍴 0</b><br/><sub>forks</sub></td>
-      <td align="center"><b>🐛 0</b><br/><sub>open issues</sub></td>
+      <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
+      <td align="center"><b>🍴 65</b><br/><sub>forks</sub></td>
+      <td align="center"><b>🐛 56</b><br/><sub>open issues</sub></td>
     </tr>
   </table>
 </p>
@@ -153,6 +153,25 @@ Choose any of these modes from the home grid:
 - 🥇 **Badge** — bronze → silver → gold per topic
 - 📊 **Progress saved** — persisted in MongoDB for next time
 - ➡️ **Loop** — pick another topic and play again
+
+---
+
+## 🧠 Pedagogical Features: Progressive & Interactive Learning
+
+The platform solves the common problem of students rushing through theoretical material without conceptual mastery by employing a **"Learn by Playing"** approach.
+
+- **Progressive Disclosure:** Concepts are revealed sequentially. A learner must complete the current interactive task to unlock the next block of learning.
+- **Interactive Angles Learning:** The Angles module has been transformed into a fully interactive experience.
+- **Draggable Angle Visualization:** Students experiment with a responsive, draggable angle arm to physically feel how angles are formed.
+- **Angle-Type Discovery:** Tap-to-reveal cards encourage active discovery of acute, right, and obtuse angles.
+- **Find 90° Challenge:** A gamified mini-challenge requires learners to drag an angle to exactly 90°, with real-time proximity feedback and a "success snap".
+- **Angle Detective:** A real-world application activity where students identify angles in everyday objects (doors, clocks, scissors) versus non-angles (balls).
+- **Learn → Test Gateway:** A structured gateway ensures students first engage with the material. Only after completing the interactive sequence does the standard adaptive quiz become available right below the content.
+- **Child-Friendly Design:** A clean, colorful, and highly visual UI with minimal reliance on dense text reading.
+- **Data-Driven Architecture:** Educational content is dynamically driven by a decoupled JSON architecture while interactions rely on pure native React and SVGs.
+
+**The Learning Journey:**
+**Understand** (visualize the concept) → **Interact** (manipulate SVGs) → **Discover** (explore types and rules) → **Practice** (mini-challenges) → **Test** (the quiz)
 
 ---
 
@@ -614,7 +633,7 @@ _Live data — last regenerated 2026-08-17 · auto-refreshed by [`github-actions
 | 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **191** | 24  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **89** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
-| 5. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **41** | 0  | — |
+| 5. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **38** | 0  | — |
 | 6. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 7. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
 | 8. | **DIPTOSUBHRO DATTA**<br/><sub>↳ also commits as <b>Dipto Subhro</b></sub> | [diptosubhro-ctrl](https://github.com/diptosubhro-ctrl) | **33** | 1  | Tutorial System + Noise Filter Refactor |

@@ -19,12 +19,15 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 919 commits · 57 active days · 26 unique authors
+### 📊 Total: 920 commits · 57 active days · 26 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-17  <sub>(6 commits)</sub>
+#### 📅 2026-08-17  <sub>(7 commits)</sub>
 
+- 📌 [`ff75eccd`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/ff75eccd19108d2ee18f7eb4cf79f38e2c863d8c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+1023 −955`, `CONTRIBUTORS.md` `+109 −41`, `README.md` `+20 −18`
+    - 📊 **`+1152 −1014`** · 3 files
 - 🔀 [`ebb859a2`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/ebb859a2dd28c870cf50eb8d2cd3bca0600a00fd) — **Athira** — sync latest upstream main
 - ✨ [`8208c70f`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/8208c70f3c56afd4c1fc29d9e44e9bdb1f6a01b1) — **Athira** — enhance Angles learning experience
     - 📁 **9 files:** `client/src/App.jsx` `+81 −1`, `client/src/components/LearningVisual.jsx` `+121 −0`, `client/src/components/learning/AngleChallenge.jsx` `+163 −0`, `client/src/components/learning/AngleDetective.jsx` `+89 −0`, `client/src/components/learning/AnglesLearnPage.jsx` `+234 −0`, `client/src/components/learning/DragAngle.jsx` `+152 −0`, `client/src/components/learning/angles-learn.css` `+398 −0`, `client/src/data/learnContent.js` `+42 −0` *(+1 more in [`8208c70f`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/8208c70f3c56afd4c1fc29d9e44e9bdb1f6a01b1))*

@@ -19,12 +19,15 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 907 commits · 57 active days · 25 unique authors
+### 📊 Total: 908 commits · 57 active days · 25 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-17  <sub>(3 commits)</sub>
+#### 📅 2026-08-17  <sub>(4 commits)</sub>
 
+- 📌 [`4365828`](https://github.com/vicharanashala/tenali/commit/43658283c2571e7662bd0a996cdefb2b940eb336) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+46 −8`, `CONTRIBUTORS.md` `+65 −20`, `README.md` `+16 −14`
+    - 📊 **`+127 −42`** · 3 files
 - 📌 [`486fcff`](https://github.com/vicharanashala/tenali/commit/486fcff69554d99a324b17f27bba799eb851f986) — **jgupta05072003-code** — 🔀 PR [#97](https://github.com/vicharanashala/tenali/pull/97) from `remy-baastin` — feat/ct-and-cr
 - 📌 [`99c062e`](https://github.com/vicharanashala/tenali/commit/99c062e88882837520c980c620b1af56fcb48ddf) — **jgupta05072003-code** — 🔀 PR [#74](https://github.com/vicharanashala/tenali/pull/74) from `bangerashreejal-cs` — feature/reading-traps-levels
 - 📌 [`3ed78c2`](https://github.com/vicharanashala/tenali/commit/3ed78c2111f2683f5b7a57df68046fcc13da1784) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats

@@ -19,9 +19,15 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 920 commits · 57 active days · 26 unique authors
+### 📊 Total: 921 commits · 58 active days · 26 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
+
+#### 📅 2026-08-18  <sub>(1 commit)</sub>
+
+- 📌 [`b6dd1c27`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/b6dd1c2704b1b625975dffe0af8d5e3ccf8b1de3) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
+    - 📊 **`+14 −11`** · 3 files
 
 #### 📅 2026-08-17  <sub>(7 commits)</sub>
 

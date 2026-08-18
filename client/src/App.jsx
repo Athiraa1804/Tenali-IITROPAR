@@ -443,7 +443,7 @@ function AuthGate({ children }) {
         This page is only available to signed-in users. Open the <strong>menu</strong> in the top-right corner and choose <strong>Log in</strong>.
       </p>
       <button
-        onClick={() => { window.location.href = import.meta.env.BASE_URL || '/' }}
+        onClick={() => { window.location.href = withBase('/') }}
         style={{ marginTop: 24, padding: '10px 24px', borderRadius: 8, background: 'var(--clr-accent, #e8833a)', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '1rem' }}>
         ← Back to home
       </button>

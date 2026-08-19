@@ -81,19 +81,11 @@ It is built to run on a single VPS — `tenali.fun` — with one Node process se
   <table>
     <tr>
       <td align="center"><b>922</b><br/><sub>commits</sub></td>
-<<<<<<< HEAD
-      <td align="center"><b>77</b><br/><sub>PRs merged</sub></td>
-      <td align="center"><b>24</b><br/><sub>GitHub contributors</sub></td>
-      <td align="center"><b>⭐ 0</b><br/><sub>stars</sub></td>
-      <td align="center"><b>🍴 0</b><br/><sub>forks</sub></td>
-      <td align="center"><b>🐛 0</b><br/><sub>open issues</sub></td>
-=======
       <td align="center"><b>79</b><br/><sub>PRs merged</sub></td>
       <td align="center"><b>26</b><br/><sub>GitHub contributors</sub></td>
       <td align="center"><b>⭐ 6</b><br/><sub>stars</sub></td>
       <td align="center"><b>🍴 65</b><br/><sub>forks</sub></td>
       <td align="center"><b>🐛 52</b><br/><sub>open issues</sub></td>
->>>>>>> upstream/main
     </tr>
   </table>
 </p>
@@ -164,22 +156,54 @@ Choose any of these modes from the home grid:
 
 ---
 
-## 🧠 Pedagogical Features: Progressive & Interactive Learning
+## 🧠 Pedagogical Features: Interactive Learning
 
-The platform solves the common problem of students rushing through theoretical material without conceptual mastery by employing a **"Learn by Playing"** approach.
+The platform solves the common problem of students rushing through theoretical material without conceptual mastery by employing a **"Learn by Playing"** approach. Instead of presenting learners with long static theory blocks, supported topics use interactive activities, visual examples, guided discovery, and mini-challenges before the final quiz. 
 
-- **Progressive Disclosure:** Concepts are revealed sequentially. A learner must complete the current interactive task to unlock the next block of learning.
-- **Interactive Angles Learning:** The Angles module has been transformed into a fully interactive experience.
-- **Draggable Angle Visualization:** Students experiment with a responsive, draggable angle arm to physically feel how angles are formed.
+This interactive approach reduces cognitive load, makes abstract concepts easier to understand, encourages active participation, and connects theory with visual examples to ensure learners understand concepts *before* assessment.
+
+### 🚪 Learn-Test Gateway
+
+The learning journey follows a structured path:
+1. The learner selects a topic from the home grid.
+2. Supported topics open a Learn/Test gateway, providing a choice to either learn the concept or jump to the test.
+3. The **Learn** pathway presents the concept through interactive, progressively unlocked activities.
+4. Learners must physically complete each learning interaction (e.g., sliding a bar, tapping a card) to unlock the next block of theory.
+5. After completing the interactive learning journey, a "Start Test" button becomes available.
+6. The existing adaptive quiz is then launched seamlessly below the learning content without altering its core scoring mechanism.
+7. A "Back to Home" button always provides a clear exit path.
+
+### 🎮 Supported Interactive Topics
+*Note: The interactive learning transformation is currently scoped strictly to the following three modules.*
+
+#### 📐 Angles
+- **Interactive Angle Manipulation:** Drag a responsive angle arm to physically feel how angles are formed.
 - **Angle-Type Discovery:** Tap-to-reveal cards encourage active discovery of acute, right, and obtuse angles.
-- **Find 90° Challenge:** A gamified mini-challenge requires learners to drag an angle to exactly 90°, with real-time proximity feedback and a "success snap".
-- **Angle Detective:** A real-world application activity where students identify angles in everyday objects (doors, clocks, scissors) versus non-angles (balls).
-- **Learn → Test Gateway:** A structured gateway ensures students first engage with the material. Only after completing the interactive sequence does the standard adaptive quiz become available right below the content.
-- **Child-Friendly Design:** A clean, colorful, and highly visual UI with minimal reliance on dense text reading.
-- **Data-Driven Architecture:** Educational content is dynamically driven by a decoupled JSON architecture while interactions rely on pure native React and SVGs.
+- **Find 90° Challenge:** Gamified mini-challenge requiring learners to drag an angle to exactly 90°, with real-time proximity feedback and a "success snap".
+- **Angle Detective:** Real-world application activity identifying angles in everyday objects (doors, clocks, scissors).
+- **Sequential Learning:** Progressive step-by-step unlocking leading into the final adaptive quiz.
 
-**The Learning Journey:**
-**Understand** (visualize the concept) → **Interact** (manipulate SVGs) → **Discover** (explore types and rules) → **Practice** (mini-challenges) → **Test** (the quiz)
+#### 🧾 GST
+- **Price Tag Simulator:** Interactive slider setting GST rates on a product to visualize the base price vs. tax stacked bar.
+- **Transaction Discovery:** Tap scenario cards (intra-state vs. inter-state) to discover when CGST, SGST, or IGST apply.
+- **Rate Explorer:** Pick standard products and rates to see live, step-by-step calculation breakdowns.
+- **Input Tax Credit Activity:** Dual sliders for buy/sell prices demonstrating the "GST Payable" logic in real time.
+- **Common Mistakes Challenge:** Mini-quiz explicitly targeting common pitfalls (e.g., calculating GST on inclusive prices) with immediate feedback.
+
+#### 🍕 Fractions
+- **Interactive Visualizer:** Tap SVG pizza slices to shade them and watch the fraction numerator dynamically update.
+- **Build the Fraction:** A guided interaction requiring the learner to shade exact parts (e.g., 3/5) to internalize the meaning of numerator and denominator.
+- **Fraction Family Discovery:** Tap-to-discover cards explaining Proper, Improper, Mixed, and Equivalent fractions with visual emojis.
+- **Fraction Challenge:** Mini-quiz testing comparison rules (same denominator vs. same numerator) with pitfall feedback.
+- **Real-World Detective:** Tapping everyday items (clocks, coins, baking cups) to reveal practical fraction applications.
+
+### 🛠️ Technical Implementation
+The interactive learning engine is built using standard web primitives, requiring no external heavy dependencies:
+- **React Components:** Modular, reusable UI components for each interactive step.
+- **Local Reactive State:** Component-level state drives the progressive disclosure, unlocking subsequent steps via completion callbacks (`onComplete`).
+- **Native SVGs & CSS:** Interactions like dragging angles or shading fractions utilize native SVG manipulation and CSS transitions for lightweight performance.
+- **Decoupled Data:** Pedagogical theory is loaded dynamically from structured JSON files (`learnContent/`), keeping JSX templates clean.
+- **Inline Quiz Rendering:** The existing complex quiz modules (`AnglesApp`, `GSTApp`, `FractionAddApp`) are conditionally rendered at the bottom of the page post-completion, preserving their internal logic safely.
 
 ---
 
@@ -627,11 +651,7 @@ tenali.fun (DNS → <production IP — redacted from public docs>)
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-<<<<<<< HEAD
-| **922** | **77** | **24** | **69** | **7,662** | **991** |
-=======
 | **922** | **79** | **26** | **69** | **7,662** | **991** |
->>>>>>> upstream/main
 <!-- live-snapshot:end -->
 
 ### 🥇 Leaderboard
@@ -643,13 +663,8 @@ _Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
 | 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **191** | 24  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
-<<<<<<< HEAD
-| 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **91** | 0  | Upstream Repo Maintainer & PR Reviewer |
-| 4. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **50** | 0  | — |
-=======
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **93** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **43** | 0  | — |
->>>>>>> upstream/main
 | 5. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 6. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 7. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
@@ -663,25 +678,16 @@ _Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions
 | 15. | **shreejal-bangera**<br/><sub>↳ also commits as <b>Shreejal Bangera</b></sub> | [shreejal-bangera](https://github.com/shreejal-bangera) | **8** | 0  | — |
 | 16. | **SemiColonSlayer** | [sharonyamita-spec](https://github.com/sharonyamita-spec) | **6** | 1  | Math Detective Agency |
 | 17. | **PANDRAJU POORVI PRAVALLIKA** | [poorvipravallika06](https://github.com/poorvipravallika06) | **6** | 1  | HCF/LCM Interactive Module |
-<<<<<<< HEAD
 | 18. | **athira**<br/><sub>↳ also commits as <b>Athira</b></sub> | [athira](https://github.com/athira) | **5** | 0  | — |
 | 19. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 20. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 21. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 22. | **Remy baastin rayappan** | [remy-baastin](https://github.com/remy-baastin) | **2** | 1  | — |
-| 23. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 24. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
-=======
-| 18. | **Rukmender T** | [RukmenderT](https://github.com/RukmenderT) | **5** | 1  | Curiosity Mode |
-| 19. | **tanvish desai** | [tanvishdesai](https://github.com/tanvishdesai) | **4** | 1  | — |
-| 20. | **Disha Bansal** | [disha01bansal](https://github.com/disha01bansal) | **4** | 0  | — |
-| 21. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
-| 22. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
-| 23. | **Remy baastin rayappan** | [remy-baastin](https://github.com/remy-baastin) | **2** | 1  | — |
-| 24. | **harsh**<br/><sub>↳ also commits as <b>Harsh</b></sub> | [harsh](https://github.com/harsh) | **2** | 0  | — |
-| 25. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 26. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
->>>>>>> upstream/main
+| 20. | **tanvish desai** | [tanvishdesai](https://github.com/tanvishdesai) | **4** | 1  | — |
+| 21. | **Disha Bansal** | [disha01bansal](https://github.com/disha01bansal) | **4** | 0  | — |
+| 22. | **S. Hamsalekha**<br/><sub>↳ also commits as <b>S Hamsalekha</b></sub> | [S-Hamsalekha-annamai](https://github.com/S-Hamsalekha-annamai) | **3** | 1  | Track User Progress |
+| 23. | **Krishna Gelra** | [KrishnaG-101](https://github.com/KrishnaG-101) | **3** | 1  | Language Puzzles Framework |
+| 24. | **Remy baastin rayappan** | [remy-baastin](https://github.com/remy-baastin) | **2** | 1  | — |
+| 25. | **harsh**<br/><sub>↳ also commits as <b>Harsh</b></sub> | [harsh](https://github.com/harsh) | **2** | 0  | — |
+| 26. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
+| 27. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 
 

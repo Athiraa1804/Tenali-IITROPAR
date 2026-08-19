@@ -1,0 +1,30 @@
+{
+  "title": "GST: Goods & Services Tax",
+  "blocks": [
+    {
+      "icon": "🏷️",
+      "title": "1. What Is GST?",
+      "content": "GST (Goods & Services Tax) is a **single, unified indirect tax** levied on the supply of goods and services across India.\n\nBefore GST, there were many separate taxes — VAT, service tax, excise duty, etc. GST replaced them all with **one tax system**.\n\nGST is always calculated as a **percentage of the selling price** (or the marked price / listed price of the item)."
+    },
+    {
+      "icon": "📊",
+      "title": "2. Structure: CGST, SGST & IGST",
+      "content": "GST is split into components depending on the type of transaction:\n\n**Within the same state (Intra-state):**\n• **CGST** (Central GST) → goes to the Central Government\n• **SGST** (State GST) → goes to the State Government\n• CGST rate = SGST rate = half of the total GST rate\n\n**Between different states (Inter-state):**\n• **IGST** (Integrated GST) → goes to the Central Government, then shared\n• IGST rate = full GST rate\n\n**Example:** If GST is 18%, then CGST = 9% and SGST = 9% for intra-state sales."
+    },
+    {
+      "icon": "🧮",
+      "title": "3. Calculating GST Amount",
+      "content": "The GST amount is calculated on the **selling price** (before tax).\n\n**Formula:**\nGST Amount = (Selling Price × GST Rate) ÷ 100\n\n**Total Price (with GST):**\nTotal = Selling Price + GST Amount\n\n**Example:**\nA laptop costs ₹50,000 and GST is 18%.\nGST Amount = 50,000 × 18 ÷ 100 = ₹9,000\nTotal Price = 50,000 + 9,000 = **₹59,000**\n\nFor intra-state: CGST = ₹4,500, SGST = ₹4,500."
+    },
+    {
+      "icon": "💡",
+      "title": "4. Input Tax Credit (ITC)",
+      "content": "**Input Tax Credit** means: if you are a business, you can **subtract** the GST you already paid on purchases (inputs) from the GST you collect on sales (output).\n\n**Formula:**\nGST Payable = Output GST − Input GST\n\n**Example:**\nA shopkeeper buys goods for ₹1,000 + 18% GST = ₹180 (input GST).\nHe sells them for ₹1,500 + 18% GST = ₹270 (output GST).\nGST payable to government = 270 − 180 = **₹90**.\n\nThis avoids the **cascading effect** (tax on tax) that existed before GST."
+    },
+    {
+      "icon": "⚠️",
+      "title": "5. Common Mistakes",
+      "content": "**Mistake 1:** Calculating GST on the total price instead of the base price.\n→ GST is always on the **pre-tax price**, not the final amount.\n\n**Mistake 2:** Confusing the total GST rate with CGST/SGST rates.\n→ If GST = 12%, then CGST = 6% and SGST = 6%. Don't apply 12% twice!\n\n**Mistake 3:** Forgetting to add both CGST and SGST to get the total.\n→ Total tax = CGST + SGST (for intra-state) or just IGST (for inter-state).\n\n**Mistake 4:** Mixing up input and output tax in ITC questions.\n→ Input = what you paid; Output = what you collected."
+    }
+  ]
+}

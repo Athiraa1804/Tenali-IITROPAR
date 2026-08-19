@@ -19,12 +19,15 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 921 commits · 58 active days · 28 unique authors
+### 📊 Total: 922 commits · 58 active days · 28 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-18  <sub>(7 commits)</sub>
+#### 📅 2026-08-18  <sub>(8 commits)</sub>
 
+- 📌 [`d851b41`](https://github.com/vicharanashala/tenali/commit/d851b415b2d845fe68b6bcc1763f9550d2c70578) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+38 −6`, `CONTRIBUTORS.md` `+83 −16`, `README.md` `+15 −12`
+    - 📊 **`+136 −34`** · 3 files
 - 📌 [`898048b`](https://github.com/vicharanashala/tenali/commit/898048b26181c5e53d64b65ce9b87fad94f20726) — **jgupta05072003-code** — 🔀 PR [#160](https://github.com/vicharanashala/tenali/pull/160) from `tanvishdesai` — I21-T140/codebase-cleanup
 - 📌 [`06d6f96`](https://github.com/vicharanashala/tenali/commit/06d6f96a39647c09ed87af97aee5dd19f1f9a91e) — **jgupta05072003-code** — 🔀 PR [#155](https://github.com/vicharanashala/tenali/pull/155) from `harshguptaa26` — feature/treasure-hunt
 - 🐛 [`3349d1e`](https://github.com/vicharanashala/tenali/commit/3349d1eed385ba7bdf5178eb31df207d72bf73e1) — **tanvishdesai** — use withBase() for AuthGate back-to-home navigation

@@ -55576,13 +55576,7 @@ const AnglesApp = makeQuizApp({
 })
 
 function AnglesPage(props) {
-  const [learningPhase, setLearningPhase] = useState(() => {
-    try {
-      return localStorage.getItem('tenali_angles_learned') === 'true' ? 'test' : 'select';
-    } catch(e) {
-      return 'select';
-    }
-  }); // 'select', 'learn', 'test'
+  const [learningPhase, setLearningPhase] = useState('select'); // 'select', 'learn', 'test'
   
   const [showQuizBelow, setShowQuizBelow] = useState(false);
   const quizRef = useRef(null);
@@ -55642,7 +55636,7 @@ function AnglesPage(props) {
                <h2 style={{ color: 'var(--clr-text)', fontSize: '2rem' }}>📝 Existing Angles Quiz</h2>
                <p style={{ color: 'var(--clr-text-soft)' }}>Your interactive learning is above. Good luck on the test!</p>
             </div>
-            <AnglesApp {...props} onBack={() => { setShowQuizBelow(false); setLearningPhase('select'); }} />
+            <AnglesApp {...props} onBack={props.onBack} />
           </div>
         )}
       </div>
@@ -55650,7 +55644,7 @@ function AnglesPage(props) {
   }
 
   if (learningPhase === 'test') {
-    return <AnglesApp {...props} onBack={() => setLearningPhase('select')} />;
+    return <AnglesApp {...props} onBack={props.onBack} />;
   }
 }
 

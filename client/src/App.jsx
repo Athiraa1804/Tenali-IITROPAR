@@ -115,7 +115,13 @@ import PlaygroundApp from './PlaygroundApp'
 import LocalCompilerApp from './LocalCompilerApp'
 import BattleApp from './BattleApp'
 import SudokuApp from './SudokuApp'
+<<<<<<< HEAD
 import { getLearnContent } from './data/learnContent.js'
+=======
+import AnglesLearnPage from './components/learning/AnglesLearnPage'
+import GSTLearnPage from './components/learning/GSTLearnPage'
+import FractionsLearnPage from './components/learning/FractionsLearnPage'
+>>>>>>> f063703b (feat: add interactive GST and Fractions learning)
 
 // API base URL from environment variables (Vite)
 export const API = import.meta.env.VITE_API_BASE_URL || '';
@@ -44676,7 +44682,7 @@ function App() {
     funceval: FuncEvalApp,         // Function evaluation
     lineq: LineEqApp,              // Line equation
     basicarith: BasicArithApp,     // Basic arithmetic (+, −, ×)
-    fractionadd: FractionAddApp,   // Fraction addition
+    fractionadd: FractionsPage,    // Fractions (Learn -> Test)
     surds: SurdsApp,               // Surds (simplify, add, multiply, rationalise)
     indices: IndicesApp,           // Indices (laws of exponents)
     sequences: SequencesApp,       // Sequences & Series
@@ -44728,7 +44734,7 @@ function App() {
     heron: HeronApp,               // Heron's Formula
     shares: SharesApp,             // Shares & Dividends
     banking: BankingApp,           // Banking (RD)
-    gst: GSTApp,                   // GST
+    gst: GSTPage,                  // GST (Learn -> Test)
     section: SectionApp,           // Section Formula
     linprog: LinProgApp,           // Linear Programming
     circmeasure: CircMeasureApp,   // Circular Measure
@@ -54274,6 +54280,76 @@ const loadQuestion = async (excludeIds) => {
 }
 
 /* ── Fraction Addition App ────────────────────────────────────── */
+function FractionsPage(props) {
+  const [learningPhase, setLearningPhase] = useState('select'); // 'select', 'learn', 'test'
+  
+  const [showQuizBelow, setShowQuizBelow] = useState(false);
+  const quizRef = useRef(null);
+
+  const startQuizBelow = () => {
+    setShowQuizBelow(true);
+    setTimeout(() => {
+      quizRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  if (learningPhase === 'select') {
+    return (
+      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '40px' }}>
+        <div className="card" style={{ maxWidth: 900, width: '90%', padding: '3rem', color: 'var(--clr-text)', textAlign: 'center', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', background: 'var(--clr-card)' }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+            <button className="kid-btn-secondary" onClick={props.onBack} style={{ padding: '8px 16px', borderRadius: '20px', fontWeight: 'bold', border: 'none', background: 'rgba(0,0,0,0.05)', cursor: 'pointer', color: 'var(--clr-text)' }}>
+              ← Back to Home
+            </button>
+          </div>
+          <h1 style={{ marginBottom: 12, fontSize: '2.8rem', color: '#3182CE', fontWeight: '800' }}>
+            Fractions
+          </h1>
+          <p style={{ fontSize: '1.25rem', opacity: 0.8, fontWeight: '500', marginBottom: 40 }}>
+            Parts of a whole and more!
+          </p>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => setLearningPhase('learn')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #48BB78', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📖</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Learn</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Understand fractions through play</span>
+            </button>
+            <button onClick={() => setLearningPhase('test')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #0275d8', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📝</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Test</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Test what you know</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (learningPhase === 'learn') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <FractionsLearnPage 
+          onStartTest={startQuizBelow} 
+          onBack={props.onBack} 
+        />
+        {showQuizBelow && (
+          <div ref={quizRef} className="fade-in" style={{ paddingBottom: '40px', marginTop: '20px' }}>
+            <div style={{ textAlign: 'center', margin: '40px 0 20px', padding: '20px', borderTop: '2px dashed rgba(0,0,0,0.1)' }}>
+               <h2 style={{ color: 'var(--clr-text)', fontSize: '2rem' }}>📝 Fractions Quiz</h2>
+               <p style={{ color: 'var(--clr-text-soft)' }}>Your learning is above. Good luck on the test!</p>
+            </div>
+            <FractionAddApp {...props} onBack={props.onBack} />
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (learningPhase === 'test') {
+    return <FractionAddApp {...props} onBack={props.onBack} />;
+  }
+}
+
 /**
  * FractionAddApp Component
  * Fraction addition quiz with three difficulty levels.
@@ -56825,6 +56901,76 @@ const GSTApp = makeQuizApp({
   diffLabels: { easy: 'Easy — GST amount', medium: 'Medium — Total with GST', hard: 'Hard — CGST+SGST', extrahard: 'Extra Hard — Input tax credit' },
   placeholders: 'e.g. 180',
 })
+
+function GSTPage(props) {
+  const [learningPhase, setLearningPhase] = useState('select'); // 'select', 'learn', 'test'
+  
+  const [showQuizBelow, setShowQuizBelow] = useState(false);
+  const quizRef = useRef(null);
+
+  const startQuizBelow = () => {
+    setShowQuizBelow(true);
+    setTimeout(() => {
+      quizRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  };
+
+  if (learningPhase === 'select') {
+    return (
+      <div className="app-shell" style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '40px' }}>
+        <div className="card" style={{ maxWidth: 900, width: '90%', padding: '3rem', color: 'var(--clr-text)', textAlign: 'center', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', background: 'var(--clr-card)' }}>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+            <button className="kid-btn-secondary" onClick={props.onBack} style={{ padding: '8px 16px', borderRadius: '20px', fontWeight: 'bold', border: 'none', background: 'rgba(0,0,0,0.05)', cursor: 'pointer', color: 'var(--clr-text)' }}>
+              ← Back to Home
+            </button>
+          </div>
+          <h1 style={{ marginBottom: 12, fontSize: '2.8rem', color: 'var(--clr-accent, #FF7E67)', fontWeight: '800' }}>
+            GST
+          </h1>
+          <p style={{ fontSize: '1.25rem', opacity: 0.8, fontWeight: '500', marginBottom: 40 }}>
+            Goods & Services Tax
+          </p>
+          <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <button onClick={() => setLearningPhase('learn')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #2ea043', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📖</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Learn</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Understand GST concepts step by step</span>
+            </button>
+            <button onClick={() => setLearningPhase('test')} style={{ flex: '1 1 250px', maxWidth: '300px', padding: '30px', borderRadius: '16px', background: 'var(--clr-card)', border: '2px solid #0275d8', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', transition: 'transform 0.2s', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
+              <span style={{ fontSize: '3rem' }}>📝</span>
+              <span style={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'var(--clr-text)' }}>Test</span>
+              <span style={{ color: 'var(--clr-text-soft)' }}>Jump straight to the GST quiz</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (learningPhase === 'learn') {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+        <GSTLearnPage 
+          onStartTest={startQuizBelow} 
+          onBack={props.onBack} 
+        />
+        {showQuizBelow && (
+          <div ref={quizRef} className="fade-in" style={{ paddingBottom: '40px', marginTop: '20px' }}>
+            <div style={{ textAlign: 'center', margin: '40px 0 20px', padding: '20px', borderTop: '2px dashed rgba(0,0,0,0.1)' }}>
+               <h2 style={{ color: 'var(--clr-text)', fontSize: '2rem' }}>📝 GST Quiz</h2>
+               <p style={{ color: 'var(--clr-text-soft)' }}>Your learning is above. Good luck on the test!</p>
+            </div>
+            <GSTApp {...props} onBack={props.onBack} />
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (learningPhase === 'test') {
+    return <GSTApp {...props} onBack={props.onBack} />;
+  }
+}
 
 const SectionApp = makeQuizApp({
   title: 'Section Formula', subtitle: 'Midpoint, section, centroid', apiPath: 'section-api', topicKey: 'section-formula',

@@ -74,6 +74,7 @@ import 'chart.js/auto'
 import { Line } from 'react-chartjs-2'
 
 import './App.css'
+import TreasureHuntApp from './treasurehunt/TreasureHuntApp.jsx'
 import EnhancedMathDetectiveApp from './detective-app'
 import GlossaryText from './components/GlossaryText'
 import KeyTerms from './components/KeyTerms'
@@ -444,7 +445,7 @@ function AuthGate({ children }) {
         This page is only available to signed-in users. Open the <strong>menu</strong> in the top-right corner and choose <strong>Log in</strong>.
       </p>
       <button
-        onClick={() => { window.location.href = import.meta.env.BASE_URL || '/' }}
+        onClick={() => { window.location.href = withBase('/') }}
         style={{ marginTop: 24, padding: '10px 24px', borderRadius: 8, background: 'var(--clr-accent, #e8833a)', color: '#fff', border: 'none', cursor: 'pointer', fontWeight: 600, fontSize: '1rem' }}>
         ← Back to home
       </button>
@@ -44747,6 +44748,7 @@ function App() {
     lineqgym: LinEqGymApp,         // LinearEquations-Gym — solve linear equations (MCQ)
     indicesgym: IndicesGymApp,     // Indices-Gym — index laws (MCQ)
     polygym: PolyGymApp,           // Polynomials Gym — arithmetic → monomial algebra (MCQ)
+    treasurehunt: TreasureHuntApp, // Treasure Hunt — solve & seek grid game
     // matrixmystics mode removed — Matrix Mystics content now embedded in LinearAlgebraApp's mission quiz
     trackProgress: null,
     riddle: RiddleApp,              // Math Riddles
@@ -44928,6 +44930,7 @@ function Home({ onSelect, completedTopics = [], goldMastery = [], coins = 0, isG
     { key: 'randommix', name: 'Random Mix', subtitle: 'Adaptive cross-topic quiz', color: 'featured' },
     { key: 'custom', name: 'Custom Lesson', subtitle: 'Build your own mixed quiz', color: 'featured' },
     { key: 'gym', name: 'Gym', subtitle: 'Adaptive workout across all 7 gym puzzles', color: 'featured' },
+    { key: 'treasurehunt', name: 'Treasure Hunt', subtitle: 'Solve & seek on a treasure grid', color: 'featured' },
     { key: 'contrastlist', name: 'Contrast Challenge', subtitle: 'Distinguish similar concepts', color: 'featured' },
     { key: 'vachana', name: 'Vachana', subtitle: 'Mathematical Literacy Lab', color: 'featured' },
   ]

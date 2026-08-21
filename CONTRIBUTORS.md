@@ -51,16 +51,20 @@
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
 <<<<<<< HEAD
+<<<<<<< HEAD
 | **922** | **77** | **24** | **69** | **7,662** | **991** |
 =======
 | **922** | **79** | **26** | **69** | **7,662** | **991** |
+>>>>>>> upstream/main
+=======
+| **926** | **79** | **26** | **69** | **7,662** | **991** |
 >>>>>>> upstream/main
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
 
 <!-- live-rank:start -->
-_Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
+_Live data — last regenerated 2026-08-21 · auto-refreshed by [`github-actions[bot]`](https://github.com/features/actions) on every push to `main` and every 12h._
 
 | # | 👤 Real Name | 🔗 GitHub ID | 📝 Commits | 🔀 PRs | 🏷️ Role |
 |--:|:-------------|:-------------|----------:|-----:|:--------|
@@ -71,7 +75,11 @@ _Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions
 | 4. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **50** | 0  | — |
 =======
 | 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **93** | 0  | Upstream Repo Maintainer & PR Reviewer |
+<<<<<<< HEAD
 | 4. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **43** | 0  | — |
+>>>>>>> upstream/main
+=======
+| 4. | **github-actions-bot-**<br/><sub>↳ also commits as <b>github-actions[bot]</b></sub> | [github-actions-bot-](https://github.com/github-actions-bot-) | **47** | 0  | — |
 >>>>>>> upstream/main
 | 5. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 6. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
@@ -217,9 +225,13 @@ _Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions
         <br/><b>github-actions-bot-</b>
         <br/><a href="https://github.com/github-actions-bot-">@github-actions-bot-</a>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <br/><sub>🏆 50 commits · 0 PRs merged</sub>
 =======
         <br/><sub>🏆 43 commits · 0 PRs merged</sub>
+>>>>>>> upstream/main
+=======
+        <br/><sub>🏆 47 commits · 0 PRs merged</sub>
 >>>>>>> upstream/main
         <br/><sub>🔗 also commits as: <b>github-actions[bot]</b></sub>
       </td>
@@ -228,9 +240,13 @@ _Live data — last regenerated 2026-08-19 · auto-refreshed by [`github-actions
         <ul>
           <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
 <<<<<<< HEAD
+<<<<<<< HEAD
           <li>📊 <b>50 commits</b> across this repo's history</li>
 =======
           <li>📊 <b>43 commits</b> across this repo's history</li>
+>>>>>>> upstream/main
+=======
+          <li>📊 <b>47 commits</b> across this repo's history</li>
 >>>>>>> upstream/main
           <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
         </ul>

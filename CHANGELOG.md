@@ -19,42 +19,19 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 928 commits · 61 active days · 28 unique authors
+### 📊 Total: 882 commits · 53 active days · 28 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-21  <sub>(2 commits)</sub>
+#### 📅 2026-08-22  <sub>(2 commits)</sub>
 
-- 📌 [`a463837`](https://github.com/vicharanashala/tenali/commit/a463837d349dd88a33c7b6993744cb15cdcf9005) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
-    - 📊 **`+14 −8`** · 3 files
-- 📌 [`1ba0bcc`](https://github.com/vicharanashala/tenali/commit/1ba0bccbf633d9e26249f08a70321a08c35e5183) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
+- 📌 [`99bfb42`](https://github.com/vicharanashala/tenali/commit/99bfb421f3734401f59f79d74a4d79617604377b) — **muditagrawal2007** — 🔀 PR [#163](https://github.com/vicharanashala/tenali/pull/163) from `muditagrawal2007` — fix/exclude-bot-commits-from-leaderboard
+- 🐛 [`0ac0c5c`](https://github.com/vicharanashala/tenali/commit/0ac0c5c48597ee6b7ad3b4a9c35a0fd035a99906) — **muditagrawal2007** — exclude bot commits from leaderboard
+    - 📁 **1 file:** `scripts/update-readme-contributors.js` `+73 −8`
+    - 📊 **`+73 −8`** · 1 file
 
-#### 📅 2026-08-20  <sub>(2 commits)</sub>
+#### 📅 2026-08-18  <sub>(6 commits)</sub>
 
-- 📌 [`a914fef`](https://github.com/vicharanashala/tenali/commit/a914fefa09c9716b78c37ba122bfbda3141224ff) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
-    - 📊 **`+14 −8`** · 3 files
-- 📌 [`630d38c`](https://github.com/vicharanashala/tenali/commit/630d38c3b02678215b9fb41418bc68f797060ad1) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
-
-#### 📅 2026-08-19  <sub>(2 commits)</sub>
-
-- 📌 [`38434eb`](https://github.com/vicharanashala/tenali/commit/38434ebc7179634cdeac2e5f3e9cbcefebe9b743) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+25 −25`, `README.md` `+5 −5`
-    - 📊 **`+37 −31`** · 3 files
-- 📌 [`c493243`](https://github.com/vicharanashala/tenali/commit/c493243da6191d7e0e799c274e692255d351b12c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+5 −5`
-    - 📊 **`+15 −12`** · 3 files
-
-#### 📅 2026-08-18  <sub>(8 commits)</sub>
-
-- 📌 [`d851b41`](https://github.com/vicharanashala/tenali/commit/d851b415b2d845fe68b6bcc1763f9550d2c70578) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+38 −6`, `CONTRIBUTORS.md` `+83 −16`, `README.md` `+15 −12`
-    - 📊 **`+136 −34`** · 3 files
 - 📌 [`898048b`](https://github.com/vicharanashala/tenali/commit/898048b26181c5e53d64b65ce9b87fad94f20726) — **jgupta05072003-code** — 🔀 PR [#160](https://github.com/vicharanashala/tenali/pull/160) from `tanvishdesai` — I21-T140/codebase-cleanup
 - 📌 [`06d6f96`](https://github.com/vicharanashala/tenali/commit/06d6f96a39647c09ed87af97aee5dd19f1f9a91e) — **jgupta05072003-code** — 🔀 PR [#155](https://github.com/vicharanashala/tenali/pull/155) from `harshguptaa26` — feature/treasure-hunt
 - 🐛 [`3349d1e`](https://github.com/vicharanashala/tenali/commit/3349d1eed385ba7bdf5178eb31df207d72bf73e1) — **tanvishdesai** — use withBase() for AuthGate back-to-home navigation
@@ -69,56 +46,20 @@
 - 🔧 [`9b22b43`](https://github.com/vicharanashala/tenali/commit/9b22b43d646825bf618a842b89526ecd88bfc382) — **tanvishdesai** — add reference test files and router utility
     - 📁 **5 files:** `client/src/lib/router.js` `+30 −0`, `server/lib/bkt.test.js` `+79 −0`, `server/routes/__tests__/apiContract.test.js` `+59 −0`, `server/routes/__tests__/trig.test.js` `+95 −0`, `server/routes/trig.js` `+99 −0`
     - 📊 **`+362 −0`** · 5 files
-- 📌 [`98e5ef3`](https://github.com/vicharanashala/tenali/commit/98e5ef3fac5eea2ec14614fc37aeb4d104457ffa) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
 
-#### 📅 2026-08-17  <sub>(4 commits)</sub>
+#### 📅 2026-08-17  <sub>(2 commits)</sub>
 
-- 📌 [`4365828`](https://github.com/vicharanashala/tenali/commit/43658283c2571e7662bd0a996cdefb2b940eb336) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+46 −8`, `CONTRIBUTORS.md` `+65 −20`, `README.md` `+16 −14`
-    - 📊 **`+127 −42`** · 3 files
 - 📌 [`486fcff`](https://github.com/vicharanashala/tenali/commit/486fcff69554d99a324b17f27bba799eb851f986) — **jgupta05072003-code** — 🔀 PR [#97](https://github.com/vicharanashala/tenali/pull/97) from `remy-baastin` — feat/ct-and-cr
 - 📌 [`99c062e`](https://github.com/vicharanashala/tenali/commit/99c062e88882837520c980c620b1af56fcb48ddf) — **jgupta05072003-code** — 🔀 PR [#74](https://github.com/vicharanashala/tenali/pull/74) from `bangerashreejal-cs` — feature/reading-traps-levels
-- 📌 [`3ed78c2`](https://github.com/vicharanashala/tenali/commit/3ed78c2111f2683f5b7a57df68046fcc13da1784) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
 
-#### 📅 2026-08-16  <sub>(2 commits)</sub>
+#### 📅 2026-08-14  <sub>(1 commit)</sub>
 
-- 📌 [`c513b82`](https://github.com/vicharanashala/tenali/commit/c513b82ad2c763f9cea90cfa59f797ed7146e4a4) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+4 −4`
-    - 📊 **`+15 −9`** · 3 files
-- 📌 [`5fb4bfc`](https://github.com/vicharanashala/tenali/commit/5fb4bfcf927f6ee547c566aad332384c380ebb83) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+26 −26`, `README.md` `+5 −5`
-    - 📊 **`+36 −33`** · 3 files
-
-#### 📅 2026-08-15  <sub>(2 commits)</sub>
-
-- 📌 [`752511d`](https://github.com/vicharanashala/tenali/commit/752511d401b670d0ef3e2e58178b613876799cf8) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+26 −26`, `README.md` `+6 −6`
-    - 📊 **`+39 −33`** · 3 files
-- 📌 [`f79bc6d`](https://github.com/vicharanashala/tenali/commit/f79bc6dc48afb984133a389b3f2a5fdd89ce4e4c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
-
-#### 📅 2026-08-14  <sub>(3 commits)</sub>
-
-- 📌 [`17c6c95`](https://github.com/vicharanashala/tenali/commit/17c6c953dd693cb04c6be9a7214c83b0d59f6cf7) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+26 −26`, `README.md` `+4 −4`
-    - 📊 **`+37 −31`** · 3 files
 - 💄 [`7841f75`](https://github.com/vicharanashala/tenali/commit/7841f75e77e16be803f3c7b95227c83ac8963c31) — **disha01bansal** — refine treasure hunt interface
     - 📁 **2 files:** `client/src/treasurehunt/TreasureHuntApp.jsx` `+121 −12`, `client/src/treasurehunt/treasurehunt.css` `+102 −14`
     - 📊 **`+223 −26`** · 2 files
-- 📌 [`bc0ec7a`](https://github.com/vicharanashala/tenali/commit/bc0ec7ab7ab6c2ef8d99f66a9959283537e48d44) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
 
-#### 📅 2026-08-13  <sub>(7 commits)</sub>
+#### 📅 2026-08-13  <sub>(5 commits)</sub>
 
-- 📌 [`21d0bbb`](https://github.com/vicharanashala/tenali/commit/21d0bbb2c3a63ea6d2c679fb86600de1544cae43) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+18 −1`, `CONTRIBUTORS.md` `+6 −6`, `README.md` `+6 −6`
-    - 📊 **`+30 −13`** · 3 files
 - 📌 [`6a5cf3e`](https://github.com/vicharanashala/tenali/commit/6a5cf3e6d948e5a3387d48f9ee2193114d02b36c) — **jgupta05072003-code** — 🔀 PR [#158](https://github.com/vicharanashala/tenali/pull/158) from `vicharanashala` — add-contributor-onboarding-rules
 - 📌 [`115a540`](https://github.com/vicharanashala/tenali/commit/115a5405ab52c8eae0ebedf056501b848b085f24) — **Jinal Gupta** — Clarify onboarding PRs must target the Ideas/ folder
     - 📁 **1 file:** `README.md` `+2 −0`
@@ -130,81 +71,21 @@
 - 📌 [`148f423`](https://github.com/vicharanashala/tenali/commit/148f423ee006ce9b461913af265face5ceb535f6) — **Jinal Gupta** — Add Ideas folder
     - 📁 **1 file:** `Ideas/README.md` `+3 −0`
     - 📊 **`+3 −0`** · 1 file
-- 📌 [`fee89cc`](https://github.com/vicharanashala/tenali/commit/fee89ccae1c3eb12e730dca253ce713a0030633e) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+5 −5`
-    - 📊 **`+15 −12`** · 3 files
 
-#### 📅 2026-08-12  <sub>(4 commits)</sub>
+#### 📅 2026-08-12  <sub>(2 commits)</sub>
 
 - 🔀 [`d98dd73`](https://github.com/vicharanashala/tenali/commit/d98dd737f980ba6c55154562e30ef2a6361f45fa) — **disha01bansal** — sync feature branch with upstream main
 - 📌 [`176ec5b`](https://github.com/vicharanashala/tenali/commit/176ec5b2718cdb393d459576fab309c4e2ac4d12) — **disha01bansal** — Merge remote-tracking branch 'upstream/main' into feature/treasure-hunt
-- 📌 [`6226166`](https://github.com/vicharanashala/tenali/commit/62261664691c72ee89598d8c48417bb4c9ba4c61) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
-    - 📊 **`+14 −8`** · 3 files
-- 📌 [`8c57d5c`](https://github.com/vicharanashala/tenali/commit/8c57d5c21d73b6782ecad6b62d2b14e6c5d42bfd) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+5 −5`
-    - 📊 **`+15 −12`** · 3 files
 
-#### 📅 2026-08-11  <sub>(2 commits)</sub>
-
-- 📌 [`31724a3`](https://github.com/vicharanashala/tenali/commit/31724a3fb2ed3181934d0eb38d6db17f77392072) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+23 −23`, `README.md` `+6 −6`
-    - 📊 **`+36 −30`** · 3 files
-- 📌 [`4dcb21a`](https://github.com/vicharanashala/tenali/commit/4dcb21affa252df1dbb7ae3beea5cad820362023) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
-
-#### 📅 2026-08-10  <sub>(2 commits)</sub>
-
-- 📌 [`8ede49c`](https://github.com/vicharanashala/tenali/commit/8ede49c76721dd3c6dc6889cfa49c04952750a0c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+4 −4`
-    - 📊 **`+15 −9`** · 3 files
-- 📌 [`303a208`](https://github.com/vicharanashala/tenali/commit/303a20800bda67f0674f6482a07be93561f56d71) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
-
-#### 📅 2026-08-09  <sub>(2 commits)</sub>
-
-- 📌 [`b55e2b5`](https://github.com/vicharanashala/tenali/commit/b55e2b5ecb941c7d529657eb4cc006688cfbe487) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+5 −5`
-    - 📊 **`+17 −11`** · 3 files
-- 📌 [`840980b`](https://github.com/vicharanashala/tenali/commit/840980b87726df4a6ed41dfb9ee19fcbe1d61246) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+14 −14`, `README.md` `+6 −6`
-    - 📊 **`+25 −22`** · 3 files
-
-#### 📅 2026-08-08  <sub>(3 commits)</sub>
+#### 📅 2026-08-08  <sub>(1 commit)</sub>
 
 - 📌 [`758ddf2`](https://github.com/vicharanashala/tenali/commit/758ddf2f982db6b3e5cd92ebb1164793cce21c1c) — **Harsh** — Merge upstream/main into feature/treasure-hunt — resolved conflicts in index.js, auth.js, App.jsx, vite.config.js, package-lock.json
-- 📌 [`73356f7`](https://github.com/vicharanashala/tenali/commit/73356f7273cac5d71af570341c5e2a340726e269) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+24 −24`, `README.md` `+4 −4`
-    - 📊 **`+35 −29`** · 3 files
-- 📌 [`af7e965`](https://github.com/vicharanashala/tenali/commit/af7e965121848cd0ae58f6ad55958c46eac5f748) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+27 −27`, `README.md` `+5 −5`
-    - 📊 **`+37 −34`** · 3 files
 
-#### 📅 2026-08-07  <sub>(2 commits)</sub>
+#### 📅 2026-08-06  <sub>(24 commits)</sub>
 
-- 📌 [`9aac167`](https://github.com/vicharanashala/tenali/commit/9aac167ec047cd50dcf47e267d19c689df9b938c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
-    - 📊 **`+14 −8`** · 3 files
-- 📌 [`9464497`](https://github.com/vicharanashala/tenali/commit/94644972ec5ea7d5f15c89a590156241a6b5e0ee) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
-    - 📊 **`+14 −11`** · 3 files
-
-#### 📅 2026-08-06  <sub>(28 commits)</sub>
-
-- 📌 [`1a1acea`](https://github.com/vicharanashala/tenali/commit/1a1acea68082a24f5b5cff10795a771b118e2e35) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
-    - 📊 **`+12 −9`** · 3 files
-- 📌 [`eceb62e`](https://github.com/vicharanashala/tenali/commit/eceb62e3e490280c6b756acdeed44cd72d3a2829) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **3 files:** `CHANGELOG.md` `+178 −11`, `CONTRIBUTORS.md` `+107 −61`, `README.md` `+6 −6`
-    - 📊 **`+291 −78`** · 3 files
 - 🐛 [`34f618d`](https://github.com/vicharanashala/tenali/commit/34f618d9435e7d3b7a3f55b864d2ff149078d3bf) — **muditagrawal2007** — bot only commits README.md — collapse multi-line file_pattern
     - 📁 **1 file:** `.github/workflows/update-readme.yml` `+2 −5`
     - 📊 **`+2 −5`** · 1 file
-- 📌 [`a7f605f`](https://github.com/vicharanashala/tenali/commit/a7f605f4376e10d4e3d5fa7c937ed268a2ff3626) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+17 −16`
-    - 📊 **`+17 −16`** · 1 file
 - 📌 [`264cbc5`](https://github.com/vicharanashala/tenali/commit/264cbc53c1adf6abd7b33564f61ba5b1dd3dc5d7) — **muditagrawal2007** — 🔀 PR [#150](https://github.com/vicharanashala/tenali/pull/150) from `muditagrawal2007` — fix/server-error-message-mapping
 - 🐛 [`edff518`](https://github.com/vicharanashala/tenali/commit/edff518ffdb9815156844ecc886fc0465ae48de5) — **muditagrawal2007** — map body-parser errors to useful 400 messages, not 'Internal server error'
     - 📁 **1 file:** `server/index.js` `+16 −1`
@@ -250,63 +131,36 @@
     - 📁 **1 file:** `client/src/App.jsx` `+2 −2`
     - 📊 **`+2 −2`** · 1 file
 - 📌 [`e7d3f64`](https://github.com/vicharanashala/tenali/commit/e7d3f649206b95685750170975952c3709825ca3) — **jgupta05072003-code** — 🔀 PR [#21](https://github.com/vicharanashala/tenali/pull/21) from `harshyy07` — feat-hints
-- 📌 [`56ab171`](https://github.com/vicharanashala/tenali/commit/56ab1714a847c2e9a4dd425bbf6adac7efa2e5c5) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+5 −5`
-    - 📊 **`+5 −5`** · 1 file
 
-#### 📅 2026-08-05  <sub>(6 commits)</sub>
+#### 📅 2026-08-05  <sub>(4 commits)</sub>
 
 - 📌 [`f802616`](https://github.com/vicharanashala/tenali/commit/f8026169b8acbd7d3a2bbad12671ccd59b666b1d) — **harshyy07** — Merge branch 'main' into feat-hints
 - 📌 [`fcf9274`](https://github.com/vicharanashala/tenali/commit/fcf92744bfab006cd2463fb1b54b9fc446421891) — **Shreejal Bangera** — Modified interaction in level 5,6,7 and improved overall quiz flow
     - 📁 **1 file:** `client/src/vachana/exercises/ReadingTraps.jsx` `+270 −145`
     - 📊 **`+270 −145`** · 1 file
 - 📌 [`9e736b9`](https://github.com/vicharanashala/tenali/commit/9e736b9c6c01a24a6e50031b632a25adbe0af22f) — **harshyy07** — Merge branch 'main' into feat-hints
-- 📌 [`72d481b`](https://github.com/vicharanashala/tenali/commit/72d481bbf630939bb0dcd94ea923e910bf072bc2) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+4 −4`
-    - 📊 **`+4 −4`** · 1 file
 - ✨ [`8d6c936`](https://github.com/vicharanashala/tenali/commit/8d6c936a68430485049e97133320237ddb06a900) — **disha01bansal** — add treasure hunt gameplay and session support
     - 📁 **10 files:** `client/src/anonId.js` `+13 −0`, `client/src/treasurehunt/EquationGate.jsx` `+87 −13`, `client/src/treasurehunt/LifeHearts.jsx` `+30 −0`, `client/src/treasurehunt/TreasureHuntApp.jsx` `+419 −58`, `client/src/treasurehunt/equationgate.css` `+164 −13`, `client/src/treasurehunt/lifehearts.css` `+57 −0`, `client/src/treasurehunt/treasurehunt.css` `+340 −11`, `server/auth.js` `+1 −1` *(+2 more in [`8d6c936`](https://github.com/vicharanashala/tenali/commit/8d6c936a68430485049e97133320237ddb06a900))*
     - 📊 **`+1547 −136`** · 10 files
-- 📌 [`3ac09e1`](https://github.com/vicharanashala/tenali/commit/3ac09e13235a8babc1d004c6fce911f5e1b46d47) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+4 −4`
-    - 📊 **`+4 −4`** · 1 file
 
-#### 📅 2026-08-04  <sub>(5 commits)</sub>
+#### 📅 2026-08-04  <sub>(3 commits)</sub>
 
 - 📌 [`f2f81c7`](https://github.com/vicharanashala/tenali/commit/f2f81c79ca050b46dd4858738a0dac24527139cb) — **Shreejal Bangera** — Improve level 3 and level 4 interactions and visuals
     - 📁 **1 file:** `client/src/vachana/exercises/ReadingTraps.jsx` `+363 −133`
     - 📊 **`+363 −133`** · 1 file
-- 📌 [`906fd50`](https://github.com/vicharanashala/tenali/commit/906fd5072a5fd0bc5f57e97ddbe29d1ffb5f4320) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+3 −3`
-    - 📊 **`+3 −3`** · 1 file
-- 📌 [`2c7d978`](https://github.com/vicharanashala/tenali/commit/2c7d9787e23f45e4f0316173b836fb945296e53d) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+5 −5`
-    - 📊 **`+5 −5`** · 1 file
 - 📌 [`3120192`](https://github.com/vicharanashala/tenali/commit/3120192df6e0c919d86d0167587bf2abf7b3956b) — **harshyy07** — Merge branch 'main' into feat-hints
 - 📌 [`d97bc37`](https://github.com/vicharanashala/tenali/commit/d97bc378271108e2ffcde2444739d3f6c7042b47) — **Shreejal Bangera** — Improve Level 1 and 2 visual math interactions and question rendering
     - 📁 **1 file:** `client/src/vachana/exercises/ReadingTraps.jsx` `+822 −143`
     - 📊 **`+822 −143`** · 1 file
 
-#### 📅 2026-08-03  <sub>(44 commits)</sub>
+#### 📅 2026-08-03  <sub>(34 commits)</sub>
 
-- 📌 [`e303ff9`](https://github.com/vicharanashala/tenali/commit/e303ff94c13c7d1ea162e23e580b2c057c5f5de6) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+4 −4`
-    - 📊 **`+4 −4`** · 1 file
-- 📌 [`3cc47db`](https://github.com/vicharanashala/tenali/commit/3cc47db4984166d954359a95df010973a30ff75b) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+18 −17`
-    - 📊 **`+18 −17`** · 1 file
 - 📌 [`5ecb94c`](https://github.com/vicharanashala/tenali/commit/5ecb94c1ef5c002f317f319fba9e07655f43a837) — **jgupta05072003-code** — 🔀 PR [#36](https://github.com/vicharanashala/tenali/pull/36) from `SaniyaJos` — feat/contrast-challenge-enhancement
 - 📌 [`270bb2b`](https://github.com/vicharanashala/tenali/commit/270bb2b66f9d793af35a85364d20dd8a5037785e) — **harshyy07** — Merge branch 'main' into feat-hints
 - 📌 [`67da084`](https://github.com/vicharanashala/tenali/commit/67da084abc99e4f062fa86c61982e1573fb8cb99) — **harshyy07** — Merge upstream main, resolving README.md stats conflict
-- 📌 [`a7063c1`](https://github.com/vicharanashala/tenali/commit/a7063c1cccf6abcabb659f750888f1eacfc624ff) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+10 −10`
-    - 📊 **`+10 −10`** · 1 file
 - ✨ [`cbb2bc0`](https://github.com/vicharanashala/tenali/commit/cbb2bc03ef0dabaa8b21cf005728e99ed3712409) — **Mudit Agrawal** — deep per-commit details — files + stats + body
     - 📁 **4 files:** `CHANGELOG.md` `+1397 −278`, `CONTRIBUTORS.md` `+30 −30`, `README.md` `+10 −10`, `scripts/update-readme-contributors.js` `+137 −67`
     - 📊 **`+1574 −385`** · 4 files
-- 📌 [`ed68a24`](https://github.com/vicharanashala/tenali/commit/ed68a24e947fdd45c7b8f187e795356686e3687c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+10 −10`
-    - 📊 **`+10 −10`** · 1 file
 - ✨ [`8660e3f`](https://github.com/vicharanashala/tenali/commit/8660e3fa7ee5ba614d50519c8d369774bb0db9cc) — **Mudit Agrawal** — add per-day 'What changed today' summary block
     - 📁 **4 files:** `CHANGELOG.md` `+227 −6`, `CONTRIBUTORS.md` `+38 −39`, `README.md` `+10 −10`, `scripts/update-readme-contributors.js` `+73 −2`
     - 📊 **`+348 −57`** · 4 files
@@ -314,36 +168,18 @@
     - 📁 **1 file:** `README.md` `+2 −2`
     - 📊 **`+2 −2`** · 1 file
 - 🔀 [`b18d55b`](https://github.com/vicharanashala/tenali/commit/b18d55bf9b79bfda75dec75f76b4279f2b798de8) — **harshyy07** — resolve conflicts with main, keeping progressive hints and translation features
-- 📌 [`65a31d0`](https://github.com/vicharanashala/tenali/commit/65a31d0d4a461cda56b32abc1e08f87774c5cb5f) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+4 −4`
-    - 📊 **`+4 −4`** · 1 file
 - ♻️ [`32735bf`](https://github.com/vicharanashala/tenali/commit/32735bf0ff1a4c167a05032c200bb859c10271e5) — **Mudit Agrawal** — bot now fires only on cron + manual dispatch
     - 📁 **3 files:** `.github/workflows/update-readme.yml` `+7 −13`, `CONTRIBUTORS.md` `+13 −1`, `README.md` `+5 −3`
     - 📊 **`+25 −17`** · 3 files
-- 📌 [`8881f57`](https://github.com/vicharanashala/tenali/commit/8881f5792687ac4e99474e0b191189282cb66918) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+6 −6`
-    - 📊 **`+6 −6`** · 1 file
 - ✨ [`2f21f41`](https://github.com/vicharanashala/tenali/commit/2f21f413766da1609e3ac573fcfb16547576b242) — **Mudit Agrawal** — make commit SHAs and PR numbers clickable
     - 📁 **4 files:** `CHANGELOG.md` `+790 −788`, `CONTRIBUTORS.md` `+30 −30`, `README.md` `+8 −8`, `scripts/update-readme-contributors.js` `+12 −3`
     - 📊 **`+840 −829`** · 4 files
-- 📌 [`8bdf424`](https://github.com/vicharanashala/tenali/commit/8bdf42490f0f61461016c643bf4e31317de9eb0c) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+3 −3`
-    - 📊 **`+3 −3`** · 1 file
 - ✨ [`7ece7dc`](https://github.com/vicharanashala/tenali/commit/7ece7dc45f4ba1d08e25aa452a2605cfa71c1468) — **Mudit Agrawal** — auto-generated point-wise commit log (bot-managed)
     - 📁 **5 files:** `.github/workflows/update-readme.yml` `+7 −3`, `CHANGELOG.md` `+930 −910`, `CONTRIBUTORS.md` `+32 −9`, `README.md` `+4 −4`, `scripts/update-readme-contributors.js` `+105 −1`
     - 📊 **`+1078 −927`** · 5 files
-- 📌 [`6237be3`](https://github.com/vicharanashala/tenali/commit/6237be3285ea52ff357aad942a714d1f4821d3c3) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+6 −5`
-    - 📊 **`+6 −5`** · 1 file
 - 📝 [`5ef467c`](https://github.com/vicharanashala/tenali/commit/5ef467c9dd475facd790c74f4d859c523de1e401) — **Mudit Agrawal** — reframe tagline around math strengths (drop GK/vocab/Logic)
     - 📁 **1 file:** `README.md` `+7 −7`
     - 📊 **`+7 −7`** · 1 file
-- 📌 [`4a329bc`](https://github.com/vicharanashala/tenali/commit/4a329bcd7d22ea05162435e90e6e382bbe9779c5) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+8 −7`
-    - 📊 **`+8 −7`** · 1 file
-- 📌 [`d1b49dc`](https://github.com/vicharanashala/tenali/commit/d1b49dcfdc54795658a5cab38ff9102bb3ae7501) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
-    - 📁 **1 file:** `README.md` `+5 −5`
-    - 📊 **`+5 −5`** · 1 file
 - 🐛 [`6f4a54a`](https://github.com/vicharanashala/tenali/commit/6f4a54a8912478b95630891694a7bfc4026b67ec) — **Mudit Agrawal** — use pull_request_target so bot can push on merged PRs
     - 📁 **1 file:** `.github/workflows/update-readme.yml` `+13 −7`
     - 📊 **`+13 −7`** · 1 file

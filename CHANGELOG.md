@@ -19,24 +19,41 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 948 commits · 61 active days · 29 unique authors
+### 📊 Total: 955 commits · 61 active days · 29 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
 
-#### 📅 2026-08-21  <sub>(1 commit)</sub>
+#### 📅 2026-08-21  <sub>(6 commits)</sub>
 
+- 🔀 [`d2e49365`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/d2e49365a06315291e9eddeb070e8251af33f716) — **Athira** — sync latest upstream main
+- 🔀 [`79a9f637`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/79a9f63736a9760e01dd4f0e95f93d5863eab9ff) — **Athira** — sync latest upstream main
+- 📌 [`6832c57a`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/6832c57abd2e1a6350b8b300c6694ca423abcfc0) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
+    - 📊 **`+14 −8`** · 3 files
+- 📌 [`a463837d`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/a463837d349dd88a33c7b6993744cb15cdcf9005) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
+    - 📊 **`+14 −8`** · 3 files
 - 📌 [`0d110a73`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/0d110a7347440c094f39c722e799aeac6d493a32) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
     - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
     - 📊 **`+14 −11`** · 3 files
+- 📌 [`1ba0bccb`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/1ba0bccbf633d9e26249f08a70321a08c35e5183) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
+    - 📊 **`+14 −11`** · 3 files
 
-#### 📅 2026-08-20  <sub>(2 commits)</sub>
+#### 📅 2026-08-20  <sub>(4 commits)</sub>
 
 - 📌 [`9e4b38f5`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/9e4b38f51f004c28c5b58f8c917a82fafb5d94f2) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
+    - 📊 **`+14 −8`** · 3 files
+- 📌 [`a914fefa`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/a914fefa09c9716b78c37ba122bfbda3141224ff) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
     - 📁 **3 files:** `CHANGELOG.md` `+7 −1`, `CONTRIBUTORS.md` `+4 −4`, `README.md` `+3 −3`
     - 📊 **`+14 −8`** · 3 files
 - 📌 [`d11cc0bb`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/d11cc0bb66dcda961b837618a337debd909cad4f) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
     - 📁 **3 files:** `CHANGELOG.md` `+53 −158`, `CONTRIBUTORS.md` `+50 −104`, `README.md` `+12 −12`
     - 📊 **`+115 −274`** · 3 files
+- 📌 [`630d38c3`](https://github.com/Athiraa1804/Tenali-IITROPAR/commit/630d38c3b02678215b9fb41418bc68f797060ad1) — **github-actions[bot]** — 🤖 docs(contributors): refresh contributor stats
+    - 📁 **3 files:** `CHANGELOG.md` `+5 −2`, `CONTRIBUTORS.md` `+5 −5`, `README.md` `+4 −4`
+    - 📊 **`+14 −11`** · 3 files
 
 #### 📅 2026-08-19  <sub>(8 commits)</sub>
 

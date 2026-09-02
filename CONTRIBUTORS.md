@@ -50,7 +50,7 @@
 <!-- live-snapshot:start -->
 | 🏆 Commits | 🔀 Merged PRs | 👥 Contributors | 🧩 Puzzles | 📚 Vocab | 🌍 GK |
 |----------:|------------:|--------------:|---------:|-------:|----:|
-| **882** | **80** | **25** | **69** | **7,662** | **991** |
+| **884** | **81** | **26** | **69** | **7,662** | **991** |
 <!-- live-snapshot:end -->
 
 ## 🥇 Leaderboard
@@ -62,7 +62,7 @@ _Live data — last regenerated 2026-09-02 · auto-refreshed by [`github-actions
 |--:|:-------------|:-------------|----------:|-----:|:--------|
 | 🥇 | **S. R. S. Iyengar**<br/><sub>↳ also commits as <b>sudarshan</b></sub> | [sudarshansudarshan](https://github.com/sudarshansudarshan) | **281** | 0  | Lead Architect · Curriculum Author · 69 puzzle families |
 | 🥈 | **Mudit Agrawal** | [muditagrawal2007](https://github.com/muditagrawal2007) | **193** | 25  | Maintainer · Battle Arena · Linear Algebra · Sudoku · Playground |
-| 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **93** | 0  | Upstream Repo Maintainer & PR Reviewer |
+| 🥉 | **Jinal Gupta** | [jgupta05072003-code](https://github.com/jgupta05072003-code) | **94** | 0  | Upstream Repo Maintainer & PR Reviewer |
 | 4. | **Lakshmi Varshini Nandula ** | [varshini-nandula](https://github.com/varshini-nandula) | **43** | 1  | Profile Showcase & Offline Storage |
 | 5. | **Sameer Mishra** | [24F3005086](https://github.com/24F3005086) | **36** | 4  | i18n · Accessibility · Concept Labs |
 | 6. | **Vaibhav Satish**<br/><sub>↳ also commits as <b>Vaibhav</b></sub> | [Vaibhav-sa30](https://github.com/Vaibhav-sa30) | **35** | 2  | Vachana Literacy Lab & Vocabulary |
@@ -84,7 +84,8 @@ _Live data — last regenerated 2026-09-02 · auto-refreshed by [`github-actions
 | 22. | **Remy baastin rayappan** | [remy-baastin](https://github.com/remy-baastin) | **2** | 1  | — |
 | 23. | **harsh**<br/><sub>↳ also commits as <b>Harsh</b></sub> | [harsh](https://github.com/harsh) | **2** | 0  | — |
 | 24. | **Anshul Kanodia** | [AnshulKanodia](https://github.com/AnshulKanodia) | **2** | 0  | Geometry Game Restoration |
-| 25. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
+| 25. | **garv-arora**<br/><sub>↳ also commits as <b>Garv Arora</b></sub> | [garv-arora](https://github.com/garv-arora) | **1** | 0  | — |
+| 26. | **Vasuki** | [vasuki-tenali](https://github.com/vasuki-tenali) | **1** | 0  | Infra contributor |
 <!-- live-rank:end -->
 
 ---
@@ -166,7 +167,7 @@ _Live data — last regenerated 2026-09-02 · auto-refreshed by [`github-actions
         <br/><b>Jinal Gupta</b>
         <br/><sub><i>(git: J. Gupta)</i></sub>
         <br/><a href="https://github.com/jgupta05072003-code">@jgupta05072003-code</a>
-        <br/><sub>🏆 93 commits · 0 PRs merged</sub>
+        <br/><sub>🏆 94 commits · 0 PRs merged</sub>
       </td>
       <td valign="top" width="*">
         <h4>🥉 Upstream Repo Maintainer & PR Reviewer</h4>
@@ -683,13 +684,35 @@ _Live data — last regenerated 2026-09-02 · auto-refreshed by [`github-actions
   <table>
     <tr>
       <td align="center" width="220">
+        <a href="https://github.com/garv-arora"><img src="https://github.com/garv-arora.png?size=120&s=120" width="120" style="border-radius:50%; border:3px solid #888888;" alt="garv-arora"/></a>
+        <br/><b>garv-arora</b>
+        <br/><a href="https://github.com/garv-arora">@garv-arora</a>
+        <br/><sub>🏆 1 commits · 0 PRs merged</sub>
+        <br/><sub>🔗 also commits as: <b>Garv Arora</b></sub>
+      </td>
+      <td valign="top" width="*">
+        <h4>25. New Contributor</h4>
+        <ul>
+          <li>🆕 <b>New contributor</b> — auto-added by the readme-bot</li>
+          <li>📊 <b>1 commits</b> across this repo's history</li>
+          <li>🔗 <i>Add a <code>FALLBACK_PROFILES</code> entry in <code>scripts/update-readme-contributors.js</code> to enrich this card with real name, avatar, location, and curated feature list</i></li>
+        </ul>
+      </td>
+    </tr>
+  </table>
+</p>
+
+<p align="center">
+  <table>
+    <tr>
+      <td align="center" width="220">
         <a href="https://github.com/vasuki-tenali"><img src="https://github.com/identicons/vasuki-tenali.png&s=120" width="120" style="border-radius:50%; border:3px solid #95A5A6;" alt="Vasuki"/></a>
         <br/><b>Vasuki</b>
         <br/><a href="https://github.com/vasuki-tenali">@vasuki-tenali</a>
         <br/><sub>🏆 1 commits · 0 PRs merged</sub>
       </td>
       <td valign="top" width="*">
-        <h4>25. Infra contributor</h4>
+        <h4>26. Infra contributor</h4>
         <ul>
           <li>🔧 <b>Single administrative / infrastructure commit</b> to the project</li>
           <li>📧 <i>Email was private — no public GitHub profile linked</i></li>

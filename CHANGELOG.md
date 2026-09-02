@@ -19,9 +19,19 @@
 ---
 
 <!-- live-changelog:start -->
-### 📊 Total: 882 commits · 53 active days · 28 unique authors
+### 📊 Total: 884 commits · 55 active days · 29 unique authors
 
 > **📖 How to read this:** Each entry shows a clickable SHA, the author, and a one-line subject. Sub-bullets show the **exact files touched** with per-file `+additions −deletions`, the **total line stats**, and (when present) the **commit body** explaining what & why.
+
+#### 📅 2026-09-02  <sub>(1 commit)</sub>
+
+- 📌 [`57ec2ace`](https://github.com/vicharanashala/tenali/commit/57ec2ace6d1bcd0c23f86b88d60bdd0e3969c0f2) — **jgupta05072003-code** — 🔀 PR [#165](https://github.com/vicharanashala/tenali/pull/165) from `Garvarora15` — main
+
+#### 📅 2026-08-23  <sub>(1 commit)</sub>
+
+- ✨ [`74591af6`](https://github.com/vicharanashala/tenali/commit/74591af67a3b773cc863b7b0d3aee42472b9f98b) — **Garv Arora** — enhance mastery header, inversion detector, and syntactic rewriter
+    - 📁 **3 files:** `client/src/vachana/MasteryLevelHeader.jsx` `+85 −34`, `client/src/vachana/exercises/InversionDetector.jsx` `+8 −1`, `client/src/vachana/exercises/SyntacticRewriter.jsx` `+2878 −21`
+    - 📊 **`+2971 −56`** · 3 files
 
 #### 📅 2026-08-22  <sub>(2 commits)</sub>
 

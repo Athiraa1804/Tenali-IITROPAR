@@ -751,17 +751,16 @@ button:disabled {
 
 /* Anchored absolutely to the top-right corner of the relative .card container */
 .word-explorer {
-  position: absolute;
-  top: 48px;
-  right: 40px;
+  position: relative;
   z-index: 100;
   text-align: left;
+  display: flex;
+  justify-content: center;
+  margin: 0 0 24px;
 }
-
 @media (max-width: 600px) {
   .word-explorer {
-    top: 32px;
-    right: 24px;
+    margin-bottom: 20px;
   }
 }
 

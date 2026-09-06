@@ -44901,7 +44901,14 @@ function App() {
   };
 
   // ========== LEARN / TEST GATEWAY ==========
-  const [learningPhase, setLearningPhase] = useState(null)
+  const [learningPhase, setLearningPhase] = useState(() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('mode') === 'angles' ? 'select' : null;
+  } catch {
+    return null;
+  }
+})
   const [learnData, setLearnData] = useState(null)
   const [revealedBlocks, setRevealedBlocks] = useState(1)
   const [blockStartTime, setBlockStartTime] = useState(Date.now())

@@ -115,13 +115,10 @@ import PlaygroundApp from './PlaygroundApp'
 import LocalCompilerApp from './LocalCompilerApp'
 import BattleApp from './BattleApp'
 import SudokuApp from './SudokuApp'
-<<<<<<< HEAD
 import { getLearnContent } from './data/learnContent.js'
-=======
 import AnglesLearnPage from './components/learning/AnglesLearnPage'
 import GSTLearnPage from './components/learning/GSTLearnPage'
 import FractionsLearnPage from './components/learning/FractionsLearnPage'
->>>>>>> f063703b (feat: add interactive GST and Fractions learning)
 
 // API base URL from environment variables (Vite)
 export const API = import.meta.env.VITE_API_BASE_URL || '';

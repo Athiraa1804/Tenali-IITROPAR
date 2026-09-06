@@ -45147,9 +45147,9 @@ function App() {
                           {block.title}
                         </h3>
                         
-                        {mode === 'angles' && block.visual && (
-                          <LearningVisual visual={block.visual} />
-                        )}
+                        {block.visual && (
+  <LearningVisual visual={block.visual} />
+)}
 
                         <div 
                           style={mode === 'angles' ? { whiteSpace: 'pre-wrap', opacity: 0.9, fontSize: '1rem', letterSpacing: '0', lineHeight: '1.75' } : { whiteSpace: 'pre-wrap', opacity: 0.95, fontSize: '1.1rem', letterSpacing: '0.2px' }} 

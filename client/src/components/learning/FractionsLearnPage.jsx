@@ -47,6 +47,7 @@ const FractionsLearnPage = ({ onStartTest, onBack }) => {
     }
   };
 
+  // Safe: HTML rendered via dangerouslySetInnerHTML originates from trusted local learnContent data, not user input.
   const renderContent = (contentStr) => {
     return {
       __html: contentStr

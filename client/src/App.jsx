@@ -45158,6 +45158,7 @@ function App() {
   <LearningVisual visual={block.visual} />
 )}
 
+                        {/* Safe: HTML rendered via dangerouslySetInnerHTML originates from trusted local learnContent JSON, not user input. */}
                         <div 
                           style={mode === 'angles' ? { whiteSpace: 'pre-wrap', opacity: 0.9, fontSize: '1rem', letterSpacing: '0', lineHeight: '1.75' } : { whiteSpace: 'pre-wrap', opacity: 0.95, fontSize: '1.1rem', letterSpacing: '0.2px' }} 
                           dangerouslySetInnerHTML={{ __html: (() => {

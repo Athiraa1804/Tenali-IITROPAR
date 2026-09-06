@@ -25,10 +25,10 @@ router.get('/question', (req, res) => {
   const id = `vm-${Date.now()}-${Math.random()}`;
 
   try {
-    /* â”€â”€ MULTIPLICATION MODES â”€â”€ */
+    /* ── MULTIPLICATION MODES ── */
 
     if (type === 'multiply' && mode === 'array') {
-      // "Build rows Ã— cols by tapping empty cells"
+      // "Build rows × cols by tapping empty cells"
       const rows = vmRandInt(2, diff === 'easy' ? 4 : diff === 'medium' ? 6 : 8);
       const maxCols = diff === 'easy' ? 4 : Math.max(2, Math.floor(30 / rows));
       const cols = vmRandInt(2, Math.min(diff === 'easy' ? 4 : diff === 'medium' ? 6 : 8, maxCols));
@@ -58,25 +58,25 @@ router.get('/question', (req, res) => {
     }
 
     if (type === 'multiply' && mode === 'product') {
-      // Balance scale: left = label "A Ã— B", right = drag weights to match
+      // Balance scale: left = label "A × B", right = drag weights to match
       const a = vmPick(tables);
       const b = vmRandInt(2, diff === 'easy' ? 5 : diff === 'medium' ? 9 : 12);
       return res.json({ id, type, mode, emoji, a, b,
-        prompt: `${a} Ã— ${b} = ?  Drag weight blocks to balance the right pan!`,
+        prompt: `${a} × ${b} = ?  Drag weight blocks to balance the right pan!`,
         answer: a * b });
     }
 
     if (type === 'multiply' && mode === 'mystery') {
-      // Balance scale: "? Ã— B = total" â€” drag mystery number weight
+      // Balance scale: "? × B = total" — drag mystery number weight
       const b     = vmPick(tables.filter(t => t >= 2 && t <= (diff === 'easy' ? 5 : 10)));
       const a     = vmRandInt(2, diff === 'easy' ? 5 : diff === 'medium' ? 9 : 12);
       const total = a * b;
       return res.json({ id, type, mode, emoji, a, b, total,
-        prompt: `? Ã— ${b} = ${total}. What is the mystery factor?`,
+        prompt: `? × ${b} = ${total}. What is the mystery factor?`,
         answer: a });
     }
 
-    /* â”€â”€ DIVISION MODES â”€â”€ */
+    /* ── DIVISION MODES ── */
 
     if (type === 'divide' && mode === 'share') {
       // "Share total items equally among N plates"
@@ -90,7 +90,7 @@ router.get('/question', (req, res) => {
     }
 
     if (type === 'divide' && mode === 'grouping') {
-      // "Put items into groups of size B â€” how many groups?"
+      // "Put items into groups of size B — how many groups?"
       const groupSize = vmRandInt(2, diff === 'easy' ? 4 : diff === 'medium' ? 6 : 8);
       const maxGroups = diff === 'easy' ? 5 : Math.max(2, Math.floor(30 / groupSize));
       const numGroups = vmRandInt(2, Math.min(diff === 'easy' ? 5 : diff === 'medium' ? 7 : 10, maxGroups));
@@ -106,18 +106,18 @@ router.get('/question', (req, res) => {
       const quotient = vmRandInt(2, diff === 'easy' ? 5 : diff === 'medium' ? 9 : 12);
       const total    = divisor * quotient;
       return res.json({ id, type, mode, emoji, total, divisor, quotient,
-        prompt: `${total} Ã· ${divisor} = ?  Drag weight blocks to show the answer!`,
+        prompt: `${total} ÷ ${divisor} = ?  Drag weight blocks to show the answer!`,
         answer: quotient, a: total, b: divisor });
     }
 
     if (type === 'divide' && mode === 'remainder') {
-      // "A Ã· B = Q remainder R" â€” drag quotient; remainder is shown
+      // "A ÷ B = Q remainder R" — drag quotient; remainder is shown
       const divisor  = vmRandInt(2, diff === 'easy' ? 4 : diff === 'medium' ? 6 : 9);
       const quotient = vmRandInt(1, diff === 'easy' ? 4 : diff === 'medium' ? 8 : 10);
       const remainder= vmRandInt(1, divisor - 1);
       const total    = divisor * quotient + remainder;
       return res.json({ id, type, mode, emoji, total, divisor, quotient, remainder,
-        prompt: `${total} Ã· ${divisor} = ? remainder ${remainder}. What is the quotient?`,
+        prompt: `${total} ÷ ${divisor} = ? remainder ${remainder}. What is the quotient?`,
         answer: quotient, a: total, b: divisor });
     }
 
@@ -125,7 +125,7 @@ router.get('/question', (req, res) => {
     const a2 = vmPick(tables);
     const b2 = vmRandInt(1, 10);
     res.json({ id, type: 'multiply', mode: 'product', emoji, a: a2, b: b2,
-      prompt: `${a2} Ã— ${b2} = ?`, answer: a2 * b2 });
+      prompt: `${a2} × ${b2} = ?`, answer: a2 * b2 });
 
   } catch(e) {
     res.status(500).json({ error: e.message });

@@ -14,13 +14,13 @@
  * 2. Math Learning Modules:
  *    - Basic Arithmetic: Addition, subtraction, multiplication with difficulty scaling
  *    - Multiplication Tables: 1-10 multiplication drills
- *    - Quadratic Evaluation: Evaluate quadratic functions (y = axÂ² + bx + c) at given x values
+ *    - Quadratic Evaluation: Evaluate quadratic functions (y = ax² + bx + c) at given x values
  *    - Square Root Approximation: Estimate square roots by bands/difficulty levels
  *    - Polynomial Multiplication: Expand polynomial expressions (easy to hard)
  *    - Polynomial Factorization: Factor quadratic expressions into linear factors
  *    - Prime Factorization: Decompose numbers into prime factors
  *    - Quadratic Formula: Solve quadratic equations using the quadratic formula
- *    - Simultaneous Equations: Solve 2Ã—2 or 3Ã—3 linear systems
+ *    - Simultaneous Equations: Solve 2×2 or 3×3 linear systems
  *    - Function Evaluation: Evaluate linear/multilinear functions
  *    - Line Equations: Derive line equation (y = mx + c) from two points
  * 3. Vocabulary Builder: Word definitions with difficulty levels (easy/medium/hard)
@@ -40,7 +40,7 @@
  * - /simul-api/*: Simultaneous linear equations
  * - /funceval-api/*: General function evaluation
  * - /lineq-api/*: Line equation derivation
- * - /basicarith-api/*: Basic arithmetic (+, âˆ’, Ã—)
+ * - /basicarith-api/*: Basic arithmetic (+, −, ×)
  */
 
 const express = require('express');
@@ -114,7 +114,7 @@ app.use('/api/', apiLimiter);
 // Static file serving: Serve built React/Vue client
 app.use(express.static(clientDistPath));
 
-// â”€â”€â”€ Auth (MongoDB + JWT) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Auth (MongoDB + JWT) ────────────────────────────────────────────────────
 // Adds /api/auth/login and /api/auth/me. Hardcoded users are seeded into
 // MongoDB on startup. If Mongo is unreachable the rest of the server still
 // serves; only the auth endpoints will return 503.
@@ -364,7 +364,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// â”€â”€â”€ LIL INTERCEPTOR MIDDLEWARE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── LIL INTERCEPTOR MIDDLEWARE ──────────────────────────────────────────────
 const jwt = require('jsonwebtoken');
 const lilProcess = require('./lil/processAttempt');
 const { User } = require('./auth');
@@ -436,7 +436,7 @@ app.use(async (req, res, next) => {
         questionData: req.body
       };
 
-      // Send response immediately â€” don't block on DB writes
+      // Send response immediately — don't block on DB writes
       originalJson(data);
 
       // Fire-and-forget: try to save attempt in background
@@ -451,7 +451,7 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// â”€â”€â”€ LIL GET QUESTION REVISION INTERCEPTOR â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── LIL GET QUESTION REVISION INTERCEPTOR ───────────────────────────────────
 app.use(async (req, res, next) => {
   // Only intercept GET requests to question endpoints when goal is revision
   if (req.method !== 'GET' || !req.path.includes('-api/question') || req.query.goal !== 'revision') {
@@ -539,7 +539,7 @@ app.use(async (req, res, next) => {
 const { generateExplanation } = require('./explanations');
 global.generateExplanation = generateExplanation;
 
-// â”€â”€ Extracted topic routers (Phase 2) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Extracted topic routers (Phase 2) ────────────────────────────────────────
 const arithmeticRouter = require('./routes/arithmetic');
 app.use('/addition-api',  arithmeticRouter);
 app.use('/multiply-api',  arithmeticRouter);
@@ -682,7 +682,7 @@ async function loadJsonDir(dir) {
 }
 
 // Populated by initData() before the server starts listening (see bottom of
-// file) â€” declared here as `let` so the many closures throughout this file
+// file) — declared here as `let` so the many closures throughout this file
 // that reference `questions` by name see the loaded data once ready.
 let questions = [];
 
@@ -703,7 +703,7 @@ const conceptDir = path.join(__dirname, '..', 'concept', 'questions');
  *
  * @returns {Array<object>} Array of vocabulary question objects
  */
-// Vocab is by far the largest set (~7,600 files) â€” loaded via loadJsonDir()
+// Vocab is by far the largest set (~7,600 files) — loaded via loadJsonDir()
 // (see loadQuestions above) so the reads overlap instead of running one at a
 // time. Concepts is tiny (~15 files); left synchronous, not worth the churn.
 async function loadVocabAsync() {
@@ -819,7 +819,7 @@ app.post('/api/learning-journey/checkpoint/verify', auth.requireAuth, async (req
   }
 });
 
-// /darts-api â€” Visual Coordinate Geometry (Dart Board)
+// /darts-api — Visual Coordinate Geometry (Dart Board)
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const dartsRouter = require('./routes/darts');
 app.use('/darts-api', dartsRouter);
@@ -834,11 +834,11 @@ app.use('/wordcreator-api', wordCreatorRouter);
 const contrastRouter = require('./routes/contrast');
 app.use('/contrast-api', contrastRouter);
 
-// PROCTOR API â€” Session management, anomaly logging, emotion tracking
+// PROCTOR API — Session management, anomaly logging, emotion tracking
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const { ProctorSession, ProctorEvent, Emotion } = require('./proctorSchema');
 
-// Start a proctored quiz session â€” public (no login required)
+// Start a proctored quiz session — public (no login required)
 app.post('/api/proctor/start', async (req, res) => {
   try {
     const { quizType, settings, consentGiven, userId, username } = req.body;
@@ -856,7 +856,7 @@ app.post('/api/proctor/start', async (req, res) => {
   }
 });
 
-// Log a proctor event (anomaly) â€” public
+// Log a proctor event (anomaly) — public
 app.post('/api/proctor/event', async (req, res) => {
   try {
     const { sessionId, type, severity, evidence, metadata, transcript, userId, username } = req.body;
@@ -882,7 +882,7 @@ app.post('/api/proctor/event', async (req, res) => {
   }
 });
 
-// End a proctored quiz session â€” public
+// End a proctored quiz session — public
 app.post('/api/proctor/end', async (req, res) => {
   try {
     const { sessionId } = req.body;
@@ -901,7 +901,7 @@ app.post('/api/proctor/end', async (req, res) => {
   }
 });
 
-// Get proctor session details â€” public for dashboard view (no login)
+// Get proctor session details — public for dashboard view (no login)
 app.get('/api/proctor/session/:id', async (req, res) => {
   try {
     const session = await ProctorSession.findById(req.params.id);
@@ -913,7 +913,7 @@ app.get('/api/proctor/session/:id', async (req, res) => {
   }
 });
 
-// Get all proctor sessions â€” public for instructor dashboard view (no login)
+// Get all proctor sessions — public for instructor dashboard view (no login)
 // The dashboard at /proctor is meant to be accessible to anyone monitoring the exam
 app.get('/api/proctor/ping', (req, res) => { res.json({ ok: true }) });
 
@@ -929,7 +929,7 @@ app.get('/api/proctor/sessions', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ Face Verification Endpoints (CompreFace proxy) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Face Verification Endpoints (CompreFace proxy) ─────────────────────────
 
 const COMPREFACE_URL = process.env.COMPREFACE_URL || 'http://localhost:8000';
 const COMPREFACE_API_KEY = process.env.COMPREFACE_API_KEY || '';
@@ -960,7 +960,7 @@ app.post('/api/proctor/face/register', auth.requireAuth, async (req, res) => {
   }
 });
 
-// Verify face identity against reference â€” public
+// Verify face identity against reference — public
 app.post('/api/proctor/face/verify', async (req, res) => {
   try {
     const { sessionId, image } = req.body;
@@ -987,9 +987,9 @@ app.post('/api/proctor/face/verify', async (req, res) => {
   }
 });
 
-// â”€â”€â”€ Emotion endpoints â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Emotion endpoints ───────────────────────────────────────────────────────
 
-// Submit an emotion for a quiz â€” public (no login)
+// Submit an emotion for a quiz — public (no login)
 app.post('/api/emotions/submit', async (req, res) => {
   try {
     const { quizType, emotion, feedback, userId, username } = req.body;
@@ -1030,7 +1030,7 @@ app.get('/api/emotions/stats/:quizType', async (req, res) => {
   }
 });
 
-// Get emotion history for a user â€” public (filter by userId if provided)
+// Get emotion history for a user — public (filter by userId if provided)
 app.get('/api/emotions/history', async (req, res) => {
   try {
     const { userId, limit = 50 } = req.query;
@@ -1043,7 +1043,7 @@ app.get('/api/emotions/history', async (req, res) => {
 });
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /playground â€” Code execution via Judge0 CE (public API, no auth)
+// /playground — Code execution via Judge0 CE (public API, no auth)
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 app.post('/api/playground/run', async (req, res) => {
   try {
@@ -1081,7 +1081,7 @@ app.post('/api/playground/run', async (req, res) => {
 });
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /playground2 â€” Code execution via local subprocess (9 languages)
+// /playground2 — Code execution via local subprocess (9 languages)
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 const compiler = require('./compiler');
 
@@ -1110,12 +1110,12 @@ app.post('/api/playground2/run', async (req, res) => {
 });
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /riddle-api â€” Math Riddles
+// /riddle-api — Math Riddles
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 app.use('/riddles/images', express.static(path.join(__dirname, 'riddles', 'images')));
 
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-// /graph â€” Prerequisite DAG visualisation
+// /graph — Prerequisite DAG visualisation
 // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 app.get('/graph', (_req, res) => {
   res.sendFile(path.join(__dirname, '..', 'graph', 'index.html'));
@@ -1227,7 +1227,7 @@ async function getUserFromReq(req) {
 function compareAnswers(userStr, expected) {
   if (expected === undefined || expected === null) return false;
   
-  const cleanUser = String(userStr || '').replace(/\s+/g, '').replace(/[%â‚¹$,]/g, '').replace(/âˆ’/g, '-');
+  const cleanUser = String(userStr || '').replace(/\s+/g, '').replace(/[%₹$,]/g, '').replace(/−/g, '-');
   
   // If expected is a fraction string like "5/12"
   if (typeof expected === 'string' && expected.includes('/')) {
@@ -1730,7 +1730,7 @@ const labRoutes = require('./labRoutes');
 app.use('/api', labRoutes);
 
 /**
- * CATCH-ALL ROUTE â€” moved to bottom of file (after all API routes)
+ * CATCH-ALL ROUTE — moved to bottom of file (after all API routes)
  * to avoid shadowing /<type>-api endpoints added later.
  */
 
@@ -1738,7 +1738,7 @@ app.use('/api', labRoutes);
  * CATCH-ALL ROUTE
  * â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
  * Serves the React/Vue SPA index.html for all unmatched routes.
- * MUST be the last route â€” registered after all API endpoints so it does
+ * MUST be the last route — registered after all API endpoints so it does
  * not shadow /<type>-api routes.
  *
  * Sub-path deployments (VITE_BASE_PATH=/summership) get redirected from the
@@ -1772,7 +1772,7 @@ const io = new SocketIOServer(httpServer, {
 
 
 
-// â”€â”€â”€ Connection cap â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Connection cap ──────────────────────────────────────────────────────
 let connectionCount = 0;
 const MAX_CONNECTIONS = 500;
 io.use((socket, next) => {
@@ -1786,7 +1786,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => { connectionCount = Math.max(0, connectionCount - 1); });
 });
 
-// â”€â”€â”€ Battle logic â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ─── Battle logic ────────────────────────────────────────────────────────
 const BATTLE_ROUNDS = 5;
 const ROUND_DURATION_MS = 15000;
 const rooms = new Map();
@@ -1817,18 +1817,18 @@ function generateRoomCode() {
 const BATTLE_QUESTION_COUNTS = [3, 5, 10, 15];
 
 function generateBattleQ_arithmetic() {
-  const ops = ['+', 'âˆ’', 'Ã—', 'Ã·'];
+  const ops = ['+', '−', '×', '÷'];
   const op = pick(ops);
   let a = randomInt(1, 99), b = randomInt(1, 99), answer;
   if (op === '+') answer = a + b;
-  else if (op === 'âˆ’') { answer = a; a = a + b; }
-  else if (op === 'Ã—') { a = randomInt(1, 12); b = randomInt(1, 12); answer = a * b; }
+  else if (op === '−') { answer = a; a = a + b; }
+  else if (op === '×') { a = randomInt(1, 12); b = randomInt(1, 12); answer = a * b; }
   else { b = randomInt(1, 12); answer = randomInt(1, 12); a = b * answer; }
-  return { prompt: op === 'Ã·' ? `${a} Ã· ${b}` : `(${a}) ${op} (${b})`, answer, type: 'number' };
+  return { prompt: op === '÷' ? `${a} ÷ ${b}` : `(${a}) ${op} (${b})`, answer, type: 'number' };
 }
 function generateBattleQ_multiply() {
   const t = randomInt(2, 15), m = randomInt(1, 10);
-  return { prompt: `${t} Ã— ${m}`, answer: t * m, type: 'number' };
+  return { prompt: `${t} × ${m}`, answer: t * m, type: 'number' };
 }
 function generateBattleQ_gk() {
   if (!questions || !questions.length) return generateBattleQ_arithmetic();
@@ -1839,34 +1839,34 @@ function generateBattleQ_gk() {
 }
 
 const BATTLE_MODULES = {
-  addition:    { name: 'Addition',        icon: 'âž•', color: '#4a90d9', cat: 'Arithmetic' },
-  multiply:    { name: 'Tables',          icon: 'âœ–ï¸', color: '#9b59b6', cat: 'Arithmetic' },
+  addition:    { name: 'Addition',        icon: '➕', color: '#4a90d9', cat: 'Arithmetic' },
+  multiply:    { name: 'Tables',          icon: '✖ï¸', color: '#9b59b6', cat: 'Arithmetic' },
   basicarith:  { name: 'Arithmetic',      icon: 'ðŸ”¢', color: '#7aa2f7', cat: 'Arithmetic' },
   hcflcm:      { name: 'HCF & LCM',       icon: 'ðŸ”„', color: '#4a90d9', cat: 'Arithmetic' },
   primefactor: { name: 'Prime Factors',   icon: 'ðŸ’Ž', color: '#5cb87a', cat: 'Arithmetic' },
   squaring:    { name: 'Squaring',         icon: 'ðŸ“', color: '#9b59b6', cat: 'Arithmetic' },
-  sqrt:        { name: 'Square Root',      icon: 'âˆš',  color: '#5cb87a', cat: 'Arithmetic' },
+  sqrt:        { name: 'Square Root',      icon: '√',  color: '#5cb87a', cat: 'Arithmetic' },
   rounding:    { name: 'Rounding',         icon: 'ðŸŽ¯', color: '#4a90d9', cat: 'Arithmetic' },
-  decimals:    { name: 'Decimals',         icon: 'Â·',  color: '#7aa2f7', cat: 'Arithmetic' },
+  decimals:    { name: 'Decimals',         icon: '·',  color: '#7aa2f7', cat: 'Arithmetic' },
   bases:       { name: 'Number Bases',     icon: 'ðŸ–¥',  color: '#5cb87a', cat: 'Arithmetic' },
   stdform:     { name: 'Standard Form',    icon: 'ðŸ”¬', color: '#9b59b6', cat: 'Arithmetic' },
   sdt:         { name: 'Speed, Dist, Time', icon: 'ðŸŽ',  color: '#4a90d9', cat: 'Arithmetic' },
   fractionadd: { name: 'Fractions',        icon: ' fractions', color: '#5cb87a', cat: 'Fractions & Ratios' },
-  ratio:       { name: 'Ratio',            icon: 'âš–ï¸', color: '#4a90d9', cat: 'Fractions & Ratios' },
+  ratio:       { name: 'Ratio',            icon: '⚖ï¸', color: '#4a90d9', cat: 'Fractions & Ratios' },
   percent:     { name: 'Percentages',      icon: '%',  color: '#7aa2f7', cat: 'Fractions & Ratios' },
   profitloss:  { name: 'Profit & Loss',    icon: 'ðŸ’°', color: '#9b59b6', cat: 'Fractions & Ratios' },
   banking:     { name: 'Banking',          icon: 'ðŸ¦', color: '#4a90d9', cat: 'Fractions & Ratios' },
   gst:         { name: 'GST',              icon: 'ðŸ§¾', color: '#5cb87a', cat: 'Fractions & Ratios' },
   shares:      { name: 'Shares',           icon: 'ðŸ“ˆ', color: '#9b59b6', cat: 'Fractions & Ratios' },
-  variation:   { name: 'Variation',        icon: 'â†”ï¸', color: '#7aa2f7', cat: 'Algebra' },
+  variation:   { name: 'Variation',        icon: '↔ï¸', color: '#7aa2f7', cat: 'Algebra' },
   lineareq:    { name: 'Linear Equations', icon: 'x',  color: '#4a90d9', cat: 'Algebra' },
   simul:       { name: 'Sim. Equations',   icon: '{x}',color: '#9b59b6', cat: 'Algebra' },
-  quadratic:   { name: 'Quadratic',        icon: 'xÂ²', color: '#7aa2f7', cat: 'Algebra' },
-  qformula:    { name: 'Quadratic Formula', icon: 'Â±',  color: '#5cb87a', cat: 'Algebra' },
+  quadratic:   { name: 'Quadratic',        icon: 'x²', color: '#7aa2f7', cat: 'Algebra' },
+  qformula:    { name: 'Quadratic Formula', icon: '±',  color: '#5cb87a', cat: 'Algebra' },
   funceval:    { name: 'Functions',        icon: 'f(x)', color: '#4a90d9', cat: 'Algebra' },
-  sequences:   { name: 'Sequences',        icon: 'â€¦',  color: '#9b59b6', cat: 'Algebra' },
+  sequences:   { name: 'Sequences',        icon: '…',  color: '#9b59b6', cat: 'Algebra' },
   indices:     { name: 'Indices',          icon: 'â¿',  color: '#5cb87a', cat: 'Algebra' },
-  surds:       { name: 'Surds',            icon: 'âˆšn', color: '#7aa2f7', cat: 'Algebra' },
+  surds:       { name: 'Surds',            icon: '√n', color: '#7aa2f7', cat: 'Algebra' },
   log:         { name: 'Logarithms',       icon: 'log', color: '#9b59b6', cat: 'Algebra' },
   binomial:    { name: 'Binomial',         icon: 'C(n,k)', color: '#4a90d9', cat: 'Algebra' },
   complex:     { name: 'Complex Numbers',  icon: 'i',  color: '#5cb87a', cat: 'Algebra' },
@@ -1874,35 +1874,35 @@ const BATTLE_MODULES = {
   lineq:       { name: 'Line Equation',    icon: 'mx+c', color: '#4a90d9', cat: 'Algebra' },
   ineq:        { name: 'Inequalities',     icon: '<>',  color: '#5cb87a', cat: 'Algebra' },
   diff:        { name: 'Differentiation',  icon: "dy/dx", color: '#9b59b6', cat: 'Calculus' },
-  integ:       { name: 'Integration',      icon: 'âˆ«',  color: '#4a90d9', cat: 'Calculus' },
+  integ:       { name: 'Integration',      icon: '∫',  color: '#4a90d9', cat: 'Calculus' },
   limits:      { name: 'Limits',           icon: 'lim', color: '#5cb87a', cat: 'Calculus' },
-  angles:      { name: 'Angles',           icon: 'âˆ ',  color: '#4a90d9', cat: 'Geometry' },
-  triangles:   { name: 'Triangles',        icon: 'â–³',  color: '#7aa2f7', cat: 'Geometry' },
-  pythag:      { name: 'Pythagoras',       icon: 'âŠ¥',  color: '#5cb87a', cat: 'Geometry' },
-  polygons:    { name: 'Polygons',         icon: 'â¬¡',  color: '#9b59b6', cat: 'Geometry' },
-  circleth:    { name: 'Circle Thms',      icon: 'âŠ™',  color: '#4a90d9', cat: 'Geometry' },
+  angles:      { name: 'Angles',           icon: '∠',  color: '#4a90d9', cat: 'Geometry' },
+  triangles:   { name: 'Triangles',        icon: '△',  color: '#7aa2f7', cat: 'Geometry' },
+  pythag:      { name: 'Pythagoras',       icon: '⊥',  color: '#5cb87a', cat: 'Geometry' },
+  polygons:    { name: 'Polygons',         icon: '⬡',  color: '#9b59b6', cat: 'Geometry' },
+  circleth:    { name: 'Circle Thms',      icon: '⊙',  color: '#4a90d9', cat: 'Geometry' },
   coordgeom:   { name: 'Coord. Geometry',  icon: 'ðŸ“', color: '#7aa2f7', cat: 'Geometry' },
-  section:     { name: 'Section Formula',  icon: 'Ã·',  color: '#5cb87a', cat: 'Geometry' },
+  section:     { name: 'Section Formula',  icon: '÷',  color: '#5cb87a', cat: 'Geometry' },
   bearings:    { name: 'Bearings',         icon: 'ðŸ§­', color: '#9b59b6', cat: 'Geometry' },
   mensur:      { name: 'Mensuration',      icon: 'ðŸ“', color: '#4a90d9', cat: 'Geometry' },
-  circmeasure: { name: 'Circular Measure', icon: 'å¼§', color: '#5cb87a', cat: 'Geometry' },
-  heron:       { name: "Heron's Formula",  icon: 'â–³',  color: '#7aa2f7', cat: 'Geometry' },
+  circmeasure: { name: 'Circular Measure', icon: '弧', color: '#5cb87a', cat: 'Geometry' },
+  heron:       { name: "Heron's Formula",  icon: '△',  color: '#7aa2f7', cat: 'Geometry' },
   similarity:  { name: 'Similarity',       icon: 'âˆ',  color: '#9b59b6', cat: 'Geometry' },
-  congruence:  { name: 'Congruence',       icon: 'â‰…',  color: '#5cb87a', cat: 'Geometry' },
-  transform:   { name: 'Transformations',  icon: 'â†—',  color: '#4a90d9', cat: 'Geometry' },
+  congruence:  { name: 'Congruence',       icon: '≅',  color: '#5cb87a', cat: 'Geometry' },
+  transform:   { name: 'Transformations',  icon: '↗',  color: '#4a90d9', cat: 'Geometry' },
   prob:        { name: 'Probability',      icon: 'ðŸŽ²', color: '#4a90d9', cat: 'Stats & Prob' },
   stats:       { name: 'Statistics',       icon: 'ðŸ“Š', color: '#7aa2f7', cat: 'Stats & Prob' },
   permcomb:    { name: 'Perm & Comb',      icon: 'nPr', color: '#9b59b6', cat: 'Stats & Prob' },
-  matrix:      { name: 'Matrices',         icon: 'â–¦',  color: '#4a90d9', cat: 'Matrices & Vectors' },
-  vectors:     { name: 'Vectors',          icon: 'â†’',  color: '#7aa2f7', cat: 'Matrices & Vectors' },
-  dotprod:     { name: 'Dot Products',     icon: 'Â·',  color: '#5cb87a', cat: 'Matrices & Vectors' },
-  trig:        { name: 'Trigonometry',     icon: 'âˆ¡',  color: '#5cb87a', cat: 'Trig & Misc' },
-  invtrig:     { name: 'Inverse Trig',     icon: 'sinâ»Â¹', color: '#9b59b6', cat: 'Trig & Misc' },
+  matrix:      { name: 'Matrices',         icon: '▦',  color: '#4a90d9', cat: 'Matrices & Vectors' },
+  vectors:     { name: 'Vectors',          icon: '→',  color: '#7aa2f7', cat: 'Matrices & Vectors' },
+  dotprod:     { name: 'Dot Products',     icon: '·',  color: '#5cb87a', cat: 'Matrices & Vectors' },
+  trig:        { name: 'Trigonometry',     icon: '∡',  color: '#5cb87a', cat: 'Trig & Misc' },
+  invtrig:     { name: 'Inverse Trig',     icon: 'sinâ»¹', color: '#9b59b6', cat: 'Trig & Misc' },
   gk:          { name: 'GK',              icon: 'ðŸ§ ', color: '#5cb87a', cat: 'Trig & Misc' },
   vocab:       { name: 'Vocabulary',       icon: 'ðŸ“–', color: '#4a90d9', cat: 'Trig & Misc' },
   sudoku:      { name: 'Sudoku',           icon: 'ðŸ”¢', color: '#1abc9c', cat: 'Trig & Misc' },
   linprog:     { name: 'Linear Prog.',     icon: 'lin', color: '#5cb87a', cat: 'Trig & Misc' },
-  conics:      { name: 'Conic Sections',   icon: 'â—¯',  color: '#9b59b6', cat: 'Geometry' },
+  conics:      { name: 'Conic Sections',   icon: '◯',  color: '#9b59b6', cat: 'Geometry' },
 };
 
 const BATTLE_TOPICS = ['arithmetic', 'multiply', 'gk', 'sudoku', ...Object.keys(BATTLE_MODULES).filter(k => k !== 'sudoku')];
@@ -1914,10 +1914,10 @@ function generateBattleQ_addition() {
   return { prompt: `${a} + ${b}`, answer: a + b, type: 'number' };
 }
 function generateBattleQ_basicarith() {
-  const ops = ['+', 'âˆ’', 'Ã—'];
+  const ops = ['+', '−', '×'];
   const op = pick(ops);
   let a, b, answer;
-  if (op === 'Ã—') { a = randomInt(2, 12); b = randomInt(2, 12); answer = a * b; }
+  if (op === '×') { a = randomInt(2, 12); b = randomInt(2, 12); answer = a * b; }
   else { a = randomInt(1, 99); b = randomInt(1, 99); answer = op === '+' ? a + b : a - b; }
   return { prompt: `${a} ${op} ${b}`, answer, type: 'number' };
 }
@@ -1933,16 +1933,16 @@ function generateBattleQ_primefactor() {
   let temp = n, factors = [];
   for (let d = 2; d * d <= temp; d++) { while (temp % d === 0) { factors.push(d); temp /= d; } }
   if (temp > 1) factors.push(temp);
-  return { prompt: `Prime factorize ${n}`, answer: factors.sort((a, b) => a - b).join('Ã—'), type: 'text' };
+  return { prompt: `Prime factorize ${n}`, answer: factors.sort((a, b) => a - b).join('×'), type: 'text' };
 }
 function generateBattleQ_squaring() {
   const a = randomInt(2, 30);
-  return { prompt: `${a}Â² = ?`, answer: a * a, type: 'number' };
+  return { prompt: `${a}² = ?`, answer: a * a, type: 'number' };
 }
 function generateBattleQ_sqrt() {
   const perfects = [4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225];
   const n = pick(perfects);
-  return { prompt: `âˆš${n} = ?`, answer: Math.sqrt(n), type: 'number' };
+  return { prompt: `√${n} = ?`, answer: Math.sqrt(n), type: 'number' };
 }
 function generateBattleQ_rounding() {
   const n = Math.round((randomInt(100, 9999) + Math.random()) * 100) / 100;
@@ -1951,12 +1951,12 @@ function generateBattleQ_rounding() {
   return { prompt: `Round ${n} to ${dp} d.p.`, answer, type: 'number' };
 }
 function generateBattleQ_decimals() {
-  const op = pick(['+', 'âˆ’', 'Ã—']);
+  const op = pick(['+', '−', '×']);
   const a = Math.round((randomInt(1, 50) + Math.random()) * 10) / 10;
   const b = Math.round((randomInt(1, 50) + Math.random()) * 10) / 10;
   let answer;
   if (op === '+') answer = Math.round((a + b) * 100) / 100;
-  else if (op === 'âˆ’') answer = Math.round((a - b) * 100) / 100;
+  else if (op === '−') answer = Math.round((a - b) * 100) / 100;
   else answer = Math.round(a * b * 100) / 100;
   return { prompt: `${a} ${op} ${b}`, answer, type: 'number' };
 }
@@ -1989,7 +1989,7 @@ function generateBattleQ_sdt() {
 function generateBattleQ_fractionadd() {
   const d1 = randomInt(2, 12), d2 = randomInt(2, 12);
   const n1 = randomInt(1, d1 - 1), n2 = randomInt(1, d2 - 1);
-  const op = pick(['+', 'âˆ’']);
+  const op = pick(['+', '−']);
   const rn = op === '+' ? n1 * d2 + n2 * d1 : n1 * d2 - n2 * d1;
   const rd = d1 * d2;
   const g = gcd(Math.abs(rn), rd);
@@ -2061,12 +2061,12 @@ function generateBattleQ_quadratic() {
   const a = randomInt(1, 5), b = randomInt(-10, 10), c = randomInt(-10, 10);
   const x = randomInt(-5, 5);
   const y = a * x * x + b * x + c;
-  return { prompt: `y = ${a}xÂ² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c}. Find y when x=${x}.`, answer: y, type: 'number' };
+  return { prompt: `y = ${a}x² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c}. Find y when x=${x}.`, answer: y, type: 'number' };
 }
 function generateBattleQ_qformula() {
   const r1 = randomInt(-8, 8), r2 = randomInt(-8, 8);
   const a = 1, b = -(r1 + r2), c = r1 * r2;
-  return { prompt: `Solve xÂ² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c} = 0. Smaller root?`, answer: Math.min(r1, r2), type: 'number' };
+  return { prompt: `Solve x² ${b >= 0 ? '+' : ''}${b}x ${c >= 0 ? '+' : ''}${c} = 0. Smaller root?`, answer: Math.min(r1, r2), type: 'number' };
 }
 function generateBattleQ_funceval() {
   const a = randomInt(1, 10), b = randomInt(-10, 10), x = randomInt(-5, 5);
@@ -2080,12 +2080,12 @@ function generateBattleQ_sequences() {
 }
 function generateBattleQ_indices() {
   const base = randomInt(2, 10), m = randomInt(2, 6), n = randomInt(2, 6);
-  return { prompt: `${base}^${m} Ã— ${base}^${n} = ${base}^?`, answer: m + n, type: 'number' };
+  return { prompt: `${base}^${m} × ${base}^${n} = ${base}^?`, answer: m + n, type: 'number' };
 }
 function generateBattleQ_surds() {
   const a = randomInt(2, 9), b = randomInt(2, 9);
   const n = a * a * b;
-  return { prompt: `Simplify âˆš${n} (as aâˆšb, e.g. 3âˆš2)`, answer: `${a}âˆš${b}`, type: 'text' };
+  return { prompt: `Simplify √${n} (as a√b, e.g. 3√2)`, answer: `${a}√${b}`, type: 'text' };
 }
 function generateBattleQ_log() {
   const base = pick([2, 3, 5, 10]), exp = randomInt(1, 5);
@@ -2103,13 +2103,13 @@ function generateBattleQ_complex() {
   const a1 = randomInt(-5, 5), b1 = randomInt(-5, 5), a2 = randomInt(-5, 5), b2 = randomInt(-5, 5);
   if (op === 'add') return { prompt: `(${a1}+${b1}i) + (${a2}+${b2}i) = ? (real part)`, answer: a1 + a2, type: 'number' };
   const re = a1 * a2 - b1 * b2, im = a1 * b2 + b1 * a2;
-  return { prompt: `(${a1}+${b1}i) Ã— (${a2}+${b2}i) = ? (real part)`, answer: re, type: 'number' };
+  return { prompt: `(${a1}+${b1}i) × (${a2}+${b2}i) = ? (real part)`, answer: re, type: 'number' };
 }
 function generateBattleQ_remfactor() {
   const a = randomInt(-5, 5), b = randomInt(1, 5);
   const c = randomInt(-10, 10);
   const remainder = a * b + c;
-  return { prompt: `P(x) = ${a}x + ${c >= 0 ? '+' : ''}${c}. Remainder when Ã·(x âˆ’ ${b})?`, answer: remainder, type: 'number' };
+  return { prompt: `P(x) = ${a}x + ${c >= 0 ? '+' : ''}${c}. Remainder when ÷(x − ${b})?`, answer: remainder, type: 'number' };
 }
 function generateBattleQ_lineq() {
   const m = randomInt(-5, 5), c = randomInt(-10, 10);
@@ -2130,27 +2130,27 @@ function generateBattleQ_diff() {
 }
 function generateBattleQ_integ() {
   const n = randomInt(1, 4), a = randomInt(1, 10);
-  return { prompt: `âˆ«${a}x^${n} dx â†’ coeff of x^${n + 1} = ?`, answer: a / (n + 1), type: 'number' };
+  return { prompt: `∫${a}x^${n} dx → coeff of x^${n + 1} = ?`, answer: a / (n + 1), type: 'number' };
 }
 function generateBattleQ_limits() {
   const a = randomInt(1, 5), b = randomInt(1, 5);
-  return { prompt: `lim(xâ†’0) (${a}x + ${b}) = ?`, answer: b, type: 'number' };
+  return { prompt: `lim(x→0) (${a}x + ${b}) = ?`, answer: b, type: 'number' };
 }
 function generateBattleQ_angles() {
   const a1 = randomInt(20, 150), a2 = randomInt(20, 160 - a1);
   const a3 = 180 - a1 - a2;
-  return { prompt: `Triangle angles: ${a1}Â°, ${a2}Â°, ?`, answer: a3, type: 'number' };
+  return { prompt: `Triangle angles: ${a1}°, ${a2}°, ?`, answer: a3, type: 'number' };
 }
 function generateBattleQ_triangles() {
   const a = randomInt(20, 70), b = randomInt(20, 160 - a - 10);
-  return { prompt: `Triangle: two angles ${a}Â° and ${b}Â°. Third angle?`, answer: 180 - a - b, type: 'number' };
+  return { prompt: `Triangle: two angles ${a}° and ${b}°. Third angle?`, answer: 180 - a - b, type: 'number' };
 }
 function generateBattleQ_pythag() {
   const triples = [[3,4,5],[5,12,13],[8,15,17],[7,24,25],[6,8,10],[9,12,15]];
   const [a, b, c] = pick(triples);
   const type = pick(['hyp', 'leg']);
-  if (type === 'hyp') return { prompt: `Right â–³ legs ${a} and ${b}. Hypotenuse?`, answer: c, type: 'number' };
-  return { prompt: `Right â–³ hyp=${c}, leg=${a}. Other leg?`, answer: b, type: 'number' };
+  if (type === 'hyp') return { prompt: `Right △ legs ${a} and ${b}. Hypotenuse?`, answer: c, type: 'number' };
+  return { prompt: `Right △ hyp=${c}, leg=${a}. Other leg?`, answer: b, type: 'number' };
 }
 function generateBattleQ_polygons() {
   const n = pick([3, 4, 5, 6, 7, 8, 9, 10, 12]);
@@ -2159,7 +2159,7 @@ function generateBattleQ_polygons() {
 }
 function generateBattleQ_circleth() {
   const angle = randomInt(20, 150);
-  return { prompt: `Angle at centre = ${angle * 2}Â°. Angle at circumference?`, answer: angle, type: 'number' };
+  return { prompt: `Angle at centre = ${angle * 2}°. Angle at circumference?`, answer: angle, type: 'number' };
 }
 function generateBattleQ_coordgeom() {
   const x1 = randomInt(-5, 5), y1 = randomInt(-5, 5), x2 = randomInt(-5, 5), y2 = randomInt(-5, 5);
@@ -2171,18 +2171,18 @@ function generateBattleQ_coordgeom() {
 function generateBattleQ_section() {
   const x1 = randomInt(0, 10), y1 = randomInt(0, 10), x2 = randomInt(0, 10), y2 = randomInt(0, 10);
   const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-  return { prompt: `Section point of (${x1},${y1}) and (${x2},${y2}) â€” y-coord?`, answer: my, type: 'number' };
+  return { prompt: `Section point of (${x1},${y1}) and (${x2},${y2}) — y-coord?`, answer: my, type: 'number' };
 }
 function generateBattleQ_bearings() {
   const angle = randomInt(10, 170);
   const bearing = (90 - angle + 360) % 360 || 360;
-  return { prompt: `Bearing of point ${angle}Â° east of north = ?`, answer: bearing, type: 'number' };
+  return { prompt: `Bearing of point ${angle}° east of north = ?`, answer: bearing, type: 'number' };
 }
 function generateBattleQ_mensur() {
   const type = pick(['rect_area', 'circle_area', 'cyl_vol']);
   if (type === 'rect_area') {
     const l = randomInt(3, 20), w = randomInt(3, 20);
-    return { prompt: `Rectangle ${l}Ã—${w}. Area?`, answer: l * w, type: 'number' };
+    return { prompt: `Rectangle ${l}×${w}. Area?`, answer: l * w, type: 'number' };
   } else if (type === 'circle_area') {
     const r = randomInt(2, 10);
     return { prompt: `Circle r=${r}. Area? (round to 1dp)`, answer: Math.round(Math.PI * r * r * 10) / 10, type: 'number' };
@@ -2194,13 +2194,13 @@ function generateBattleQ_mensur() {
 function generateBattleQ_circmeasure() {
   const r = randomInt(3, 15), theta = pick([30, 45, 60, 90, 120]);
   const arc = Math.round(r * theta * Math.PI / 180 * 100) / 100;
-  return { prompt: `Arc length: r=${r}, Î¸=${theta}Â° = ? (round to 1dp)`, answer: Math.round(arc * 10) / 10, type: 'number' };
+  return { prompt: `Arc length: r=${r}, θ=${theta}° = ? (round to 1dp)`, answer: Math.round(arc * 10) / 10, type: 'number' };
 }
 function generateBattleQ_heron() {
   const a = randomInt(3, 12), b = randomInt(3, 12), c = a + randomInt(1, 3);
   const s = (a + b + c) / 2;
   const area = Math.round(Math.sqrt(s * (s - a) * (s - b) * (s - c)) * 100) / 100;
-  return { prompt: `â–³ sides ${a},${b},${c}. Area? (round to 1dp)`, answer: Math.round(area * 10) / 10, type: 'number' };
+  return { prompt: `△ sides ${a},${b},${c}. Area? (round to 1dp)`, answer: Math.round(area * 10) / 10, type: 'number' };
 }
 function generateBattleQ_similarity() {
   const a = randomInt(3, 10), b = randomInt(3, 10);
@@ -2250,19 +2250,19 @@ function generateBattleQ_vectors() {
 }
 function generateBattleQ_dotprod() {
   const ax = randomInt(-5, 5), ay = randomInt(-5, 5), bx = randomInt(-5, 5), by = randomInt(-5, 5);
-  return { prompt: `(${ax},${ay})Â·(${bx},${by}) = ?`, answer: ax * bx + ay * by, type: 'number' };
+  return { prompt: `(${ax},${ay})·(${bx},${by}) = ?`, answer: ax * bx + ay * by, type: 'number' };
 }
 function generateBattleQ_trig() {
   const triples = [[3,4,5],[5,12,13],[8,15,17],[6,8,10],[9,12,15]];
   const [a, b, c] = pick(triples);
   const sub = pick(['find_hyp', 'find_leg']);
-  if (sub === 'find_hyp') return { prompt: `Right â–³ legs ${a} and ${b}. Hypotenuse?`, answer: c, type: 'number' };
-  return { prompt: `Right â–³ hyp=${c}, leg=${a}. Other leg?`, answer: b, type: 'number' };
+  if (sub === 'find_hyp') return { prompt: `Right △ legs ${a} and ${b}. Hypotenuse?`, answer: c, type: 'number' };
+  return { prompt: `Right △ hyp=${c}, leg=${a}. Other leg?`, answer: b, type: 'number' };
 }
 function generateBattleQ_invtrig() {
   const angles = [30, 45, 60, 90];
   const a = pick(angles);
-  return { prompt: `sinâ»Â¹(sin(${a}Â°)) = ?`, answer: a, type: 'number' };
+  return { prompt: `sinâ»¹(sin(${a}°)) = ?`, answer: a, type: 'number' };
 }
 // generateBattleQ_gk is defined earlier (line ~12311) using hoisted declaration
 function generateBattleQ_vocab() {
@@ -2283,7 +2283,7 @@ function generateBattleQ_conics() {
   const t = pick(types);
   const wrong = types.filter(x => x !== t);
   const options = [t, ...wrong.slice(0, 3)].sort(() => Math.random() - 0.5);
-  return { prompt: `Which conic: xÂ² + yÂ² = 25?`, options, answer: options.indexOf('Circle'), type: 'mcq' };
+  return { prompt: `Which conic: x² + y² = 25?`, options, answer: options.indexOf('Circle'), type: 'mcq' };
 }
 
 const BATTLE_Q_GENERATORS = {
@@ -2681,7 +2681,7 @@ io.on('connection', (socket) => {
   });
 });
 
-// Global error handler â€” catches anything an individual route didn't handle
+// Global error handler — catches anything an individual route didn't handle
 // itself (thrown errors, and in Express 5, rejected async handlers too).
 // Must be registered after all routes. Logs full detail server-side but
 // never leaks stack traces to the client.
@@ -2690,7 +2690,7 @@ app.use((err, req, res, next) => {
   logger.error('http', `${req.method} ${req.originalUrl} ->`, err);
   if (res.headersSent) return;
   // Map common client-error statuses (and Express body-parser's
-  // SyntaxError â†’ 400) to a useful message instead of the misleading
+  // SyntaxError → 400) to a useful message instead of the misleading
   // 'Internal server error'. Anything we don't recognise still falls
   // through to 500.
   const status = err.status || 500;
@@ -2735,7 +2735,7 @@ if (require.main === module) {
       process.exit(1);
     });
 } else {
-  // Required as a module (e.g. by tests) rather than run directly â€” still
+  // Required as a module (e.g. by tests) rather than run directly — still
   // populate the data so route handlers work, without starting the listener.
   initData().catch((err) => logger.error('startup', 'Failed to load question/vocab data:', err));
 }

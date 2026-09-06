@@ -1885,8 +1885,8 @@ function curiosityVariation(req, res) {
     const applyArith = (x, operator, y) => {
       if (operator === '+') return x + y;
       if (operator === '-') return x - y;
-      if (operator === '*' || operator === 'Ã—') return x * y;
-      if (operator === '/' || operator === 'Ã·') return y === 0 ? null : x / y;
+      if (operator === '*' || operator === '×') return x * y;
+      if (operator === '/' || operator === '÷') return y === 0 ? null : x / y;
       return null;
     };
     const fractionDisplay = (n, d) => `${n}/${d}`;
@@ -1983,8 +1983,8 @@ function curiosityVariation(req, res) {
         lines.push(`Step 2: Apply the variation to get ${newLeft} ${opText(fop)} ${newRight}.`);
         if (fop === '+') lines.push(`Step 3: Add: (${newProblem.n1} x ${newProblem.d2} + ${newProblem.n2} x ${newProblem.d1}) / (${newProblem.d1} x ${newProblem.d2}).`);
         else if (fop === '-') lines.push(`Step 3: Subtract: (${newProblem.n1} x ${newProblem.d2} - ${newProblem.n2} x ${newProblem.d1}) / (${newProblem.d1} x ${newProblem.d2}).`);
-        else if (fop === '*' || fop === 'Ã—') lines.push(`Step 3: Multiply numerators and denominators: (${newProblem.n1} x ${newProblem.n2}) / (${newProblem.d1} x ${newProblem.d2}).`);
-        else if (fop === '/' || fop === 'Ã·') lines.push(`Step 3: Divide by multiplying by the reciprocal: (${newProblem.n1} x ${newProblem.d2}) / (${newProblem.d1} x ${newProblem.n2}).`);
+        else if (fop === '*' || fop === '×') lines.push(`Step 3: Multiply numerators and denominators: (${newProblem.n1} x ${newProblem.n2}) / (${newProblem.d1} x ${newProblem.d2}).`);
+        else if (fop === '/' || fop === '÷') lines.push(`Step 3: Divide by multiplying by the reciprocal: (${newProblem.n1} x ${newProblem.d2}) / (${newProblem.d1} x ${newProblem.n2}).`);
         lines.push(`Step 4: Simplify the result: ${displayAnswer(newAnswer)}.`);
       }
 

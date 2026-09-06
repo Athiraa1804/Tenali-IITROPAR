@@ -46,6 +46,8 @@ describe.each(TOPICS)('%s-api contract', (topic) => {
     // answer must be present and not undefined (number or string depending on topic)
     expect(res.body.answer).toBeDefined();
     expect(String(res.body.prompt).length).toBeGreaterThan(0);
+    // Detect cp1252-re-encoded-as-UTF-8 mojibake (Ã×, Â², âˆš etc.)
+    expect(res.body.prompt).not.toMatch(/[ÃÂâ][^\x00-\x7F]/);
   });
 
   test('POST /check with server answer returns {correct: boolean}', async () => {

@@ -45121,6 +45121,20 @@ function App() {
     )
   }
 
+  if (mode === 'angles' && learningPhase === 'learn') {
+    return (
+      <div className="app-shell">
+        <button className="theme-toggle" onClick={toggleTheme} title={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </button>
+        <AnglesLearnPage
+          onStartTest={() => setLearningPhase('test')}
+          onBack={handleBackToHome}
+        />
+      </div>
+    )
+  }
+
   if (mode && learningPhase === 'learn') {
     const topicName = getModeLabel(mode)
 
